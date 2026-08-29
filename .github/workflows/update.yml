@@ -1,0 +1,77 @@
+name: 定时更新免费额度数据并构建站点
+
+on:
+  schedule:
+    # 每 6 小时运行一次（UTC 时间）
+    - cron: "0 */6 * * *"
+  workflow_dispatch:  # 支持手动触发
+
+permissions:
+  contents: write  # 需要回写 main 分支数据与 deploy 分支构建产物
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: 安装 Python 依赖
+        run: pip install -r scripts/requirements.txt
+
+      - name: 抓取来源页面（变更检测）
+        run: python scripts/fetch_sources.py
+
+      - name: 调用 DeepSeek 提取结构化信息
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: python scripts/extract.py
+
+      - name: 合并生成站点数据
+        run: python scripts/build_data.py
+
+      - name: 回写数据与缓存到 main 分支
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/platforms/ .cache/ site/src/data/platforms.json
+          if git diff --cached --quiet; then
+            echo "数据无变更，跳过提交"
+          else
+            git commit -m "chore(data): 自动更新平台额度数据 [skip ci]"
+            git push origin main
+          fi
+
+      - name: 安装 Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: 构建静态站点
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+
+      - name: 推送构建产物到 deploy 分支
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # 在临时目录初始化仅含 dist 内容的 orphan 提交，推送到 deploy 分支
+          DEPLOY_DIR=$(mktemp -d)
+          cp -r site/dist/. "$DEPLOY_DIR/"
+          cd "$DEPLOY_DIR"
+          git init -b deploy
+          git add -A
+          git commit -m "deploy: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push --force origin deploy

@@ -1,0 +1,12 @@
+# Python 缓存与依赖
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+site/node_modules/
+site/dist/
+site/.astro/
+
+# 运行缓存（哈希缓存由 CI 提交回仓库以保持增量检测，可按需取消下行注释）
+# .cache/

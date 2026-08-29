@@ -1,0 +1,37 @@
+# FreeToken 站点 Nginx 配置示例
+# 放置于 /etc/nginx/conf.d/freetoken.conf 或 sites-available 后软链启用
+# 注意：ICP 备案完成前，境内服务器无法通过 80/443 对外提供域名访问
+
+server {
+    listen 80;
+    server_name freetokens.info www.freetokens.info;  # 替换为你的已备案域名
+
+    root /var/www/freetoken;   # 与 deploy/pull.sh 中的 WEB_ROOT 保持一致
+    index index.html;
+
+    # 静态资源缓存
+    location ~* \.(?:css|js|svg|png|jpg|woff2?)$ {
+        expires 7d;
+        add_header Cache-Control "public";
+        try_files $uri =404;
+    }
+
+    # Astro 生成的目录式页面（如 /platform/deepseek/index.html）
+    location / {
+        try_files $uri $uri/index.html $uri.html =404;
+    }
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+}
+
+# ICP 备案 + 证书就绪后，取消下面注释并配置 HTTPS（推荐使用 certbot 签发）：
+# server {
+#     listen 443 ssl;
+#     server_name freetokens.info www.freetokens.info;
+#     ssl_certificate     /etc/letsencrypt/live/freetokens.info/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/freetokens.info/privkey.pem;
+#     root /var/www/freetoken;
+#     index index.html;
+#     location / { try_files $uri $uri/index.html $uri.html =404; }
+# }

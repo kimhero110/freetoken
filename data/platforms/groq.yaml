@@ -1,0 +1,32 @@
+# Groq 平台信息
+name: Groq
+name_en: Groq
+website: https://groq.com
+category: llm-api
+
+free_quota:
+  amount: 1000000
+  unit: tokens/天
+  type: 每日            # 永久 / 限时 / 每日
+  conditions:
+    - Free 层级按模型有每日 token 与每分钟请求数（RPM）限制
+    - 无需信用卡即可使用免费层级
+    - 超出限速后返回 429，次日重置
+
+register_url: https://console.groq.com/login
+docs_url: https://console.groq.com/docs/overview
+
+source_urls:
+  - https://console.groq.com/docs/rate-limits
+  - https://groq.com/pricing/
+
+last_verified: 2026-08-28
+status: active
+
+intro: Groq 提供每日刷新的免费调用额度，以超高速推理运行 Llama 等开源模型，无需信用卡。
+
+tags:
+  - 海外平台
+  - 每日额度
+  - 高速推理
+  - 开源模型

@@ -1,0 +1,32 @@
+# DeepSeek 平台信息
+name: DeepSeek
+name_en: DeepSeek
+website: https://www.deepseek.com
+category: llm-api
+
+free_quota:
+  amount: 5000000
+  unit: tokens
+  type: 限时            # 永久 / 限时 / 每日
+  conditions:
+    - 新用户注册赠送 500 万 tokens
+    - 赠送额度有效期 30 天
+    - 需绑定手机号
+
+register_url: https://platform.deepseek.com/sign_up
+docs_url: https://api-docs.deepseek.com/zh-cn/
+
+# 用于抓取的来源页面（定价页、活动页等）
+source_urls:
+  - https://api-docs.deepseek.com/zh-cn/quick_start/pricing
+
+last_verified: 2026-08-28
+status: active          # active / expired / unverified
+
+# SEO 简介文案（后续可由 DeepSeek API 自动生成润色）
+intro: DeepSeek 为注册用户提供限时免费 tokens 额度，可用于体验其对话与推理模型。
+
+tags:
+  - 国产大模型
+  - 注册赠送
+  - 限时额度

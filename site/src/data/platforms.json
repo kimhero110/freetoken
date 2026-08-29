@@ -1,0 +1,96 @@
+[
+  {
+    "name": "DeepSeek",
+    "name_en": "DeepSeek",
+    "website": "https://www.deepseek.com",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 5000000,
+      "unit": "tokens",
+      "type": "限时",
+      "conditions": [
+        "新用户注册赠送 500 万 tokens",
+        "赠送额度有效期 30 天",
+        "需绑定手机号"
+      ]
+    },
+    "register_url": "https://platform.deepseek.com/sign_up",
+    "docs_url": "https://api-docs.deepseek.com/zh-cn/",
+    "source_urls": [
+      "https://api-docs.deepseek.com/zh-cn/quick_start/pricing"
+    ],
+    "last_verified": "2026-08-28",
+    "status": "active",
+    "intro": "DeepSeek 为注册用户提供限时免费 tokens 额度，可用于体验其对话与推理模型。",
+    "tags": [
+      "国产大模型",
+      "注册赠送",
+      "限时额度"
+    ],
+    "slug": "deepseek"
+  },
+  {
+    "name": "Groq",
+    "name_en": "Groq",
+    "website": "https://groq.com",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 1000000,
+      "unit": "tokens/天",
+      "type": "每日",
+      "conditions": [
+        "Free 层级按模型有每日 token 与每分钟请求数（RPM）限制",
+        "无需信用卡即可使用免费层级",
+        "超出限速后返回 429，次日重置"
+      ]
+    },
+    "register_url": "https://console.groq.com/login",
+    "docs_url": "https://console.groq.com/docs/overview",
+    "source_urls": [
+      "https://console.groq.com/docs/rate-limits",
+      "https://groq.com/pricing/"
+    ],
+    "last_verified": "2026-08-28",
+    "status": "active",
+    "intro": "Groq 提供每日刷新的免费调用额度，以超高速推理运行 Llama 等开源模型，无需信用卡。",
+    "tags": [
+      "海外平台",
+      "每日额度",
+      "高速推理",
+      "开源模型"
+    ],
+    "slug": "groq"
+  },
+  {
+    "name": "硅基流动",
+    "name_en": "SiliconFlow",
+    "website": "https://siliconflow.cn",
+    "category": "cloud",
+    "free_quota": {
+      "amount": 2000,
+      "unit": "万 tokens",
+      "type": "永久",
+      "conditions": [
+        "新用户注册赠送 2000 万 tokens（约 14 元额度）",
+        "部分小参数模型（如 Qwen2.5-7B）长期免费不限量",
+        "通过邀请链接注册双方均可获得额外额度"
+      ]
+    },
+    "register_url": "https://cloud.siliconflow.cn/i/invite",
+    "docs_url": "https://docs.siliconflow.cn/",
+    "source_urls": [
+      "https://docs.siliconflow.cn/cn/userguide/introduction",
+      "https://siliconflow.cn/pricing"
+    ],
+    "last_verified": "2026-08-28",
+    "status": "active",
+    "intro": "硅基流动（SiliconFlow）提供注册即送的大额免费 tokens，并对多款开源小模型提供长期免费调用。",
+    "tags": [
+      "国产平台",
+      "开源模型聚合",
+      "注册赠送",
+      "永久免费模型"
+    ],
+    "slug": "siliconflow"
+  }
+]

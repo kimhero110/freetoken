@@ -1,0 +1,39 @@
+---
+// 首页：以卡片形式列出所有平台的免费额度信息
+import Base from '../layouts/Base.astro';
+import platforms from '../data/platforms.json';
+
+// 状态文案映射
+const statusText: Record<string, string> = {
+  active: '有效',
+  expired: '已过期',
+  unverified: '待核实',
+};
+
+function formatQuota(p: any): string {
+  const q = p.free_quota;
+  if (!q || q.amount == null) return '暂无明确免费额度信息';
+  return `${q.amount} ${q.unit ?? ''}`.trim();
+}
+---
+<Base>
+  <h1 style="font-size:22px;margin-bottom:6px;">免费 API Token 额度一览</h1>
+  <p style="color:var(--muted);margin-bottom:20px;">
+    聚合各大 LLM / 云平台的免费额度、免费层级信息，每 6 小时自动检查并标记待核实。
+  </p>
+  <div class="card-grid">
+    {platforms.map((p: any) => (
+      <a class="card" href={`/platform/${p.slug}/`}>
+        <h2>{p.name} <small style="color:var(--muted);font-weight:400;">{p.name_en}</small></h2>
+        <div>
+          <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
+          <span class="badge type">{p.free_quota?.type ?? '未知'}</span>
+        </div>
+        <p class="quota">{formatQuota(p)}</p>
+        <p class="intro">{p.intro}</p>
+        <p class="meta">最后人工核实：{p.last_verified}</p>
+        {p.last_checked && <p class="meta">最后自动检查：{p.last_checked}</p>}
+      </a>
+    ))}
+  </div>
+</Base>
