@@ -1,32 +1,26 @@
-# 硅基流动 SiliconFlow 平台信息
 name: 硅基流动
 name_en: SiliconFlow
 website: https://siliconflow.cn
 category: cloud
-
 free_quota:
   amount: 2000
   unit: 万 tokens
-  type: 永久            # 永久 / 限时 / 每日
+  type: 永久
   conditions:
-    - 新用户注册赠送 2000 万 tokens（约 14 元额度）
-    - 部分小参数模型（如 Qwen2.5-7B）长期免费不限量
-    - 通过邀请链接注册双方均可获得额外额度
-
+  - 新用户注册赠送 2000 万 tokens（约 14 元额度）
+  - 部分小参数模型（如 Qwen2.5-7B）长期免费不限量
+  - 通过邀请链接注册双方均可获得额外额度
 register_url: https://cloud.siliconflow.cn/i/invite
 docs_url: https://docs.siliconflow.cn/
-
 source_urls:
-  - https://docs.siliconflow.cn/cn/userguide/introduction
-  - https://siliconflow.cn/pricing
-
+- https://docs.siliconflow.cn/cn/userguide/introduction
+- https://siliconflow.cn/pricing
 last_verified: 2026-08-28
 status: active
-
-intro: 硅基流动（SiliconFlow）提供注册即送的大额免费 tokens，并对多款开源小模型提供长期免费调用。
-
+intro: 硅基流动提供大模型API服务，部分模型免费，价格透明，支持对话、生图、语音、视频等多种模型。
 tags:
-  - 国产平台
-  - 开源模型聚合
-  - 注册赠送
-  - 永久免费模型
+- 国产平台
+- 开源模型聚合
+- 注册赠送
+- 永久免费模型
+last_checked: '2026-08-30'
