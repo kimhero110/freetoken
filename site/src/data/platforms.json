@@ -21,12 +21,13 @@
     ],
     "last_verified": "2026-08-28",
     "status": "active",
-    "intro": "DeepSeek 为注册用户提供限时免费 tokens 额度，可用于体验其对话与推理模型。",
+    "intro": "DeepSeek API提供多种模型，按量计费，价格透明，支持缓存命中优惠，适合各类AI应用。",
     "tags": [
       "国产大模型",
       "注册赠送",
       "限时额度"
     ],
+    "last_checked": "2026-08-30",
     "slug": "deepseek"
   },
   {
@@ -52,13 +53,14 @@
     ],
     "last_verified": "2026-08-28",
     "status": "active",
-    "intro": "Groq 提供每日刷新的免费调用额度，以超高速推理运行 Llama 等开源模型，无需信用卡。",
+    "intro": "Groq是领先的AI推理云平台，提供快速、可靠的推理服务，致力于让AI推理规模化。",
     "tags": [
       "海外平台",
       "每日额度",
       "高速推理",
       "开源模型"
     ],
+    "last_checked": "2026-08-30",
     "slug": "groq"
   },
   {
