@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 """调用大模型 API 从页面文本中结构化提取免费额度信息。
 
-- 读取 .cache/changed.json（由 fetch_sources.py 生成），只处理发生变更的来源
-- 支持多大模型 API 配置与自动降级（Fallback）：
-  1. DeepSeek (DEEPSEEK_API_KEY)
-  2. 硅基流动 SiliconFlow (SILICONFLOW_API_KEY)
-  3. Kimi / Moonshot (MOONSHOT_API_KEY)
-  4. 阿里百炼 DashScope (DASHSCOPE_API_KEY)
-  5. 自定义 OpenAI 兼容接口 (LLM_API_KEY + LLM_BASE_URL + LLM_MODEL)
+- 读取 config/llm.yaml 配置，支持自由增删大模型节点与路由策略
+- 支持运行策略：
+  1. specified（单模型模式，默认）
+  2. fallback（链式回退模式）
+  3. load_balance（多模型负载均衡/轮询模式）
+- 支持 DeepSeek 官方优惠波谷保护（北京时间 00:30~08:30 五折时段）
+- 支持 CLI 参数与环境变量动态覆盖，完美适配 GitHub Actions 手动触发
 - 将提取结果写回 data/platforms/<slug>.yaml 的 free_quota 等字段
-- --dry-run 模式：跳过 API 调用，仅打印将要处理的内容
 """
 
 import argparse
 import hashlib
 import json
 import os
+import random
 import re
 import sys
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
 
 import requests
@@ -29,6 +29,7 @@ from openai import OpenAI
 
 ROOT = Path(__file__).resolve().parent.parent
 PLATFORMS_DIR = ROOT / "data" / "platforms"
+CONFIG_FILE = ROOT / "config" / "llm.yaml"
 CHANGED_FILE = ROOT / ".cache" / "changed.json"
 HASHES_FILE = ROOT / ".cache" / "hashes.json"
 
@@ -37,7 +38,6 @@ UA = (
     "(KHTML, like Gecko) Chrome/126.0 Safari/537.36 FreeTokenBot/1.0"
 )
 
-# 提取提示词模板：要求模型严格输出 JSON，字段与 YAML schema 对应
 PROMPT_TEMPLATE = """你是一个信息抽取助手。请从下面的网页文本中提取该平台「免费 API 额度」的信息。
 
 要求：
@@ -62,76 +62,77 @@ PROMPT_TEMPLATE = """你是一个信息抽取助手。请从下面的网页文�
 
 @dataclass
 class Provider:
+    id: str
     name: str
     base_url: str
     model: str
     api_key: str
+    temperature: float = 0.1
+    response_format_json: bool = True
 
 
-def get_available_providers() -> list[Provider]:
-    """按优先级收集所有已配置环境变量的模型提供商。"""
-    providers = []
+def is_beijing_off_peak() -> bool:
+    """判断当前时间是否处于 DeepSeek 优惠波谷时段（北京时间 00:30 ~ 08:30）。"""
+    tz_utc8 = timezone(timedelta(hours=8))
+    now_utc8 = datetime.now(tz_utc8)
+    current_time = now_utc8.time()
+    return time(0, 30) <= current_time <= time(8, 30)
 
-    # 1. DeepSeek 官方
-    if key := os.environ.get("DEEPSEEK_API_KEY"):
-        providers.append(
-            Provider(
-                name="DeepSeek",
-                base_url="https://api.deepseek.com",
-                model=os.environ.get("DEEPSEEK_MODEL", "deepseek-chat"),
-                api_key=key,
-            )
+
+def load_config() -> dict:
+    """加载 config/llm.yaml 配置文件。"""
+    if CONFIG_FILE.exists():
+        try:
+            return yaml.safe_load(CONFIG_FILE.read_text(encoding="utf-8")) or {}
+        except Exception as exc:
+            print(f"[配置警告] 读取 config/llm.yaml 失败: {exc}，使用默认配置")
+    return {
+        "strategy": "specified",
+        "active": "deepseek",
+        "off_peak_strategy": {
+            "enabled": True,
+            "deepseek_off_peak_only": True,
+            "action": "switch_to",
+            "fallback_provider": "siliconflow",
+        },
+        "providers": {
+            "deepseek": {
+                "name": "DeepSeek 官方",
+                "base_url": "https://api.deepseek.com",
+                "model": "deepseek-chat",
+                "api_key_env": "DEEPSEEK_API_KEY",
+            }
+        },
+    }
+
+
+def resolve_providers(config: dict, target_provider_id: str | None = None, model_override: str | None = None) -> dict[str, Provider]:
+    """解析并实例化所有配置了有效环境变量 API Key 的 Provider。"""
+    providers_dict = {}
+    raw_providers = config.get("providers", {})
+
+    for pid, pdata in raw_providers.items():
+        key_env = pdata.get("api_key_env", f"{pid.upper()}_API_KEY")
+        api_key = os.environ.get(key_env)
+        if not api_key:
+            continue
+
+        model = model_override if (model_override and pid == target_provider_id) else pdata.get("model", "deepseek-chat")
+        providers_dict[pid] = Provider(
+            id=pid,
+            name=pdata.get("name", pid),
+            base_url=pdata.get("base_url", "https://api.deepseek.com"),
+            model=model,
+            api_key=api_key,
+            temperature=float(pdata.get("temperature", 0.1)),
+            response_format_json=bool(pdata.get("response_format_json", True)),
         )
 
-    # 2. 硅基流动 SiliconFlow
-    if key := os.environ.get("SILICONFLOW_API_KEY"):
-        providers.append(
-            Provider(
-                name="SiliconFlow",
-                base_url="https://api.siliconflow.cn/v1",
-                model=os.environ.get("SILICONFLOW_MODEL", "deepseek-ai/DeepSeek-V3"),
-                api_key=key,
-            )
-        )
-
-    # 3. Kimi / Moonshot
-    if key := os.environ.get("MOONSHOT_API_KEY"):
-        providers.append(
-            Provider(
-                name="Moonshot",
-                base_url="https://api.moonshot.cn/v1",
-                model=os.environ.get("MOONSHOT_MODEL", "moonshot-v1-8k"),
-                api_key=key,
-            )
-        )
-
-    # 4. 阿里百炼 DashScope
-    if key := os.environ.get("DASHSCOPE_API_KEY"):
-        providers.append(
-            Provider(
-                name="DashScope",
-                base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
-                model=os.environ.get("DASHSCOPE_MODEL", "qwen-plus"),
-                api_key=key,
-            )
-        )
-
-    # 5. 通用自定义 OpenAI 兼容接口
-    if key := os.environ.get("LLM_API_KEY"):
-        providers.append(
-            Provider(
-                name="CustomLLM",
-                base_url=os.environ.get("LLM_BASE_URL", "https://api.openai.com/v1"),
-                model=os.environ.get("LLM_MODEL", "gpt-4o-mini"),
-                api_key=key,
-            )
-        )
-
-    return providers
+    return providers_dict
 
 
 def fetch_text(url: str) -> str | None:
-    """重新抓取页面文本（与 fetch_sources.py 逻辑一致）。"""
+    """重新抓取页面文本。"""
     try:
         resp = requests.get(url, headers={"User-Agent": UA}, timeout=20)
         resp.raise_for_status()
@@ -145,16 +146,14 @@ def fetch_text(url: str) -> str | None:
 
 
 def parse_json_safely(raw_content: str) -> dict | None:
-    """解析模型返回的 JSON，自动处理可能的 Markdown 代码块包裹。"""
+    """解析模型返回的 JSON。"""
     raw = raw_content.strip()
-    # 去除 ```json ... ``` 标记
     if raw.startswith("```"):
         raw = re.sub(r"^```(?:json)?\s*", "", raw, flags=re.IGNORECASE)
         raw = re.sub(r"\s*```$", "", raw)
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
-        # 正则提取最外层花括号
         match = re.search(r"\{.*\}", raw, re.DOTALL)
         if match:
             try:
@@ -164,40 +163,35 @@ def parse_json_safely(raw_content: str) -> dict | None:
     return None
 
 
-def call_llm_with_fallback(providers: list[Provider], text: str) -> dict | None:
-    """按优先级依次调用已配置的 LLM，失败时自动降级到下一个提供商。"""
+def execute_llm_call(prov: Provider, text: str) -> dict | None:
+    """针对单个 Provider 发起调用。"""
+    print(f"  [AI 提取] 正在调用 {prov.name} (模型: {prov.model})")
     prompt = PROMPT_TEMPLATE.format(text=text[:8000])
+    try:
+        client = OpenAI(api_key=prov.api_key, base_url=prov.base_url, timeout=30.0)
+        kwargs = {
+            "model": prov.model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": prov.temperature,
+        }
+        if prov.response_format_json:
+            kwargs["response_format"] = {"type": "json_object"}
 
-    for prov in providers:
-        print(f"  [AI 提取] 尝试提供商: {prov.name} (模型: {prov.model})")
-        try:
-            client = OpenAI(api_key=prov.api_key, base_url=prov.base_url, timeout=30.0)
-            kwargs = {
-                "model": prov.model,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.1,
-            }
-            # DeepSeek / Moonshot 等支持 json_object
-            if prov.name in {"DeepSeek", "Moonshot", "CustomLLM"}:
-                kwargs["response_format"] = {"type": "json_object"}
-
-            resp = client.chat.completions.create(**kwargs)
-            content = resp.choices[0].message.content or ""
-            data = parse_json_safely(content)
-            if data is not None:
-                print(f"  [AI 提取成功] 由 {prov.name} 完成解析")
-                return data
-            else:
-                print(f"  [解析警告] {prov.name} 返回内容无法解析为 JSON: {content[:100]}...")
-        except Exception as exc:
-            print(f"  [提供商失败] {prov.name} 报错: {exc}")
-
-    print("  [全部失败] 所有已配置的大模型 API 均调用失败")
+        resp = client.chat.completions.create(**kwargs)
+        content = resp.choices[0].message.content or ""
+        data = parse_json_safely(content)
+        if data is not None:
+            print(f"  [AI 提取成功] 由 {prov.name} 完成解析")
+            return data
+        else:
+            print(f"  [解析警告] {prov.name} 返回无法解析为 JSON: {content[:100]}...")
+    except Exception as exc:
+        print(f"  [调用失败] {prov.name} 报错: {exc}")
     return None
 
 
 def validate_extracted(value: object) -> dict | None:
-    """校验并规范化模型输出，阻止异常类型或超长网页内容写入 YAML。"""
+    """校验模型提取结果。"""
     if not isinstance(value, dict):
         return None
     quota = value.get("free_quota")
@@ -237,7 +231,7 @@ def validate_extracted(value: object) -> dict | None:
 
 
 def update_platform_yaml(slug: str, extracted: dict) -> None:
-    """将提取结果合并回平台 YAML（保守更新，只覆盖提取到的字段）。"""
+    """写回平台 YAML。"""
     yf = PLATFORMS_DIR / f"{slug}.yaml"
     entry = yaml.safe_load(yf.read_text(encoding="utf-8"))
 
@@ -245,7 +239,6 @@ def update_platform_yaml(slug: str, extracted: dict) -> None:
     if quota.get("amount") is not None:
         entry.setdefault("free_quota", {})
         entry["free_quota"].update({k: v for k, v in quota.items() if v is not None})
-        # 数据由 AI 提取，标记为待人工核实
         entry["status"] = "unverified"
     if extracted.get("intro"):
         entry["intro"] = extracted["intro"]
@@ -258,27 +251,57 @@ def update_platform_yaml(slug: str, extracted: dict) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="从变更来源中结构化提取免费额度信息")
+    parser = argparse.ArgumentParser(description="灵活自定义大模型提取数据")
     parser.add_argument("--dry-run", action="store_true", help="跳过 API 调用，仅打印计划")
+    parser.add_argument("--provider", type=str, default=None, help="覆盖激活的模型提供商 ID (如 deepseek, siliconflow, kimi)")
+    parser.add_argument("--model", type=str, default=None, help="覆盖模型名称 (如 deepseek-chat, qwen-plus)")
+    parser.add_argument("--strategy", type=str, choices=["specified", "fallback", "load_balance"], default=None, help="覆盖调用策略")
+    parser.add_argument("--ignore-off-peak", action="store_true", help="忽略 DeepSeek 波谷时段保护，强制调用")
     args = parser.parse_args()
 
     if not CHANGED_FILE.exists():
         print("未找到 .cache/changed.json，请先运行 fetch_sources.py")
-        return 0  # 首轮或全量缓存缺失时不视为错误
+        return 0
 
     changed = json.loads(CHANGED_FILE.read_text(encoding="utf-8"))
     if not changed:
         print("本轮无变更来源，跳过提取")
         return 0
 
-    providers = []
+    config = load_config()
+
+    # 确定调用策略与目标模型
+    strategy = args.strategy or os.environ.get("LLM_STRATEGY") or config.get("strategy", "specified")
+    active_id = args.provider or os.environ.get("LLM_ACTIVE_PROVIDER") or config.get("active", "deepseek")
+    model_override = args.model or os.environ.get("LLM_MODEL_OVERRIDE")
+    ignore_off_peak = args.ignore_off_peak or os.environ.get("IGNORE_OFF_PEAK", "").lower() in {"1", "true", "yes"}
+
+    print(f"[配置状态] 策略: {strategy} | 激活提供商: {active_id} | 模型覆盖: {model_override or '无'}")
+
+    # 波谷时段检查逻辑
+    off_peak_cfg = config.get("off_peak_strategy", {})
+    if off_peak_cfg.get("enabled", True) and active_id == "deepseek" and not ignore_off_peak:
+        if off_peak_cfg.get("deepseek_off_peak_only", True):
+            if not is_beijing_off_peak():
+                now_str = datetime.now(timezone(timedelta(hours=8))).strftime("%H:%M")
+                action = off_peak_cfg.get("action", "switch_to")
+                fallback_id = off_peak_cfg.get("fallback_provider", "siliconflow")
+                print(f"[波谷保护] 当前北京时间 {now_str} 非 DeepSeek 5折优惠时段 (00:30~08:30)")
+                if action == "switch_to":
+                    print(f"[波谷保护] 自动切换提供商至备用模型: {fallback_id}")
+                    active_id = fallback_id
+                else:
+                    print("[波谷保护] 设定为跳过调用，等待波谷期执行。")
+                    return 0
+
+    # 收集可用 Provider
+    available_providers = resolve_providers(config, target_provider_id=active_id, model_override=model_override)
+
     if not args.dry_run:
-        providers = get_available_providers()
-        if not providers:
-            print("错误：未找到任何可用的大模型 API Key。")
-            print("请至少配置以下之一：DEEPSEEK_API_KEY, SILICONFLOW_API_KEY, MOONSHOT_API_KEY, DASHSCOPE_API_KEY, LLM_API_KEY")
+        if not available_providers:
+            print("错误：未找到任何可用且已配置 API Key 的模型提供商！")
             return 1
-        print(f"已加载 {len(providers)} 个模型提供商: {', '.join(p.name for p in providers)}")
+        print(f"[可用提供商] 已加载: {', '.join(available_providers.keys())}")
 
     hashes = {}
     if HASHES_FILE.exists():
@@ -302,7 +325,32 @@ def main() -> int:
             print(f"  [dry-run] 将发送 {len(text)} 字符文本至大模型，跳过实际调用")
             continue
 
-        raw_result = call_llm_with_fallback(providers, text)
+        # 根据策略组织调用列表
+        candidates: list[Provider] = []
+        if strategy == "specified":
+            if active_id in available_providers:
+                candidates = [available_providers[active_id]]
+            else:
+                print(f"  [配置错误] 指定的提供商 '{active_id}' 未配置对应 API Key 环境变量")
+                failed = True
+                continue
+        elif strategy == "load_balance":
+            all_list = list(available_providers.values())
+            random.shuffle(all_list)
+            candidates = all_list
+        elif strategy == "fallback":
+            if active_id in available_providers:
+                candidates.append(available_providers[active_id])
+            for pid, prov in available_providers.items():
+                if pid != active_id:
+                    candidates.append(prov)
+
+        raw_result = None
+        for prov in candidates:
+            raw_result = execute_llm_call(prov, text)
+            if raw_result is not None:
+                break
+
         extracted = validate_extracted(raw_result)
         if extracted is None:
             print("  [校验失败] 模型输出不符合平台数据 schema")

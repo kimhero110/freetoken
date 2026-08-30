@@ -5,7 +5,40 @@ on:
     # 限制在 DeepSeek 官方优惠波谷时段运行（北京时间 00:30~08:30，享五折）
     # UTC 17:30 / 20:30 / 23:30 对应北京时间 01:30 / 04:30 / 07:30
     - cron: "30 17,20,23 * * *"
-  workflow_dispatch:  # 支持手动触发
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: "选择提取使用的模型提供商 (default 为 config/llm.yaml 默认)"
+        required: false
+        default: "default"
+        type: choice
+        options:
+          - "default"
+          - "deepseek"
+          - "siliconflow"
+          - "kimi"
+          - "dashscope"
+          - "custom_proxy"
+      strategy:
+        description: "调用策略 (specified 单模型 / fallback 回退 / load_balance 负载均衡)"
+        required: false
+        default: "default"
+        type: choice
+        options:
+          - "default"
+          - "specified"
+          - "fallback"
+          - "load_balance"
+      model_override:
+        description: "覆盖模型名称 (如 deepseek-chat, qwen-plus，选填)"
+        required: false
+        type: string
+        default: ""
+      ignore_off_peak:
+        description: "忽略 DeepSeek 波谷时段保护强制执行"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write  # 需要回写 main 分支数据与 deploy 分支构建产物
@@ -30,16 +63,28 @@ jobs:
       - name: 抓取来源页面（变更检测）
         run: python scripts/fetch_sources.py
 
-      - name: 调用大模型提取结构化信息 (多模型 Fallback)
+      - name: 调用大模型提取结构化信息 (灵活自定义模式)
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
           MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
           DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
-          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
-          LLM_MODEL: ${{ secrets.LLM_MODEL }}
-        run: python scripts/extract.py
+          CUSTOM_LLM_KEY: ${{ secrets.CUSTOM_LLM_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.provider }}" != "default" ] && [ -n "${{ inputs.provider }}" ]; then
+            ARGS="$ARGS --provider ${{ inputs.provider }}"
+          fi
+          if [ "${{ inputs.strategy }}" != "default" ] && [ -n "${{ inputs.strategy }}" ]; then
+            ARGS="$ARGS --strategy ${{ inputs.strategy }}"
+          fi
+          if [ -n "${{ inputs.model_override }}" ]; then
+            ARGS="$ARGS --model ${{ inputs.model_override }}"
+          fi
+          if [ "${{ inputs.ignore_off_peak }}" = "true" ]; then
+            ARGS="$ARGS --ignore-off-peak"
+          fi
+          python scripts/extract.py $ARGS
 
       - name: 合并生成站点数据
         run: python scripts/build_data.py
