@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
-"""调用 DeepSeek API 从页面文本中结构化提取免费额度信息。
+"""调用大模型 API 从页面文本中结构化提取免费额度信息。
 
 - 读取 .cache/changed.json（由 fetch_sources.py 生成），只处理发生变更的来源
-- 重新抓取对应页面文本，调用 deepseek-chat（OpenAI 兼容接口）提取字段
+- 支持多大模型 API 配置与自动降级（Fallback）：
+  1. DeepSeek (DEEPSEEK_API_KEY)
+  2. 硅基流动 SiliconFlow (SILICONFLOW_API_KEY)
+  3. Kimi / Moonshot (MOONSHOT_API_KEY)
+  4. 阿里百炼 DashScope (DASHSCOPE_API_KEY)
+  5. 自定义 OpenAI 兼容接口 (LLM_API_KEY + LLM_BASE_URL + LLM_MODEL)
 - 将提取结果写回 data/platforms/<slug>.yaml 的 free_quota 等字段
 - --dry-run 模式：跳过 API 调用，仅打印将要处理的内容
 """
@@ -11,7 +16,9 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
+from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
 
@@ -25,9 +32,6 @@ PLATFORMS_DIR = ROOT / "data" / "platforms"
 CHANGED_FILE = ROOT / ".cache" / "changed.json"
 HASHES_FILE = ROOT / ".cache" / "hashes.json"
 
-DEEPSEEK_BASE_URL = "https://api.deepseek.com"
-DEEPSEEK_MODEL = "deepseek-chat"
-
 UA = (
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/126.0 Safari/537.36 FreeTokenBot/1.0"
@@ -37,7 +41,7 @@ UA = (
 PROMPT_TEMPLATE = """你是一个信息抽取助手。请从下面的网页文本中提取该平台「免费 API 额度」的信息。
 
 要求：
-1. 只输出一个 JSON 对象，不要输出任何其他文字。
+1. 只输出一个纯 JSON 对象，不要输出任何前后解释或 Markdown 格式以外的文字。
 2. JSON 结构如下：
 {{
   "free_quota": {{
@@ -56,6 +60,76 @@ PROMPT_TEMPLATE = """你是一个信息抽取助手。请从下面的网页文�
 ---"""
 
 
+@dataclass
+class Provider:
+    name: str
+    base_url: str
+    model: str
+    api_key: str
+
+
+def get_available_providers() -> list[Provider]:
+    """按优先级收集所有已配置环境变量的模型提供商。"""
+    providers = []
+
+    # 1. DeepSeek 官方
+    if key := os.environ.get("DEEPSEEK_API_KEY"):
+        providers.append(
+            Provider(
+                name="DeepSeek",
+                base_url="https://api.deepseek.com",
+                model=os.environ.get("DEEPSEEK_MODEL", "deepseek-chat"),
+                api_key=key,
+            )
+        )
+
+    # 2. 硅基流动 SiliconFlow
+    if key := os.environ.get("SILICONFLOW_API_KEY"):
+        providers.append(
+            Provider(
+                name="SiliconFlow",
+                base_url="https://api.siliconflow.cn/v1",
+                model=os.environ.get("SILICONFLOW_MODEL", "deepseek-ai/DeepSeek-V3"),
+                api_key=key,
+            )
+        )
+
+    # 3. Kimi / Moonshot
+    if key := os.environ.get("MOONSHOT_API_KEY"):
+        providers.append(
+            Provider(
+                name="Moonshot",
+                base_url="https://api.moonshot.cn/v1",
+                model=os.environ.get("MOONSHOT_MODEL", "moonshot-v1-8k"),
+                api_key=key,
+            )
+        )
+
+    # 4. 阿里百炼 DashScope
+    if key := os.environ.get("DASHSCOPE_API_KEY"):
+        providers.append(
+            Provider(
+                name="DashScope",
+                base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
+                model=os.environ.get("DASHSCOPE_MODEL", "qwen-plus"),
+                api_key=key,
+            )
+        )
+
+    # 5. 通用自定义 OpenAI 兼容接口
+    if key := os.environ.get("LLM_API_KEY"):
+        providers.append(
+            Provider(
+                name="CustomLLM",
+                base_url=os.environ.get("LLM_BASE_URL", "https://api.openai.com/v1"),
+                model=os.environ.get("LLM_MODEL", "gpt-4o-mini"),
+                api_key=key,
+            )
+        )
+
+    return providers
+
+
 def fetch_text(url: str) -> str | None:
     """重新抓取页面文本（与 fetch_sources.py 逻辑一致）。"""
     try:
@@ -70,21 +144,56 @@ def fetch_text(url: str) -> str | None:
     return soup.get_text(separator="\n", strip=True)
 
 
-def call_deepseek(client: OpenAI, text: str) -> dict | None:
-    """调用 DeepSeek 提取结构化信息，失败返回 None。"""
-    # 截断过长的页面文本，控制 token 消耗
-    prompt = PROMPT_TEMPLATE.format(text=text[:8000])
+def parse_json_safely(raw_content: str) -> dict | None:
+    """解析模型返回的 JSON，自动处理可能的 Markdown 代码块包裹。"""
+    raw = raw_content.strip()
+    # 去除 ```json ... ``` 标记
+    if raw.startswith("```"):
+        raw = re.sub(r"^```(?:json)?\s*", "", raw, flags=re.IGNORECASE)
+        raw = re.sub(r"\s*```$", "", raw)
     try:
-        resp = client.chat.completions.create(
-            model=DEEPSEEK_MODEL,
-            messages=[{"role": "user", "content": prompt}],
-            response_format={"type": "json_object"},
-            temperature=0.1,
-        )
-        return json.loads(resp.choices[0].message.content)
-    except Exception as exc:
-        print(f"  [API 调用失败] {exc}")
-        return None
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        # 正则提取最外层花括号
+        match = re.search(r"\{.*\}", raw, re.DOTALL)
+        if match:
+            try:
+                return json.loads(match.group(0))
+            except json.JSONDecodeError:
+                pass
+    return None
+
+
+def call_llm_with_fallback(providers: list[Provider], text: str) -> dict | None:
+    """按优先级依次调用已配置的 LLM，失败时自动降级到下一个提供商。"""
+    prompt = PROMPT_TEMPLATE.format(text=text[:8000])
+
+    for prov in providers:
+        print(f"  [AI 提取] 尝试提供商: {prov.name} (模型: {prov.model})")
+        try:
+            client = OpenAI(api_key=prov.api_key, base_url=prov.base_url, timeout=30.0)
+            kwargs = {
+                "model": prov.model,
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.1,
+            }
+            # DeepSeek / Moonshot 等支持 json_object
+            if prov.name in {"DeepSeek", "Moonshot", "CustomLLM"}:
+                kwargs["response_format"] = {"type": "json_object"}
+
+            resp = client.chat.completions.create(**kwargs)
+            content = resp.choices[0].message.content or ""
+            data = parse_json_safely(content)
+            if data is not None:
+                print(f"  [AI 提取成功] 由 {prov.name} 完成解析")
+                return data
+            else:
+                print(f"  [解析警告] {prov.name} 返回内容无法解析为 JSON: {content[:100]}...")
+        except Exception as exc:
+            print(f"  [提供商失败] {prov.name} 报错: {exc}")
+
+    print("  [全部失败] 所有已配置的大模型 API 均调用失败")
+    return None
 
 
 def validate_extracted(value: object) -> dict | None:
@@ -162,13 +271,14 @@ def main() -> int:
         print("本轮无变更来源，跳过提取")
         return 0
 
-    client = None
+    providers = []
     if not args.dry_run:
-        api_key = os.environ.get("DEEPSEEK_API_KEY")
-        if not api_key:
-            print("错误：缺少环境变量 DEEPSEEK_API_KEY（或使用 --dry-run）")
+        providers = get_available_providers()
+        if not providers:
+            print("错误：未找到任何可用的大模型 API Key。")
+            print("请至少配置以下之一：DEEPSEEK_API_KEY, SILICONFLOW_API_KEY, MOONSHOT_API_KEY, DASHSCOPE_API_KEY, LLM_API_KEY")
             return 1
-        client = OpenAI(api_key=api_key, base_url=DEEPSEEK_BASE_URL)
+        print(f"已加载 {len(providers)} 个模型提供商: {', '.join(p.name for p in providers)}")
 
     hashes = {}
     if HASHES_FILE.exists():
@@ -189,9 +299,11 @@ def main() -> int:
             failed = True
             continue
         if args.dry_run:
-            print(f"  [dry-run] 将发送 {len(text)} 字符文本至 DeepSeek，跳过实际调用")
+            print(f"  [dry-run] 将发送 {len(text)} 字符文本至大模型，跳过实际调用")
             continue
-        extracted = validate_extracted(call_deepseek(client, text))
+
+        raw_result = call_llm_with_fallback(providers, text)
+        extracted = validate_extracted(raw_result)
         if extracted is None:
             print("  [校验失败] 模型输出不符合平台数据 schema")
             failed = True

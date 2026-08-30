@@ -48,8 +48,12 @@ git add -A && git commit -m "init: 项目骨架" && git push origin main
 
 ### 2. 配置 GitHub
 
-1. 仓库 **Settings → Secrets and variables → Actions → New repository secret**，添加：
-   - `DEEPSEEK_API_KEY`：DeepSeek 开放平台（platform.deepseek.com）的 API Key
+1. 仓库 **Settings → Secrets and variables → Actions → New repository secret**，添加以下 API Key 中的**至少一个**（支持多模型自动降级 Fallback）：
+   - `DEEPSEEK_API_KEY`：DeepSeek 开放平台（platform.deepseek.com）API Key（CI 任务已自动对齐在每日 00:30~08:30 官方 5 折优惠波谷期运行）
+   - `SILICONFLOW_API_KEY`（可选）：硅基流动 API Key
+   - `MOONSHOT_API_KEY`（可选）：Kimi / Moonshot 开放平台 API Key
+   - `DASHSCOPE_API_KEY`（可选）：阿里百炼 DashScope API Key
+   - `LLM_API_KEY` / `LLM_BASE_URL` / `LLM_MODEL`（可选）：任何自定义 OpenAI 兼容接口
 2. **Settings → Actions → General → Workflow permissions**，勾选 *Read and write permissions*（回写分支需要）
 3. 在 **Actions** 页面启用 workflow，可手动触发一次验证
 

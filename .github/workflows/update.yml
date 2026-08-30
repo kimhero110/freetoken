@@ -2,8 +2,9 @@ name: 定时更新免费额度数据并构建站点
 
 on:
   schedule:
-    # 每 6 小时运行一次（UTC 时间）
-    - cron: "0 */6 * * *"
+    # 限制在 DeepSeek 官方优惠波谷时段运行（北京时间 00:30~08:30，享五折）
+    # UTC 17:30 / 20:30 / 23:30 对应北京时间 01:30 / 04:30 / 07:30
+    - cron: "30 17,20,23 * * *"
   workflow_dispatch:  # 支持手动触发
 
 permissions:
@@ -29,9 +30,15 @@ jobs:
       - name: 抓取来源页面（变更检测）
         run: python scripts/fetch_sources.py
 
-      - name: 调用 DeepSeek 提取结构化信息
+      - name: 调用大模型提取结构化信息 (多模型 Fallback)
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+          DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_BASE_URL: ${{ secrets.LLM_BASE_URL }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
         run: python scripts/extract.py
 
       - name: 合并生成站点数据
