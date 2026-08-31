@@ -18,46 +18,81 @@ const statusText: Record<string, string> = {
 };
 const q = p.free_quota ?? {};
 
-// 根据平台生成推荐的接入代码示例
-const pythonCode = `# Python (使用官方 openai 库快速接入)
+// 精准的各大平台官方 OpenAI 兼容 API 接入地址与推荐免费模型库
+const apiConfigMap: Record<string, { baseUrl: string; model: string; note?: string }> = {
+  'deepseek': { baseUrl: 'https://api.deepseek.com', model: 'deepseek-chat' },
+  'siliconflow': { baseUrl: 'https://api.siliconflow.cn/v1', model: 'deepseek-ai/DeepSeek-V3' },
+  'zhipu-ai': { baseUrl: 'https://open.bigmodel.cn/api/paas/v4', model: 'glm-4-flash' },
+  'aliyun-bailian': { baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1', model: 'qwen-plus' },
+  'gmi-cloud-minimax': { baseUrl: 'https://api.gmi-serving.com/v1', model: 'MiniMaxAI/MiniMax-M3' },
+  'groq': { baseUrl: 'https://api.groq.com/openai/v1', model: 'llama-3.3-70b-versatile' },
+  'cerebras': { baseUrl: 'https://api.cerebras.ai/v1', model: 'llama3.1-70b' },
+  'sambanova': { baseUrl: 'https://api.sambanova.ai/v1', model: 'Meta-Llama-3.1-70B-Instruct' },
+  'together-ai': { baseUrl: 'https://api.together.xyz/v1', model: 'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo' },
+  'mistral-ai': { baseUrl: 'https://api.mistral.ai/v1', model: 'mistral-small-latest' },
+  'hyperbolic': { baseUrl: 'https://api.hyperbolic.xyz/v1', model: 'deepseek-ai/DeepSeek-V3' },
+  'fireworks-ai': { baseUrl: 'https://api.fireworks.ai/inference/v1', model: 'accounts/fireworks/models/llama-v3p3-70b-instruct' },
+  'nebius-ai': { baseUrl: 'https://api.studio.nebius.ai/v1', model: 'meta-llama/Meta-Llama-3.1-70B-Instruct' },
+  'novita-ai': { baseUrl: 'https://api.novita.ai/v3/openai', model: 'meta-llama/llama-3.1-8b-instruct' },
+  'google-ai-studio': { baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai/', model: 'gemini-1.5-flash' },
+  'github-models': { baseUrl: 'https://models.inference.ai.azure.com', model: 'gpt-4o' },
+  'openrouter': { baseUrl: 'https://openrouter.ai/api/v1', model: 'meta-llama/llama-3.3-70b-instruct:free' },
+  'cloudflare-workers-ai': { baseUrl: 'https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1', model: '@cf/meta/llama-3-8b-instruct' },
+  'baichuan-ai': { baseUrl: 'https://api.baichuan-ai.com/v1', model: 'Baichuan4-Air' },
+  'baidu-qianfan': { baseUrl: 'https://qianfan.baidubce.com/v2', model: 'ernie-speed-128k' },
+  'tencent-hunyuan': { baseUrl: 'https://api.hunyuan.cloud.tencent.com/v1', model: 'hunyuan-lite' },
+  'xfyun-spark': { baseUrl: 'https://spark-api-open.xf-yun.com/v1', model: 'lite' },
+  'minimax': { baseUrl: 'https://api.minimax.chat/v1', model: 'abab6.5s-chat' },
+  'lingyiwanwu-01': { baseUrl: 'https://api.lingyiwanwu.com/v1', model: 'yi-lightning' },
+  'cohere': { baseUrl: 'https://api.cohere.com/v2', model: 'command-r-plus' },
+  'jina-ai': { baseUrl: 'https://r.jina.ai', model: 'reader-api' },
+  'tavily': { baseUrl: 'https://api.tavily.com', model: 'search' },
+};
+
+const currentConfig = apiConfigMap[p.slug] || {
+  baseUrl: 'https://api.openai.com/v1',
+  model: 'default-model'
+};
+
+const pythonCode = `# Python (使用官方 openai 库接入 ${p.name})
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="YOUR_API_KEY", # 替换为你领取的免费 Key
-    base_url="${p.website.includes('deepseek') ? 'https://api.deepseek.com' : p.website.includes('siliconflow') ? 'https://api.siliconflow.cn/v1' : p.website.includes('open.bigmodel') ? 'https://open.bigmodel.cn/api/paas/v4' : 'https://api.openai.com/v1'}"
+    api_key="YOUR_API_KEY", # 替换为你领取的免费 API Key
+    base_url="${currentConfig.baseUrl}"
 )
 
 response = client.chat.completions.create(
-    model="default-model",
-    messages=[{"role": "user", "content": "你好，请介绍一下你自己"}]
+    model="${currentConfig.model}",
+    messages=[{"role": "user", "content": "你好，请用一句话介绍你自己！"}]
 )
 
 print(response.choices[0].message.content)`;
 
 const curlCode = `# cURL 终端命令行快速测试
-curl -X POST "${p.website.includes('deepseek') ? 'https://api.deepseek.com/chat/completions' : p.website.includes('siliconflow') ? 'https://api.siliconflow.cn/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions'}" \\
+curl -X POST "${currentConfig.baseUrl}/chat/completions" \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "default-model",
+    "model": "${currentConfig.model}",
     "messages": [{"role": "user", "content": "Hello!"}]
   }'`;
 
 const jsCode = `// Node.js / 浏览器 Fetch 接入
-const response = await fetch("${p.website.includes('deepseek') ? 'https://api.deepseek.com/chat/completions' : 'https://api.openai.com/v1/chat/completions'}", {
+const response = await fetch("${currentConfig.baseUrl}/chat/completions", {
   method: "POST",
   headers: {
     "Authorization": "Bearer YOUR_API_KEY",
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    model: "default-model",
+    model: "${currentConfig.model}",
     messages: [{ role: "user", content: "Hello!" }]
   })
 });
 
 const data = await response.json();
-console.log(data);`;
+console.log(data.choices?.[0]?.message?.content || data);`;
 ---
 <Base title={`${p.name} 免费额度`} description={p.intro}>
   <div style="margin-bottom: 16px;">
