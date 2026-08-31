@@ -2,8 +2,8 @@ name: 全球新免费 Token 平台雷达自动扫描
 
 on:
   schedule:
-    # 每周一凌晨 2:00 (UTC 18:00 周日) 自动巡检发现全球新免费源
-    - cron: '0 18 * * 0'
+    # 每 2 天一次，北京时间凌晨 02:30 (UTC 18:30) 在 DeepSeek 波谷五折期自动巡检新源
+    - cron: '30 18 */2 * *'
   workflow_dispatch: # 支持随时手动一键探测
 
 permissions:
