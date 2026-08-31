@@ -44,6 +44,7 @@ const activeCount = platforms.filter((p: any) => p.status === 'active').length;
 
   <div class="filter-tabs" id="filter-tabs">
     <button class="filter-btn active" data-filter="all">🌟 全部收录 ({totalCount})</button>
+    <button class="filter-btn" data-filter="limited">🔥 限时活动 / 限时免费</button>
     <button class="filter-btn" data-filter="permanent">💎 永久免费</button>
     <button class="filter-btn" data-filter="daily">⚡ 每日刷新</button>
     <button class="filter-btn" data-filter="domestic">🇨🇳 国产直连</button>
@@ -55,6 +56,7 @@ const activeCount = platforms.filter((p: any) => p.status === 'active').length;
   <div class="card-grid" id="platform-grid">
     {platforms.map((p: any) => {
       const q = p.free_quota ?? {};
+      const isLimited = q.type === '限时' || (p.tags ?? []).some((t: string) => t.includes('限时') || t.includes('活动') || t.includes('专场') || t.includes('体验金') || t.includes('送'));
       const isPermanent = q.type === '永久' || (p.tags ?? []).some((t: string) => t.includes('永久'));
       const isDaily = q.type === '每日' || (p.tags ?? []).some((t: string) => t.includes('每日') || t.includes('天'));
       const isDomestic = (p.tags ?? []).some((t: string) => t.includes('国产') || t.includes('国内') || t.includes('阿里') || t.includes('百度') || t.includes('腾讯') || t.includes('智谱') || t.includes('星火'));
@@ -68,6 +70,7 @@ const activeCount = platforms.filter((p: any) => p.status === 'active').length;
         <a
           class="card platform-card"
           href={`/platform/${p.slug}/`}
+          data-limited={isLimited ? "true" : "false"}
           data-permanent={isPermanent ? "true" : "false"}
           data-daily={isDaily ? "true" : "false"}
           data-domestic={isDomestic ? "true" : "false"}
@@ -86,7 +89,11 @@ const activeCount = platforms.filter((p: any) => p.status === 'active').length;
             </div>
 
             <div class="badges-row">
-              <span class="badge type">{q.type ?? '免费额度'}</span>
+              {isLimited ? (
+                <span class="badge limited">🔥 限时免费</span>
+              ) : (
+                <span class="badge type">{q.type ?? '免费额度'}</span>
+              )}
               {(p.tags ?? []).slice(0, 3).map((t: string) => (
                 <span class="badge tag">{t}</span>
               ))}
@@ -130,7 +137,8 @@ const activeCount = platforms.filter((p: any) => p.status === 'active').length;
         const matchesQuery = !query || searchData.includes(query);
 
         let matchesTab = true;
-        if (currentFilter === 'permanent') matchesTab = card.getAttribute('data-permanent') === 'true';
+        if (currentFilter === 'limited') matchesTab = card.getAttribute('data-limited') === 'true';
+        else if (currentFilter === 'permanent') matchesTab = card.getAttribute('data-permanent') === 'true';
         else if (currentFilter === 'daily') matchesTab = card.getAttribute('data-daily') === 'true';
         else if (currentFilter === 'domestic') matchesTab = card.getAttribute('data-domestic') === 'true';
         else if (currentFilter === 'tools') matchesTab = card.getAttribute('data-tools') === 'true';
