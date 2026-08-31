@@ -4,7 +4,7 @@
 
 server {
     listen 80;
-    server_name freetokens.info www.freetokens.info;  # 替换为你的已备案域名
+    server_name witkit.zone freetokens.info www.freetokens.info;  # 替换为你的实际域名
 
     root /var/www/freetoken;   # 与 deploy/pull.sh 中的 WEB_ROOT 保持一致
     index index.html;
@@ -16,9 +16,9 @@ server {
         try_files $uri =404;
     }
 
-    # Astro 生成的目录式页面（如 /platform/deepseek/index.html）
+    # Astro 静态目录路由支持（如 /platform/pollinations/ 自动映射到 /platform/pollinations/index.html）
     location / {
-        try_files $uri $uri/index.html $uri.html =404;
+        try_files $uri $uri/ $uri/index.html /index.html =404;
     }
 
     gzip on;
