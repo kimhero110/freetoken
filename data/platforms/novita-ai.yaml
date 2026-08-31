@@ -1,0 +1,24 @@
+name: Novita AI
+name_en: Novita.ai
+website: https://novita.ai
+category: multimodal
+free_quota:
+  amount: 0.5
+  unit: 美元试用金 (可生成数百张图片或调用LLM)
+  type: 限时
+  conditions:
+  - 注册赠送免费 API 试用金
+  - 支持 FLUX.1, SDXL 等上万款热门生图模型与 Llama 3 大模型
+  - 提供极简的 OpenAI 兼容接口与按次计费模式
+register_url: https://novita.ai/
+docs_url: https://novita.ai/docs
+source_urls:
+- https://novita.ai/pricing
+last_verified: '2026-08-31'
+status: active
+intro: 面向生成式 AI 开发者的一站式无服务器 GPU 平台，提供文生图、图像放大及大模型对话的免费试用额度。
+tags:
+- FLUX生图
+- 文生图API
+- 注册赠送
+- 多模态

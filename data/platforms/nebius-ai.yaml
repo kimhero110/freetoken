@@ -1,0 +1,24 @@
+name: Nebius AI Studio
+name_en: Nebius AI
+website: https://nebius.com/studio
+category: cloud
+free_quota:
+  amount: 5
+  unit: 美元新用户代金券
+  type: 限时
+  conditions:
+  - 新开发者注册 Nebius AI Studio 赠送 \ 免费算力金
+  - 欧洲超算级 H100/H200 GPU 集群驱动，企业级超高稳定性
+  - 支持 Llama 3.3, Qwen 2.5, DeepSeek 等全系热门开源模型
+register_url: https://studio.nebius.com/
+docs_url: https://docs.nebius.com/
+source_urls:
+- https://nebius.com/pricing
+last_verified: '2026-08-31'
+status: active
+intro: 欧洲前沿的 AI 算力与模型推理平台，提供基于顶级硬件的推理服务，新注册开发者可享大额免费体验金。
+tags:
+- 欧洲顶尖
+- H100算力
+- 注册赠送
+- 开源大模型

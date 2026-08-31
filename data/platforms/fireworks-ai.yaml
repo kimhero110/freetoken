@@ -1,0 +1,24 @@
+name: Fireworks AI
+name_en: Fireworks.ai
+website: https://fireworks.ai
+category: llm-api
+free_quota:
+  amount: 1
+  unit: 美元免费额度 (约上百万 Tokens)
+  type: 限时
+  conditions:
+  - 新注册账号赠送  美元免费调用额度
+  - 拥有业内顶尖的首字延迟 (TTFT) 与生成速度
+  - 支持数十款精选开源大模型与微调服务
+register_url: https://fireworks.ai/login
+docs_url: https://docs.fireworks.ai/
+source_urls:
+- https://fireworks.ai/pricing
+last_verified: '2026-08-31'
+status: active
+intro: 全球推理速度最快的模型托管平台之一，新注册用户赠送免费体验金，兼具极致性能与超高性价比。
+tags:
+- 极致速度
+- 注册赠送
+- 开源大模型
+- 开发必备

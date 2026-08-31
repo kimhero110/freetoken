@@ -220,6 +220,37 @@
     "slug": "deepseek"
   },
   {
+    "name": "Fireworks AI",
+    "name_en": "Fireworks.ai",
+    "website": "https://fireworks.ai",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 1,
+      "unit": "美元免费额度 (约上百万 Tokens)",
+      "type": "限时",
+      "conditions": [
+        "新注册账号赠送  美元免费调用额度",
+        "拥有业内顶尖的首字延迟 (TTFT) 与生成速度",
+        "支持数十款精选开源大模型与微调服务"
+      ]
+    },
+    "register_url": "https://fireworks.ai/login",
+    "docs_url": "https://docs.fireworks.ai/",
+    "source_urls": [
+      "https://fireworks.ai/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "全球推理速度最快的模型托管平台之一，新注册用户赠送免费体验金，兼具极致性能与超高性价比。",
+    "tags": [
+      "极致速度",
+      "注册赠送",
+      "开源大模型",
+      "开发必备"
+    ],
+    "slug": "fireworks-ai"
+  },
+  {
     "name": "GitHub Models",
     "name_en": "GitHub Models",
     "website": "https://github.com/marketplace/models",
@@ -351,6 +382,38 @@
     "slug": "groq"
   },
   {
+    "name": "Hyperbolic AI",
+    "name_en": "Hyperbolic",
+    "website": "https://hyperbolic.xyz",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 100,
+      "unit": "请求/天 (免费开发层)",
+      "type": "每日",
+      "conditions": [
+        "提供 DeepSeek-V3, Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用",
+        "全球去中心化 GPU 算力加速，推理速度快",
+        "注册生成 API Key 即可使用，免绑信用卡"
+      ]
+    },
+    "register_url": "https://app.hyperbolic.xyz/",
+    "docs_url": "https://docs.hyperbolic.xyz/",
+    "source_urls": [
+      "https://hyperbolic.xyz/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "去中心化高性能 GPU 推理云，提供包含 DeepSeek-V3、Llama 3.3 在内的超多顶级开源模型免费推理 API。",
+    "tags": [
+      "极速推理",
+      "每日刷新",
+      "DeepSeek-V3",
+      "Llama 3.3",
+      "免信用卡"
+    ],
+    "slug": "hyperbolic"
+  },
+  {
     "name": "Jina AI",
     "name_en": "Jina AI",
     "website": "https://jina.ai",
@@ -475,6 +538,68 @@
       "免绑卡"
     ],
     "slug": "mistral-ai"
+  },
+  {
+    "name": "Nebius AI Studio",
+    "name_en": "Nebius AI",
+    "website": "https://nebius.com/studio",
+    "category": "cloud",
+    "free_quota": {
+      "amount": 5,
+      "unit": "美元新用户代金券",
+      "type": "限时",
+      "conditions": [
+        "新开发者注册 Nebius AI Studio 赠送 \\ 免费算力金",
+        "欧洲超算级 H100/H200 GPU 集群驱动，企业级超高稳定性",
+        "支持 Llama 3.3, Qwen 2.5, DeepSeek 等全系热门开源模型"
+      ]
+    },
+    "register_url": "https://studio.nebius.com/",
+    "docs_url": "https://docs.nebius.com/",
+    "source_urls": [
+      "https://nebius.com/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "欧洲前沿的 AI 算力与模型推理平台，提供基于顶级硬件的推理服务，新注册开发者可享大额免费体验金。",
+    "tags": [
+      "欧洲顶尖",
+      "H100算力",
+      "注册赠送",
+      "开源大模型"
+    ],
+    "slug": "nebius-ai"
+  },
+  {
+    "name": "Novita AI",
+    "name_en": "Novita.ai",
+    "website": "https://novita.ai",
+    "category": "multimodal",
+    "free_quota": {
+      "amount": 0.5,
+      "unit": "美元试用金 (可生成数百张图片或调用LLM)",
+      "type": "限时",
+      "conditions": [
+        "注册赠送免费 API 试用金",
+        "支持 FLUX.1, SDXL 等上万款热门生图模型与 Llama 3 大模型",
+        "提供极简的 OpenAI 兼容接口与按次计费模式"
+      ]
+    },
+    "register_url": "https://novita.ai/",
+    "docs_url": "https://novita.ai/docs",
+    "source_urls": [
+      "https://novita.ai/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "面向生成式 AI 开发者的一站式无服务器 GPU 平台，提供文生图、图像放大及大模型对话的免费试用额度。",
+    "tags": [
+      "FLUX生图",
+      "文生图API",
+      "注册赠送",
+      "多模态"
+    ],
+    "slug": "novita-ai"
   },
   {
     "name": "OpenRouter (Free Tier)",

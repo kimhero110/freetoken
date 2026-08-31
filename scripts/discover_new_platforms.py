@@ -28,10 +28,12 @@ UA = (
     "(KHTML, like Gecko) Chrome/126.0 Safari/537.36 FreeTokenRadar/1.0"
 )
 
-# 种子发现源列表（精选高质量免费资源聚合库）
+# 种子发现源列表（精选高质量全球开源免费资源聚合库与社区雷达）
 DISCOVERY_SOURCES = [
     "https://raw.githubusercontent.com/cheahjs/free-llm-api-resources/main/README.md",
     "https://raw.githubusercontent.com/ripienaar/free-for-dev/master/README.md",
+    "https://raw.githubusercontent.com/public-apis/public-apis/master/README.md",
+    "https://raw.githubusercontent.com/steven2358/awesome-generative-ai/main/README.md",
 ]
 
 DISCOVERY_PROMPT = """你是一个资深 AI 开发者与信息雷达分析师。请分析下面的网页/项目内容，判断它是否提供面向开发者的「免费 API 额度 / 免费大模型层级 / 免费开发者 Token」。

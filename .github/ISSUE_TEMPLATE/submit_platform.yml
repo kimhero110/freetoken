@@ -1,0 +1,38 @@
+name: 🚀 提交/推荐新的免费 Token 平台
+description: 发现全网新的免费 API 额度？在此提交，系统将自动使用 AI 评估并收录上线！
+title: "【新平台推荐】: "
+labels: ["new-platform", "community-submission"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你为 FreeToken 开源生态贡献力量！请填写以下信息，我们的全自动雷达将通过 DeepSeek 自动核实提取并排期上线。
+  - type: input
+    id: platform_name
+    attributes:
+      label: 平台名称 (Platform Name)
+      placeholder: "例如：GMI Cloud、Hyperbolic 等"
+    validations:
+      required: true
+  - type: input
+    id: website_url
+    attributes:
+      label: 官网或活动地址 (Website URL)
+      placeholder: "https://..."
+    validations:
+      required: true
+  - type: textarea
+    id: free_details
+    attributes:
+      label: 免费额度与领取说明 (Free Quota Details)
+      placeholder: "例如：新用户注册赠送 20 亿 Tokens / 每月 1000 次免费搜索 / 是否需要手机号或信用卡等..."
+    validations:
+      required: true
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我已确认该平台确实提供面向开发者的免费 API 额度 / 免费模型调用层级
+          required: true
+
