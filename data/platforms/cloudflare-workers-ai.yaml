@@ -1,0 +1,25 @@
+name: Cloudflare Workers AI
+name_en: Cloudflare Workers AI
+website: https://ai.cloudflare.com
+category: cloud
+free_quota:
+  amount: 10000
+  unit: Neurons / 每天
+  type: 每日
+  conditions:
+  - 每天赠送 10,000 Neurons 免费神经元算力（约可跑几万 Tokens 推理）
+  - 全球 300+ 边缘数据中心加速，毫秒级响应
+  - 支持 Llama 3, Qwen, Whisper 语音转写, BGE 嵌入等
+register_url: https://dash.cloudflare.com/
+docs_url: https://developers.cloudflare.com/workers-ai/
+source_urls:
+- https://developers.cloudflare.com/workers-ai/platform/pricing/
+last_verified: '2026-08-31'
+status: active
+intro: 网络巨头 Cloudflare 提供的边缘 AI 计算，每天免费刷新额度，支持文本生成、图像识别、语音转写等全栈模型。
+tags:
+- 边缘计算
+- 每日刷新
+- 多模态
+- 全球CDN加速
+- 免信用卡

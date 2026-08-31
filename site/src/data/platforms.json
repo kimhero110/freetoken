@@ -1,5 +1,162 @@
 [
   {
+    "name": "阿里云百炼 (DashScope)",
+    "name_en": "Aliyun DashScope",
+    "website": "https://bailian.console.aliyun.com",
+    "category": "cloud",
+    "free_quota": {
+      "amount": 1000,
+      "unit": "万 tokens",
+      "type": "限时",
+      "conditions": [
+        "通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens",
+        "有效期 180 天（半年超长使用周期）",
+        "阿里云账号开通百炼即可领取"
+      ]
+    },
+    "register_url": "https://bailian.console.aliyun.com/",
+    "docs_url": "https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio",
+    "source_urls": [
+      "https://help.aliyun.com/zh/model-studio/billing-for-model-studio/billing-overview"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "阿里云官方大模型服务平台，聚合千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。",
+    "tags": [
+      "顶级大厂",
+      "通义千问",
+      "国产云厂商",
+      "超长有效期",
+      "企业级稳定"
+    ],
+    "slug": "aliyun-bailian"
+  },
+  {
+    "name": "百川智能开放平台",
+    "name_en": "Baichuan AI",
+    "website": "https://platform.baichuan-ai.com",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 1000,
+      "unit": "万 tokens",
+      "type": "限时",
+      "conditions": [
+        "新用户注册实名认证即送 1000 万 Tokens 免费体验金",
+        "支持 Baichuan4, Baichuan3-Turbo 等多款高性能中文大模型",
+        "在中文医疗、金融等行业知识库上表现优异"
+      ]
+    },
+    "register_url": "https://platform.baichuan-ai.com/register",
+    "docs_url": "https://platform.baichuan-ai.com/docs/api",
+    "source_urls": [
+      "https://platform.baichuan-ai.com/price"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "王小川创立的百川智能开放平台，新注册即可领取千万大额 Token 包，中文知识库与推理能力卓越。",
+    "tags": [
+      "国产大模型",
+      "注册赠送",
+      "千万额度",
+      "中文理解"
+    ],
+    "slug": "baichuan-ai"
+  },
+  {
+    "name": "Cerebras Inference",
+    "name_en": "Cerebras",
+    "website": "https://cerebras.ai",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 100,
+      "unit": "万 tokens / 天",
+      "type": "每日",
+      "conditions": [
+        "每天刷新 100 万免费 Tokens",
+        "推理速度高达 1800+ tokens/秒（全球最快之一）",
+        "免费提供 Llama 3.1 8B / 70B 等开源模型"
+      ]
+    },
+    "register_url": "https://cloud.cerebras.ai/",
+    "docs_url": "https://inference-docs.cerebras.ai/",
+    "source_urls": [
+      "https://cerebras.ai/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "基于晶圆级超级芯片的极速推理云，推理速度秒杀传统 GPU，每天提供 100 万免费 tokens 额度。",
+    "tags": [
+      "极致速度",
+      "每日刷新",
+      "Llama 3.1",
+      "免信用卡"
+    ],
+    "slug": "cerebras"
+  },
+  {
+    "name": "Cloudflare Workers AI",
+    "name_en": "Cloudflare Workers AI",
+    "website": "https://ai.cloudflare.com",
+    "category": "cloud",
+    "free_quota": {
+      "amount": 10000,
+      "unit": "Neurons / 每天",
+      "type": "每日",
+      "conditions": [
+        "每天赠送 10,000 Neurons 免费神经元算力（约可跑几万 Tokens 推理）",
+        "全球 300+ 边缘数据中心加速，毫秒级响应",
+        "支持 Llama 3, Qwen, Whisper 语音转写, BGE 嵌入等"
+      ]
+    },
+    "register_url": "https://dash.cloudflare.com/",
+    "docs_url": "https://developers.cloudflare.com/workers-ai/",
+    "source_urls": [
+      "https://developers.cloudflare.com/workers-ai/platform/pricing/"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "网络巨头 Cloudflare 提供的边缘 AI 计算，每天免费刷新额度，支持文本生成、图像识别、语音转写等全栈模型。",
+    "tags": [
+      "边缘计算",
+      "每日刷新",
+      "多模态",
+      "全球CDN加速",
+      "免信用卡"
+    ],
+    "slug": "cloudflare-workers-ai"
+  },
+  {
+    "name": "Cohere",
+    "name_en": "Cohere",
+    "website": "https://cohere.com",
+    "category": "tools",
+    "free_quota": {
+      "amount": 1000,
+      "unit": "次调用/月 (免费试用 Key)",
+      "type": "永久",
+      "conditions": [
+        "免费 Trial API Key 提供 1000 次 API/月与 10 RPM 并发",
+        "全球顶级 Rerank 重排序与 Multilingual Embedding 向量模型",
+        "RAG 检索增强系统必备开发组件"
+      ]
+    },
+    "register_url": "https://dashboard.cohere.com/welcome/register",
+    "docs_url": "https://docs.cohere.com/",
+    "source_urls": [
+      "https://cohere.com/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "企业级语义搜索与 RAG 领域的标杆，其 Rerank 与 Embed 接口提供永久免费的 Trial 开发者额度。",
+    "tags": [
+      "Rerank重排",
+      "向量嵌入",
+      "RAG必备",
+      "开发者首选"
+    ],
+    "slug": "cohere"
+  },
+  {
     "name": "DeepSeek",
     "name_en": "DeepSeek",
     "website": "https://www.deepseek.com",
@@ -29,6 +186,70 @@
     ],
     "last_checked": "2026-08-30",
     "slug": "deepseek"
+  },
+  {
+    "name": "GitHub Models",
+    "name_en": "GitHub Models",
+    "website": "https://github.com/marketplace/models",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 50,
+      "unit": "次请求/天 (各主流顶级模型)",
+      "type": "每日",
+      "conditions": [
+        "免费调用 GPT-4o, GPT-4o-mini, Claude 3.5 Sonnet, Llama 3.3 70B 等",
+        "使用 GitHub Personal Access Token (PAT) 即可直接认证",
+        "适合个人开发者日常轻量体验或调试"
+      ]
+    },
+    "register_url": "https://github.com/marketplace/models",
+    "docs_url": "https://docs.github.com/en/github-models",
+    "source_urls": [
+      "https://docs.github.com/en/github-models/prototyping-with-ai-models"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "微软与 GitHub 推出的免费 AI Playground 接口，一个 GitHub Token 即可免费体验全球所有顶级闭源与开源模型。",
+    "tags": [
+      "全球顶级",
+      "每日免费",
+      "GPT-4o",
+      "Claude 3.5",
+      "免绑卡"
+    ],
+    "slug": "github-models"
+  },
+  {
+    "name": "Google AI Studio",
+    "name_en": "Google AI Studio",
+    "website": "https://aistudio.google.com",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 1500,
+      "unit": "请求/天 (RPD)",
+      "type": "永久",
+      "conditions": [
+        "Gemini 1.5 Flash / 2.0 Flash 永久免费",
+        "免费层提供最高 15 RPM (每分钟请求数) 和 100万 Tokens 上下文",
+        "只需 Google 账号即可生成 API Key，无需绑定海外信用卡"
+      ]
+    },
+    "register_url": "https://aistudio.google.com/",
+    "docs_url": "https://ai.google.dev/pricing",
+    "source_urls": [
+      "https://ai.google.dev/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "全球最慷慨的大模型免费 API 之一，Gemini 1.5/2.0 Flash 永久免费提供高并发与超长上下文调用。",
+    "tags": [
+      "顶级大厂",
+      "永久免费",
+      "Gemini",
+      "长上下文",
+      "免信用卡"
+    ],
+    "slug": "google-ai-studio"
   },
   {
     "name": "Groq",
@@ -64,6 +285,134 @@
     "slug": "groq"
   },
   {
+    "name": "Jina AI",
+    "name_en": "Jina AI",
+    "website": "https://jina.ai",
+    "category": "tools",
+    "free_quota": {
+      "amount": 1000,
+      "unit": "万 tokens",
+      "type": "永久",
+      "conditions": [
+        "注册即赠送 1000 万 Tokens 免费额度",
+        "Jina Reader (r.jina.ai) 免费将任意网页转化为大模型友好的 Clean Markdown",
+        "提供前沿的高质量多语言 Embedding & Reranker 接口"
+      ]
+    },
+    "register_url": "https://jina.ai/",
+    "docs_url": "https://jina.ai/reader/",
+    "source_urls": [
+      "https://jina.ai/pricing/"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "为 AI Agent 与 LLM 生态而生的数据基础设施，不仅赠送千万额度，其 Reader 网页抽取工具更是开发者神器。",
+    "tags": [
+      "网页爬虫清洗",
+      "Agent必备",
+      "向量嵌入",
+      "注册赠送",
+      "免信用卡"
+    ],
+    "slug": "jina-ai"
+  },
+  {
+    "name": "OpenRouter (Free Tier)",
+    "name_en": "OpenRouter",
+    "website": "https://openrouter.ai",
+    "category": "aggregator",
+    "free_quota": {
+      "amount": 20,
+      "unit": "请求/分钟 (包含数十款 :free 模型)",
+      "type": "永久",
+      "conditions": [
+        "所有带 :free 后缀的模型（如 deepseek-r1:free, llama-3.3-70b:free）完全免费",
+        "统一 OpenAI 兼容接口，一行代码切换全球模型",
+        "支持免登录试用或注册生成免费 Key"
+      ]
+    },
+    "register_url": "https://openrouter.ai/",
+    "docs_url": "https://openrouter.ai/docs",
+    "source_urls": [
+      "https://openrouter.ai/models?q=free"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "全球最著名的多模型聚合网关，内置数十款带有 :free 标签的永久免费模型路由，极度方便开发切换。",
+    "tags": [
+      "聚合网关",
+      "永久免费",
+      "统一API",
+      "全球节点",
+      "免绑卡"
+    ],
+    "slug": "openrouter"
+  },
+  {
+    "name": "Pollinations AI",
+    "name_en": "Pollinations.ai",
+    "website": "https://pollinations.ai",
+    "category": "multimodal",
+    "free_quota": {
+      "amount": 99999,
+      "unit": "不限量 (文生图 + 文本对话)",
+      "type": "永久",
+      "conditions": [
+        "100% 永久免费、开源、免注册、无需 API Key",
+        "支持 FLUX, SDXL, Midjourney 风格等多款顶级画图模型",
+        "直接通过 HTTP GET URL 即可无限制生成图像或文本"
+      ]
+    },
+    "register_url": "https://pollinations.ai/",
+    "docs_url": "https://github.com/pollinations/pollinations",
+    "source_urls": [
+      "https://pollinations.ai/"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "开源社区的超级福利！完全无需注册、无需任何 API Key，直接发 HTTP 请求就能免费生成高清 AI 图像和文本。",
+    "tags": [
+      "永久免费",
+      "免注册",
+      "免APIKey",
+      "FLUX文生图",
+      "开源神器"
+    ],
+    "slug": "pollinations"
+  },
+  {
+    "name": "Sepolia Testnet 水龙头聚合",
+    "name_en": "Ethereum Sepolia Faucets",
+    "website": "https://sepoliafaucet.com",
+    "category": "web3-faucet",
+    "free_quota": {
+      "amount": 0.5,
+      "unit": "Sepolia ETH / 每天",
+      "type": "每日",
+      "conditions": [
+        "Alchemy, Google Cloud Web3, Infura 等水龙头每日免费领 0.1~0.5 ETH",
+        "智能合约开发、DApp 部署必备测试代币",
+        "无需真实资产，测试网永久免费"
+      ]
+    },
+    "register_url": "https://cloud.google.com/application/web3/faucet/ethereum/sepolia",
+    "docs_url": "https://ethereum.org/en/developers/docs/networks/#sepolia",
+    "source_urls": [
+      "https://sepoliafaucet.com/"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "以太坊主网官方推荐的 Sepolia 测试网水龙头聚合，智能合约与 Web3 开发者必备，每日免费领取测试代币。",
+    "tags": [
+      "Web3水龙头",
+      "以太坊",
+      "智能合约",
+      "每日领取",
+      "开发者刚需"
+    ],
+    "slug": "sepolia-faucet"
+  },
+  {
     "name": "硅基流动",
     "name_en": "SiliconFlow",
     "website": "https://siliconflow.cn",
@@ -95,5 +444,68 @@
     ],
     "last_checked": "2026-08-30",
     "slug": "siliconflow"
+  },
+  {
+    "name": "Tavily AI Search",
+    "name_en": "Tavily Search",
+    "website": "https://tavily.com",
+    "category": "tools",
+    "free_quota": {
+      "amount": 1000,
+      "unit": "次搜索/月",
+      "type": "每日",
+      "conditions": [
+        "免费层每月提供 1,000 次无死角实时搜索请求",
+        "LangChain / AutoGPT / Dify 等 AI Agent 框架官方默认推荐搜索源",
+        "支持直接返回提炼后的问答与网页摘要"
+      ]
+    },
+    "register_url": "https://app.tavily.com/sign-up",
+    "docs_url": "https://docs.tavily.com/",
+    "source_urls": [
+      "https://tavily.com/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "专门为大模型和自主智能体设计的实时联网搜索 API，每月免费 1000 次，返回结构化、零广告的高精度搜索数据。",
+    "tags": [
+      "联网搜索",
+      "Agent必备",
+      "每月刷新",
+      "开发者神器"
+    ],
+    "slug": "tavily"
+  },
+  {
+    "name": "智谱 AI 开放平台",
+    "name_en": "Zhipu AI (BigModel)",
+    "website": "https://open.bigmodel.cn",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 2500,
+      "unit": "万 tokens + GLM-4-Flash 永久免费",
+      "type": "永久",
+      "conditions": [
+        "GLM-4-Flash / GLM-4-FlashX 模型永久免费无限量调用",
+        "新注册实名用户赠送 2500 万大模型 Token 资源包",
+        "支持 Coding、联网搜索、工具调用插件"
+      ]
+    },
+    "register_url": "https://open.bigmodel.cn/invite?icode=free",
+    "docs_url": "https://open.bigmodel.cn/dev/api",
+    "source_urls": [
+      "https://open.bigmodel.cn/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "国内顶级大模型代表，GLM-4-Flash 宣布永久免费调用，国内访问极速且兼容 OpenAI 接口。",
+    "tags": [
+      "国产大模型",
+      "永久免费",
+      "GLM-4",
+      "免信用卡",
+      "国内首选"
+    ],
+    "slug": "zhipu-ai"
   }
 ]

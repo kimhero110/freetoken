@@ -1,0 +1,24 @@
+name: Cohere
+name_en: Cohere
+website: https://cohere.com
+category: tools
+free_quota:
+  amount: 1000
+  unit: 次调用/月 (免费试用 Key)
+  type: 永久
+  conditions:
+  - 免费 Trial API Key 提供 1000 次 API/月与 10 RPM 并发
+  - 全球顶级 Rerank 重排序与 Multilingual Embedding 向量模型
+  - RAG 检索增强系统必备开发组件
+register_url: https://dashboard.cohere.com/welcome/register
+docs_url: https://docs.cohere.com/
+source_urls:
+- https://cohere.com/pricing
+last_verified: '2026-08-31'
+status: active
+intro: 企业级语义搜索与 RAG 领域的标杆，其 Rerank 与 Embed 接口提供永久免费的 Trial 开发者额度。
+tags:
+- Rerank重排
+- 向量嵌入
+- RAG必备
+- 开发者首选

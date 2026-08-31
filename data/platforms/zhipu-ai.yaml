@@ -1,0 +1,25 @@
+name: 智谱 AI 开放平台
+name_en: Zhipu AI (BigModel)
+website: https://open.bigmodel.cn
+category: llm-api
+free_quota:
+  amount: 2500
+  unit: 万 tokens + GLM-4-Flash 永久免费
+  type: 永久
+  conditions:
+  - GLM-4-Flash / GLM-4-FlashX 模型永久免费无限量调用
+  - 新注册实名用户赠送 2500 万大模型 Token 资源包
+  - 支持 Coding、联网搜索、工具调用插件
+register_url: https://open.bigmodel.cn/invite?icode=free
+docs_url: https://open.bigmodel.cn/dev/api
+source_urls:
+- https://open.bigmodel.cn/pricing
+last_verified: '2026-08-31'
+status: active
+intro: 国内顶级大模型代表，GLM-4-Flash 宣布永久免费调用，国内访问极速且兼容 OpenAI 接口。
+tags:
+- 国产大模型
+- 永久免费
+- GLM-4
+- 免信用卡
+- 国内首选

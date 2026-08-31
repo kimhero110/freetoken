@@ -1,0 +1,25 @@
+name: GitHub Models
+name_en: GitHub Models
+website: https://github.com/marketplace/models
+category: llm-api
+free_quota:
+  amount: 50
+  unit: 次请求/天 (各主流顶级模型)
+  type: 每日
+  conditions:
+  - 免费调用 GPT-4o, GPT-4o-mini, Claude 3.5 Sonnet, Llama 3.3 70B 等
+  - 使用 GitHub Personal Access Token (PAT) 即可直接认证
+  - 适合个人开发者日常轻量体验或调试
+register_url: https://github.com/marketplace/models
+docs_url: https://docs.github.com/en/github-models
+source_urls:
+- https://docs.github.com/en/github-models/prototyping-with-ai-models
+last_verified: '2026-08-31'
+status: active
+intro: 微软与 GitHub 推出的免费 AI Playground 接口，一个 GitHub Token 即可免费体验全球所有顶级闭源与开源模型。
+tags:
+- 全球顶级
+- 每日免费
+- GPT-4o
+- Claude 3.5
+- 免绑卡

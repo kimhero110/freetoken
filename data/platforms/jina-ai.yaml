@@ -1,0 +1,25 @@
+name: Jina AI
+name_en: Jina AI
+website: https://jina.ai
+category: tools
+free_quota:
+  amount: 1000
+  unit: 万 tokens
+  type: 永久
+  conditions:
+  - 注册即赠送 1000 万 Tokens 免费额度
+  - Jina Reader (r.jina.ai) 免费将任意网页转化为大模型友好的 Clean Markdown
+  - 提供前沿的高质量多语言 Embedding & Reranker 接口
+register_url: https://jina.ai/
+docs_url: https://jina.ai/reader/
+source_urls:
+- https://jina.ai/pricing/
+last_verified: '2026-08-31'
+status: active
+intro: 为 AI Agent 与 LLM 生态而生的数据基础设施，不仅赠送千万额度，其 Reader 网页抽取工具更是开发者神器。
+tags:
+- 网页爬虫清洗
+- Agent必备
+- 向量嵌入
+- 注册赠送
+- 免信用卡

@@ -1,0 +1,25 @@
+name: OpenRouter (Free Tier)
+name_en: OpenRouter
+website: https://openrouter.ai
+category: aggregator
+free_quota:
+  amount: 20
+  unit: 请求/分钟 (包含数十款 :free 模型)
+  type: 永久
+  conditions:
+  - 所有带 :free 后缀的模型（如 deepseek-r1:free, llama-3.3-70b:free）完全免费
+  - 统一 OpenAI 兼容接口，一行代码切换全球模型
+  - 支持免登录试用或注册生成免费 Key
+register_url: https://openrouter.ai/
+docs_url: https://openrouter.ai/docs
+source_urls:
+- https://openrouter.ai/models?q=free
+last_verified: '2026-08-31'
+status: active
+intro: 全球最著名的多模型聚合网关，内置数十款带有 :free 标签的永久免费模型路由，极度方便开发切换。
+tags:
+- 聚合网关
+- 永久免费
+- 统一API
+- 全球节点
+- 免绑卡

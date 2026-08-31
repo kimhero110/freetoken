@@ -1,0 +1,25 @@
+name: Sepolia Testnet 水龙头聚合
+name_en: Ethereum Sepolia Faucets
+website: https://sepoliafaucet.com
+category: web3-faucet
+free_quota:
+  amount: 0.5
+  unit: Sepolia ETH / 每天
+  type: 每日
+  conditions:
+  - Alchemy, Google Cloud Web3, Infura 等水龙头每日免费领 0.1~0.5 ETH
+  - 智能合约开发、DApp 部署必备测试代币
+  - 无需真实资产，测试网永久免费
+register_url: https://cloud.google.com/application/web3/faucet/ethereum/sepolia
+docs_url: https://ethereum.org/en/developers/docs/networks/#sepolia
+source_urls:
+- https://sepoliafaucet.com/
+last_verified: '2026-08-31'
+status: active
+intro: 以太坊主网官方推荐的 Sepolia 测试网水龙头聚合，智能合约与 Web3 开发者必备，每日免费领取测试代币。
+tags:
+- Web3水龙头
+- 以太坊
+- 智能合约
+- 每日领取
+- 开发者刚需

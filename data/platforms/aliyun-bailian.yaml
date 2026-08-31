@@ -1,0 +1,25 @@
+name: 阿里云百炼 (DashScope)
+name_en: Aliyun DashScope
+website: https://bailian.console.aliyun.com
+category: cloud
+free_quota:
+  amount: 1000
+  unit: 万 tokens
+  type: 限时
+  conditions:
+  - 通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens
+  - 有效期 180 天（半年超长使用周期）
+  - 阿里云账号开通百炼即可领取
+register_url: https://bailian.console.aliyun.com/
+docs_url: https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio
+source_urls:
+- https://help.aliyun.com/zh/model-studio/billing-for-model-studio/billing-overview
+last_verified: '2026-08-31'
+status: active
+intro: 阿里云官方大模型服务平台，聚合千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。
+tags:
+- 顶级大厂
+- 通义千问
+- 国产云厂商
+- 超长有效期
+- 企业级稳定
