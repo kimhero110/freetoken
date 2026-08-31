@@ -1,0 +1,24 @@
+name: MiniMax 开放平台
+name_en: MiniMax
+website: https://platform.minimaxi.com
+category: multimodal
+free_quota:
+  amount: 15
+  unit: 元体验金 (约百万 Tokens + 语音合成)
+  type: 限时
+  conditions:
+  - 新注册认证用户赠送 15 元全品类 API 体验金
+  - abab 6.5 系列大模型与全球超高拟真度的语音大模型 (T2A)
+  - 适合做角色扮演、拟人对话及语音克隆产品
+register_url: https://platform.minimaxi.com/register
+docs_url: https://platform.minimaxi.com/document/guides/chat-model/pro/api
+source_urls:
+- https://platform.minimaxi.com/document/price
+last_verified: '2026-08-31'
+status: active
+intro: 国内顶尖多模态与拟人大模型厂商，新注册即送免费体验金，在角色扮演对话与超逼真语音生成领域领跑。
+tags:
+- 国产大模型
+- 拟人对话
+- 超逼真语音
+- 注册赠送

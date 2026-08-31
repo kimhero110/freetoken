@@ -1,0 +1,24 @@
+name: 零一万物 (01.AI)
+name_en: 01.AI (Yi Models)
+website: https://platform.lingyiwanwu.com
+category: llm-api
+free_quota:
+  amount: 30
+  unit: 元体验金 (约几百万 Tokens)
+  type: 限时
+  conditions:
+  - 李开复创立的零一万物开放平台，注册赠送 30 元体验金
+  - 支持 Yi-Large, Yi-Medium, Yi-Vision 视觉多模态全系列模型
+  - 在各权威大模型基准评测榜单上名列前茅
+register_url: https://platform.lingyiwanwu.com/
+docs_url: https://platform.lingyiwanwu.com/docs
+source_urls:
+- https://platform.lingyiwanwu.com/pricing
+last_verified: '2026-08-31'
+status: active
+intro: 零一万物开放平台，支持 Yi 系列超强开源与商业化大模型，新用户赠送大额代金券体验金。
+tags:
+- 国产大模型
+- Yi系列
+- 多模态
+- 注册赠送

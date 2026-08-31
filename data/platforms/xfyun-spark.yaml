@@ -1,0 +1,24 @@
+name: 讯飞星火认知大模型
+name_en: iFLYTEK Spark
+website: https://xinghuo.xfyun.cn
+category: llm-api
+free_quota:
+  amount: 200
+  unit: 万 tokens + Spark Lite 永久免费
+  type: 永久
+  conditions:
+  - Spark Lite 模型永久免费无限制调用
+  - 新认证用户免费赠送 Spark 3.5 / 4.0 200 万 Tokens 礼包
+  - 语音合成、语音识别及中文语法表现极佳
+register_url: https://xinghuo.xfyun.cn/sparkapi
+docs_url: https://www.xfyun.cn/doc/spark/Web.html
+source_urls:
+- https://xinghuo.xfyun.cn/sparkapi
+last_verified: '2026-08-31'
+status: active
+intro: 科大讯飞旗下星火大模型，Spark Lite 模型永久免费开放，在语音、数学、教育等场景具备独特优势。
+tags:
+- 国产大模型
+- 永久免费
+- 语音大厂
+- 免信用卡

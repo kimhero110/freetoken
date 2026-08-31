@@ -1,0 +1,24 @@
+name: 腾讯混元大模型
+name_en: Tencent Hunyuan
+website: https://hunyuan.tencent.com
+category: cloud
+free_quota:
+  amount: 100
+  unit: 万 tokens
+  type: 限时
+  conditions:
+  - 腾讯云开通混元 API 赠送 100 万 Tokens 免费测试额度
+  - 支持混元 Pro, Standard, Lite 全系列模型
+  - 支持超长文本理解与微信生态无缝接入
+register_url: https://console.cloud.tencent.com/hunyuan
+docs_url: https://cloud.tencent.com/document/product/1729
+source_urls:
+- https://cloud.tencent.com/document/product/1729/97731
+last_verified: '2026-08-31'
+status: active
+intro: 腾讯自研混元大模型，开通即赠送百万测试 Tokens，具备优秀的中文长文本理解与微信生态集成优势。
+tags:
+- 国产大厂
+- 腾讯云
+- 注册赠送
+- 中文理解

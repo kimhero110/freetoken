@@ -1,0 +1,24 @@
+name: Together AI
+name_en: Together.ai
+website: https://together.ai
+category: llm-api
+free_quota:
+  amount: 5
+  unit: 美元免费额度
+  type: 限时
+  conditions:
+  - 新注册开发者绑定手机号赠送  免费调用金
+  - 提供数百款前沿开源大模型、FLUX 生图与微调服务
+  - 支持全球极速推理与标准 OpenAI 接口
+register_url: https://api.together.ai/signup
+docs_url: https://docs.together.ai/
+source_urls:
+- https://together.ai/pricing
+last_verified: '2026-08-31'
+status: active
+intro: 全球著名的开源 AI 算力与模型推理平台，新用户赠送  额度，支持 Llama 3、FLUX.1 及各类前沿研究模型。
+tags:
+- 全球顶尖
+- 注册赠送
+- 开源聚合
+- FLUX生图

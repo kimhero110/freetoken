@@ -63,6 +63,38 @@
     "slug": "baichuan-ai"
   },
   {
+    "name": "百度千帆大模型平台",
+    "name_en": "Baidu Qianfan",
+    "website": "https://cloud.baidu.com/product/wenxinworkshop",
+    "category": "cloud",
+    "free_quota": {
+      "amount": 2000,
+      "unit": "万 tokens + 部分模型永久免费",
+      "type": "永久",
+      "conditions": [
+        "ERNIE-Speed, ERNIE-Lite 等主流轻量模型永久免费调用",
+        "新认证企业/个人用户赠送 2000 万 Tokens 算力代金券",
+        "兼容 OpenAI 接口规范，国内访问极速稳定"
+      ]
+    },
+    "register_url": "https://console.bce.baidu.com/qianfan/ais/console/onlineService",
+    "docs_url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html",
+    "source_urls": [
+      "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/hlrk4akp7"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "百度千帆大模型平台，ERNIE-Speed/Lite 系列全面永久免费开放，并提供大额新手代金券。",
+    "tags": [
+      "国产大厂",
+      "文心一言",
+      "永久免费",
+      "免信用卡",
+      "国内直连"
+    ],
+    "slug": "baidu-qianfan"
+  },
+  {
     "name": "Cerebras Inference",
     "name_en": "Cerebras",
     "website": "https://cerebras.ai",
@@ -317,6 +349,100 @@
     "slug": "jina-ai"
   },
   {
+    "name": "零一万物 (01.AI)",
+    "name_en": "01.AI (Yi Models)",
+    "website": "https://platform.lingyiwanwu.com",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 30,
+      "unit": "元体验金 (约几百万 Tokens)",
+      "type": "限时",
+      "conditions": [
+        "李开复创立的零一万物开放平台，注册赠送 30 元体验金",
+        "支持 Yi-Large, Yi-Medium, Yi-Vision 视觉多模态全系列模型",
+        "在各权威大模型基准评测榜单上名列前茅"
+      ]
+    },
+    "register_url": "https://platform.lingyiwanwu.com/",
+    "docs_url": "https://platform.lingyiwanwu.com/docs",
+    "source_urls": [
+      "https://platform.lingyiwanwu.com/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "零一万物开放平台，支持 Yi 系列超强开源与商业化大模型，新用户赠送大额代金券体验金。",
+    "tags": [
+      "国产大模型",
+      "Yi系列",
+      "多模态",
+      "注册赠送"
+    ],
+    "slug": "lingyiwanwu-01"
+  },
+  {
+    "name": "MiniMax 开放平台",
+    "name_en": "MiniMax",
+    "website": "https://platform.minimaxi.com",
+    "category": "multimodal",
+    "free_quota": {
+      "amount": 15,
+      "unit": "元体验金 (约百万 Tokens + 语音合成)",
+      "type": "限时",
+      "conditions": [
+        "新注册认证用户赠送 15 元全品类 API 体验金",
+        "abab 6.5 系列大模型与全球超高拟真度的语音大模型 (T2A)",
+        "适合做角色扮演、拟人对话及语音克隆产品"
+      ]
+    },
+    "register_url": "https://platform.minimaxi.com/register",
+    "docs_url": "https://platform.minimaxi.com/document/guides/chat-model/pro/api",
+    "source_urls": [
+      "https://platform.minimaxi.com/document/price"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "国内顶尖多模态与拟人大模型厂商，新注册即送免费体验金，在角色扮演对话与超逼真语音生成领域领跑。",
+    "tags": [
+      "国产大模型",
+      "拟人对话",
+      "超逼真语音",
+      "注册赠送"
+    ],
+    "slug": "minimax"
+  },
+  {
+    "name": "Mistral AI (La Plateforme)",
+    "name_en": "Mistral AI",
+    "website": "https://mistral.ai",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 100,
+      "unit": "请求/分钟 (免费实验层)",
+      "type": "永久",
+      "conditions": [
+        "提供 Codestral, Mistral Small, Mistral NeMo 等免费 Experiment API",
+        "代码生成与推理能力处于全球第一梯队",
+        "支持 Function Calling 与 JSON 结构化输出"
+      ]
+    },
+    "register_url": "https://console.mistral.ai/",
+    "docs_url": "https://docs.mistral.ai/",
+    "source_urls": [
+      "https://mistral.ai/technology/#pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "欧洲最强 AI 独角兽 Mistral 官方平台，提供针对开发者完全免费的 Codestral 代码模型与多款轻量模型实验层。",
+    "tags": [
+      "欧洲顶尖",
+      "代码神器",
+      "永久免费",
+      "Codestral",
+      "免绑卡"
+    ],
+    "slug": "mistral-ai"
+  },
+  {
     "name": "OpenRouter (Free Tier)",
     "name_en": "OpenRouter",
     "website": "https://openrouter.ai",
@@ -379,6 +505,37 @@
       "开源神器"
     ],
     "slug": "pollinations"
+  },
+  {
+    "name": "SambaNova Cloud",
+    "name_en": "SambaNova Cloud",
+    "website": "https://cloud.sambanova.ai",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 500,
+      "unit": "次请求/天 (免费开发层)",
+      "type": "每日",
+      "conditions": [
+        "Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用",
+        "推理速度高达 1000+ tokens/秒",
+        "标准 OpenAI 兼容接口，注册生成 Key 即用"
+      ]
+    },
+    "register_url": "https://cloud.sambanova.ai/",
+    "docs_url": "https://docs.sambanova.ai/",
+    "source_urls": [
+      "https://cloud.sambanova.ai/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "全球极速推理云代表之一，基于 Reconfigurable Dataflow 架构，提供顶级超高并发与极速响应的免费开源模型 API。",
+    "tags": [
+      "极速推理",
+      "每日刷新",
+      "Llama 3.3",
+      "免信用卡"
+    ],
+    "slug": "sambanova"
   },
   {
     "name": "Sepolia Testnet 水龙头聚合",
@@ -475,6 +632,99 @@
       "开发者神器"
     ],
     "slug": "tavily"
+  },
+  {
+    "name": "腾讯混元大模型",
+    "name_en": "Tencent Hunyuan",
+    "website": "https://hunyuan.tencent.com",
+    "category": "cloud",
+    "free_quota": {
+      "amount": 100,
+      "unit": "万 tokens",
+      "type": "限时",
+      "conditions": [
+        "腾讯云开通混元 API 赠送 100 万 Tokens 免费测试额度",
+        "支持混元 Pro, Standard, Lite 全系列模型",
+        "支持超长文本理解与微信生态无缝接入"
+      ]
+    },
+    "register_url": "https://console.cloud.tencent.com/hunyuan",
+    "docs_url": "https://cloud.tencent.com/document/product/1729",
+    "source_urls": [
+      "https://cloud.tencent.com/document/product/1729/97731"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "腾讯自研混元大模型，开通即赠送百万测试 Tokens，具备优秀的中文长文本理解与微信生态集成优势。",
+    "tags": [
+      "国产大厂",
+      "腾讯云",
+      "注册赠送",
+      "中文理解"
+    ],
+    "slug": "tencent-hunyuan"
+  },
+  {
+    "name": "Together AI",
+    "name_en": "Together.ai",
+    "website": "https://together.ai",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 5,
+      "unit": "美元免费额度",
+      "type": "限时",
+      "conditions": [
+        "新注册开发者绑定手机号赠送  免费调用金",
+        "提供数百款前沿开源大模型、FLUX 生图与微调服务",
+        "支持全球极速推理与标准 OpenAI 接口"
+      ]
+    },
+    "register_url": "https://api.together.ai/signup",
+    "docs_url": "https://docs.together.ai/",
+    "source_urls": [
+      "https://together.ai/pricing"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "全球著名的开源 AI 算力与模型推理平台，新用户赠送  额度，支持 Llama 3、FLUX.1 及各类前沿研究模型。",
+    "tags": [
+      "全球顶尖",
+      "注册赠送",
+      "开源聚合",
+      "FLUX生图"
+    ],
+    "slug": "together-ai"
+  },
+  {
+    "name": "讯飞星火认知大模型",
+    "name_en": "iFLYTEK Spark",
+    "website": "https://xinghuo.xfyun.cn",
+    "category": "llm-api",
+    "free_quota": {
+      "amount": 200,
+      "unit": "万 tokens + Spark Lite 永久免费",
+      "type": "永久",
+      "conditions": [
+        "Spark Lite 模型永久免费无限制调用",
+        "新认证用户免费赠送 Spark 3.5 / 4.0 200 万 Tokens 礼包",
+        "语音合成、语音识别及中文语法表现极佳"
+      ]
+    },
+    "register_url": "https://xinghuo.xfyun.cn/sparkapi",
+    "docs_url": "https://www.xfyun.cn/doc/spark/Web.html",
+    "source_urls": [
+      "https://xinghuo.xfyun.cn/sparkapi"
+    ],
+    "last_verified": "2026-08-31",
+    "status": "active",
+    "intro": "科大讯飞旗下星火大模型，Spark Lite 模型永久免费开放，在语音、数学、教育等场景具备独特优势。",
+    "tags": [
+      "国产大模型",
+      "永久免费",
+      "语音大厂",
+      "免信用卡"
+    ],
+    "slug": "xfyun-spark"
   },
   {
     "name": "智谱 AI 开放平台",

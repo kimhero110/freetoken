@@ -1,12 +1,11 @@
 ---
-// 首页：以卡片形式列出所有平台的免费额度信息
+// 首页：以现代卡片流形式列出所有平台的免费额度信息，支持实时搜索与分类过滤
 import Base from '../layouts/Base.astro';
 import platforms from '../data/platforms.json';
 
-// 状态文案映射
 const statusText: Record<string, string> = {
   active: '有效',
-  expired: '已过期',
+  expired: '已失效',
   unverified: '待核实',
 };
 
@@ -15,25 +14,151 @@ function formatQuota(p: any): string {
   if (!q || q.amount == null) return '暂无明确免费额度信息';
   return `${q.amount} ${q.unit ?? ''}`.trim();
 }
+
+const totalCount = platforms.length;
+const activeCount = platforms.filter((p: any) => p.status === 'active').length;
 ---
 <Base>
-  <h1 style="font-size:22px;margin-bottom:6px;">免费 API Token 额度一览</h1>
-  <p style="color:var(--muted);margin-bottom:20px;">
-    聚合各大 LLM / 云平台的免费额度、免费层级信息，每 6 小时自动检查并标记待核实。
-  </p>
-  <div class="card-grid">
-    {platforms.map((p: any) => (
-      <a class="card" href={`/platform/${p.slug}/`}>
-        <h2>{p.name} <small style="color:var(--muted);font-weight:400;">{p.name_en}</small></h2>
-        <div>
-          <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
-          <span class="badge type">{p.free_quota?.type ?? '未知'}</span>
-        </div>
-        <p class="quota">{formatQuota(p)}</p>
-        <p class="intro">{p.intro}</p>
-        <p class="meta">最后人工核实：{p.last_verified}</p>
-        {p.last_checked && <p class="meta">最后自动检查：{p.last_checked}</p>}
-      </a>
-    ))}
+  <div class="hero-section">
+    <h1 class="hero-title">⚡ 全球与国内免费 API Token 额度聚合</h1>
+    <p class="hero-subtitle">
+      收集各大 LLM、开源模型云平台、AI 智能体工具与 Web3 测试网的免费调用额度。每日定时自动检测与清洗，助你零成本跑通 AI 项目！
+    </p>
+    <div class="stat-pills">
+      <div class="stat-pill">📦 已收录平台：<strong>{totalCount} 个</strong></div>
+      <div class="stat-pill">✨ 活跃有效：<strong>{activeCount} 个</strong></div>
+      <div class="stat-pill">🔄 自动雷达：<strong>定时检测中</strong></div>
+    </div>
   </div>
+
+  <div class="search-box-wrapper">
+    <span class="search-icon">🔍</span>
+    <input
+      type="text"
+      id="search-input"
+      class="search-input"
+      placeholder="搜索平台、模型（如 Gemini, GLM-4, Llama 3, DeepSeek）或特性标签..."
+      autocomplete="off"
+    />
+  </div>
+
+  <div class="filter-tabs" id="filter-tabs">
+    <button class="filter-btn active" data-filter="all">🌟 全部收录 ({totalCount})</button>
+    <button class="filter-btn" data-filter="permanent">💎 永久免费</button>
+    <button class="filter-btn" data-filter="daily">⚡ 每日刷新</button>
+    <button class="filter-btn" data-filter="domestic">🇨🇳 国产直连</button>
+    <button class="filter-btn" data-filter="tools">🛠️ Agent & 工具</button>
+    <button class="filter-btn" data-filter="multimodal">🎨 生图与语音</button>
+    <button class="filter-btn" data-filter="web3">🪙 Web3 水龙头</button>
+  </div>
+
+  <div class="card-grid" id="platform-grid">
+    {platforms.map((p: any) => {
+      const q = p.free_quota ?? {};
+      const isPermanent = q.type === '永久' || (p.tags ?? []).some((t: string) => t.includes('永久'));
+      const isDaily = q.type === '每日' || (p.tags ?? []).some((t: string) => t.includes('每日') || t.includes('天'));
+      const isDomestic = (p.tags ?? []).some((t: string) => t.includes('国产') || t.includes('国内') || t.includes('阿里') || t.includes('百度') || t.includes('腾讯') || t.includes('智谱') || t.includes('星火'));
+      const isTools = p.category === 'tools' || (p.tags ?? []).some((t: string) => t.includes('Agent') || t.includes('搜索') || t.includes('向量') || t.includes('Rerank'));
+      const isMultimodal = p.category === 'multimodal' || (p.tags ?? []).some((t: string) => t.includes('图') || t.includes('语音') || t.includes('FLUX'));
+      const isWeb3 = p.category === 'web3-faucet' || (p.tags ?? []).some((t: string) => t.includes('Web3') || t.includes('水龙头'));
+
+      const searchTerms = `${p.name} ${p.name_en ?? ''} ${p.slug} ${p.intro ?? ''} ${(p.tags ?? []).join(' ')} ${formatQuota(p)}`.toLowerCase();
+
+      return (
+        <a
+          class="card platform-card"
+          href={`/platform/${p.slug}/`}
+          data-permanent={isPermanent ? "true" : "false"}
+          data-daily={isDaily ? "true" : "false"}
+          data-domestic={isDomestic ? "true" : "false"}
+          data-tools={isTools ? "true" : "false"}
+          data-multimodal={isMultimodal ? "true" : "false"}
+          data-web3={isWeb3 ? "true" : "false"}
+          data-search={searchTerms}
+        >
+          <div>
+            <div class="card-header">
+              <div class="card-title">
+                {p.name}
+                <small>{p.name_en}</small>
+              </div>
+              <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
+            </div>
+
+            <div class="badges-row">
+              <span class="badge type">{q.type ?? '免费额度'}</span>
+              {(p.tags ?? []).slice(0, 3).map((t: string) => (
+                <span class="badge tag">{t}</span>
+              ))}
+            </div>
+
+            <div class="quota">
+              <span>🎁 {formatQuota(p)}</span>
+            </div>
+
+            <p class="intro">{p.intro}</p>
+          </div>
+
+          <div class="card-footer">
+            <span>核实：{p.last_verified}</span>
+            <span class="view-btn">查看详情 & 接入代码 ➔</span>
+          </div>
+        </a>
+      );
+    })}
+  </div>
+
+  <div id="no-result" style="display:none; text-align:center; padding: 60px 0; color: var(--muted);">
+    <p style="font-size: 32px; margin-bottom: 12px;">🔍</p>
+    <p style="font-size: 16px; color: #cbd5e1;">未找到符合条件的免费 Token 平台</p>
+    <p style="font-size: 13px; margin-top: 6px;">可尝试更换搜索关键词，或前往 GitHub 提交新平台收录</p>
+  </div>
+
+  <script is:inline>
+    const searchInput = document.getElementById('search-input');
+    const filterTabs = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.platform-card');
+    const noResult = document.getElementById('no-result');
+    let currentFilter = 'all';
+
+    function applyFilter() {
+      const query = (searchInput?.value || '').trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const searchData = card.getAttribute('data-search') || '';
+        const matchesQuery = !query || searchData.includes(query);
+
+        let matchesTab = true;
+        if (currentFilter === 'permanent') matchesTab = card.getAttribute('data-permanent') === 'true';
+        else if (currentFilter === 'daily') matchesTab = card.getAttribute('data-daily') === 'true';
+        else if (currentFilter === 'domestic') matchesTab = card.getAttribute('data-domestic') === 'true';
+        else if (currentFilter === 'tools') matchesTab = card.getAttribute('data-tools') === 'true';
+        else if (currentFilter === 'multimodal') matchesTab = card.getAttribute('data-multimodal') === 'true';
+        else if (currentFilter === 'web3') matchesTab = card.getAttribute('data-web3') === 'true';
+
+        if (matchesQuery && matchesTab) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (noResult) {
+        noResult.style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+    }
+
+    searchInput?.addEventListener('input', applyFilter);
+
+    filterTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterTabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter') || 'all';
+        applyFilter();
+      });
+    });
+  </script>
 </Base>

@@ -1,5 +1,5 @@
 ---
-// 平台详情页：展示单个平台的免费额度、条件与相关链接
+// 平台详情页：展示单个平台的免费额度、使用条件、一键复制代码与注册直达
 import Base from '../../layouts/Base.astro';
 import platforms from '../../data/platforms.json';
 
@@ -13,47 +13,165 @@ export function getStaticPaths() {
 const { platform: p } = Astro.props;
 const statusText: Record<string, string> = {
   active: '有效',
-  expired: '已过期',
+  expired: '已失效',
   unverified: '待核实',
 };
 const q = p.free_quota ?? {};
+
+// 根据平台生成推荐的接入代码示例
+const pythonCode = `# Python (使用官方 openai 库快速接入)
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY", # 替换为你领取的免费 Key
+    base_url="${p.website.includes('deepseek') ? 'https://api.deepseek.com' : p.website.includes('siliconflow') ? 'https://api.siliconflow.cn/v1' : p.website.includes('open.bigmodel') ? 'https://open.bigmodel.cn/api/paas/v4' : 'https://api.openai.com/v1'}"
+)
+
+response = client.chat.completions.create(
+    model="default-model",
+    messages=[{"role": "user", "content": "你好，请介绍一下你自己"}]
+)
+
+print(response.choices[0].message.content)`;
+
+const curlCode = `# cURL 终端命令行快速测试
+curl -X POST "${p.website.includes('deepseek') ? 'https://api.deepseek.com/chat/completions' : p.website.includes('siliconflow') ? 'https://api.siliconflow.cn/v1/chat/completions' : 'https://api.openai.com/v1/chat/completions'}" \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "default-model",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'`;
+
+const jsCode = `// Node.js / 浏览器 Fetch 接入
+const response = await fetch("${p.website.includes('deepseek') ? 'https://api.deepseek.com/chat/completions' : 'https://api.openai.com/v1/chat/completions'}", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    model: "default-model",
+    messages: [{ role: "user", content: "Hello!" }]
+  })
+});
+
+const data = await response.json();
+console.log(data);`;
 ---
 <Base title={`${p.name} 免费额度`} description={p.intro}>
+  <div style="margin-bottom: 16px;">
+    <a href="/" style="color:var(--muted); text-decoration:none; font-size:14px;">← 返回所有免费平台列表</a>
+  </div>
+
   <div class="detail-section">
-    <h1 style="font-size:20px;margin-bottom:8px;">{p.name} <small style="color:var(--muted);">{p.name_en}</small></h1>
-    <div>
-      <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
-      <span class="badge type">{q.type ?? '未知'}</span>
-      <span class="badge type">{p.category === 'llm-api' ? 'LLM API' : '云平台'}</span>
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+      <div>
+        <h1 style="font-size:26px; font-weight:800; color:#fff; margin-bottom:4px;">
+          {p.name}
+          <small style="font-size:15px; color:var(--muted); font-weight:400; margin-left:8px;">{p.name_en}</small>
+        </h1>
+        <div style="display:flex; gap:8px; margin: 8px 0 12px; flex-wrap:wrap;">
+          <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
+          <span class="badge type">{q.type ?? '免费额度'}</span>
+          <span class="badge tag">{p.category}</span>
+        </div>
+      </div>
+
+      <div class="action-btn-row" style="margin-top:0;">
+        {p.register_url && (
+          <a class="btn-primary" href={p.register_url} target="_blank" rel="nofollow noopener">
+            🚀 直达领取 / 注册入口 ↗
+          </a>
+        )}
+      </div>
     </div>
-    <p class="quota" style="font-size:20px;margin-top:12px;">
-      {q.amount != null ? `${q.amount} ${q.unit ?? ''}` : '暂无明确免费额度信息'}
-    </p>
-    <p class="intro">{p.intro}</p>
-    <p class="meta">最后人工核实：{p.last_verified}</p>
-    {p.last_checked && <p class="meta">最后自动检查：{p.last_checked}</p>}
+
+    <div style="background:rgba(56, 189, 248, 0.08); border:1px solid rgba(56, 189, 248, 0.2); padding:16px 20px; border-radius:10px; margin:16px 0;">
+      <div style="font-size:13px; color:var(--muted); margin-bottom:4px;">🎁 核心免费配额：</div>
+      <div style="font-size:22px; font-weight:800; color:var(--primary);">
+        {q.amount != null ? `${q.amount} ${q.unit ?? ''}` : '暂无明确免费额度信息'}
+      </div>
+    </div>
+
+    <p style="font-size:15px; color:#cbd5e1; line-height:1.7;">{p.intro}</p>
+
+    <div style="font-size:13px; color:var(--muted); margin-top:16px; border-top:1px solid rgba(255,255,255,0.06); padding-top:12px;">
+      <span>📅 最后人工核实：{p.last_verified}</span>
+      {p.last_checked && <span style="margin-left:16px;">🔄 最后自动检查：{p.last_checked}</span>}
+    </div>
   </div>
 
   {q.conditions && q.conditions.length > 0 && (
     <div class="detail-section">
-      <h2>免费额度使用条件</h2>
-      <ul>
+      <h2>📋 免费额度使用条件与避坑指南</h2>
+      <ul style="line-height:1.8;">
         {q.conditions.map((c: string) => <li>{c}</li>)}
       </ul>
     </div>
   )}
 
   <div class="detail-section">
-    <h2>相关链接</h2>
-    <ul>
-      <li>官方网站：<a href={p.website} rel="nofollow noopener" target="_blank">{p.website}</a></li>
-      {p.register_url && <li>注册入口：<a href={p.register_url} rel="nofollow noopener" target="_blank">{p.register_url}</a></li>}
-      {p.docs_url && <li>官方文档：<a href={p.docs_url} rel="nofollow noopener" target="_blank">{p.docs_url}</a></li>}
+    <h2>⚡ 10 秒快速接入代码示例</h2>
+    <div class="code-box">
+      <div class="code-header">
+        <div class="code-tabs">
+          <button class="code-tab active" data-lang="python">Python (OpenAI SDK)</button>
+          <button class="code-tab" data-lang="curl">cURL 命令行</button>
+          <button class="code-tab" data-lang="javascript">JavaScript (Fetch)</button>
+        </div>
+        <button class="copy-btn" id="copy-btn">📋 复制代码</button>
+      </div>
+
+      <pre id="code-content"><code id="code-text">{pythonCode}</code></pre>
+    </div>
+  </div>
+
+  <div class="detail-section">
+    <h2>🔗 官方相关直达链接</h2>
+    <ul style="line-height:2;">
+      <li>🌐 官方主站：<a href={p.website} rel="nofollow noopener" target="_blank">{p.website}</a></li>
+      {p.register_url && <li>🎁 免费额度/注册直达：<a href={p.register_url} rel="nofollow noopener" target="_blank">{p.register_url}</a></li>}
+      {p.docs_url && <li>📖 开发者文档：<a href={p.docs_url} rel="nofollow noopener" target="_blank">{p.docs_url}</a></li>}
     </ul>
   </div>
 
   <div class="detail-section">
-    <h2>标签</h2>
-    <p>{(p.tags ?? []).map((t: string) => <span class="badge type">{t}</span>)}</p>
+    <h2>🏷️ 分类与特性标签</h2>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      {(p.tags ?? []).map((t: string) => <span class="badge tag" style="font-size:13px; padding:4px 12px;">{t}</span>)}
+    </div>
   </div>
+
+  <script is:inline define:vars={{ pythonCode, curlCode, jsCode }}>
+    const tabs = document.querySelectorAll('.code-tab');
+    const codeText = document.getElementById('code-text');
+    const copyBtn = document.getElementById('copy-btn');
+    let currentCode = pythonCode;
+
+    const codeMap = {
+      python: pythonCode,
+      curl: curlCode,
+      javascript: jsCode
+    };
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const lang = tab.getAttribute('data-lang');
+        currentCode = codeMap[lang] || pythonCode;
+        if (codeText) codeText.textContent = currentCode;
+      });
+    });
+
+    copyBtn?.addEventListener('click', () => {
+      navigator.clipboard.writeText(currentCode).then(() => {
+        copyBtn.textContent = '✅ 已复制！';
+        setTimeout(() => {
+          copyBtn.textContent = '📋 复制代码';
+        }, 2000);
+      });
+    });
+  </script>
 </Base>

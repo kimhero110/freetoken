@@ -1,0 +1,50 @@
+name: 全球新免费 Token 平台雷达自动扫描
+
+on:
+  schedule:
+    # 每周一凌晨 2:00 (UTC 18:00 周日) 自动巡检发现全球新免费源
+    - cron: '0 18 * * 0'
+  workflow_dispatch: # 支持随时手动一键探测
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: 安装依赖
+        run: pip install -r scripts/requirements.txt
+
+      - name: 启动自动发现雷达
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+        run: python scripts/discover_new_platforms.py
+
+      - name: 重新合并站点数据
+        run: python scripts/build_data.py
+
+      - name: 提交并推送到 main 分支
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/platforms/ site/src/data/platforms.json
+          if git diff --cached --quiet; then
+            echo '无新收录平台，跳过提交'
+          else
+            git commit -m 'feat(radar): 自动雷达发现并收录新免费 Token 平台 [skip ci]'
+            git push origin main
+          fi
+

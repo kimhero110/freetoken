@@ -1,0 +1,24 @@
+name: SambaNova Cloud
+name_en: SambaNova Cloud
+website: https://cloud.sambanova.ai
+category: llm-api
+free_quota:
+  amount: 500
+  unit: 次请求/天 (免费开发层)
+  type: 每日
+  conditions:
+  - Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用
+  - 推理速度高达 1000+ tokens/秒
+  - 标准 OpenAI 兼容接口，注册生成 Key 即用
+register_url: https://cloud.sambanova.ai/
+docs_url: https://docs.sambanova.ai/
+source_urls:
+- https://cloud.sambanova.ai/pricing
+last_verified: '2026-08-31'
+status: active
+intro: 全球极速推理云代表之一，基于 Reconfigurable Dataflow 架构，提供顶级超高并发与极速响应的免费开源模型 API。
+tags:
+- 极速推理
+- 每日刷新
+- Llama 3.3
+- 免信用卡

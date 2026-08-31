@@ -25,94 +25,370 @@ const pageTitle = title === 'FreeToken 免费Token信息聚合'
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style is:global>
     :root {
-      --bg: #f7f8fa;
-      --card: #ffffff;
-      --text: #1f2329;
-      --muted: #646a73;
-      --primary: #3370ff;
-      --green: #16a34a;
-      --orange: #d97706;
-      --grey: #8f959e;
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card-border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --accent: #818cf8;
+      --green: #4ade80;
+      --green-bg: rgba(74, 222, 128, 0.12);
+      --orange: #fbbf24;
+      --orange-bg: rgba(251, 191, 36, 0.12);
+      --red: #f87171;
+      --red-bg: rgba(248, 113, 113, 0.12);
+      --blue-bg: rgba(56, 189, 248, 0.12);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-    .container { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; width: 100%; }
     header.site-header {
-      background: var(--card);
-      border-bottom: 1px solid #e5e6eb;
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
       padding: 16px 0;
-      margin-bottom: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     header.site-header a.brand {
-      font-size: 20px;
-      font-weight: 700;
+      font-size: 22px;
+      font-weight: 800;
       color: var(--text);
       text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    header.site-header a.brand span { color: var(--primary); }
-    footer.site-footer {
-      margin-top: 48px;
-      padding: 24px 0;
-      text-align: center;
+    header.site-header a.brand span {
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .nav-links a {
       color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.15s ease;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .hero-section {
+      text-align: center;
+      padding: 40px 0 24px;
+    }
+    .hero-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 680px;
+      margin: 0 auto 24px;
+    }
+    .stat-pills {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+    .stat-pill {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      padding: 6px 16px;
+      border-radius: 20px;
       font-size: 13px;
-      border-top: 1px solid #e5e6eb;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-pill strong { color: var(--primary); }
+    .search-box-wrapper {
+      position: relative;
+      max-width: 580px;
+      margin: 0 auto 24px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 14px 20px 14px 44px;
+      font-size: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      scrollbar-width: none;
+    }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #0f172a;
+      font-weight: 600;
     }
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
     }
     .card {
       background: var(--card);
-      border: 1px solid #e5e6eb;
-      border-radius: 8px;
-      padding: 20px;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 22px;
       text-decoration: none;
       color: inherit;
-      transition: box-shadow 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .card:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); }
-    .card h2 { font-size: 17px; margin-bottom: 8px; }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--primary);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.15);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .card-title small {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+    .badges-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
     .badge {
-      display: inline-block;
       font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 10px;
-      margin-right: 6px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 12px;
     }
-    .badge.active { background: #e8f5e9; color: var(--green); }
-    .badge.expired { background: #fdecec; color: #dc2626; }
-    .badge.unverified { background: #fff4e5; color: var(--orange); }
-    .badge.type { background: #eef2ff; color: var(--primary); }
-    .quota { font-size: 15px; font-weight: 600; color: var(--primary); margin: 8px 0; }
-    .meta { font-size: 13px; color: var(--muted); margin-top: 8px; }
-    .intro { font-size: 14px; color: var(--muted); }
-    .detail-section { background: var(--card); border: 1px solid #e5e6eb; border-radius: 8px; padding: 24px; margin-bottom: 16px; }
-    .detail-section h2 { font-size: 16px; margin-bottom: 12px; }
+    .badge.active { background: var(--green-bg); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.2); }
+    .badge.expired { background: var(--red-bg); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.2); }
+    .badge.unverified { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(251, 191, 36, 0.2); }
+    .badge.type { background: var(--blue-bg); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.2); }
+    .badge.tag { background: #334155; color: #cbd5e1; }
+    .quota {
+      font-size: 17px;
+      font-weight: 700;
+      color: #38bdf8;
+      margin: 8px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .intro {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 12px;
+    }
+    .view-btn {
+      color: var(--primary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .detail-section {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .detail-section h2 {
+      font-size: 17px;
+      margin-bottom: 14px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .detail-section ul { padding-left: 20px; }
-    .detail-section a { color: var(--primary); }
+    .detail-section li { margin-bottom: 8px; color: #cbd5e1; }
+    .detail-section a { color: var(--primary); text-decoration: none; }
+    .detail-section a:hover { text-decoration: underline; }
+    .code-box {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+    .code-header {
+      background: #131d31;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #1e293b;
+    }
+    .code-tabs { display: flex; gap: 8px; }
+    .code-tab {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 4px 8px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .code-tab.active { background: #1e293b; color: var(--primary); font-weight: 600; }
+    .copy-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: var(--primary); color: #0f172a; }
+    pre {
+      padding: 16px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      color: #e2e8f0;
+      overflow-x: auto;
+    }
+    .action-btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      color: #0f172a;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.9; text-decoration: none; }
+    footer.site-footer {
+      margin-top: auto;
+      padding: 32px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--card-border);
+      background: rgba(15, 23, 42, 0.9);
+    }
   </style>
 </head>
 <body>
   <header class="site-header">
-    <div class="container">
-      <a class="brand" href="/">Free<span>Token</span> <small style="font-weight:400;color:var(--muted);font-size:13px;">免费Token信息聚合</small></a>
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <span>⚡ FreeToken</span>
+        <small style="font-weight:400;color:var(--muted);font-size:12px;margin-left:4px;">/ 免费API额度聚合</small>
+      </a>
+      <div class="nav-links">
+        <a href="/">全部资源</a>
+        <a href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+      </div>
     </div>
   </header>
-  <main class="container">
+  <main class="container" style="flex:1; padding-top: 20px; padding-bottom: 40px;">
     <slot />
   </main>
   <footer class="site-footer">
     <div class="container">
-      <p>FreeToken - 免费 API Token 额度信息聚合 | 信息仅供参考，以各平台官方页面为准</p>
-      <!-- ICP 备案号下发后在此添加，例如：京ICP备XXXXXXXX号 -->
+      <p style="margin-bottom:6px;">⚡ FreeToken - 汇聚全球与国内顶尖免费 API Token 额度 | 自动检测更新与清洗</p>
+      <p style="color:#64748b;font-size:12px;">开源共建 · 每日自动雷达探测 · 信息仅供参考，以各平台官方定价为准</p>
     </div>
   </footer>
+</body>
+</html>
 </body>
 </html>
