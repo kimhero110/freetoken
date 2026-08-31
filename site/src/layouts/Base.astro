@@ -369,14 +369,96 @@ const pageTitle = title === 'FreeToken 免费Token信息聚合'
       background: var(--primary);
       color: #0f172a !important;
     }
+    .wechat-btn-nav {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80 !important;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .wechat-btn-nav:hover {
+      background: #22c55e;
+      color: #0f172a !important;
+    }
+    /* 微信二维码弹窗 */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal-card {
+      background: #131d31;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 16px;
+      padding: 28px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      position: relative;
+      animation: modalFadeIn 0.25s ease-out;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.92); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+    .modal-close:hover { color: #fff; }
+    .qr-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 12px;
+      margin: 16px auto;
+      display: block;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
     footer.site-footer {
       margin-top: auto;
-      padding: 32px 0;
+      padding: 40px 0 32px;
       text-align: center;
       color: var(--muted);
       font-size: 13px;
       border-top: 1px solid var(--card-border);
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+    }
+    .footer-wechat-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px 24px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .footer-qr {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
@@ -389,19 +471,69 @@ const pageTitle = title === 'FreeToken 免费Token信息聚合'
       </a>
       <div class="nav-links">
         <a href="/">全部资源</a>
+        <button class="wechat-btn-nav" id="btn-open-wechat">📱 关注公众号</button>
         <a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank" rel="noopener" class="submit-btn-nav">➕ 推荐新免费源</a>
-        <a href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">GitHub 仓库 ↗</a>
+        <a href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
     </div>
   </header>
+
   <main class="container" style="flex:1; padding-top: 20px; padding-bottom: 40px;">
     <slot />
   </main>
+
+  <!-- 微信公众号关注弹窗 -->
+  <div class="modal-overlay" id="wechat-modal">
+    <div class="modal-card">
+      <button class="modal-close" id="btn-close-wechat">&times;</button>
+      <div style="font-size: 32px; margin-bottom: 6px;">📱</div>
+      <h3 style="font-size: 18px; color: #fff; margin-bottom: 4px; font-weight: 700;">关注【免费Token情报局】</h3>
+      <p style="font-size: 12px; color: var(--muted);">微信扫一扫下方二维码</p>
+      
+      <img src="/wechat-qrcode.jpg" alt="免费Token情报局 公众号二维码" class="qr-img" />
+      
+      <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-top: 8px;">
+        🔥 第一时间获取<strong>全网突发限时免费 Token</strong><br>
+        🎁 免费大模型算力活动 & 开发者白嫖攻略推送
+      </p>
+    </div>
+  </div>
+
   <footer class="site-footer">
     <div class="container">
+      <div class="footer-wechat-box">
+        <img src="/wechat-qrcode.jpg" alt="微信二维码" class="footer-qr" />
+        <div>
+          <div style="font-size: 14px; font-weight: 600; color: #f8fafc; margin-bottom: 2px;">
+            📱 关注公众号：<span style="color: #4ade80;">免费Token情报局</span>
+          </div>
+          <div style="font-size: 12px; color: var(--muted);">
+            微信扫码关注 · 第一时间接收全网突发大额免费 Token 与算力羊毛
+          </div>
+        </div>
+      </div>
+      
       <p style="margin-bottom:6px;">⚡ FreeToken - 汇聚全球与国内顶尖免费 API Token 额度 | 自动检测更新与清洗</p>
       <p style="color:#64748b;font-size:12px;">开源共建 · 全球雷达自动探测 · 信息仅供参考，以各平台官方定价为准</p>
     </div>
   </footer>
+
+  <script is:inline>
+    const modal = document.getElementById('wechat-modal');
+    const openBtn = document.getElementById('btn-open-wechat');
+    const closeBtn = document.getElementById('btn-close-wechat');
+
+    openBtn?.addEventListener('click', () => {
+      if (modal) modal.style.display = 'flex';
+    });
+
+    closeBtn?.addEventListener('click', () => {
+      if (modal) modal.style.display = 'none';
+    });
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  </script>
 </body>
 </html>
