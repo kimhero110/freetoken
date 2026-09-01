@@ -12,11 +12,23 @@ function formatQuota(p: any): string {
 const totalCount = platforms.length;
 ---
 <Base>
-  <!-- 1. Hero 区域 (纯粹克制排版 + 实时仪表条 + 重点索引) -->
+  <!-- 1. Hero 区域 (搜索框置顶第二行 + 纯粹克制排版 + 实时仪表条 + 重点索引) -->
   <section class="hero-editorial">
     <div class="container hero-editorial-inner">
       <div class="hero-copy">
         <p class="hero-eyebrow">一人公司 · AI 算力与开源情报</p>
+
+        <!-- 搜索框：置于第二行显眼核心位置 -->
+        <div class="hero-search-wrap">
+          <input
+            type="text"
+            id="search-input"
+            class="hero-search-input"
+            placeholder="搜索 29+ 家平台、模型（如 Gemini, GLM-4, DeepSeek, MiniMax）或特性..."
+            autocomplete="off"
+          />
+        </div>
+
         <h1 class="hero-headline">
           用免费 Token 做工具，<br/>
           也提醒自己保持思考。
@@ -73,24 +85,13 @@ const totalCount = platforms.length;
     </div>
   </section>
 
-  <!-- 2. 平台资源库 (即刻检索) -->
+  <!-- 2. 平台资源库 -->
   <section class="section-wrap section-bg" id="products">
     <div class="container">
       <header class="section-head">
         <p class="section-eyebrow">资源与实践</p>
         <h2 class="section-title">全网免费 API Token 清单与 10 秒接入代码</h2>
       </header>
-
-      <!-- 搜索框 -->
-      <div class="search-bar-wrap">
-        <input
-          type="text"
-          id="search-input"
-          class="search-input"
-          placeholder="搜索平台、模型名称（如 Gemini, GLM-4, DeepSeek, MiniMax）或标签..."
-          autocomplete="off"
-        />
-      </div>
 
       <!-- 分类过滤 Tab (去 Emoji 纯净文字) -->
       <div class="filter-pills" id="filter-tabs">
@@ -295,7 +296,26 @@ const totalCount = platforms.length;
       font-weight: 600;
       color: var(--text-muted);
       letter-spacing: 0.3px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+    }
+    .hero-search-wrap {
+      margin-bottom: 18px;
+    }
+    .hero-search-input {
+      width: 100%;
+      padding: 12px 18px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text);
+      outline: none;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+      transition: all 0.15s ease;
+    }
+    .hero-search-input:focus {
+      border-color: var(--text);
+      box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.08);
     }
     .hero-headline {
       font-size: 36px;
