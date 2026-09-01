@@ -14,7 +14,7 @@ register_url: https://app.tavily.com/sign-up
 docs_url: https://docs.tavily.com/
 source_urls:
 - https://tavily.com/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 专门为大模型和自主智能体设计的实时联网搜索 API，每月免费 1000 次，返回结构化、零广告的高精度搜索数据。
 tags:
@@ -26,3 +26,4 @@ api_base_url: https://api.tavily.com
 free_models:
 - tavily-search-api
 slug: tavily
+last_checked: '2026-09-01'

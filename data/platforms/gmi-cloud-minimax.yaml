@@ -15,7 +15,7 @@ register_url: https://www.gmicloud.ai/en
 docs_url: https://www.gmicloud.ai/en
 source_urls:
 - https://www.gmicloud.ai/en
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: GMI Cloud 联合 MiniMax 推出限时免费福利，免费使用 MiniMax-M3、Speech 语音与 Music 音乐大模型，测试可用额度高达
   20 亿 Tokens！
@@ -31,3 +31,4 @@ free_models:
 - minimax-abab6.5s-chat
 - minimax-text-01
 slug: gmi-cloud-minimax
+last_checked: '2026-09-01'

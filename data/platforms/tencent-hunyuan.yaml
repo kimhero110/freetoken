@@ -14,7 +14,7 @@ register_url: https://console.cloud.tencent.com/hunyuan
 docs_url: https://cloud.tencent.com/document/product/1729
 source_urls:
 - https://cloud.tencent.com/document/product/1729/97731
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 腾讯自研混元大模型，开通即赠送百万测试 Tokens，具备优秀的中文长文本理解与微信生态集成优势。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - hunyuan-standard
 - hunyuan-lite
 slug: tencent-hunyuan
+last_checked: '2026-09-01'

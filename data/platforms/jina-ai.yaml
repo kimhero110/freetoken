@@ -14,7 +14,7 @@ register_url: https://jina.ai/
 docs_url: https://jina.ai/reader/
 source_urls:
 - https://jina.ai/pricing/
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 为 AI Agent 与 LLM 生态而生的数据基础设施，不仅赠送千万额度，其 Reader 网页抽取工具更是开发者神器。
 tags:
@@ -28,3 +28,4 @@ free_models:
 - jina-embeddings-v3
 - jina-reranker-v2-base-multilingual
 slug: jina-ai
+last_checked: '2026-09-01'

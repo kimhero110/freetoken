@@ -19,7 +19,7 @@
     "source_urls": [
       "https://help.aliyun.com/zh/model-studio/billing-for-model-studio/billing-overview"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "阿里云官方大模型服务平台，聚合千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。",
     "tags": [
@@ -35,7 +35,8 @@
       "qwen-plus",
       "qwen-max"
     ],
-    "slug": "aliyun-bailian"
+    "slug": "aliyun-bailian",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "百川智能开放平台",
@@ -57,7 +58,7 @@
     "source_urls": [
       "https://platform.baichuan-ai.com/price"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "王小川创立的百川智能开放平台，新注册即可领取千万大额 Token 包，中文知识库与推理能力卓越。",
     "tags": [
@@ -71,7 +72,8 @@
       "Baichuan4-Air",
       "Baichuan4-Turbo"
     ],
-    "slug": "baichuan-ai"
+    "slug": "baichuan-ai",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "百度千帆大模型平台",
@@ -93,7 +95,7 @@
     "source_urls": [
       "https://cloud.baidu.com/doc/WENXINWORKSHOP/s/hlrk4akp7"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "百度千帆大模型平台，ERNIE-Speed/Lite 系列全面永久免费开放，并提供大额新手代金券。",
     "tags": [
@@ -108,7 +110,8 @@
       "ernie-speed-128k",
       "ernie-lite-8k"
     ],
-    "slug": "baidu-qianfan"
+    "slug": "baidu-qianfan",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Cerebras Inference",
@@ -130,7 +133,7 @@
     "source_urls": [
       "https://cerebras.ai/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "基于晶圆级超级芯片的极速推理云，推理速度秒杀传统 GPU，每天提供 100 万免费 tokens 额度。",
     "tags": [
@@ -144,7 +147,8 @@
       "llama-3.3-70b",
       "llama3.1-8b"
     ],
-    "slug": "cerebras"
+    "slug": "cerebras",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Cloudflare Workers AI",
@@ -166,7 +170,7 @@
     "source_urls": [
       "https://developers.cloudflare.com/workers-ai/platform/pricing/"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "网络巨头 Cloudflare 提供的边缘 AI 计算，每天免费刷新额度，支持文本生成、图像识别、语音转写等全栈模型。",
     "tags": [
@@ -181,7 +185,8 @@
       "@cf/meta/llama-3.1-8b-instruct",
       "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
     ],
-    "slug": "cloudflare-workers-ai"
+    "slug": "cloudflare-workers-ai",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Cohere",
@@ -203,7 +208,7 @@
     "source_urls": [
       "https://cohere.com/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "企业级语义搜索与 RAG 领域的标杆，其 Rerank 与 Embed 接口提供永久免费的 Trial 开发者额度。",
     "tags": [
@@ -218,7 +223,8 @@
       "command-r",
       "embed-multilingual-v3.0"
     ],
-    "slug": "cohere"
+    "slug": "cohere",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "DeepSeek",
@@ -240,7 +246,7 @@
     "source_urls": [
       "https://api-docs.deepseek.com/zh-cn/quick_start/pricing"
     ],
-    "last_verified": "2026-08-28",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "DeepSeek API提供多种模型，按量计费，价格透明，支持缓存命中优惠，适合各类AI应用开发。",
     "tags": [
@@ -248,7 +254,7 @@
       "注册赠送",
       "限时额度"
     ],
-    "last_checked": "2026-08-30",
+    "last_checked": "2026-09-01",
     "api_base_url": "https://api.deepseek.com",
     "free_models": [
       "deepseek-chat",
@@ -276,7 +282,7 @@
     "source_urls": [
       "https://fireworks.ai/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "全球推理速度最快的模型托管平台之一，新注册用户赠送免费体验金，兼具极致性能与超高性价比。",
     "tags": [
@@ -290,7 +296,8 @@
       "accounts/fireworks/models/llama-v3p3-70b-instruct",
       "accounts/fireworks/models/qwen2p5-72b-instruct"
     ],
-    "slug": "fireworks-ai"
+    "slug": "fireworks-ai",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "GitHub Models",
@@ -312,7 +319,7 @@
     "source_urls": [
       "https://docs.github.com/en/github-models/prototyping-with-ai-models"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "微软与 GitHub 推出的免费 AI Playground 接口，一个 GitHub Token 即可免费体验全球所有顶级闭源与开源模型。",
     "tags": [
@@ -328,7 +335,8 @@
       "Meta-Llama-3.1-70B-Instruct",
       "Phi-3.5-mini-instruct"
     ],
-    "slug": "github-models"
+    "slug": "github-models",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "GMI Cloud (MiniMax 专场)",
@@ -351,7 +359,7 @@
     "source_urls": [
       "https://www.gmicloud.ai/en"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "GMI Cloud 联合 MiniMax 推出限时免费福利，免费使用 MiniMax-M3、Speech 语音与 Music 音乐大模型，测试可用额度高达 20 亿 Tokens！",
     "tags": [
@@ -367,7 +375,8 @@
       "minimax-abab6.5s-chat",
       "minimax-text-01"
     ],
-    "slug": "gmi-cloud-minimax"
+    "slug": "gmi-cloud-minimax",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Google AI Studio",
@@ -389,7 +398,7 @@
     "source_urls": [
       "https://ai.google.dev/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "全球最慷慨的大模型免费 API 之一，Gemini 1.5/2.0 Flash 永久免费提供高并发与超长上下文调用。",
     "tags": [
@@ -405,7 +414,8 @@
       "gemini-2.0-flash-exp",
       "gemini-1.5-pro"
     ],
-    "slug": "google-ai-studio"
+    "slug": "google-ai-studio",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Groq",
@@ -428,7 +438,7 @@
       "https://console.groq.com/docs/rate-limits",
       "https://groq.com/pricing/"
     ],
-    "last_verified": "2026-08-28",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "Groq是领先的AI推理云平台，提供快速、可靠的推理服务，支持大规模AI应用。",
     "tags": [
@@ -437,7 +447,7 @@
       "高速推理",
       "开源模型"
     ],
-    "last_checked": "2026-08-30",
+    "last_checked": "2026-09-01",
     "api_base_url": "https://api.groq.com/openai/v1",
     "free_models": [
       "llama-3.3-70b-versatile",
@@ -466,7 +476,7 @@
     "source_urls": [
       "https://hyperbolic.xyz/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "去中心化高性能 GPU 推理云，提供包含 DeepSeek-V3、Llama 3.3 在内的超多顶级开源模型免费推理 API。",
     "tags": [
@@ -481,7 +491,8 @@
       "meta-llama/Llama-3.3-70B-Instruct",
       "deepseek-ai/DeepSeek-V3"
     ],
-    "slug": "hyperbolic"
+    "slug": "hyperbolic",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Jina AI",
@@ -503,7 +514,7 @@
     "source_urls": [
       "https://jina.ai/pricing/"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "为 AI Agent 与 LLM 生态而生的数据基础设施，不仅赠送千万额度，其 Reader 网页抽取工具更是开发者神器。",
     "tags": [
@@ -518,7 +529,8 @@
       "jina-embeddings-v3",
       "jina-reranker-v2-base-multilingual"
     ],
-    "slug": "jina-ai"
+    "slug": "jina-ai",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "零一万物 (01.AI)",
@@ -540,7 +552,7 @@
     "source_urls": [
       "https://platform.lingyiwanwu.com/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "零一万物开放平台，支持 Yi 系列超强开源与商业化大模型，新用户赠送大额代金券体验金。",
     "tags": [
@@ -554,7 +566,8 @@
       "yi-lightning",
       "yi-large-turbo"
     ],
-    "slug": "lingyiwanwu-01"
+    "slug": "lingyiwanwu-01",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "MiniMax 开放平台",
@@ -576,7 +589,7 @@
     "source_urls": [
       "https://platform.minimaxi.com/document/price"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "国内顶尖多模态与拟人大模型厂商，新注册即送免费体验金，在角色扮演对话与超逼真语音生成领域领跑。",
     "tags": [
@@ -590,7 +603,8 @@
       "abab6.5s-chat",
       "abab6.5g-chat"
     ],
-    "slug": "minimax"
+    "slug": "minimax",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Mistral AI (La Plateforme)",
@@ -612,7 +626,7 @@
     "source_urls": [
       "https://mistral.ai/technology/#pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "欧洲最强 AI 独角兽 Mistral 官方平台，提供针对开发者完全免费的 Codestral 代码模型与多款轻量模型实验层。",
     "tags": [
@@ -628,7 +642,8 @@
       "pixtral-12b-2409",
       "codestral-latest"
     ],
-    "slug": "mistral-ai"
+    "slug": "mistral-ai",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Nebius AI Studio",
@@ -650,7 +665,7 @@
     "source_urls": [
       "https://nebius.com/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "欧洲前沿的 AI 算力与模型推理平台，提供基于顶级硬件的推理服务，新注册开发者可享大额免费体验金。",
     "tags": [
@@ -664,7 +679,8 @@
       "meta-llama/Meta-Llama-3.1-70B-Instruct",
       "Qwen/Qwen2.5-Coder-32B-Instruct"
     ],
-    "slug": "nebius-ai"
+    "slug": "nebius-ai",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Novita AI",
@@ -686,7 +702,7 @@
     "source_urls": [
       "https://novita.ai/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "面向生成式 AI 开发者的一站式无服务器 GPU 平台，提供文生图、图像放大及大模型对话的免费试用额度。",
     "tags": [
@@ -700,7 +716,8 @@
       "meta-llama/llama-3.3-70b-instruct",
       "deepseek/deepseek-r1-distill-qwen-32b"
     ],
-    "slug": "novita-ai"
+    "slug": "novita-ai",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "OpenRouter (Free Tier)",
@@ -722,7 +739,7 @@
     "source_urls": [
       "https://openrouter.ai/models?q=free"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "全球最著名的多模型聚合网关，内置数十款带有 :free 标签的永久免费模型路由，极度方便开发切换。",
     "tags": [
@@ -738,7 +755,8 @@
       "google/gemini-2.0-flash-exp:free",
       "deepseek/deepseek-r1:free"
     ],
-    "slug": "openrouter"
+    "slug": "openrouter",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Pollinations AI",
@@ -760,7 +778,7 @@
     "source_urls": [
       "https://pollinations.ai/"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "开源社区的超级福利！完全无需注册、无需任何 API Key，直接发 HTTP 请求就能免费生成高清 AI 图像和文本。",
     "tags": [
@@ -777,7 +795,8 @@
       "flux",
       "turbo"
     ],
-    "slug": "pollinations"
+    "slug": "pollinations",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "SambaNova Cloud",
@@ -799,7 +818,7 @@
     "source_urls": [
       "https://cloud.sambanova.ai/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "全球极速推理云代表之一，基于 Reconfigurable Dataflow 架构，提供顶级超高并发与极速响应的免费开源模型 API。",
     "tags": [
@@ -814,7 +833,8 @@
       "Qwen2.5-72B-Instruct",
       "DeepSeek-R1-Distill-Llama-70B"
     ],
-    "slug": "sambanova"
+    "slug": "sambanova",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Sepolia Testnet 水龙头聚合",
@@ -836,7 +856,7 @@
     "source_urls": [
       "https://sepoliafaucet.com/"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "以太坊主网官方推荐的 Sepolia 测试网水龙头聚合，智能合约与 Web3 开发者必备，每日免费领取测试代币。",
     "tags": [
@@ -850,7 +870,8 @@
     "free_models": [
       "ethereum-sepolia-testnet"
     ],
-    "slug": "sepolia-faucet"
+    "slug": "sepolia-faucet",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "硅基流动",
@@ -873,7 +894,7 @@
       "https://docs.siliconflow.cn/cn/userguide/introduction",
       "https://siliconflow.cn/pricing"
     ],
-    "last_verified": "2026-08-28",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "硅基流动提供大模型API服务，部分模型免费，价格透明，支持对话、生图、语音、视频等多种模型。",
     "tags": [
@@ -882,7 +903,7 @@
       "注册赠送",
       "永久免费模型"
     ],
-    "last_checked": "2026-08-30",
+    "last_checked": "2026-09-01",
     "api_base_url": "https://api.siliconflow.cn/v1",
     "free_models": [
       "Qwen/Qwen2.5-7B-Instruct",
@@ -911,7 +932,7 @@
     "source_urls": [
       "https://tavily.com/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "专门为大模型和自主智能体设计的实时联网搜索 API，每月免费 1000 次，返回结构化、零广告的高精度搜索数据。",
     "tags": [
@@ -924,7 +945,8 @@
     "free_models": [
       "tavily-search-api"
     ],
-    "slug": "tavily"
+    "slug": "tavily",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "腾讯混元大模型",
@@ -946,7 +968,7 @@
     "source_urls": [
       "https://cloud.tencent.com/document/product/1729/97731"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "腾讯自研混元大模型，开通即赠送百万测试 Tokens，具备优秀的中文长文本理解与微信生态集成优势。",
     "tags": [
@@ -960,7 +982,8 @@
       "hunyuan-standard",
       "hunyuan-lite"
     ],
-    "slug": "tencent-hunyuan"
+    "slug": "tencent-hunyuan",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "Together AI",
@@ -982,7 +1005,7 @@
     "source_urls": [
       "https://together.ai/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "全球著名的开源 AI 算力与模型推理平台，新用户赠送  额度，支持 Llama 3、FLUX.1 及各类前沿研究模型。",
     "tags": [
@@ -996,7 +1019,8 @@
       "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
       "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"
     ],
-    "slug": "together-ai"
+    "slug": "together-ai",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "讯飞星火认知大模型",
@@ -1018,7 +1042,7 @@
     "source_urls": [
       "https://xinghuo.xfyun.cn/sparkapi"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "科大讯飞旗下星火大模型，Spark Lite 模型永久免费开放，在语音、数学、教育等场景具备独特优势。",
     "tags": [
@@ -1032,7 +1056,8 @@
       "generalv3.5",
       "spark-lite"
     ],
-    "slug": "xfyun-spark"
+    "slug": "xfyun-spark",
+    "last_checked": "2026-09-01"
   },
   {
     "name": "智谱 AI 开放平台",
@@ -1054,7 +1079,7 @@
     "source_urls": [
       "https://open.bigmodel.cn/pricing"
     ],
-    "last_verified": "2026-08-31",
+    "last_verified": "2026-09-01",
     "status": "active",
     "intro": "国内顶级大模型代表，GLM-4-Flash 宣布永久免费调用，国内访问极速且兼容 OpenAI 接口。",
     "tags": [
@@ -1070,6 +1095,7 @@
       "glm-4-flashx",
       "glm-4-plus"
     ],
-    "slug": "zhipu-ai"
+    "slug": "zhipu-ai",
+    "last_checked": "2026-09-01"
   }
 ]

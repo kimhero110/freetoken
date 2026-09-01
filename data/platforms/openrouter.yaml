@@ -14,7 +14,7 @@ register_url: https://openrouter.ai/
 docs_url: https://openrouter.ai/docs
 source_urls:
 - https://openrouter.ai/models?q=free
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 全球最著名的多模型聚合网关，内置数十款带有 :free 标签的永久免费模型路由，极度方便开发切换。
 tags:
@@ -29,3 +29,4 @@ free_models:
 - google/gemini-2.0-flash-exp:free
 - deepseek/deepseek-r1:free
 slug: openrouter
+last_checked: '2026-09-01'

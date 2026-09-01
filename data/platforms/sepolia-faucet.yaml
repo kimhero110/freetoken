@@ -14,7 +14,7 @@ register_url: https://cloud.google.com/application/web3/faucet/ethereum/sepolia
 docs_url: https://ethereum.org/en/developers/docs/networks/#sepolia
 source_urls:
 - https://sepoliafaucet.com/
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 以太坊主网官方推荐的 Sepolia 测试网水龙头聚合，智能合约与 Web3 开发者必备，每日免费领取测试代币。
 tags:
@@ -27,3 +27,4 @@ api_base_url: https://rpc.sepolia.org
 free_models:
 - ethereum-sepolia-testnet
 slug: sepolia-faucet
+last_checked: '2026-09-01'

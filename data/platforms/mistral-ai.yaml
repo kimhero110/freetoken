@@ -14,7 +14,7 @@ register_url: https://console.mistral.ai/
 docs_url: https://docs.mistral.ai/
 source_urls:
 - https://mistral.ai/technology/#pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 欧洲最强 AI 独角兽 Mistral 官方平台，提供针对开发者完全免费的 Codestral 代码模型与多款轻量模型实验层。
 tags:
@@ -29,3 +29,4 @@ free_models:
 - pixtral-12b-2409
 - codestral-latest
 slug: mistral-ai
+last_checked: '2026-09-01'

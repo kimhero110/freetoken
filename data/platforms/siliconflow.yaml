@@ -15,7 +15,7 @@ docs_url: https://docs.siliconflow.cn/
 source_urls:
 - https://docs.siliconflow.cn/cn/userguide/introduction
 - https://siliconflow.cn/pricing
-last_verified: 2026-08-28
+last_verified: '2026-09-01'
 status: active
 intro: 硅基流动提供大模型API服务，部分模型免费，价格透明，支持对话、生图、语音、视频等多种模型。
 tags:
@@ -23,7 +23,7 @@ tags:
 - 开源模型聚合
 - 注册赠送
 - 永久免费模型
-last_checked: '2026-08-30'
+last_checked: '2026-09-01'
 api_base_url: https://api.siliconflow.cn/v1
 free_models:
 - Qwen/Qwen2.5-7B-Instruct

@@ -14,7 +14,7 @@ register_url: https://dash.cloudflare.com/
 docs_url: https://developers.cloudflare.com/workers-ai/
 source_urls:
 - https://developers.cloudflare.com/workers-ai/platform/pricing/
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 网络巨头 Cloudflare 提供的边缘 AI 计算，每天免费刷新额度，支持文本生成、图像识别、语音转写等全栈模型。
 tags:
@@ -28,3 +28,4 @@ free_models:
 - '@cf/meta/llama-3.1-8b-instruct'
 - '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b'
 slug: cloudflare-workers-ai
+last_checked: '2026-09-01'

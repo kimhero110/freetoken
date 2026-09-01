@@ -14,7 +14,7 @@ register_url: https://xinghuo.xfyun.cn/sparkapi
 docs_url: https://www.xfyun.cn/doc/spark/Web.html
 source_urls:
 - https://xinghuo.xfyun.cn/sparkapi
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 科大讯飞旗下星火大模型，Spark Lite 模型永久免费开放，在语音、数学、教育等场景具备独特优势。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - generalv3.5
 - spark-lite
 slug: xfyun-spark
+last_checked: '2026-09-01'

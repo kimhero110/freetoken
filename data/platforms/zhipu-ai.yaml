@@ -14,7 +14,7 @@ register_url: https://open.bigmodel.cn/invite?icode=free
 docs_url: https://open.bigmodel.cn/dev/api
 source_urls:
 - https://open.bigmodel.cn/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 国内顶级大模型代表，GLM-4-Flash 宣布永久免费调用，国内访问极速且兼容 OpenAI 接口。
 tags:
@@ -29,3 +29,4 @@ free_models:
 - glm-4-flashx
 - glm-4-plus
 slug: zhipu-ai
+last_checked: '2026-09-01'

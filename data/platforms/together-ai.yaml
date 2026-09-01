@@ -14,7 +14,7 @@ register_url: https://api.together.ai/signup
 docs_url: https://docs.together.ai/
 source_urls:
 - https://together.ai/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 全球著名的开源 AI 算力与模型推理平台，新用户赠送  额度，支持 Llama 3、FLUX.1 及各类前沿研究模型。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
 - deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
 slug: together-ai
+last_checked: '2026-09-01'

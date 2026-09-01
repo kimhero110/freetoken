@@ -14,7 +14,7 @@ register_url: https://bailian.console.aliyun.com/
 docs_url: https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio
 source_urls:
 - https://help.aliyun.com/zh/model-studio/billing-for-model-studio/billing-overview
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 阿里云官方大模型服务平台，聚合千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。
 tags:
@@ -29,3 +29,4 @@ free_models:
 - qwen-plus
 - qwen-max
 slug: aliyun-bailian
+last_checked: '2026-09-01'

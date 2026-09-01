@@ -14,7 +14,7 @@ register_url: https://github.com/marketplace/models
 docs_url: https://docs.github.com/en/github-models
 source_urls:
 - https://docs.github.com/en/github-models/prototyping-with-ai-models
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 微软与 GitHub 推出的免费 AI Playground 接口，一个 GitHub Token 即可免费体验全球所有顶级闭源与开源模型。
 tags:
@@ -29,3 +29,4 @@ free_models:
 - Meta-Llama-3.1-70B-Instruct
 - Phi-3.5-mini-instruct
 slug: github-models
+last_checked: '2026-09-01'

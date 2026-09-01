@@ -14,7 +14,7 @@ register_url: https://app.hyperbolic.xyz/
 docs_url: https://docs.hyperbolic.xyz/
 source_urls:
 - https://hyperbolic.xyz/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 去中心化高性能 GPU 推理云，提供包含 DeepSeek-V3、Llama 3.3 在内的超多顶级开源模型免费推理 API。
 tags:
@@ -28,3 +28,4 @@ free_models:
 - meta-llama/Llama-3.3-70B-Instruct
 - deepseek-ai/DeepSeek-V3
 slug: hyperbolic
+last_checked: '2026-09-01'

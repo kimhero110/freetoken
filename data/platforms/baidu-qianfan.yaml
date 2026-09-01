@@ -14,7 +14,7 @@ register_url: https://console.bce.baidu.com/qianfan/ais/console/onlineService
 docs_url: https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html
 source_urls:
 - https://cloud.baidu.com/doc/WENXINWORKSHOP/s/hlrk4akp7
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 百度千帆大模型平台，ERNIE-Speed/Lite 系列全面永久免费开放，并提供大额新手代金券。
 tags:
@@ -28,3 +28,4 @@ free_models:
 - ernie-speed-128k
 - ernie-lite-8k
 slug: baidu-qianfan
+last_checked: '2026-09-01'

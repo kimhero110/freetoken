@@ -14,7 +14,7 @@ register_url: https://cloud.sambanova.ai/
 docs_url: https://docs.sambanova.ai/
 source_urls:
 - https://cloud.sambanova.ai/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 全球极速推理云代表之一，基于 Reconfigurable Dataflow 架构，提供顶级超高并发与极速响应的免费开源模型 API。
 tags:
@@ -28,3 +28,4 @@ free_models:
 - Qwen2.5-72B-Instruct
 - DeepSeek-R1-Distill-Llama-70B
 slug: sambanova
+last_checked: '2026-09-01'

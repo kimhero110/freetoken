@@ -14,14 +14,14 @@ register_url: https://platform.deepseek.com/sign_up
 docs_url: https://api-docs.deepseek.com/zh-cn/
 source_urls:
 - https://api-docs.deepseek.com/zh-cn/quick_start/pricing
-last_verified: 2026-08-28
+last_verified: '2026-09-01'
 status: active
 intro: DeepSeek API提供多种模型，按量计费，价格透明，支持缓存命中优惠，适合各类AI应用开发。
 tags:
 - 国产大模型
 - 注册赠送
 - 限时额度
-last_checked: '2026-08-30'
+last_checked: '2026-09-01'
 api_base_url: https://api.deepseek.com
 free_models:
 - deepseek-chat

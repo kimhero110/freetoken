@@ -14,7 +14,7 @@ register_url: https://pollinations.ai/
 docs_url: https://github.com/pollinations/pollinations
 source_urls:
 - https://pollinations.ai/
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 开源社区的超级福利！完全无需注册、无需任何 API Key，直接发 HTTP 请求就能免费生成高清 AI 图像和文本。
 tags:
@@ -30,3 +30,4 @@ free_models:
 - flux
 - turbo
 slug: pollinations
+last_checked: '2026-09-01'

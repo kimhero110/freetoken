@@ -14,7 +14,7 @@ register_url: https://platform.minimaxi.com/register
 docs_url: https://platform.minimaxi.com/document/guides/chat-model/pro/api
 source_urls:
 - https://platform.minimaxi.com/document/price
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 国内顶尖多模态与拟人大模型厂商，新注册即送免费体验金，在角色扮演对话与超逼真语音生成领域领跑。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - abab6.5s-chat
 - abab6.5g-chat
 slug: minimax
+last_checked: '2026-09-01'

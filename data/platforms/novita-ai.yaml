@@ -14,7 +14,7 @@ register_url: https://novita.ai/
 docs_url: https://novita.ai/docs
 source_urls:
 - https://novita.ai/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 面向生成式 AI 开发者的一站式无服务器 GPU 平台，提供文生图、图像放大及大模型对话的免费试用额度。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - meta-llama/llama-3.3-70b-instruct
 - deepseek/deepseek-r1-distill-qwen-32b
 slug: novita-ai
+last_checked: '2026-09-01'

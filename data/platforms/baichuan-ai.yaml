@@ -14,7 +14,7 @@ register_url: https://platform.baichuan-ai.com/register
 docs_url: https://platform.baichuan-ai.com/docs/api
 source_urls:
 - https://platform.baichuan-ai.com/price
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 王小川创立的百川智能开放平台，新注册即可领取千万大额 Token 包，中文知识库与推理能力卓越。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - Baichuan4-Air
 - Baichuan4-Turbo
 slug: baichuan-ai
+last_checked: '2026-09-01'

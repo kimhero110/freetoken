@@ -15,7 +15,7 @@ docs_url: https://console.groq.com/docs/overview
 source_urls:
 - https://console.groq.com/docs/rate-limits
 - https://groq.com/pricing/
-last_verified: 2026-08-28
+last_verified: '2026-09-01'
 status: active
 intro: Groq是领先的AI推理云平台，提供快速、可靠的推理服务，支持大规模AI应用。
 tags:
@@ -23,7 +23,7 @@ tags:
 - 每日额度
 - 高速推理
 - 开源模型
-last_checked: '2026-08-30'
+last_checked: '2026-09-01'
 api_base_url: https://api.groq.com/openai/v1
 free_models:
 - llama-3.3-70b-versatile

@@ -14,7 +14,7 @@ register_url: https://studio.nebius.com/
 docs_url: https://docs.nebius.com/
 source_urls:
 - https://nebius.com/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 欧洲前沿的 AI 算力与模型推理平台，提供基于顶级硬件的推理服务，新注册开发者可享大额免费体验金。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - meta-llama/Meta-Llama-3.1-70B-Instruct
 - Qwen/Qwen2.5-Coder-32B-Instruct
 slug: nebius-ai
+last_checked: '2026-09-01'

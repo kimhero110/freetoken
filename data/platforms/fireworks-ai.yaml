@@ -14,7 +14,7 @@ register_url: https://fireworks.ai/login
 docs_url: https://docs.fireworks.ai/
 source_urls:
 - https://fireworks.ai/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 全球推理速度最快的模型托管平台之一，新注册用户赠送免费体验金，兼具极致性能与超高性价比。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - accounts/fireworks/models/llama-v3p3-70b-instruct
 - accounts/fireworks/models/qwen2p5-72b-instruct
 slug: fireworks-ai
+last_checked: '2026-09-01'

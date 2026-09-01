@@ -14,7 +14,7 @@ register_url: https://platform.lingyiwanwu.com/
 docs_url: https://platform.lingyiwanwu.com/docs
 source_urls:
 - https://platform.lingyiwanwu.com/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 零一万物开放平台，支持 Yi 系列超强开源与商业化大模型，新用户赠送大额代金券体验金。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - yi-lightning
 - yi-large-turbo
 slug: lingyiwanwu-01
+last_checked: '2026-09-01'

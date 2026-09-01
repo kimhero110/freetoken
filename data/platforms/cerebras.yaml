@@ -14,7 +14,7 @@ register_url: https://cloud.cerebras.ai/
 docs_url: https://inference-docs.cerebras.ai/
 source_urls:
 - https://cerebras.ai/pricing
-last_verified: '2026-08-31'
+last_verified: '2026-09-01'
 status: active
 intro: 基于晶圆级超级芯片的极速推理云，推理速度秒杀传统 GPU，每天提供 100 万免费 tokens 额度。
 tags:
@@ -27,3 +27,4 @@ free_models:
 - llama-3.3-70b
 - llama3.1-8b
 slug: cerebras
+last_checked: '2026-09-01'
