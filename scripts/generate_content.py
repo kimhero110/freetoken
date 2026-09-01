@@ -1900,10 +1900,13 @@ console.log(response.choices[0].message.content);`}</code></pre>
 
 
 def update_frontend_files():
-    (ROOT / "site" / "src" / "layouts" / "Base.astro").write_text(render_base_astro(), encoding="utf-8")
-    (ROOT / "site" / "src" / "pages" / "index.astro").write_text(render_index_astro(), encoding="utf-8")
-    (ROOT / "site" / "src" / "pages" / "platform" / "[slug].astro").write_text(render_slug_astro(), encoding="utf-8")
-    print("✅ [极简主义科技杂志风格 UI 模板] 成功更新 Base.astro, index.astro, [slug].astro！")
+    import subprocess
+    script_path = ROOT / "scripts" / "generate_i18n.py"
+    if not script_path.exists():
+        script_path = ROOT.parent / ".gemini" / "antigravity" / "brain" / "bf3efad4-9f27-4be8-aa5a-bb85d75a1b06" / "scratch" / "generate_i18n.py"
+    if script_path.exists():
+        subprocess.run([sys.executable, str(script_path)], check=True)
+    print("✅ [极简主义双语 UI 模板] 成功更新 Base.astro, 中英文主页与全量详情页！")
 
 
 # ==========================================
