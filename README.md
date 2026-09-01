@@ -1,122 +1,135 @@
-# FreeToken 免费Token信息聚合
+# FreeToken · 免费 Token 情报局
 
-聚合各大 LLM / 云平台（OpenAI、Anthropic、Google AI、DeepSeek、硅基流动 SiliconFlow、阿里云百炼、Groq 等）的**免费 API 额度 / 免费层级**信息，定时自动检查并标记待人工核实，以静态网站形式呈现。
+> **用免费 Token 做工具，也提醒自己保持思考。**
 
-- 主站域名：`freetokens.info`（备用：`freetokenlab.com`）
-- 仓库：https://github.com/kimhero110/freetoken
+[![Website](https://img.shields.io/badge/Website-freetokens.info-18181b.svg?style=flat-square)](https://freetokens.info)
+[![GitHub Stars](https://img.shields.io/github/stars/kimhero110/freetoken?style=flat-square&color=18181b)](https://github.com/kimhero110/freetoken)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+[![Platforms](https://img.shields.io/badge/Monitored_Platforms-29+-green.svg?style=flat-square)](https://freetokens.info/#products)
 
-## 架构
+聚合全球主流大模型（LLM）与云平台（Google Gemini、DeepSeek、硅基流动 SiliconFlow、Groq、阿里百炼、智谱 AI、Cerebras 等）的**免费 API 额度与白嫖配额**。全天候自动化探测雷达巡检，提供透明规则、风控避坑提示与 **10 秒开箱即用代码**。
 
-```
-┌──────────────────────── GitHub Actions（海外网络，每 6 小时）────────────────────────┐
-│                                                                                    │
-│  data/platforms/*.yaml ──► scripts/fetch_sources.py ──► .cache/hashes.json         │
-│   （平台条目 & 来源URL）      （抓取来源页 + 哈希变更检测）                                │
-│                                     │ 仅变更项                                       │
-│                                     ▼                                               │
-│                            scripts/extract.py                                       │
-│                     （DeepSeek API 结构化提取 + SEO 文案）                             │
-│                                     │                                               │
-│                                     ▼                                               │
-│                            scripts/build_data.py ──► site/src/data/platforms.json   │
-│                                                             │                        │
-│                                                             ▼                        │
-│                                              site/ （Astro 构建）──► site/dist/      │
-└───────────────────────────────────────────────────────┬─────────────────────────────┘
-                                                        │ push
-                          ┌─────────────────────────────▼───────────┐
-                          │  GitHub 仓库                             │
-                          │   main 分支：数据 + 代码（回写）           │
-                          │   deploy 分支：纯静态构建产物（dist）      │
-                          └─────────────────────────────┬───────────┘
-                                                        │ cron git pull（每 10 分钟）
-                          ┌─────────────────────────────▼───────────┐
-                          │  腾讯云境内服务器（2C/2G/40G）             │
-                          │   Nginx 托管 /var/www/freetoken           │
-                          └─────────────────────────────────────────┘
-```
+---
 
-## 快速开始
+## 🧭 四个长期坐标
 
-### 1. 推送本骨架到仓库
+* **01 AI 引导未来 (INTELLIGENCE COMPASS)**：研究模型、思维与协作范式，在技术狂潮中保持敏锐的独立判断力与人机共生边界。
+* **02 Token 就是能源 (TOKEN AS ENERGY)**：算力的流动即是价值的流动。掌握充沛且低成本的 Token，就是掌握数字工厂的能源自主权。
+* **03 世界代码化 (CODIFIED REALITY)**：把研究框架、业务逻辑与工作流沉淀为代码，用自动化与接口化杠杆放大个体的生产力半径。
+* **04 工具开源化 (OPEN-SOURCE TOOLS)**：拥抱开放权重、开源协议与公共基础设施，让技术的主权与自由永远留在构建者手里。
 
-```bash
+---
+
+## ⚡ 核心功能与特性
+
+1. **29+ 主流平台全量收录**：覆盖 Google Gemini（每日 1500 次）、硅基流动（赠送 2000 万 Tokens）、Groq（300+ T/s 极速推理）、DeepSeek、智谱 GLM、GMI Cloud（限时 20 亿）等；
+2. **实时雷达监控**：秒级动态倒计时巡检，展示最新核验时间与可用状态；
+3. **真实 OpenAI 兼容端点**：每个平台详情页提供其真实的官方专属 Base URL、免费模型代号与 Python / cURL / JavaScript 10 秒接入代码；
+4. **工具实践直达**：原生适配 **OpenCode Interpreter**、**Cherry Studio**、**Chatbox**、**Cline**、**Cursor** 及 **One API / New API** 聚合路由；
+5. **极速轻量架构**：基于 Astro 极简主义科技杂志排版，全站 WebP 艺术画资产，毫秒级秒开，全量托管于 **Cloudflare Anycast 全球边缘网络**。
+
+---
+
+## 🏗️ 系统架构
+
+`
+┌──────────────────────── 全天候自动化探测与内容流水线 ────────────────────────┐
+│                                                                                │
+│  data/platforms/*.yaml ──► scripts/fetch_sources.py ──► .cache/hashes.json     │
+│   （29+ 平台与来源 URL）      （抓取来源页 + 哈希变更检测）                            │
+│                                     │ 仅变更项                                   │
+│                                     ▼                                           │
+│                            scripts/extract.py                                   │
+│                     （LLM 结构化提取 + 校验规则提炼）                             │
+│                                     │                                           │
+│                                     ▼                                           │
+│                            scripts/generate_content.py                          │
+│                     （生成公众号/小红书/SVG/Sitemap/Astro 数据）                  │
+│                                     │                                           │
+│                                     ▼                                           │
+│                            site/ （Astro 静态编译）──► site/dist/                │
+└───────────────────────────────────────────────────┬────────────────────────────┘
+                                                    │ push / deploy
+                      ┌─────────────────────────────▼───────────────────────────┐
+                      │  全球 CDN 边缘分发                                       │
+                      │   - GitHub Pages / deploy 分支                           │
+                      │   - Cloudflare Pages 全球 Anycast 边缘网络 (reetokens.info) │
+                      └─────────────────────────────────────────────────────────┘
+`
+
+---
+
+## 🛠️ 如何在常用 AI 工具中接入本站资源？
+
+本站收录的大模型平台绝大多数均**原生兼容 OpenAI 标准接口协议**。无论在何种工具或项目中使用，只需要配置以下 **3 个参数**：
+
+| 参数名称 | 说明 | 示例 |
+| :--- | :--- | :--- |
+| **Base URL** | 详情页中提供的平台专属接口基础地址 | https://api.siliconflow.cn/v1 |
+| **API Key** | 在平台注册并创建的密钥凭证 | sk-xxxxxx |
+| **Model Name** | 平台支持的免费模型代号 | Qwen/Qwen2.5-7B-Instruct |
+
+### 1. OpenCode / Cursor / Cline (AI 编程与终端自动化)
+在客户端设置 ➔ **Custom OpenAI Provider** 中，填入对应平台的 Base URL 与 API Key，即可零成本驱动终端代码编写与自动化重构。
+
+### 2. Cherry Studio / Chatbox / NextChat (多端对话客户端)
+在设置 ➔ **自定义服务商** 中，填入对应平台的 API 地址与 Key，选择免费模型即可秒级开聊。
+
+### 3. One API / New API (聚合网关与负载均衡)
+强烈建议将本站 29 家平台的免费 Key 统一挂载至聚合网关，开启多渠道负载均衡与自动轮询，实现无上限并发调用。
+
+---
+
+## 💻 本地开发与构建
+
+### 环境要求
+- Node.js >= 18
+- Python >= 3.10
+
+### 1. 克隆项目
+`ash
 git clone https://github.com/kimhero110/freetoken.git
-# 将本项目所有文件拷入仓库目录后提交推送
-git add -A && git commit -m "init: 项目骨架" && git push origin main
-```
+cd freetoken
+`
 
-### 2. 配置 GitHub
-
-1. 仓库 **Settings → Secrets and variables → Actions → New repository secret**，添加以下 API Key 中的**至少一个**（支持多模型自动降级 Fallback）：
-   - `DEEPSEEK_API_KEY`：DeepSeek 开放平台（platform.deepseek.com）API Key（CI 任务已自动对齐在每日 00:30~08:30 官方 5 折优惠波谷期运行）
-   - `SILICONFLOW_API_KEY`（可选）：硅基流动 API Key
-   - `MOONSHOT_API_KEY`（可选）：Kimi / Moonshot 开放平台 API Key
-   - `DASHSCOPE_API_KEY`（可选）：阿里百炼 DashScope API Key
-   - `LLM_API_KEY` / `LLM_BASE_URL` / `LLM_MODEL`（可选）：任何自定义 OpenAI 兼容接口
-2. **Settings → Actions → General → Workflow permissions**，勾选 *Read and write permissions*（回写分支需要）
-3. 在 **Actions** 页面启用 workflow，可手动触发一次验证
-
-### 3. 首次生成 package-lock.json
-
-workflow 使用 `npm ci`，需要先提交一次 lockfile：
-
-```bash
-cd site
-npm install        # 生成 package-lock.json
-git add package-lock.json && git commit -m "chore: lockfile" && git push
-```
-
-### 4. 腾讯云服务器部署（Nginx）
-
-```bash
-# 安装 Nginx 后，参考 deploy/nginx.conf.example 创建站点配置
-sudo cp deploy/nginx.conf.example /etc/nginx/conf.d/freetoken.conf
-# 修改 server_name 为你的已备案域名，然后重载
-sudo nginx -t && sudo systemctl reload nginx
-
-# 首次克隆 deploy 分支（需等 GitHub Actions 首次构建推送后）
-sudo git clone --branch deploy --single-branch \
-  https://github.com/kimhero110/freetoken.git /var/www/freetoken
-
-# 配置定时拉取
-sudo cp deploy/pull.sh /opt/freetoken/pull.sh && sudo chmod +x /opt/freetoken/pull.sh
-# crontab -e 添加：
-# */10 * * * * /opt/freetoken/pull.sh >> /var/log/freetoken-pull.log 2>&1
-```
-
-> 若服务器拉取私有仓库，请配置 Deploy Key 或改用 HTTPS token。
-
-### 5. ICP 备案提醒
-
-- 境内服务器通过 80/443 端口对外提供**域名访问**前，必须完成 ICP 备案；
-- 备案完成后记得在 `site/src/layouts/Base.astro` 页脚添加备案号；
-- HTTPS 证书（Let's Encrypt / certbot）建议在备案通过后配置，示例见 `deploy/nginx.conf.example` 注释段。
-
-## 本地开发
-
-```bash
-# 数据流水线
+### 2. 运行数据与内容流水线
+`ash
+# 安装 Python 依赖
 pip install -r scripts/requirements.txt
-python scripts/fetch_sources.py
-python scripts/extract.py --dry-run     # 无 API Key 时可先干跑
-python scripts/build_data.py
 
-# 站点预览
-cd site && npm install && npm run dev
-```
+# 生成最新数据、SEO 资产与 Astro 模板
+python scripts/generate_content.py
+`
 
-## 添加新平台
+### 3. 本地启动前端预览
+`ash
+cd site
+npm install
+npm run dev
+# 打开浏览器访问 http://localhost:4321
+`
 
-在 `data/platforms/` 下新建 `<slug>.yaml`（参考现有 3 个示例），填写 `source_urls` 后提交即可，下一轮定时任务会自动抓取、提取并上线页面。
+### 4. 生产编译
+`ash
+npm run build
+# 产物输出至 site/dist
+`
 
-## 目录说明
+---
 
-```
-data/platforms/      平台条目 YAML（人工维护 + AI 提取回写）
-scripts/             抓取 / 提取 / 数据合并脚本（Python 3.11）
-site/                Astro 静态站点源码
-deploy/              服务器端 Nginx 配置示例与拉取脚本
-.github/workflows/   定时更新与构建 workflow
-.cache/              抓取哈希缓存（CI 回写，勿手工编辑）
-```
+## 🤝 贡献与推荐新免费源
+
+如果你发现了新的大模型免费额度、限时赠送活动或算力平台，欢迎为社区添砖加瓦：
+
+1. **提交 Issue**：直接使用 [推荐新免费平台 Issue 模板](https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml) 提交；
+2. **提交 Pull Request**：
+   - 在 data/platforms/ 下新建 <slug>.yaml；
+   - 填写平台名称、官网、pi_base_url、ree_quota 及验证来源 source_urls；
+   - 运行 python scripts/generate_content.py 编译验证；
+   - 发起 PR，自动化 CI 会自动进行核验与合并。
+
+---
+
+## 📄 开源协议
+
+本项目采用 [MIT License](LICENSE) 开源。
