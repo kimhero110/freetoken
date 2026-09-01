@@ -25,6 +25,9 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
   <meta name="keywords" content="免费Token, 免费大模型API, 免费LLM, Gemini免费API, DeepSeek免费API, 白嫖API, OpenAI接口免费, 免费算力, AI API Faucet" />
   <link rel="canonical" href={canonicalURL} />
 
+  <!-- Preload LCP WebP Mascot Image -->
+  <link rel="preload" as="image" href="/images/hero-mascot.webp" type="image/webp" />
+
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content={canonicalURL} />
@@ -71,8 +74,6 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       --accent-green-border: #bbf7d0;
       --accent-orange-bg: #fffaf0;
       --accent-orange-border: #feebc8;
-      --accent-blue-bg: #f0f7ff;
-      --accent-blue-border: #cce3fe;
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
@@ -93,20 +94,20 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
     /* 顶部导航 (Editorial Nav) */
     .site-header {
       border-bottom: 1px solid var(--card-border);
-      background: rgba(252, 251, 249, 0.94);
+      background: rgba(252, 251, 249, 0.95);
       backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
     }
     .header-inner {
-      height: 68px;
+      height: 66px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .brand {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--text);
       display: flex;
@@ -126,7 +127,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 18px;
       font-size: 14px;
       color: var(--text-muted);
     }
@@ -136,23 +137,62 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
     .nav-links a:hover {
       color: var(--text);
     }
+
+    /* 优雅温润的公众号按钮 */
     .nav-btn-wechat {
-      background: var(--text);
-      color: #ffffff;
-      border: none;
+      background: #faf8f5;
+      border: 1px solid #e2ded5;
+      color: #191816;
       font-size: 13px;
       font-weight: 600;
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: 8px;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.15s;
+      gap: 8px;
+      transition: all 0.15s ease;
     }
     .nav-btn-wechat:hover {
-      background: #000000;
+      background: #f2eee3;
+      border-color: var(--accent-warm);
+      color: var(--accent-warm);
       transform: translateY(-1px);
+    }
+    .live-pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: #15803d;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 2px rgba(21, 128, 61, 0.2);
+    }
+
+    .nav-github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+    .nav-github-link:hover {
+      border-color: var(--card-border-hover);
+      background: #ffffff;
+    }
+    .nav-star-pill {
+      font-size: 11px;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
     }
 
     /* 页脚 */
@@ -259,11 +299,18 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
         <span class="brand-tag">FreeTokens.info</span>
       </a>
       <div class="nav-links">
-        <a href="/#products">资源目录</a>
-        <a href="/#focus">四个坐标</a>
-        <a href="/#community">关于与矩阵</a>
-        <button class="nav-btn-wechat" id="btn-open-wechat">📱 关注公众号</button>
-        <a href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="/#products">🔥 免费资源库</a>
+        <a href="/#focus">🧭 四个坐标</a>
+        <a href="/#community">✨ 关于与矩阵</a>
+        <button class="nav-btn-wechat" id="btn-open-wechat">
+          <span class="live-pulse-dot"></span>
+          <span>关注公众号</span>
+        </button>
+        <a href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener" class="nav-github-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+          <span>GitHub</span>
+          <span class="nav-star-pill">★ Star</span>
+        </a>
       </div>
     </div>
   </header>
@@ -283,7 +330,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
           <a href="/#products">资源目录</a>
           <a href="/sitemap.xml" target="_blank">Sitemap</a>
           <a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank">➕ 推荐新源</a>
-          <a href="https://github.com/kimhero110/freetoken" target="_blank">开源仓库</a>
+          <a href="https://github.com/kimhero110/freetoken" target="_blank">GitHub 开源库</a>
         </div>
       </div>
       <div class="footer-bottom">

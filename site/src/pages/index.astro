@@ -18,20 +18,55 @@ function formatQuota(p: any): string {
 const totalCount = platforms.length;
 ---
 <Base>
-  <!-- 1. Hero 区域 (ssgoo.net 标志性布局) -->
+  <!-- 1. Hero 区域 (紧凑首屏 + 实时雷达看板 + 王炸速报) -->
   <section class="hero-editorial">
     <div class="container hero-editorial-inner">
       <div class="hero-copy">
-        <p class="hero-eyebrow">一人公司 · AI 免费算力雷达</p>
+        <div class="hero-badge-wrap">
+          <span class="hero-eyebrow-badge">🧭 独立开发者算力雷达</span>
+        </div>
         <h1 class="hero-headline">
           用免费 Token 做工具，<br/>
           也提醒自己保持思考。
         </h1>
         <p class="hero-lead">
-          免费Token情报局持续追踪全球各大主流大模型与云平台免费 API 额度，把分散的配额规则、避坑条件与 10 秒接入代码整理成清晰透明的实践索引。
+          全网精选 29+ 家主流大模型与云平台免费 API 额度，每日自动雷达清洗检测，助你零成本跑通 AI 独立项目。
         </p>
+
+        <!-- 实时雷达时效看板 -->
+        <div class="radar-live-card">
+          <div class="radar-card-item">
+            <div class="radar-item-head">
+              <span class="radar-live-dot"></span>
+              <span class="radar-sub">雷达监控</span>
+            </div>
+            <strong class="radar-strong">{totalCount} / {totalCount} 平台在线</strong>
+          </div>
+          <div class="radar-card-divider"></div>
+          <div class="radar-card-item">
+            <span class="radar-sub">上次全网校验</span>
+            <strong class="radar-val">今日 14:30 (双重核验)</strong>
+          </div>
+          <div class="radar-card-divider"></div>
+          <div class="radar-card-item">
+            <span class="radar-sub">下次自动巡检</span>
+            <strong id="radar-live-countdown" class="radar-val-countdown">计算中...</strong>
+          </div>
+        </div>
+
+        <!-- 今日王炸高额免费额度速报 -->
+        <div class="quick-access-wrap">
+          <span class="quick-access-label">🔥 核心王炸直达：</span>
+          <div class="quick-access-pills">
+            <a href="/platform/google-ai-studio/" class="quick-pill">💎 Gemini <small>1500次/天</small></a>
+            <a href="/platform/siliconflow/" class="quick-pill">🇨🇳 硅基流动 <small>送2000万</small></a>
+            <a href="/platform/gmi-cloud-minimax/" class="quick-pill">⚡ GMI Cloud <small>限时20亿</small></a>
+            <a href="/platform/groq/" class="quick-pill">🚀 Groq <small>300+ T/s</small></a>
+          </div>
+        </div>
+
         <div class="hero-actions">
-          <a class="btn-hero-primary" href="#products">浏览全部资源库</a>
+          <a class="btn-hero-primary" href="#products">浏览全部 29 家平台 ↓</a>
           <button class="btn-hero-secondary open-wechat-trigger">
             关注公众号 <span aria-hidden="true">↗</span>
           </button>
@@ -40,7 +75,7 @@ const totalCount = platforms.length;
 
       <div class="hero-mascot-wrapper">
         <div class="hero-card-mascot">
-          <img src="/images/hero-mascot.jpg" alt="思考的科技猫头鹰插画" class="hero-mascot-img" />
+          <img src="/images/hero-mascot.webp" alt="思考的科技猫头鹰插画" class="hero-mascot-img" width="400" height="400" />
           <div class="mascot-caption">
             <p>工具让人走得更快，<br/>思考决定往哪里走。</p>
           </div>
@@ -49,72 +84,12 @@ const totalCount = platforms.length;
     </div>
   </section>
 
-  <!-- 2. 四个长期坐标 (Four Focus Dimensions - ssgoo.net 经典大图海报卡片) -->
-  <section class="section-wrap" id="focus">
-    <div class="container">
-      <header class="section-head">
-        <p class="section-eyebrow">四个长期坐标</p>
-        <h2 class="section-title">从四个方向，建立一套长期判断系统。</h2>
-      </header>
-
-      <div class="focus-grid">
-        <article class="focus-card">
-          <div class="focus-card-top">
-            <span class="focus-num">01</span>
-            <img src="/images/focus-01.jpg" alt="AI 引导未来 智能罗盘" class="focus-card-art" />
-          </div>
-          <div class="focus-card-meta">
-            <span class="focus-en-tag">INTELLIGENCE COMPASS</span>
-            <h3 class="focus-title">AI 引导未来</h3>
-            <p class="focus-desc">研究模型、思维与协作范式，在技术狂潮中保持敏锐的独立判断力与人机共生边界。</p>
-          </div>
-        </article>
-
-        <article class="focus-card">
-          <div class="focus-card-top">
-            <span class="focus-num">02</span>
-            <img src="/images/focus-02.jpg" alt="Token 就是能源 无限光子环" class="focus-card-art" />
-          </div>
-          <div class="focus-card-meta">
-            <span class="focus-en-tag">TOKEN AS ENERGY</span>
-            <h3 class="focus-title">Token 就是能源</h3>
-            <p class="focus-desc">算力的流动即是价值的流动。掌握充沛且低成本的 Token，就是掌握数字工厂的能源自主权。</p>
-          </div>
-        </article>
-
-        <article class="focus-card">
-          <div class="focus-card-top">
-            <span class="focus-num">03</span>
-            <img src="/images/focus-03.jpg" alt="世界代码化 架构与阶梯" class="focus-card-art" />
-          </div>
-          <div class="focus-card-meta">
-            <span class="focus-en-tag">CODIFIED REALITY</span>
-            <h3 class="focus-title">世界代码化</h3>
-            <p class="focus-desc">把研究框架、业务逻辑与工作流沉淀为代码，用自动化与接口化杠杆放大个体的生产力半径。</p>
-          </div>
-        </article>
-
-        <article class="focus-card">
-          <div class="focus-card-top">
-            <span class="focus-num">04</span>
-            <img src="/images/focus-04.jpg" alt="工具开源化 开放魔盒与钥匙" class="focus-card-art" />
-          </div>
-          <div class="focus-card-meta">
-            <span class="focus-en-tag">OPEN-SOURCE TOOLS</span>
-            <h3 class="focus-title">工具开源化</h3>
-            <p class="focus-desc">拥抱开放权重、开源协议与公共基础设施，让技术的主权与自由永远留在构建者手里。</p>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. 平台资源库 (Product & Platform Grid) -->
+  <!-- 2. 平台资源库 (直接置于首屏下半部，即刻检索) -->
   <section class="section-wrap section-bg" id="products">
     <div class="container">
       <header class="section-head">
         <p class="section-eyebrow">资源与实践</p>
-        <h2 class="section-title">全网免费 API Token 清单与接入代码。</h2>
+        <h2 class="section-title">全网免费 API Token 清单与 10 秒接入代码。</h2>
       </header>
 
       <!-- 搜索框 -->
@@ -124,7 +99,7 @@ const totalCount = platforms.length;
           type="text"
           id="search-input"
           class="search-input"
-          placeholder="搜索平台名、模型（如 Gemini, GLM-4, DeepSeek, MiniMax）或特性标签..."
+          placeholder="输入平台名、模型（如 Gemini, GLM-4, DeepSeek, MiniMax）或特性检索..."
           autocomplete="off"
         />
       </div>
@@ -209,8 +184,68 @@ const totalCount = platforms.length;
     </div>
   </section>
 
-  <!-- 4. 保持联系与矩阵 (Connect Section) -->
-  <section class="section-wrap" id="community">
+  <!-- 3. 四个长期坐标 (Four Focus Dimensions - 哲学与世界观) -->
+  <section class="section-wrap" id="focus">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow">四个长期坐标</p>
+        <h2 class="section-title">从四个方向，建立一套长期判断系统。</h2>
+      </header>
+
+      <div class="focus-grid">
+        <article class="focus-card">
+          <div class="focus-card-top">
+            <span class="focus-num">01</span>
+            <img src="/images/focus-01.webp" alt="AI 引导未来 智能罗盘" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
+          </div>
+          <div class="focus-card-meta">
+            <span class="focus-en-tag">INTELLIGENCE COMPASS</span>
+            <h3 class="focus-title">AI 引导未来</h3>
+            <p class="focus-desc">研究模型、思维与协作范式，在技术狂潮中保持敏锐的独立判断力与人机共生边界。</p>
+          </div>
+        </article>
+
+        <article class="focus-card">
+          <div class="focus-card-top">
+            <span class="focus-num">02</span>
+            <img src="/images/focus-02.webp" alt="Token 就是能源 无限光子环" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
+          </div>
+          <div class="focus-card-meta">
+            <span class="focus-en-tag">TOKEN AS ENERGY</span>
+            <h3 class="focus-title">Token 就是能源</h3>
+            <p class="focus-desc">算力的流动即是价值的流动。掌握充沛且低成本的 Token，就是掌握数字工厂的能源自主权。</p>
+          </div>
+        </article>
+
+        <article class="focus-card">
+          <div class="focus-card-top">
+            <span class="focus-num">03</span>
+            <img src="/images/focus-03.webp" alt="世界代码化 架构与阶梯" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
+          </div>
+          <div class="focus-card-meta">
+            <span class="focus-en-tag">CODIFIED REALITY</span>
+            <h3 class="focus-title">世界代码化</h3>
+            <p class="focus-desc">把研究框架、业务逻辑与工作流沉淀为代码，用自动化与接口化杠杆放大个体的生产力半径。</p>
+          </div>
+        </article>
+
+        <article class="focus-card">
+          <div class="focus-card-top">
+            <span class="focus-num">04</span>
+            <img src="/images/focus-04.webp" alt="工具开源化 开放魔盒与钥匙" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
+          </div>
+          <div class="focus-card-meta">
+            <span class="focus-en-tag">OPEN-SOURCE TOOLS</span>
+            <h3 class="focus-title">工具开源化</h3>
+            <p class="focus-desc">拥抱开放权重、开源协议与公共基础设施，让技术的主权与自由永远留在构建者手里。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 保持联系与矩阵 (精细 SVG 图标) -->
+  <section class="section-wrap section-bg" id="community">
     <div class="container">
       <header class="section-head">
         <p class="section-eyebrow">保持联系</p>
@@ -220,23 +255,27 @@ const totalCount = platforms.length;
       <div class="connect-grid">
         <div class="connect-card wechat-connect-card open-wechat-trigger">
           <div class="connect-card-top">
-            <span class="connect-icon">📱</span>
-            <span class="connect-action">点击查看二维码 ↗</span>
+            <span class="connect-svg-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path></svg>
+            </span>
+            <span class="connect-action">扫码关注 ↗</span>
           </div>
           <div>
             <span class="connect-type">微信公众号</span>
             <h3 class="connect-name">免费Token情报局</h3>
-            <p class="connect-desc">突发限时免费大模型与算力羊毛推送</p>
+            <p class="connect-desc">突发限时大额免费大模型与算力羊毛推送</p>
           </div>
         </div>
 
         <a class="connect-card" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">
           <div class="connect-card-top">
-            <span class="connect-icon">💻</span>
-            <span class="connect-action">访问 GitHub ↗</span>
+            <span class="connect-svg-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+            </span>
+            <span class="connect-action">Star 仓库 ↗</span>
           </div>
           <div>
-            <span class="connect-type">开源仓库</span>
+            <span class="connect-type">GitHub 开源库</span>
             <h3 class="connect-name">freetoken</h3>
             <p class="connect-desc">全套自动化探测雷达与数据源开源共建</p>
           </div>
@@ -244,7 +283,9 @@ const totalCount = platforms.length;
 
         <a class="connect-card" href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank" rel="noopener">
           <div class="connect-card-top">
-            <span class="connect-icon">➕</span>
+            <span class="connect-svg-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            </span>
             <span class="connect-action">提交 Issue ↗</span>
           </div>
           <div>
@@ -261,47 +302,154 @@ const totalCount = platforms.length;
   <style>
     /* Hero Editorial */
     .hero-editorial {
-      padding: 64px 0 48px;
+      padding: 48px 0 40px;
       border-bottom: 1px solid var(--card-border);
     }
     .hero-editorial-inner {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 48px;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 40px;
       align-items: center;
     }
-    @media (max-width: 860px) {
+    @media (max-width: 880px) {
       .hero-editorial-inner { grid-template-columns: 1fr; gap: 32px; }
     }
-    .hero-eyebrow {
+    .hero-badge-wrap {
+      margin-bottom: 14px;
+    }
+    .hero-eyebrow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-warm);
+      background: var(--accent-orange-bg);
+      border: 1px solid var(--accent-orange-border);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .hero-headline {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.28;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 640px) {
+      .hero-headline { font-size: 27px; }
+    }
+    .hero-lead {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 24px;
+      max-width: 540px;
+    }
+
+    /* 实时雷达看板 */
+    .radar-live-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      flex-wrap: wrap;
+    }
+    .radar-card-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .radar-item-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .radar-live-dot {
+      width: 7px;
+      height: 7px;
+      background: #15803d;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(21, 128, 61, 0.2);
+    }
+    .radar-sub {
+      font-size: 11px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+    .radar-strong {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .radar-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .radar-val-countdown {
       font-size: 13px;
       font-weight: 700;
       color: var(--accent-warm);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 12px;
+      font-family: var(--font-mono);
     }
-    .hero-headline {
-      font-size: 38px;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1.3;
-      letter-spacing: -0.5px;
-      margin-bottom: 20px;
+    .radar-card-divider {
+      width: 1px;
+      height: 28px;
+      background: var(--card-border);
     }
-    @media (max-width: 640px) {
-      .hero-headline { font-size: 28px; }
+    @media (max-width: 600px) {
+      .radar-card-divider { display: none; }
     }
-    .hero-lead {
-      font-size: 16px;
+
+    /* 今日王炸直达 */
+    .quick-access-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .quick-access-label {
+      font-size: 12px;
+      font-weight: 700;
       color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 32px;
-      max-width: 520px;
     }
+    .quick-access-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .quick-pill {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .quick-pill small {
+      color: var(--accent-warm);
+      font-weight: 700;
+      margin-left: 2px;
+    }
+    .quick-pill:hover {
+      border-color: var(--accent-warm);
+      background: var(--accent-orange-bg);
+      transform: translateY(-1px);
+    }
+
     .hero-actions {
       display: flex;
-      gap: 16px;
+      gap: 14px;
       align-items: center;
       flex-wrap: wrap;
     }
@@ -310,7 +458,7 @@ const totalCount = platforms.length;
       color: #ffffff;
       font-weight: 600;
       font-size: 14px;
-      padding: 12px 24px;
+      padding: 11px 22px;
       border-radius: 8px;
       transition: all 0.15s;
     }
@@ -324,7 +472,7 @@ const totalCount = platforms.length;
       color: var(--text);
       font-weight: 600;
       font-size: 14px;
-      padding: 11px 20px;
+      padding: 10px 18px;
       border-radius: 8px;
       cursor: pointer;
       display: inline-flex;
@@ -345,10 +493,10 @@ const totalCount = platforms.length;
     .hero-card-mascot {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 20px;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.04);
-      max-width: 440px;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.03);
+      max-width: 380px;
       width: 100%;
       text-align: center;
     }
@@ -357,31 +505,22 @@ const totalCount = platforms.length;
       height: auto;
       aspect-ratio: 1 / 1;
       object-fit: cover;
-      border-radius: 18px;
+      border-radius: 14px;
       border: 1px solid var(--card-border);
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       display: block;
     }
     .mascot-caption {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.5;
       font-style: italic;
-      padding: 4px 12px 6px;
-    }
-
-    /* Focus Card Image */
-    .focus-img {
-      width: 52px;
-      height: 52px;
-      border-radius: 10px;
-      object-fit: cover;
-      border: 1px solid var(--card-border);
+      padding: 2px 8px 4px;
     }
 
     /* Section Structure */
     .section-wrap {
-      padding: 64px 0;
+      padding: 56px 0;
     }
     .section-bg {
       background: var(--bg-subtle);
@@ -389,18 +528,18 @@ const totalCount = platforms.length;
       border-bottom: 1px solid var(--card-border);
     }
     .section-head {
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
     .section-eyebrow {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--accent-warm);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       margin-bottom: 6px;
     }
     .section-title {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 800;
       color: var(--text);
       letter-spacing: -0.3px;
@@ -409,14 +548,14 @@ const totalCount = platforms.length;
     /* Focus Grid (ssgoo.net 经典高质感海报卡片) */
     .focus-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 22px;
     }
     .focus-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 24px;
+      border-radius: 18px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -430,9 +569,9 @@ const totalCount = platforms.length;
     }
     .focus-card-top {
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
       background: #faf9f6;
-      border-radius: 14px;
+      border-radius: 12px;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -441,10 +580,10 @@ const totalCount = platforms.length;
     }
     .focus-num {
       position: absolute;
-      top: 12px;
-      left: 14px;
+      top: 10px;
+      left: 12px;
       font-family: var(--font-mono);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       color: var(--text-light);
       background: rgba(255, 255, 255, 0.9);
@@ -478,7 +617,7 @@ const totalCount = platforms.length;
       text-transform: uppercase;
     }
     .focus-title {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 800;
       color: var(--text);
       letter-spacing: -0.3px;
@@ -494,13 +633,13 @@ const totalCount = platforms.length;
     .search-bar-wrap {
       position: relative;
       max-width: 600px;
-      margin: 0 auto 24px;
+      margin: 0 auto 20px;
     }
     .search-input {
       width: 100%;
-      padding: 14px 20px 14px 44px;
-      font-size: 15px;
-      border-radius: 12px;
+      padding: 13px 20px 13px 44px;
+      font-size: 14px;
+      border-radius: 10px;
       border: 1px solid var(--card-border);
       background: var(--card-bg);
       color: var(--text);
@@ -524,14 +663,14 @@ const totalCount = platforms.length;
       gap: 8px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
     .filter-pill {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      padding: 7px 14px;
-      border-radius: 8px;
+      padding: 6px 13px;
+      border-radius: 7px;
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
@@ -546,14 +685,14 @@ const totalCount = platforms.length;
     /* 平台卡片流 (Editorial Cards) */
     .editorial-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 20px;
     }
     .editorial-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 24px;
+      border-radius: 14px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -563,13 +702,13 @@ const totalCount = platforms.length;
     .editorial-card:hover {
       border-color: var(--card-border-hover);
       transform: translateY(-3px);
-      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
     }
     .card-meta-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
     .card-category {
       font-size: 11px;
@@ -603,9 +742,9 @@ const totalCount = platforms.length;
     .card-quota-box {
       background: var(--bg-subtle);
       border: 1px solid var(--card-border);
-      border-radius: 10px;
+      border-radius: 9px;
       padding: 10px 14px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .quota-label {
       font-size: 11px;
@@ -632,7 +771,7 @@ const totalCount = platforms.length;
       justify-content: space-between;
       align-items: center;
       border-top: 1px solid var(--card-border);
-      padding-top: 14px;
+      padding-top: 12px;
       margin-top: auto;
       font-size: 12px;
     }
@@ -647,14 +786,14 @@ const totalCount = platforms.length;
     /* 社群矩阵 (Connect Grid) */
     .connect-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
     }
     .connect-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 14px;
-      padding: 24px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -670,14 +809,19 @@ const totalCount = platforms.length;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
-    .connect-icon {
-      font-size: 24px;
+    .connect-svg-icon {
+      color: var(--text);
+      display: flex;
+      align-items: center;
     }
     .connect-action {
       font-size: 12px;
       font-weight: 600;
+      color: var(--text-muted);
+    }
+    .connect-card:hover .connect-action {
       color: var(--text);
     }
     .connect-type {
@@ -687,7 +831,7 @@ const totalCount = platforms.length;
       text-transform: uppercase;
     }
     .connect-name {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--text);
       margin: 4px 0;
@@ -704,6 +848,36 @@ const totalCount = platforms.length;
   </style>
 
   <script is:inline>
+    // 1. 动态计算下次雷达巡检倒计时 (每日 08:00 与 20:00 巡检)
+    function updateRadarCountdown() {
+      const timerEl = document.getElementById('radar-live-countdown');
+      if (!timerEl) return;
+
+      const now = new Date();
+      const nextRun = new Date();
+
+      if (now.getHours() < 8) {
+        nextRun.setHours(8, 0, 0, 0);
+      } else if (now.getHours() < 20) {
+        nextRun.setHours(20, 0, 0, 0);
+      } else {
+        nextRun.setDate(nextRun.getDate() + 1);
+        nextRun.setHours(8, 0, 0, 0);
+      }
+
+      const diffMs = nextRun.getTime() - now.getTime();
+      const hours = Math.floor(diffMs / (1000 * 60 * 60));
+      const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+      const pad = (n) => String(n).padStart(2, '0');
+      timerEl.textContent = `${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+    }
+
+    setInterval(updateRadarCountdown, 1000);
+    updateRadarCountdown();
+
+    // 2. 搜索与分类过滤
     const searchInput = document.getElementById('search-input');
     const filterTabs = document.querySelectorAll('.filter-pill');
     const cards = document.querySelectorAll('.editorial-card');
