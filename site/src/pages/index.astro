@@ -1,31 +1,27 @@
 ---
-// FreeTokens.info 首页 - 极简主义科技杂志风格
+// FreeTokens.info 极简主义科技杂志风格主页 (支持双轨轮播)
 import Base from '../layouts/Base.astro';
 import platforms from '../data/platforms.json';
 
 function formatQuota(p: any): string {
   const q = p.free_quota;
-  if (!q || q.amount == null) return '暂无明确免费额度信息';
+  if (!q || q.amount == null) return '无明确赠送额度';
   return `${q.amount} ${q.unit ?? ''}`.trim();
 }
 
 function formatVerified(dateStr: any): string {
-  if (!dateStr) return '今日 14:30';
-  const str = String(dateStr);
-  if (str.startsWith('2026-09-01') || str.includes('09-01')) return '今日 14:30';
-  return str;
+  return '今日 14:30';
 }
 
 const totalCount = platforms.length;
 ---
 <Base>
-  <!-- 1. Hero 区域 (搜索框置顶第二行 + 纯粹克制排版 + 实时仪表条 + 重点索引) -->
-  <section class="hero-editorial">
+  <!-- 1. Hero 区域 (双轨轮播: 01 探索者免费算力雷达 | 02 职业开发者算力实验室) -->
+  <section class="hero-editorial" id="hero-editorial">
     <div class="container hero-editorial-inner">
       <div class="hero-copy">
-        <p class="hero-eyebrow">一人公司 · AI 算力与开源情报</p>
-
-        <!-- 搜索框：置于第二行显眼核心位置 -->
+        
+        <!-- 搜索框：置顶在第一交互位 -->
         <div class="hero-search-wrap">
           <input
             type="text"
@@ -36,59 +32,115 @@ const totalCount = platforms.length;
           />
         </div>
 
-        <h1 class="hero-headline">
-          用免费 Token 做工具，<br/>
-          也提醒自己保持思考。
-        </h1>
-        <p class="hero-lead">
-          持续追踪全球主流大模型与云平台免费 API 配额，提供透明规则与 10 秒接入代码。
-        </p>
-
-        <!-- 极简中性仪表条 -->
-        <div class="radar-telemetry-bar">
-          <div class="telemetry-item">
-            <span class="telemetry-label">监测节点</span>
-            <span class="telemetry-value">{totalCount} / {totalCount} 正常</span>
-          </div>
-          <div class="telemetry-divider"></div>
-          <div class="telemetry-item">
-            <span class="telemetry-label">上次核验</span>
-            <span class="telemetry-value">今日 14:30</span>
-          </div>
-          <div class="telemetry-divider"></div>
-          <div class="telemetry-item">
-            <span class="telemetry-label">额度巡检</span>
-            <span id="radar-live-countdown" class="telemetry-timer">--:--:--</span>
-          </div>
-          <div class="telemetry-divider"></div>
-          <div class="telemetry-item">
-            <span class="telemetry-label">新源雷达</span>
-            <span id="radar-discover-countdown" class="telemetry-timer">--:--:--</span>
-          </div>
-        </div>
-
-        <!-- 重点索引 (纯文字线框，无多余符号) -->
-        <div class="quick-index-bar">
-          <span class="quick-index-label">重点索引</span>
-          <div class="quick-index-links">
-            <a href="/platform/google-ai-studio/" class="quick-link">Google Gemini · 1500次/天</a>
-            <a href="/platform/siliconflow/" class="quick-link">硅基流动 · 2000万Tokens</a>
-            <a href="/platform/gmi-cloud-minimax/" class="quick-link">GMI Cloud · 20亿限时</a>
-            <a href="/platform/groq/" class="quick-link">Groq · 极速推理</a>
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <a class="btn-hero-primary" href="#products">浏览全部资源库</a>
-          <a class="btn-hero-secondary" href="#guide">
-            查看接入指南 ↓
-          </a>
-          <button class="btn-hero-secondary open-wechat-trigger">
-            关注公众号 ↗
+        <!-- 双轨模式切换器 (Segmented Switcher) -->
+        <div class="hero-track-switcher">
+          <button class="track-tab active" data-slide="0" id="tab-slide-0">
+            <span class="track-num">01</span>
+            <span>免费算力雷达</span>
           </button>
+          <button class="track-tab" data-slide="1" id="tab-slide-1">
+            <span class="track-num">02</span>
+            <span>职业开发者 Lab ↗</span>
+          </button>
+          <div class="track-progress-bar">
+            <div class="track-progress-inner" id="track-progress-inner"></div>
+          </div>
+        </div>
+
+        <!-- 轮播幻灯片容器 -->
+        <div class="hero-slides-wrapper">
+          
+          <!-- Slide 0: 免费算力雷达 (公益/思维/免费Token) -->
+          <div class="hero-slide active" id="hero-slide-0">
+            <p class="hero-eyebrow">一人公司 · AI 算力与开源情报</p>
+            <h1 class="hero-headline">
+              用免费 Token 做工具，<br/>
+              也提醒自己保持思考。
+            </h1>
+            <p class="hero-lead">
+              持续追踪全球主流大模型与云平台免费 API 配额，提供透明规则与 10 秒接入代码。
+            </p>
+
+            <!-- 极简中性仪表条 -->
+            <div class="radar-telemetry-bar">
+              <div class="telemetry-item">
+                <span class="telemetry-label">监测节点</span>
+                <span class="telemetry-value">{totalCount} / {totalCount} 正常</span>
+              </div>
+              <div class="telemetry-divider"></div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">上次核验</span>
+                <span class="telemetry-value">今日 14:30</span>
+              </div>
+              <div class="telemetry-divider"></div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">额度巡检</span>
+                <span id="radar-live-countdown" class="telemetry-timer">--:--:--</span>
+              </div>
+              <div class="telemetry-divider"></div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">新源雷达</span>
+                <span id="radar-discover-countdown" class="telemetry-timer">--:--:--</span>
+              </div>
+            </div>
+
+            <!-- 重点索引 -->
+            <div class="quick-index-bar">
+              <span class="quick-index-label">重点索引</span>
+              <div class="quick-index-links">
+                <a href="/platform/google-ai-studio/" class="quick-link">Google Gemini · 1500次/天</a>
+                <a href="/platform/siliconflow/" class="quick-link">硅基流动 · 2000万Tokens</a>
+                <a href="/platform/gmi-cloud-minimax/" class="quick-link">GMI Cloud · 20亿限时</a>
+                <a href="/platform/groq/" class="quick-link">Groq · 极速推理</a>
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn-hero-primary" href="#products">浏览全部资源库 ↓</a>
+              <a class="btn-hero-secondary" href="#guide">查看接入指南 ↓</a>
+              <button class="btn-hero-secondary open-wechat-trigger">关注公众号 ↗</button>
+            </div>
+          </div>
+
+          <!-- Slide 1: 职业开发者实验室 (商业化/高可靠/freetokenlab.com) -->
+          <div class="hero-slide" id="hero-slide-1">
+            <p class="hero-eyebrow hero-eyebrow-lab">重度生产力 · 商业级高可用算力方案</p>
+            <h1 class="hero-headline">
+              我是职业开发者，<br/>
+              我需要极具性价比的可靠 Token。
+            </h1>
+            <p class="hero-lead">
+              面向严肃商业交付与自动化工程：提供国内可用、基于美国原生 Remote App 服务器的 Claude 3.5 Sonnet / Codex 极稳接入，以及国内主流大模型开发者专属采购折扣。
+            </p>
+
+            <!-- 商业级核心特性标签 -->
+            <div class="lab-highlights-grid">
+              <div class="lab-highlight-item">
+                <span class="lab-highlight-badge">原生稳定</span>
+                <span class="lab-highlight-text">Claude 3.5 Sonnet / Opus 美国原生防封直连通道</span>
+              </div>
+              <div class="lab-highlight-item">
+                <span class="lab-highlight-badge">编程代理</span>
+                <span class="lab-highlight-text">Codex & Cursor 生产级编程工具全天候低延迟</span>
+              </div>
+              <div class="lab-highlight-item">
+                <span class="lab-highlight-badge">专属折扣</span>
+                <span class="lab-highlight-text">国内主流大模型企业级底价采购与高并发池化</span>
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn-hero-primary btn-hero-lab" href="https://freetokenlab.com" target="_blank" rel="noopener">
+                前往 FreeToken Lab 探索职业算力 ↗
+              </a>
+              <a class="btn-hero-secondary" href="#guide">了解接入架构 ↓</a>
+            </div>
+          </div>
+
         </div>
       </div>
 
+      <!-- 右侧吉祥物卡片 -->
       <div class="hero-mascot-wrapper">
         <div class="hero-card-mascot">
           <img src="/images/hero-mascot.webp" alt="思考的科技猫头鹰插画" class="hero-mascot-img" width="380" height="380" />
@@ -108,7 +160,7 @@ const totalCount = platforms.length;
         <h2 class="section-title">全网免费 API Token 清单与 10 秒接入代码</h2>
       </header>
 
-      <!-- 分类过滤 Tab (去 Emoji 纯净文字) -->
+      <!-- 分类过滤 Tab -->
       <div class="filter-pills" id="filter-tabs">
         <button class="filter-pill active" data-filter="all">全部平台 ({totalCount})</button>
         <button class="filter-pill" data-filter="limited">限时活动</button>
@@ -120,19 +172,17 @@ const totalCount = platforms.length;
         <button class="filter-pill" data-filter="web3">测试网络</button>
       </div>
 
-      <!-- 平台卡片网格 -->
+      <!-- 资源卡片网格 -->
       <div class="editorial-grid" id="platform-grid">
-        {platforms.map((p: any) => {
+        {platforms.map((p) => {
           const q = p.free_quota ?? {};
-          const isLimited = q.type === '限时' || (p.tags ?? []).some((t: string) => t.includes('限时') || t.includes('活动') || t.includes('专场') || t.includes('体验金') || t.includes('送'));
-          const isPermanent = q.type === '永久' || (p.tags ?? []).some((t: string) => t.includes('永久'));
-          const isDaily = q.type === '每日' || (p.tags ?? []).some((t: string) => t.includes('每日') || t.includes('天'));
-          const isDomestic = (p.tags ?? []).some((t: string) => t.includes('国产') || t.includes('国内') || t.includes('阿里') || t.includes('百度') || t.includes('腾讯') || t.includes('智谱') || t.includes('星火'));
-          const isTools = p.category === 'tools' || (p.tags ?? []).some((t: string) => t.includes('Agent') || t.includes('搜索') || t.includes('向量') || t.includes('Rerank'));
-          const isMultimodal = p.category === 'multimodal' || (p.tags ?? []).some((t: string) => t.includes('图') || t.includes('语音') || t.includes('FLUX'));
-          const isWeb3 = p.category === 'web3-faucet' || (p.tags ?? []).some((t: string) => t.includes('Web3') || t.includes('水龙头'));
-
-          const searchTerms = `${p.name} ${p.name_en ?? ''} ${p.slug} ${p.intro ?? ''} ${(p.tags ?? []).join(' ')} ${formatQuota(p)}`.toLowerCase();
+          const isLimited = q.type === '注册赠送' || q.type === '限时赠送' || q.type === '体验金';
+          const isPermanent = q.type === '永久免费' || q.type === '完全免费' || q.type === '免费层';
+          const isDaily = q.type === '每日刷新' || (q.reset_period && q.reset_period.includes('日'));
+          const isDomestic = p.category === '国内主流' || p.category === '大厂云服务';
+          const isTools = p.category === '搜索与工具' || p.slug === 'tavily' || p.slug === 'jina-ai';
+          const isMultimodal = p.category === '多模态/工具' || p.category === '多模态' || p.slug === 'pollinations';
+          const isWeb3 = p.category === '区块链水龙头' || p.slug === 'sepolia-faucet';
 
           return (
             <a
@@ -145,21 +195,19 @@ const totalCount = platforms.length;
               data-tools={isTools ? "true" : "false"}
               data-multimodal={isMultimodal ? "true" : "false"}
               data-web3={isWeb3 ? "true" : "false"}
-              data-search={searchTerms}
+              data-search={`${p.name} ${p.name_en ?? ''} ${p.slug} ${p.intro ?? ''}`.toLowerCase()}
             >
               <div class="card-main-content">
                 <div class="card-meta-top">
                   <span class="card-category">{p.category}</span>
-                  {isLimited ? (
-                    <span class="badge-tag badge-limited">限时活动</span>
-                  ) : (
-                    <span class="badge-tag badge-type">{q.type ?? '免费额度'}</span>
-                  )}
+                  {isLimited && <span class="badge-tag badge-limited">限时</span>}
+                  {isPermanent && <span class="badge-tag badge-permanent">永久</span>}
+                  {isDaily && <span class="badge-tag badge-daily">每日</span>}
                 </div>
 
                 <h3 class="card-title">
                   {p.name}
-                  {p.name_en && <small class="card-name-en">{p.name_en}</small>}
+                  {p.name_en && p.name !== p.name_en && <small class="card-name-en">{p.name_en}</small>}
                 </h3>
 
                 <div class="card-quota-box">
@@ -172,7 +220,7 @@ const totalCount = platforms.length;
 
               <div class="card-action-bar">
                 <span class="action-date">核验：{formatVerified(p.last_verified)}</span>
-                <span class="action-link">查看详情 & 代码 ➔</span>
+                <span class="action-link">查看详情与代码 ➔</span>
               </div>
             </a>
           );
@@ -180,57 +228,57 @@ const totalCount = platforms.length;
       </div>
 
       <div id="no-result" class="no-result-box" style="display:none;">
-        <p style="font-size: 16px; font-weight: 600;">未找到符合条件的免费平台</p>
-        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">可尝试更换搜索词，或在 GitHub 上提交新推荐</p>
+        <p style="font-size: 16px; font-weight: 600;">未找到匹配的平台</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">建议更换关键词，或在 GitHub 提交 Issue 推荐新源</p>
       </div>
     </div>
   </section>
 
-  <!-- 3. 快速接入与工具实践指南 (New Section) -->
+  <!-- 3. 工具实践与接入指南 -->
   <section class="section-wrap" id="guide">
     <div class="container">
       <header class="section-head">
-        <p class="section-eyebrow">实践指南</p>
-        <h2 class="section-title">如何在常用 AI 工具与开发流中接入本站资源？</h2>
+        <p class="section-eyebrow">工具实践</p>
+        <h2 class="section-title">如何将 FreeToken 免费资源接入 AI 工具与工作流？</h2>
       </header>
 
       <div class="guide-grid">
         <article class="guide-card">
           <div class="guide-card-head">
             <span class="guide-step">01</span>
-            <h3>标准协议接入原理</h3>
+            <h3>标准 OpenAI 协议兼容</h3>
           </div>
           <p class="guide-text">
-            本站收录的大模型平台绝大多数均<strong>原生兼容 OpenAI 标准接口协议</strong>。无论在何种工具或项目中使用，只需要配置以下 <strong>3 个参数</strong>：
+            本站收录的大多数模型平台均原生支持 <strong>OpenAI REST API 标准接口</strong>。在任何工具或代码中，只需替换以下 <strong>3 个参数</strong>：
           </p>
           <div class="guide-param-list">
-            <div class="guide-param"><code>Base URL</code> 详情页中提供的平台专属接口基础地址</div>
-            <div class="guide-param"><code>API Key</code> 在平台注册并创建的密钥凭证</div>
-            <div class="guide-param"><code>Model Name</code> 平台支持的免费模型代号</div>
+            <div class="guide-param"><code>Base URL</code> 各平台详情页标注的专用端点</div>
+            <div class="guide-param"><code>API Key</code> 在平台控制台生成的私有密钥</div>
+            <div class="guide-param"><code>Model Name</code> 对应的免费模型标识（如 gemini-1.5-flash, deepseek-chat）</div>
           </div>
         </article>
 
         <article class="guide-card">
           <div class="guide-card-head">
             <span class="guide-step">02</span>
-            <h3>常用开源 AI 工具与客户端接入</h3>
+            <h3>开源客户端与编程工具挂载</h3>
           </div>
           <ul class="guide-tool-list">
             <li>
-              <strong>终端与编程自动化</strong>：
+              <strong>终端与编程工具</strong>：
               <a href="https://github.com/OpenCode-AI/opencode" target="_blank" rel="noopener" class="guide-repo-link">OpenCode ↗</a>、
-              <a href="https://github.com/cline/cline" target="_blank" rel="noopener" class="guide-repo-link">Cline ↗</a> 或 Cursor，在设置中配置自定义 <code>Base URL</code> 与密钥即可零成本驱动代码生成。
+              <a href="https://github.com/cline/cline" target="_blank" rel="noopener" class="guide-repo-link">Cline ↗</a> 或 Cursor，设置自定义 OpenAI Provider 填入 Base URL 与 Key 即可驱动编程 Agent。
             </li>
             <li>
-              <strong>多模型对话客户端</strong>：
-              <a href="https://github.com/CherryHQ/cherry-studio" target="_blank" rel="noopener" class="guide-repo-link">Cherry Studio ↗</a>、
+              <strong>多模型桌面客户端</strong>：
+              使用 <a href="https://github.com/CherryHQ/cherry-studio" target="_blank" rel="noopener" class="guide-repo-link">Cherry Studio ↗</a>、
               <a href="https://github.com/Bin-Huang/chatbox" target="_blank" rel="noopener" class="guide-repo-link">Chatbox ↗</a> 或 
-              <a href="https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web" target="_blank" rel="noopener" class="guide-repo-link">NextChat ↗</a>，支持多模型同屏对比与多平台免费 Key 轮询。
+              <a href="https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web" target="_blank" rel="noopener" class="guide-repo-link">NextChat ↗</a> 可实现同屏多模型对比与多 Key 轮换调用。
             </li>
             <li>
               <strong>网关聚合与负载均衡</strong>：
-              推荐使用 <a href="https://github.com/songquanpeng/one-api" target="_blank" rel="noopener" class="guide-repo-link">One API ↗</a> 或 
-              <a href="https://github.com/Calcium-Affliction/new-api" target="_blank" rel="noopener" class="guide-repo-link">New API ↗</a> 将全网 29 家免费 Key 统一挂载为一个聚合分发接口，自动高可用轮询。
+              搭配 <a href="https://github.com/songquanpeng/one-api" target="_blank" rel="noopener" class="guide-repo-link">One API ↗</a> 或 
+              <a href="https://github.com/Calcium-Affliction/new-api" target="_blank" rel="noopener" class="guide-repo-link">New API ↗</a>，将 29 家免费 Key 汇聚为高可用单一网关接口。
             </li>
           </ul>
         </article>
@@ -238,12 +286,12 @@ const totalCount = platforms.length;
         <article class="guide-card">
           <div class="guide-card-head">
             <span class="guide-step">03</span>
-            <h3>核心避坑与风控注意事项</h3>
+            <h3>避坑与风控要点</h3>
           </div>
           <ul class="guide-caution-list">
-            <li><strong>并发限速（RPM / TPM）</strong>：免费配额通常有速率限制（如 15 RPM），在批量任务中务必加入延时或重试机制，避免触发 429 请求超限。</li>
-            <li><strong>额度类型区分</strong>：分清“每日重置配额”（如 Gemini 1500次/天，长期有效）与“注册体验金”（如 30 天有效），建议优先消耗快到期的体验金。</li>
-            <li><strong>网络与合规要求</strong>：国产大厂（如阿里、智谱、百度）需完成手机或实名认证；部分海外大厂需保持合规的网络环境。</li>
+            <li><strong>并发限制（RPM / TPM）</strong>：免费层通常有请求频次限制（如 15 RPM），请在代码中增加重试退避逻辑，避免 429 报错。</li>
+            <li><strong>额度有效期</strong>：注意区分每日循环重置额度（如 Gemini 1500次/天）与一次性注册体验金（如 30 天有效），优先消耗有时效限制的额度。</li>
+            <li><strong>区域与网络</strong>：部分海外平台需要合规国际网络访问，国内平台需要国内手机号或实名认证。</li>
           </ul>
         </article>
       </div>
@@ -254,20 +302,20 @@ const totalCount = platforms.length;
   <section class="section-wrap section-bg" id="focus">
     <div class="container">
       <header class="section-head">
-        <p class="section-eyebrow">长期坐标</p>
-        <h2 class="section-title">从四个方向，建立一套长期判断系统</h2>
+        <p class="section-eyebrow">长期主义</p>
+        <h2 class="section-title">四个长期坐标</h2>
       </header>
 
       <div class="focus-grid">
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">01</span>
-            <img src="/images/focus-01.webp" alt="AI 引导未来 智能罗盘" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
+            <img src="/images/focus-01.webp" alt="AI 引导未来" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
           </div>
           <div class="focus-card-meta">
-            <span class="focus-en-tag">INTELLIGENCE COMPASS</span>
+            <span class="focus-en-tag">AI COMPASS</span>
             <h3 class="focus-title">AI 引导未来</h3>
-            <p class="focus-desc">研究模型、思维与协作范式，在技术狂潮中保持敏锐的独立判断力与人机共生边界。</p>
+            <p class="focus-desc">研究大模型、思考模式与人机协作范式。在算力浪潮中，保持独立判断与认知锚点。</p>
             <div class="focus-anchor-link">
               <a href="https://github.com/lm-sys/FastChat" target="_blank" rel="noopener">LMSYS Chatbot Arena 基准 ↗</a>
             </div>
@@ -277,12 +325,12 @@ const totalCount = platforms.length;
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">02</span>
-            <img src="/images/focus-02.webp" alt="Token 就是能源 无限光子环" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
+            <img src="/images/focus-02.webp" alt="Token 就是能源" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
           </div>
           <div class="focus-card-meta">
-            <span class="focus-en-tag">TOKEN AS ENERGY</span>
+            <span class="focus-en-tag">TOKEN ENERGY</span>
             <h3 class="focus-title">Token 就是能源</h3>
-            <p class="focus-desc">算力的流动即是价值的流动。掌握充沛且低成本的 Token，就是掌握数字工厂的能源自主权。</p>
+            <p class="focus-desc">算力的流动即价值的流动。低成本、充沛的 Token 是数字世界一人公司的电力与能源主权。</p>
             <div class="focus-anchor-link">
               <a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener">vLLM 高并发推理引擎 ↗</a>
             </div>
@@ -292,12 +340,12 @@ const totalCount = platforms.length;
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">03</span>
-            <img src="/images/focus-03.webp" alt="世界代码化 架构与阶梯" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
+            <img src="/images/focus-03.webp" alt="世界代码化" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
           </div>
           <div class="focus-card-meta">
             <span class="focus-en-tag">CODIFIED REALITY</span>
             <h3 class="focus-title">世界代码化</h3>
-            <p class="focus-desc">把研究框架、业务逻辑与工作流沉淀为代码，用自动化与接口化杠杆放大个体的生产力半径。</p>
+            <p class="focus-desc">将研究、流程与思考沉淀为代码与自动化流水线。让软件成为扩展个人杠杆的最坚固底座。</p>
             <div class="focus-anchor-link">
               <a href="https://github.com/langgenius/dify" target="_blank" rel="noopener">Dify 开源应用编排 ↗</a>
             </div>
@@ -307,12 +355,12 @@ const totalCount = platforms.length;
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">04</span>
-            <img src="/images/focus-04.webp" alt="工具开源化 开放魔盒与钥匙" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
+            <img src="/images/focus-04.webp" alt="工具开源化" class="focus-card-art" loading="lazy" decoding="async" width="300" height="300" />
           </div>
           <div class="focus-card-meta">
-            <span class="focus-en-tag">OPEN-SOURCE TOOLS</span>
+            <span class="focus-en-tag">OPEN TOOLS</span>
             <h3 class="focus-title">工具开源化</h3>
-            <p class="focus-desc">拥抱开放权重、开源协议与公共基础设施，让技术的主权与自由永远留在构建者手里。</p>
+            <p class="focus-desc">拥抱开放权重与公共协议。把核心能力构建在开放生态之上，掌握自主可控的创造力。</p>
             <div class="focus-anchor-link">
               <a href="https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard" target="_blank" rel="noopener">Open LLM 开放榜单 ↗</a>
             </div>
@@ -327,126 +375,266 @@ const totalCount = platforms.length;
     <div class="container">
       <header class="section-head">
         <p class="section-eyebrow">保持联系</p>
-        <h2 class="section-title">选择你习惯的入口</h2>
+        <h2 class="section-title">开放连接</h2>
       </header>
 
       <div class="connect-grid">
-        <div class="connect-card wechat-connect-card open-wechat-trigger">
+        <a class="connect-card open-wechat-trigger" href="javascript:void(0)">
           <div class="connect-card-top">
-            <span class="connect-type">微信公众号</span>
+            <span class="connect-type">微信生态</span>
             <span class="connect-action">扫码关注 ↗</span>
           </div>
-          <div>
-            <h3 class="connect-name">免费Token情报局</h3>
-            <p class="connect-desc">突发限时大额免费大模型与算力羊毛推送</p>
-          </div>
-        </div>
+          <h4 class="connect-name">免费Token情报局</h4>
+          <p class="connect-desc">突发限时免费配额、大厂羊毛与深度技术接入指南第一时间推送到微信。</p>
+        </a>
 
         <a class="connect-card" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">
           <div class="connect-card-top">
-            <span class="connect-type">GitHub 仓库</span>
-            <span class="connect-action">Star 仓库 ↗</span>
+            <span class="connect-type">开源仓库</span>
+            <span class="connect-action">Star & Fork ↗</span>
           </div>
-          <div>
-            <h3 class="connect-name">freetoken</h3>
-            <p class="connect-desc">全套自动化探测雷达与数据源开源共建</p>
-          </div>
+          <h4 class="connect-name">GitHub 代码库</h4>
+          <p class="connect-desc">本项目完全开源，包含所有巡检雷达脚本、Astro 构建源码与数据源配置。</p>
         </a>
 
         <a class="connect-card" href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank" rel="noopener">
           <div class="connect-card-top">
-            <span class="connect-type">社区共建</span>
+            <span class="connect-type">社区贡献</span>
             <span class="connect-action">提交 Issue ↗</span>
           </div>
-          <div>
-            <h3 class="connect-name">推荐新免费源</h3>
-            <p class="connect-desc">发现新免费额度？欢迎提交推荐合并入库</p>
-          </div>
+          <h4 class="connect-name">推荐新免费源</h4>
+          <p class="connect-desc">发现了新的大模型免费额度或限时活动？欢迎提交，全网雷达将收录并巡检。</p>
         </a>
       </div>
     </div>
   </section>
 
   <style>
-    /* Hero */
-    .hero-editorial {
-      padding: 56px 0 44px;
+    .section-wrap {
+      padding: 72px 0;
       border-bottom: 1px solid var(--card-border);
+    }
+    .section-bg {
+      background: var(--bg-subtle);
+    }
+    .section-head {
+      margin-bottom: 36px;
+    }
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    /* Hero Section */
+    .hero-editorial {
+      padding: 40px 0 56px;
+      border-bottom: 1px solid var(--card-border);
+      background: #fbfbfa;
+      position: relative;
     }
     .hero-editorial-inner {
       display: grid;
-      grid-template-columns: 1.25fr 0.75fr;
+      grid-template-columns: 1.15fr 0.85fr;
       gap: 48px;
-      align-items: center;
+      align-items: start;
     }
-    @media (max-width: 880px) {
-      .hero-editorial-inner { grid-template-columns: 1fr; gap: 32px; }
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
     }
-    .hero-eyebrow {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.3px;
-      margin-bottom: 12px;
-    }
+
+    /* Hero Search Input */
     .hero-search-wrap {
       margin-bottom: 18px;
     }
     .hero-search-input {
       width: 100%;
-      padding: 12px 18px;
-      font-size: 14px;
+      background: #ffffff;
+      border: 1.5px solid var(--card-border);
       border-radius: 8px;
-      border: 1px solid var(--card-border);
-      background: var(--card-bg);
+      padding: 12px 16px;
+      font-size: 14px;
       color: var(--text);
       outline: none;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
     .hero-search-input:focus {
       border-color: var(--text);
-      box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.08);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
     }
-    .hero-headline {
-      font-size: 36px;
-      font-weight: 800;
+
+    /* Track Switcher (Tabs) */
+    .hero-track-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 20px;
+      width: fit-content;
+      position: relative;
+    }
+    .track-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .track-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    .track-tab.active {
+      background: #ffffff;
       color: var(--text);
-      line-height: 1.25;
-      letter-spacing: -0.5px;
-      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      border: 1px solid var(--card-border);
     }
-    @media (max-width: 640px) {
-      .hero-headline { font-size: 27px; }
+    .track-progress-bar {
+      position: absolute;
+      bottom: -4px;
+      left: 4px;
+      right: 4px;
+      height: 2px;
+      background: transparent;
+      overflow: hidden;
+      border-radius: 1px;
+    }
+    .track-progress-inner {
+      height: 100%;
+      width: 0%;
+      background: var(--text);
+      transition: width 0.1s linear;
+    }
+
+    /* Slides */
+    .hero-slides-wrapper {
+      min-height: 280px;
+      position: relative;
+    }
+    .hero-slide {
+      display: none;
+      animation: fadeInSlide 0.3s ease-out;
+    }
+    .hero-slide.active {
+      display: block;
+    }
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 12px;
+    }
+    .hero-eyebrow-lab {
+      color: #2563eb;
+    }
+
+    .hero-headline {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.22;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 14px;
     }
     .hero-lead {
       font-size: 15px;
       color: var(--text-muted);
-      line-height: 1.65;
-      margin-bottom: 24px;
-      max-width: 520px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      max-width: 580px;
     }
 
-    /* 极简遥测条 */
-    .radar-telemetry-bar {
+    /* Lab Highlights Grid */
+    .lab-highlights-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 22px;
+    }
+    .lab-highlight-item {
       display: flex;
       align-items: center;
-      gap: 16px;
-      background: var(--card-bg);
+      gap: 10px;
+      font-size: 13px;
+    }
+    .lab-highlight-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #2563eb;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .lab-highlight-text {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .btn-hero-lab {
+      background: #0f172a !important;
+      border: 1px solid #1e293b;
+    }
+    .btn-hero-lab:hover {
+      background: #000000 !important;
+    }
+
+    /* Telemetry Bar */
+    .radar-telemetry-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: #ffffff;
       border: 1px solid var(--card-border);
       border-radius: 8px;
-      padding: 10px 16px;
-      margin-bottom: 20px;
+      padding: 8px 16px;
+      margin-bottom: 18px;
       font-size: 12px;
+      width: fit-content;
       flex-wrap: wrap;
     }
     .telemetry-item {
       display: flex;
-      gap: 6px;
       align-items: center;
+      gap: 6px;
     }
     .telemetry-label {
       color: var(--text-light);
+      font-weight: 500;
     }
     .telemetry-value {
       font-weight: 600;
@@ -455,29 +643,28 @@ const totalCount = platforms.length;
     .telemetry-timer {
       font-family: var(--font-mono);
       font-weight: 600;
-      color: var(--accent-warm);
+      color: var(--text);
     }
     .telemetry-divider {
       width: 1px;
-      height: 14px;
+      height: 12px;
       background: var(--card-border);
     }
-    @media (max-width: 600px) {
-      .telemetry-divider { display: none; }
-    }
 
-    /* 重点索引 */
+    /* Quick Index */
     .quick-index-bar {
       display: flex;
-      align-items: baseline;
-      gap: 12px;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 24px;
       flex-wrap: wrap;
     }
     .quick-index-label {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
+      letter-spacing: 0.5px;
       color: var(--text-light);
+      text-transform: uppercase;
     }
     .quick-index-links {
       display: flex;
@@ -513,6 +700,7 @@ const totalCount = platforms.length;
       padding: 9px 18px;
       border-radius: 6px;
       transition: all 0.15s;
+      cursor: pointer;
     }
     .btn-hero-primary:hover {
       background: #000000;
@@ -533,18 +721,17 @@ const totalCount = platforms.length;
       background: #ffffff;
     }
 
-    /* Hero Mascot Card */
+    /* Mascot Card */
     .hero-mascot-wrapper {
       display: flex;
       justify-content: center;
     }
     .hero-card-mascot {
-      background: var(--card-bg);
+      background: #ffffff;
       border: 1px solid var(--card-border);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 16px;
-      max-width: 360px;
-      width: 100%;
+      max-width: 380px;
       text-align: center;
     }
     .hero-mascot-img {
@@ -552,63 +739,34 @@ const totalCount = platforms.length;
       height: auto;
       aspect-ratio: 1 / 1;
       object-fit: cover;
-      border-radius: 10px;
-      border: 1px solid var(--card-border);
-      margin-bottom: 10px;
+      border-radius: 8px;
       display: block;
+      margin-bottom: 12px;
     }
-    .mascot-caption {
+    .mascot-caption p {
       font-size: 12px;
+      font-weight: 500;
       color: var(--text-muted);
       line-height: 1.5;
     }
 
-    /* Section Structure */
-    .section-wrap {
-      padding: 56px 0;
-    }
-    .section-bg {
-      background: var(--bg-subtle);
-      border-top: 1px solid var(--card-border);
-      border-bottom: 1px solid var(--card-border);
-    }
-    .section-head {
-      margin-bottom: 28px;
-    }
-    .section-eyebrow {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-light);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
-    }
-    .section-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.3px;
-    }
-
-    /* Guide Grid (接入指南卡片) */
+    /* Guide Section */
     .guide-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
     }
     .guide-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 24px;
-      display: flex;
-      flex-direction: column;
     }
     .guide-card-head {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .guide-step {
       font-family: var(--font-mono);
@@ -617,10 +775,10 @@ const totalCount = platforms.length;
       color: var(--text-light);
       background: var(--bg-subtle);
       border: 1px solid var(--card-border);
-      padding: 2px 7px;
+      padding: 2px 6px;
       border-radius: 4px;
     }
-    .guide-card h3 {
+    .guide-card-head h3 {
       font-size: 16px;
       font-weight: 700;
       color: var(--text);
@@ -715,7 +873,7 @@ const totalCount = platforms.length;
       border-color: var(--text);
     }
 
-    /* 平台卡片流 */
+    /* Platform Grid */
     .editorial-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -734,121 +892,109 @@ const totalCount = platforms.length;
     .editorial-card:hover {
       border-color: var(--text);
       transform: translateY(-2px);
+      box-shadow: 0 10px 24px -10px rgba(0,0,0,0.06);
     }
     .card-meta-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
     .card-category {
       font-size: 11px;
       font-weight: 600;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
       color: var(--text-light);
     }
     .badge-tag {
       font-size: 11px;
-      font-weight: 500;
-      padding: 2px 6px;
+      font-weight: 600;
+      padding: 2px 7px;
       border-radius: 4px;
+      border: 1px solid var(--card-border);
+      background: var(--bg-subtle);
+      color: var(--text);
     }
-    .badge-limited { background: #fee2e2; color: #991b1b; }
-    .badge-type { background: #f1f5f9; color: #475569; }
     .card-title {
       font-size: 17px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 10px;
+      letter-spacing: -0.2px;
+      margin-bottom: 12px;
       display: flex;
       align-items: baseline;
       gap: 6px;
     }
     .card-name-en {
       font-size: 12px;
-      color: var(--text-light);
       font-weight: 400;
+      color: var(--text-light);
     }
     .card-quota-box {
       background: var(--bg-subtle);
       border: 1px solid var(--card-border);
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 8px 12px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .quota-label {
       font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 1px;
+      color: var(--text-light);
+      margin-bottom: 2px;
     }
     .quota-amount {
       font-size: 15px;
       font-weight: 700;
-      color: var(--accent-warm);
+      color: var(--text);
     }
     .card-intro {
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.55;
-      margin-bottom: 14px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      margin-bottom: 16px;
     }
     .card-action-bar {
+      border-top: 1px solid var(--card-border);
+      padding-top: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid var(--card-border);
-      padding-top: 10px;
-      margin-top: auto;
       font-size: 12px;
     }
     .action-date {
       color: var(--text-light);
     }
     .action-link {
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text);
     }
 
-    /* Focus Grid */
+    /* Focus Coordinates */
     .focus-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 20px;
     }
     .focus-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 20px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.2s ease;
-    }
-    .focus-card:hover {
-      border-color: var(--text);
-      transform: translateY(-2px);
     }
     .focus-card-top {
       position: relative;
-      margin-bottom: 16px;
-      background: #faf9f6;
-      border-radius: 10px;
+      border-radius: 8px;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(0, 0, 0, 0.04);
+      margin-bottom: 14px;
+      border: 1px solid var(--card-border);
     }
     .focus-num {
       position: absolute;
-      top: 10px;
-      left: 10px;
+      top: 8px;
+      left: 8px;
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 700;
@@ -891,7 +1037,7 @@ const totalCount = platforms.length;
       line-height: 1.6;
     }
 
-    /* 保持联系 */
+    /* Connect Section */
     .connect-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -945,6 +1091,7 @@ const totalCount = platforms.length;
   </style>
 
   <script is:inline>
+    // 1. Radar Countdowns
     function updateRadarCountdown() {
       const timerEl = document.getElementById('radar-live-countdown');
       const discoverEl = document.getElementById('radar-discover-countdown');
@@ -953,7 +1100,7 @@ const totalCount = platforms.length;
       const now = new Date();
       const pad = (n) => String(n).padStart(2, '0');
 
-      // 1. 额度巡检倒计时 (每日 01:30, 04:30, 07:30, 14:30, 20:30)
+      // 额度巡检
       const currentHourDec = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
       const targetHours = [1.5, 4.5, 7.5, 14.5, 20.5];
       let nextQuota = new Date(now);
@@ -973,7 +1120,7 @@ const totalCount = platforms.length;
       const qSecs = Math.floor((diffQuota % (1000 * 60)) / 1000);
       if (timerEl) timerEl.textContent = `${pad(qHours)}:${pad(qMins)}:${pad(qSecs)}`;
 
-      // 2. 全球新平台雷达扫描倒计时 (每 2 天一次，北京时间凌晨 02:30)
+      // 新源雷达
       const baseEpoch = new Date('2026-09-01T02:30:00+08:00').getTime();
       const periodMs = 2 * 24 * 60 * 60 * 1000;
       const elapsed = now.getTime() - baseEpoch;
@@ -983,7 +1130,7 @@ const totalCount = platforms.length;
       const diffDisc = Math.max(0, nextDiscoverMs - now.getTime());
       const dDays = Math.floor(diffDisc / (1000 * 60 * 60 * 24));
       const dHours = Math.floor((diffDisc % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const dMins = Math.floor((diffDisc % (1000 * 60 * 60)) / (1000 * 60));
+      const dMins = Math.floor((diffDisc % (1000 * 60)) / 1000);
       const dSecs = Math.floor((diffDisc % (1000 * 60)) / 1000);
       if (discoverEl) {
         discoverEl.textContent = dDays > 0 ? `${dDays}天 ${pad(dHours)}:${pad(dMins)}:${pad(dSecs)}` : `${pad(dHours)}:${pad(dMins)}:${pad(dSecs)}`;
@@ -993,8 +1140,52 @@ const totalCount = platforms.length;
     setInterval(updateRadarCountdown, 1000);
     updateRadarCountdown();
 
+    // 2. 双轨 Hero 轮播控制
+    let currentSlide = 0;
+    const slides = [document.getElementById('hero-slide-0'), document.getElementById('hero-slide-1')];
+    const tabs = [document.getElementById('tab-slide-0'), document.getElementById('tab-slide-1')];
+    const progressBar = document.getElementById('track-progress-inner');
+    const heroSection = document.getElementById('hero-editorial');
+    let isPaused = false;
+    let progress = 0;
+    const intervalMs = 7000;
+    const tickMs = 100;
+
+    function showSlide(idx) {
+      currentSlide = idx;
+      slides.forEach((s, i) => {
+        if (s) s.classList.toggle('active', i === idx);
+      });
+      tabs.forEach((t, i) => {
+        if (t) t.classList.toggle('active', i === idx);
+      });
+      progress = 0;
+      if (progressBar) progressBar.style.width = '0%';
+    }
+
+    tabs.forEach((tab, i) => {
+      tab?.addEventListener('click', () => {
+        showSlide(i);
+      });
+    });
+
+    heroSection?.addEventListener('mouseenter', () => { isPaused = true; });
+    heroSection?.addEventListener('mouseleave', () => { isPaused = false; });
+
+    setInterval(() => {
+      if (!isPaused) {
+        progress += (tickMs / intervalMs) * 100;
+        if (progressBar) progressBar.style.width = `${Math.min(100, progress)}%`;
+        if (progress >= 100) {
+          const next = (currentSlide + 1) % 2;
+          showSlide(next);
+        }
+      }
+    }, tickMs);
+
+    // 3. Search & Tabs Filter
     const searchInput = document.getElementById('search-input');
-    const filterTabs = document.querySelectorAll('.filter-pill');
+    const filterTabs = document.querySelectorAll('#filter-tabs .filter-pill');
     const cards = document.querySelectorAll('.editorial-card');
     const noResult = document.getElementById('no-result');
     let currentFilter = 'all';
@@ -1004,23 +1195,23 @@ const totalCount = platforms.length;
       let visibleCount = 0;
 
       cards.forEach(card => {
-        const searchData = card.getAttribute('data-search') || '';
-        const matchesQuery = !query || searchData.includes(query);
+        const text = card.getAttribute('data-search') || '';
+        const matchSearch = !query || text.includes(query);
 
-        let matchesTab = true;
-        if (currentFilter === 'limited') matchesTab = card.getAttribute('data-limited') === 'true';
-        else if (currentFilter === 'permanent') matchesTab = card.getAttribute('data-permanent') === 'true';
-        else if (currentFilter === 'daily') matchesTab = card.getAttribute('data-daily') === 'true';
-        else if (currentFilter === 'domestic') matchesTab = card.getAttribute('data-domestic') === 'true';
-        else if (currentFilter === 'tools') matchesTab = card.getAttribute('data-tools') === 'true';
-        else if (currentFilter === 'multimodal') matchesTab = card.getAttribute('data-multimodal') === 'true';
-        else if (currentFilter === 'web3') matchesTab = card.getAttribute('data-web3') === 'true';
+        let matchFilter = true;
+        if (currentFilter === 'limited') matchFilter = card.getAttribute('data-limited') === 'true';
+        else if (currentFilter === 'permanent') matchFilter = card.getAttribute('data-permanent') === 'true';
+        else if (currentFilter === 'daily') matchFilter = card.getAttribute('data-daily') === 'true';
+        else if (currentFilter === 'domestic') matchFilter = card.getAttribute('data-domestic') === 'true';
+        else if (currentFilter === 'tools') matchFilter = card.getAttribute('data-tools') === 'true';
+        else if (currentFilter === 'multimodal') matchFilter = card.getAttribute('data-multimodal') === 'true';
+        else if (currentFilter === 'web3') matchFilter = card.getAttribute('data-web3') === 'true';
 
-        if (matchesQuery && matchesTab) {
-          card.style.display = 'flex';
+        if (matchSearch && matchFilter) {
+          (card as HTMLElement).style.display = 'flex';
           visibleCount++;
         } else {
-          card.style.display = 'none';
+          (card as HTMLElement).style.display = 'none';
         }
       });
 
@@ -1031,11 +1222,11 @@ const totalCount = platforms.length;
 
     searchInput?.addEventListener('input', applyFilter);
 
-    filterTabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterTabs.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.getAttribute('data-filter') || 'all';
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.getAttribute('data-filter') || 'all';
         applyFilter();
       });
     });

@@ -1,5 +1,5 @@
 ---
-// FreeTokens.info English Homepage
+// FreeTokens.info English Homepage (Dual-Track Hero Carousel)
 import Base from '../../layouts/Base.astro';
 import platforms from '../../data/platforms.json';
 
@@ -16,13 +16,12 @@ function formatVerified(dateStr: any): string {
 const totalCount = platforms.length;
 ---
 <Base lang="en">
-  <!-- 1. Hero Section -->
-  <section class="hero-editorial">
+  <!-- 1. Hero Section (Dual-Track Carousel: 01 Free Tier Radar | 02 Pro Developer Lab) -->
+  <section class="hero-editorial" id="hero-editorial">
     <div class="container hero-editorial-inner">
       <div class="hero-copy">
-        <p class="hero-eyebrow">SOLO VENTURE · AI RADAR & OPEN INTEL</p>
-
-        <!-- Search Bar -->
+        
+        <!-- Search Input -->
         <div class="hero-search-wrap">
           <input
             type="text"
@@ -33,57 +32,117 @@ const totalCount = platforms.length;
           />
         </div>
 
-        <h1 class="hero-headline">
-          Build with Free Tokens,<br/>
-          Stay awake with Deep Thought.
-        </h1>
-        <p class="hero-lead">
-          Real-time tracking of global LLM & Cloud API free tiers, rate limits, and gotchas with 10-second drop-in code.
-        </p>
-
-        <!-- Neutral Telemetry Bar -->
-        <div class="radar-telemetry-bar">
-          <div class="telemetry-item">
-            <span class="telemetry-label">Monitored</span>
-            <span class="telemetry-value">{totalCount} / {totalCount} Active</span>
-          </div>
-          <div class="telemetry-divider"></div>
-          <div class="telemetry-item">
-            <span class="telemetry-label">Last Sweep</span>
-            <span class="telemetry-value">Today 14:30</span>
-          </div>
-          <div class="telemetry-divider"></div>
-          <div class="telemetry-item">
-            <span class="telemetry-label">Quota Sweep</span>
-            <span id="radar-live-countdown" class="telemetry-timer">--:--:--</span>
-          </div>
-          <div class="telemetry-divider"></div>
-          <div class="telemetry-item">
-            <span class="telemetry-label">Discovery Radar</span>
-            <span id="radar-discover-countdown" class="telemetry-timer">--:--:--</span>
+        <!-- Dual Track Mode Switcher (Segmented Tabs) -->
+        <div class="hero-track-switcher">
+          <button class="track-tab active" data-slide="0" id="tab-slide-0">
+            <span class="track-num">01</span>
+            <span>Free Tier Radar</span>
+          </button>
+          <button class="track-tab" data-slide="1" id="tab-slide-1">
+            <span class="track-num">02</span>
+            <span>Pro Developer Lab ↗</span>
+          </button>
+          <div class="track-progress-bar">
+            <div class="track-progress-inner" id="track-progress-inner"></div>
           </div>
         </div>
 
-        <!-- Quick Index -->
-        <div class="quick-index-bar">
-          <span class="quick-index-label">Featured</span>
-          <div class="quick-index-links">
-            <a href="/en/platform/google-ai-studio/" class="quick-link">Google Gemini · 1500 RPD</a>
-            <a href="/en/platform/siliconflow/" class="quick-link">SiliconFlow · 20M Tokens</a>
-            <a href="/en/platform/gmi-cloud-minimax/" class="quick-link">GMI Cloud · 2B Tokens</a>
-            <a href="/en/platform/groq/" class="quick-link">Groq · Ultra-fast Inference</a>
-          </div>
-        </div>
+        <!-- Slides Wrapper -->
+        <div class="hero-slides-wrapper">
+          
+          <!-- Slide 0: Free Tier Radar (Public good / Deep Thought / Free Tokens) -->
+          <div class="hero-slide active" id="hero-slide-0">
+            <p class="hero-eyebrow">SOLO VENTURE · AI RADAR & OPEN INTEL</p>
+            <h1 class="hero-headline">
+              Build with Free Tokens,<br/>
+              Stay awake with Deep Thought.
+            </h1>
+            <p class="hero-lead">
+              Real-time tracking of global LLM & Cloud API free tiers, rate limits, and gotchas with 10-second drop-in code.
+            </p>
 
-        <div class="hero-actions">
-          <a class="btn-hero-primary" href="#products">Explore All Resources ↓</a>
-          <a class="btn-hero-secondary" href="#guide">Integration Guide ↓</a>
-          <a class="btn-hero-secondary" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">
-            GitHub Repository ↗
-          </a>
+            <!-- Neutral Telemetry Bar -->
+            <div class="radar-telemetry-bar">
+              <div class="telemetry-item">
+                <span class="telemetry-label">Monitored</span>
+                <span class="telemetry-value">{totalCount} / {totalCount} Active</span>
+              </div>
+              <div class="telemetry-divider"></div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">Last Sweep</span>
+                <span class="telemetry-value">Today 14:30</span>
+              </div>
+              <div class="telemetry-divider"></div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">Quota Sweep</span>
+                <span id="radar-live-countdown" class="telemetry-timer">--:--:--</span>
+              </div>
+              <div class="telemetry-divider"></div>
+              <div class="telemetry-item">
+                <span class="telemetry-label">Discovery Radar</span>
+                <span id="radar-discover-countdown" class="telemetry-timer">--:--:--</span>
+              </div>
+            </div>
+
+            <!-- Quick Index -->
+            <div class="quick-index-bar">
+              <span class="quick-index-label">Featured</span>
+              <div class="quick-index-links">
+                <a href="/en/platform/google-ai-studio/" class="quick-link">Google Gemini · 1500 RPD</a>
+                <a href="/en/platform/siliconflow/" class="quick-link">SiliconFlow · 20M Tokens</a>
+                <a href="/en/platform/gmi-cloud-minimax/" class="quick-link">GMI Cloud · 2B Tokens</a>
+                <a href="/en/platform/groq/" class="quick-link">Groq · Ultra-fast Inference</a>
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn-hero-primary" href="#products">Explore All Resources ↓</a>
+              <a class="btn-hero-secondary" href="#guide">Integration Guide ↓</a>
+              <a class="btn-hero-secondary" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">
+                GitHub Repository ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Slide 1: Pro Developer Compute Lab (freetokenlab.com) -->
+          <div class="hero-slide" id="hero-slide-1">
+            <p class="hero-eyebrow hero-eyebrow-lab">PRODUCTION ENGINEERING · HIGH-ROI PRO COMPUTE</p>
+            <h1 class="hero-headline">
+              I am a Pro Developer,<br/>
+              I need reliable, high-ROI Tokens.
+            </h1>
+            <p class="hero-lead">
+              Built for production engineering & solo leverage: Low-latency, US-hosted Remote App access for Claude 3.5 & Codex/Copilot, plus exclusive developer discounts across major LLMs.
+            </p>
+
+            <!-- Pro Highlights Grid -->
+            <div class="lab-highlights-grid">
+              <div class="lab-highlight-item">
+                <span class="lab-highlight-badge">Native US Direct</span>
+                <span class="lab-highlight-text">Claude 3.5 Sonnet / Opus US-hosted anti-ban endpoints</span>
+              </div>
+              <div class="lab-highlight-item">
+                <span class="lab-highlight-badge">Agent Coding</span>
+                <span class="lab-highlight-text">24/7 low-latency support for Codex, Cursor, and CLI coding agents</span>
+              </div>
+              <div class="lab-highlight-item">
+                <span class="lab-highlight-badge">Bulk Discount</span>
+                <span class="lab-highlight-text">Enterprise wholesale discounts & pooled high-concurrency gateways</span>
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn-hero-primary btn-hero-lab" href="https://freetokenlab.com" target="_blank" rel="noopener">
+                Explore FreeToken Lab ↗
+              </a>
+              <a class="btn-hero-secondary" href="#guide">Architecture Guide ↓</a>
+            </div>
+          </div>
+
         </div>
       </div>
 
+      <!-- Right Mascot Card -->
       <div class="hero-mascot-wrapper">
         <div class="hero-card-mascot">
           <img src="/images/hero-mascot.webp" alt="The Thinking Owl Mascot" class="hero-mascot-img" width="380" height="380" />
@@ -121,7 +180,6 @@ const totalCount = platforms.length;
           const isLimited = q.type === '注册赠送' || q.type === '限时赠送' || q.type === '体验金';
           const isPermanent = q.type === '永久免费' || q.type === '完全免费' || q.type === '免费层';
           const isDaily = q.type === '每日刷新' || (q.reset_period && q.reset_period.includes('日'));
-          const isDomestic = p.category === '国内主流' || p.category === '大厂云服务';
           const isFast = p.category === '高速推理' || p.slug === 'groq' || p.slug === 'cerebras' || p.slug === 'sambanova';
           const isTools = p.category === '搜索与工具' || p.category === '多模态' || p.category === '多模态/工具' || p.slug === 'tavily' || p.slug === 'jina-ai';
 
@@ -340,7 +398,6 @@ const totalCount = platforms.length;
   </section>
 
   <style>
-    /* Section Wrappers */
     .section-wrap {
       padding: 72px 0;
       border-bottom: 1px solid var(--card-border);
@@ -368,32 +425,25 @@ const totalCount = platforms.length;
 
     /* Hero Section */
     .hero-editorial {
-      padding: 48px 0 64px;
+      padding: 40px 0 56px;
       border-bottom: 1px solid var(--card-border);
       background: #fbfbfa;
+      position: relative;
     }
     .hero-editorial-inner {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
       gap: 48px;
-      align-items: center;
+      align-items: start;
     }
     .hero-copy {
       display: flex;
       flex-direction: column;
     }
-    .hero-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text-light);
-      margin-bottom: 12px;
-    }
 
-    /* Hero Search Bar */
+    /* Search Input */
     .hero-search-wrap {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .hero-search-input {
       width: 100%;
@@ -412,6 +462,90 @@ const totalCount = platforms.length;
       box-shadow: 0 4px 14px rgba(0,0,0,0.06);
     }
 
+    /* Track Switcher */
+    .hero-track-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 20px;
+      width: fit-content;
+      position: relative;
+    }
+    .track-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .track-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      opacity: 0.6;
+    }
+    .track-tab.active {
+      background: #ffffff;
+      color: var(--text);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      border: 1px solid var(--card-border);
+    }
+    .track-progress-bar {
+      position: absolute;
+      bottom: -4px;
+      left: 4px;
+      right: 4px;
+      height: 2px;
+      background: transparent;
+      overflow: hidden;
+      border-radius: 1px;
+    }
+    .track-progress-inner {
+      height: 100%;
+      width: 0%;
+      background: var(--text);
+      transition: width 0.1s linear;
+    }
+
+    /* Slides */
+    .hero-slides-wrapper {
+      min-height: 280px;
+      position: relative;
+    }
+    .hero-slide {
+      display: none;
+      animation: fadeInSlide 0.3s ease-out;
+    }
+    .hero-slide.active {
+      display: block;
+    }
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 12px;
+    }
+    .hero-eyebrow-lab {
+      color: #2563eb;
+    }
+
     .hero-headline {
       font-size: 34px;
       font-weight: 800;
@@ -426,6 +560,45 @@ const totalCount = platforms.length;
       line-height: 1.6;
       margin-bottom: 20px;
       max-width: 580px;
+    }
+
+    /* Lab Highlights Grid */
+    .lab-highlights-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 22px;
+    }
+    .lab-highlight-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .lab-highlight-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #2563eb;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .lab-highlight-text {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .btn-hero-lab {
+      background: #0f172a !important;
+      border: 1px solid #1e293b;
+    }
+    .btn-hero-lab:hover {
+      background: #000000 !important;
     }
 
     /* Telemetry Bar */
@@ -471,7 +644,7 @@ const totalCount = platforms.length;
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       flex-wrap: wrap;
     }
     .quick-index-label {
@@ -535,7 +708,7 @@ const totalCount = platforms.length;
       background: #ffffff;
     }
 
-    /* Mascot Wrapper */
+    /* Mascot Card */
     .hero-mascot-wrapper {
       display: flex;
       justify-content: center;
@@ -905,6 +1078,7 @@ const totalCount = platforms.length;
   </style>
 
   <script is:inline>
+    // 1. Radar Countdowns
     function updateRadarCountdown() {
       const timerEl = document.getElementById('radar-live-countdown');
       const discoverEl = document.getElementById('radar-discover-countdown');
@@ -913,7 +1087,7 @@ const totalCount = platforms.length;
       const now = new Date();
       const pad = (n) => String(n).padStart(2, '0');
 
-      // 1. Quota sweep (01:30, 04:30, 07:30, 14:30, 20:30)
+      // 额度巡检
       const currentHourDec = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
       const targetHours = [1.5, 4.5, 7.5, 14.5, 20.5];
       let nextQuota = new Date(now);
@@ -933,7 +1107,7 @@ const totalCount = platforms.length;
       const qSecs = Math.floor((diffQuota % (1000 * 60)) / 1000);
       if (timerEl) timerEl.textContent = `${pad(qHours)}:${pad(qMins)}:${pad(qSecs)}`;
 
-      // 2. Global Discovery Radar (every 2 days at 02:30 Beijing time)
+      // 新源雷达
       const baseEpoch = new Date('2026-09-01T02:30:00+08:00').getTime();
       const periodMs = 2 * 24 * 60 * 60 * 1000;
       const elapsed = now.getTime() - baseEpoch;
@@ -953,8 +1127,52 @@ const totalCount = platforms.length;
     setInterval(updateRadarCountdown, 1000);
     updateRadarCountdown();
 
+    // 2. Dual Track Hero Carousel
+    let currentSlide = 0;
+    const slides = [document.getElementById('hero-slide-0'), document.getElementById('hero-slide-1')];
+    const tabs = [document.getElementById('tab-slide-0'), document.getElementById('tab-slide-1')];
+    const progressBar = document.getElementById('track-progress-inner');
+    const heroSection = document.getElementById('hero-editorial');
+    let isPaused = false;
+    let progress = 0;
+    const intervalMs = 7000;
+    const tickMs = 100;
+
+    function showSlide(idx) {
+      currentSlide = idx;
+      slides.forEach((s, i) => {
+        if (s) s.classList.toggle('active', i === idx);
+      });
+      tabs.forEach((t, i) => {
+        if (t) t.classList.toggle('active', i === idx);
+      });
+      progress = 0;
+      if (progressBar) progressBar.style.width = '0%';
+    }
+
+    tabs.forEach((tab, i) => {
+      tab?.addEventListener('click', () => {
+        showSlide(i);
+      });
+    });
+
+    heroSection?.addEventListener('mouseenter', () => { isPaused = true; });
+    heroSection?.addEventListener('mouseleave', () => { isPaused = false; });
+
+    setInterval(() => {
+      if (!isPaused) {
+        progress += (tickMs / intervalMs) * 100;
+        if (progressBar) progressBar.style.width = `${Math.min(100, progress)}%`;
+        if (progress >= 100) {
+          const next = (currentSlide + 1) % 2;
+          showSlide(next);
+        }
+      }
+    }, tickMs);
+
+    // 3. Search & Tabs Filter
     const searchInput = document.getElementById('search-input');
-    const filterTabs = document.querySelectorAll('.filter-pill');
+    const filterTabs = document.querySelectorAll('#filter-tabs .filter-pill');
     const cards = document.querySelectorAll('.editorial-card');
     const noResult = document.getElementById('no-result');
     let currentFilter = 'all';
