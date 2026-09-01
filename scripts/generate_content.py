@@ -355,6 +355,49 @@ def generate_svg_architecture() -> str:
     return svg
 
 
+# ==========================================
+# 4. 全自动化搜索引擎 SEO 引擎 (Sitemap & Robots)
+# ==========================================
+def generate_seo_assets(platforms: list[dict]):
+    """自动生成完全符合 Google/Baidu/Bing 标准的 sitemap.xml 与 robots.txt"""
+    public_dir = ROOT / "site" / "public"
+    public_dir.mkdir(parents=True, exist_ok=True)
+
+    # 1. robots.txt
+    robots_content = "User-agent: *\nAllow: /\n\nSitemap: https://witkit.zone/sitemap.xml\nSitemap: https://freetokens.info/sitemap.xml\n"
+    (public_dir / "robots.txt").write_text(robots_content, encoding="utf-8")
+
+    # 2. sitemap.xml
+    today = date.today().isoformat()
+    lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        '  <url>',
+        '    <loc>https://witkit.zone/</loc>',
+        f'    <lastmod>{today}</lastmod>',
+        '    <changefreq>daily</changefreq>',
+        '    <priority>1.0</priority>',
+        '  </url>',
+    ]
+
+    for p in platforms:
+        slug = p.get('slug')
+        if slug:
+            lines.extend([
+                '  <url>',
+                f'    <loc>https://witkit.zone/platform/{slug}/</loc>',
+                f'    <lastmod>{today}</lastmod>',
+                '    <changefreq>weekly</changefreq>',
+                '    <priority>0.8</priority>',
+                '  </url>',
+            ])
+
+    lines.append('</urlset>\n')
+    sitemap_content = "\n".join(lines)
+    (public_dir / "sitemap.xml").write_text(sitemap_content, encoding="utf-8")
+    (OUTPUT_DIR / "sitemap.xml").write_text(sitemap_content, encoding="utf-8")
+
+
 def main():
     if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
         sys.stdout.reconfigure(encoding='utf-8')
@@ -386,7 +429,11 @@ def main():
     (ROOT / "site" / "public" / "architecture.svg").write_text(svg_content, encoding="utf-8")
     print(f"✅ [Adaptive Vector SVG Diagram] -> {svg_path}")
 
-    print("\n🎉 All content assets generated into output/ directory successfully!")
+    # 4. 导出 SEO Sitemap 与 Robots.txt
+    generate_seo_assets(platforms)
+    print(f"✅ [SEO Sitemap.xml & Robots.txt] -> site/public/sitemap.xml")
+
+    print("\n🎉 All content and SEO assets generated successfully!")
     return 0
 
 

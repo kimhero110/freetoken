@@ -11,6 +11,7 @@ const {
 const pageTitle = title === 'FreeToken 免费Token信息聚合'
   ? title
   : `${title} - FreeToken 免费Token信息聚合`;
+const canonicalURL = new URL(Astro.url.pathname, 'https://witkit.zone').href;
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -19,10 +20,37 @@ const pageTitle = title === 'FreeToken 免费Token信息聚合'
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
   <meta name="description" content={description} />
+  <meta name="keywords" content="免费Token, 免费大模型API, 免费LLM, Gemini免费API, DeepSeek免费API, 白嫖API, OpenAI接口免费, 免费算力, AI API Faucet" />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph / Facebook / 微信分享卡片 -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={description} />
-  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="FreeToken 免费Token情报局" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={pageTitle} />
+  <meta name="twitter:description" content={description} />
+
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- 结构化数据 (JSON-LD Structured Data for Google/Baidu Rich Snippets) -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "FreeToken",
+    "url": "https://witkit.zone/",
+    "description": "全球各大 LLM 与云平台免费 API 额度情报聚合雷达",
+    "inLanguage": "zh-CN",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://witkit.zone/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  })} />
   <style is:global>
     :root {
       --bg: #0f172a;
