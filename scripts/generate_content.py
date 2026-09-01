@@ -127,13 +127,13 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       justify-content: space-between;
     }
     .brand {
-      font-size: 17px;
+      font-size: 19.5px;
       font-weight: 700;
       color: var(--text);
       display: flex;
       align-items: center;
-      gap: 8px;
-      letter-spacing: -0.3px;
+      gap: 10px;
+      letter-spacing: -0.4px;
     }
     .brand-tag {
       font-size: 11px;
