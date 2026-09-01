@@ -28,7 +28,7 @@ function formatVerified(dateStr: any): string {
   return str;
 }
 ---
-<Base title={`${p.name} 免费API额度与接入指南`} description={`${p.name} 免费API额度：${q.amount} ${q.unit ?? ''}。${p.intro}`}>
+<Base currentSlug={p.slug} title={`${p.name} 免费API额度与接入指南`} description={`${p.name} 免费API额度：${q.amount} ${q.unit ?? ''}。${p.intro}`}>
   <div class="container detail-container">
     <!-- 面包屑 -->
     <nav class="breadcrumb">

@@ -1,69 +1,78 @@
 ---
-// FreeTokens.info 基础布局 - 极简主义科技杂志风格
 interface Props {
   title?: string;
   description?: string;
+  lang?: 'zh' | 'en';
+  currentSlug?: string;
 }
+
 const {
-  title = 'FreeToken 免费Token情报局',
-  description = '聚合各大 LLM 与云平台的免费 API 额度信息，帮助你找到免费的 Token 与调用配额。',
+  title,
+  description,
+  lang = 'zh',
+  currentSlug,
 } = Astro.props;
 
-const pageTitle = title === 'FreeToken 免费Token情报局'
-  ? title
-  : `${title} - FreeToken 免费Token情报局`;
+const isEn = lang === 'en';
 
-const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href;
+const defaultTitle = isEn
+  ? 'FreeToken · Global LLM & Cloud API Free Tier Intelligence'
+  : 'FreeToken · 免费 Token 情报局 | 全球主流大模型免费 API 配额与接入指南';
+
+const defaultDesc = isEn
+  ? 'Curated free API tiers and token credits across 29+ global LLM platforms (Google Gemini, DeepSeek, SiliconFlow, Groq, Mistral, Cerebras). 10-second setup code and gotchas.'
+  : '聚合全球主流大模型（LLM）与云平台的免费 API 额度与白嫖配额。实时雷达探测巡检，提供透明规则与 10 秒即用代码。';
+
+const pageTitle = title ? `${title} | FreeToken` : defaultTitle;
+const pageDesc = description || defaultDesc;
+
+// Alternate switch link
+let switchUrl = '/';
+if (isEn) {
+  switchUrl = currentSlug ? `/platform/${currentSlug}/` : '/';
+} else {
+  switchUrl = currentSlug ? `/en/platform/${currentSlug}/` : '/en/';
+}
 ---
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang={isEn ? 'en' : 'zh-CN'}>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
-  <meta name="description" content={description} />
-  <meta name="keywords" content="免费Token, 免费大模型API, 免费LLM, Gemini免费API, DeepSeek免费API, 白嫖API, OpenAI接口免费, 免费算力, AI API Faucet" />
-  <link rel="canonical" href={canonicalURL} />
+  <meta name="description" content={pageDesc} />
 
-  <!-- Preload WebP Hero Asset -->
-  <link rel="preload" as="image" href="/images/hero-mascot.webp" type="image/webp" />
-
-  <!-- Open Graph -->
+  <!-- Open Graph / Meta -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content={canonicalURL} />
   <meta property="og:title" content={pageTitle} />
-  <meta property="og:description" content={description} />
-  <meta property="og:site_name" content="FreeToken 免费Token情报局" />
+  <meta property="og:description" content={pageDesc} />
+  <meta property="og:image" content="/images/hero-mascot.webp" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content={pageTitle} />
-  <meta name="twitter:description" content={description} />
+  <!-- Canonical & hreflang SEO -->
+  <link rel="alternate" hreflang="zh-CN" href={currentSlug ? `https://freetokens.info/platform/${currentSlug}/` : 'https://freetokens.info/'} />
+  <link rel="alternate" hreflang="en" href={currentSlug ? `https://freetokens.info/en/platform/${currentSlug}/` : 'https://freetokens.info/en/'} />
+  <link rel="alternate" hreflang="x-default" href={currentSlug ? `https://freetokens.info/platform/${currentSlug}/` : 'https://freetokens.info/'} />
 
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "FreeToken",
-    "url": "https://freetokens.info/",
-    "description": "全球各大 LLM 与云平台免费 API 额度情报聚合雷达",
-    "inLanguage": "zh-CN"
-  })} />
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style is:global>
     :root {
       --bg: #fbfbfa;
-      --bg-subtle: #f4f4f2;
+      --bg-subtle: #f4f3ef;
       --card-bg: #ffffff;
       --card-border: #e6e4de;
-      --card-border-hover: #18181b;
       --text: #18181b;
       --text-muted: #64748b;
       --text-light: #94a3b8;
-      --primary: #18181b;
-      --accent-warm: #b45309;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --accent: #2563eb;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -115,19 +124,38 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 14px;
+    }
+    .nav-item {
       font-size: 13px;
       font-weight: 500;
       color: var(--text-muted);
+      transition: color 0.15s ease;
     }
-    .nav-links a {
-      transition: color 0.15s;
-    }
-    .nav-links a:hover {
+    .nav-item:hover {
       color: var(--text);
     }
 
-    /* 极简克制公众号按钮 */
+    /* 语言切换胶囊按钮 */
+    .nav-lang-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      border: 1px solid var(--card-border);
+      background: #ffffff;
+      padding: 5px 11px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .nav-lang-switch:hover {
+      border-color: var(--text);
+      background: var(--bg-subtle);
+    }
+
+    /* 微信按钮 */
     .nav-btn-wechat {
       background: transparent;
       border: 1px solid var(--card-border);
@@ -227,7 +255,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       gap: 12px;
     }
 
-    /* 微信关注弹窗 */
+    /* 微信弹窗 */
     .wechat-modal-backdrop {
       position: fixed;
       inset: 0;
@@ -236,45 +264,41 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 9999;
-      padding: 20px;
+      z-index: 1000;
     }
     .wechat-modal-backdrop.open {
       display: flex;
-      animation: fadeIn 0.2s ease-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.96); }
-      to { opacity: 1; transform: scale(1); }
     }
     .wechat-modal-card {
       background: #ffffff;
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 32px;
+      border-radius: 12px;
+      width: 90%;
       max-width: 360px;
-      width: 100%;
+      padding: 28px 24px;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
       position: relative;
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.12);
     }
     .modal-close-btn {
       position: absolute;
-      top: 16px;
-      right: 16px;
-      background: none;
+      top: 14px;
+      right: 14px;
+      background: transparent;
       border: none;
       font-size: 20px;
-      color: var(--text-light);
+      line-height: 1;
+      color: var(--text-muted);
       cursor: pointer;
-      padding: 4px 8px;
     }
     .modal-qrcode-img {
-      width: 190px;
-      height: 190px;
-      border-radius: 8px;
-      border: 1px solid var(--card-border);
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
       margin: 16px auto;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 6px;
       display: block;
     }
   </style>
@@ -282,26 +306,35 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/">
+      <a href={isEn ? '/en/' : '/'} class="brand">
         <span>FreeTokens.info</span>
-        <span class="brand-tag">免费算力情报</span>
+        <span class="brand-tag">{isEn ? 'AI Free Tier Radar' : 'AI 免费算力雷达'}</span>
       </a>
-      <div class="nav-links">
-        <a href="/#products">资源目录</a>
-        <a href="/#guide">接入指南</a>
-        <a href="/#focus">长期坐标</a>
-        <a href="/#community">保持联系</a>
-        <button class="nav-btn-wechat" id="btn-open-wechat">
-          关注公众号
-        </button>
-        <a href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener" class="nav-github-link">
-          GitHub
+
+      <nav class="nav-links">
+        <a href={isEn ? '/en/#products' : '/#products'} class="nav-item">{isEn ? 'Catalog' : '资源目录'}</a>
+        <a href={isEn ? '/en/#guide' : '/#guide'} class="nav-item">{isEn ? 'Guide' : '接入指南'}</a>
+        <a href={isEn ? '/en/#focus' : '/#focus'} class="nav-item">{isEn ? 'Coordinates' : '长期坐标'}</a>
+        
+        <!-- 语言切换开关 -->
+        <a href={switchUrl} class="nav-lang-switch" title={isEn ? 'Switch to Chinese' : '切换至英文版'}>
+          {isEn ? '🇨🇳 中文' : '🌐 English'}
         </a>
-      </div>
+
+        {!isEn && (
+          <button class="nav-btn-wechat" id="btn-open-wechat">
+            <span>公众号</span>
+          </button>
+        )}
+
+        <a class="nav-github-link" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">
+          <span>GitHub</span>
+        </a>
+      </nav>
     </div>
   </header>
 
-  <main style="flex: 1;">
+  <main>
     <slot />
   </main>
 
@@ -309,27 +342,31 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
-          <h4>FreeTokens.info · 免费Token情报局</h4>
-          <p>持续追踪全球主流大模型与云平台免费 API 配额，为独立开发者与 AI 爱好者提供清晰、透明、可复用的接入指南。</p>
+          <h4>FreeTokens.info · {isEn ? 'Free Token Intelligence Bureau' : '免费Token情报局'}</h4>
+          <p>
+            {isEn
+              ? 'Tracking global LLM & Cloud API free tiers, gotchas, and 10-second integration code for indie hackers, developers, and AI researchers.'
+              : '持续追踪全球主流大模型与云平台免费 API 配额，为独立开发者与 AI 爱好者提供清晰、透明、可复用的接入指南。'}
+          </p>
         </div>
         <div class="footer-links">
-          <a href="/#products">资源目录</a>
-          <a href="/#guide">接入指南</a>
+          <a href={isEn ? '/en/#products' : '/#products'}>{isEn ? 'Catalog' : '资源目录'}</a>
+          <a href={isEn ? '/en/#guide' : '/#guide'}>{isEn ? 'Guide' : '接入指南'}</a>
           <a href="/sitemap.xml" target="_blank">Sitemap</a>
-          <a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank">推荐新源</a>
-          <a href="https://github.com/kimhero110/freetoken" target="_blank">GitHub 仓库</a>
+          <a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank">{isEn ? 'Submit Tier' : '推荐新源'}</a>
+          <a href="https://github.com/kimhero110/freetoken" target="_blank">GitHub</a>
         </div>
       </div>
       <div class="footer-ecosystem">
-        <span>生态基础设施：</span>
-        <a href="https://github.com/withastro/astro" target="_blank" rel="noopener">Astro 极速引擎 ↗</a>
-        <a href="https://github.com/BerriAI/litellm" target="_blank" rel="noopener">LiteLLM 接口网关 ↗</a>
+        <span>{isEn ? 'Ecosystem & Infra:' : '生态基础设施：'}</span>
+        <a href="https://github.com/withastro/astro" target="_blank" rel="noopener">Astro Engine ↗</a>
+        <a href="https://github.com/BerriAI/litellm" target="_blank" rel="noopener">LiteLLM Gateway ↗</a>
         <a href="https://github.com/openai/openai-python" target="_blank" rel="noopener">OpenAI Python SDK ↗</a>
-        <a href="https://github.com/langgenius/dify" target="_blank" rel="noopener">Dify 应用编排 ↗</a>
+        <a href="https://github.com/langgenius/dify" target="_blank" rel="noopener">Dify Platform ↗</a>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 FreeTokens.info · 工具让人走得更快，思考决定往哪里走。</span>
-        <span>托管于 Cloudflare Anycast 边缘网络</span>
+        <span>{isEn ? '© 2026 FreeTokens.info · Tools take you faster; Thinking decides where to go.' : '© 2026 FreeTokens.info · 工具让人走得更快，思考决定往哪里走。'}</span>
+        <span>{isEn ? 'Hosted on Cloudflare Anycast Global Edge' : '托管于 Cloudflare Anycast 边缘网络'}</span>
       </div>
     </div>
   </footer>
@@ -337,7 +374,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
   <div class="wechat-modal-backdrop" id="wechat-modal">
     <div class="wechat-modal-card">
       <button class="modal-close-btn" id="modal-close-btn">×</button>
-      <div style="font-size: 12px; font-weight: 600; color: var(--accent-warm); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+      <div style="font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
         FreeTokens.info
       </div>
       <h3 style="font-size: 17px; font-weight: 700; color: #18181b; margin-bottom: 6px;">微信扫码关注</h3>
