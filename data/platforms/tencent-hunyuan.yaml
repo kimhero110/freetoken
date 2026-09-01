@@ -22,3 +22,8 @@ tags:
 - 腾讯云
 - 注册赠送
 - 中文理解
+api_base_url: https://api.hunyuan.cloud.tencent.com/v1
+free_models:
+- hunyuan-standard
+- hunyuan-lite
+slug: tencent-hunyuan

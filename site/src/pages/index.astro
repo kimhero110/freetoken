@@ -68,6 +68,9 @@ const totalCount = platforms.length;
 
         <div class="hero-actions">
           <a class="btn-hero-primary" href="#products">浏览全部资源库</a>
+          <a class="btn-hero-secondary" href="#guide">
+            查看接入指南 ↓
+          </a>
           <button class="btn-hero-secondary open-wechat-trigger">
             关注公众号 ↗
           </button>
@@ -171,8 +174,59 @@ const totalCount = platforms.length;
     </div>
   </section>
 
-  <!-- 3. 四个长期坐标 -->
-  <section class="section-wrap" id="focus">
+  <!-- 3. 快速接入与工具实践指南 (New Section) -->
+  <section class="section-wrap" id="guide">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow">实践指南</p>
+        <h2 class="section-title">如何在常用 AI 工具与开发流中接入本站资源？</h2>
+      </header>
+
+      <div class="guide-grid">
+        <article class="guide-card">
+          <div class="guide-card-head">
+            <span class="guide-step">01</span>
+            <h3>标准协议接入原理</h3>
+          </div>
+          <p class="guide-text">
+            本站收录的大模型平台绝大多数均<strong>原生兼容 OpenAI 标准接口协议</strong>。无论在何种工具或项目中使用，只需要配置以下 <strong>3 个参数</strong>：
+          </p>
+          <div class="guide-param-list">
+            <div class="guide-param"><code>Base URL</code> 详情页中提供的平台专属接口基础地址</div>
+            <div class="guide-param"><code>API Key</code> 在平台注册并创建的密钥凭证</div>
+            <div class="guide-param"><code>Model Name</code> 平台支持的免费模型代号</div>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <div class="guide-card-head">
+            <span class="guide-step">02</span>
+            <h3>常用 AI 客户端与编程工具配置</h3>
+          </div>
+          <ul class="guide-tool-list">
+            <li><strong>OpenCode / Cursor / Cline</strong>：在设置 ➔ Custom OpenAI Provider 中，填入平台 Base URL 与 API Key，即可零成本驱动终端代码生成与自动重构。</li>
+            <li><strong>Cherry Studio / Chatbox / NextChat</strong>：在设置 ➔ 自定义服务商中，填入对应平台的 API 地址与 Key，选择免费模型即可秒级对话。</li>
+            <li><strong>One API / New API 网关聚合</strong>：强烈推荐将本站 29 家平台的免费 Key 统一挂载至聚合网关，开启负载均衡与自动轮询，实现无上限并发调用。</li>
+          </ul>
+        </article>
+
+        <article class="guide-card">
+          <div class="guide-card-head">
+            <span class="guide-step">03</span>
+            <h3>核心避坑与风控注意事项</h3>
+          </div>
+          <ul class="guide-caution-list">
+            <li><strong>并发限速（RPM / TPM）</strong>：免费配额通常有速率限制（如 15 RPM），在批量任务中务必加入延时或重试机制，避免触发 429 请求超限。</li>
+            <li><strong>额度类型区分</strong>：分清“每日重置配额”（如 Gemini 1500次/天，长期有效）与“注册体验金”（如 30 天有效），建议优先消耗快到期的体验金。</li>
+            <li><strong>网络与合规要求</strong>：国产大厂（如阿里、智谱、百度）需完成手机或实名认证；部分海外大厂需保持合规的网络环境。</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 四个长期坐标 -->
+  <section class="section-wrap section-bg" id="focus">
     <div class="container">
       <header class="section-head">
         <p class="section-eyebrow">长期坐标</p>
@@ -231,8 +285,8 @@ const totalCount = platforms.length;
     </div>
   </section>
 
-  <!-- 4. 保持联系 -->
-  <section class="section-wrap section-bg" id="community">
+  <!-- 5. 保持联系 -->
+  <section class="section-wrap" id="community">
     <div class="container">
       <header class="section-head">
         <p class="section-eyebrow">保持联系</p>
@@ -499,103 +553,78 @@ const totalCount = platforms.length;
       letter-spacing: -0.3px;
     }
 
-    /* Focus Grid */
-    .focus-grid {
+    /* Guide Grid (接入指南卡片) */
+    .guide-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 22px;
     }
-    .focus-card {
+    .guide-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 14px;
-      padding: 20px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.2s ease;
     }
-    .focus-card:hover {
-      border-color: var(--text);
-      transform: translateY(-2px);
-    }
-    .focus-card-top {
-      position: relative;
-      margin-bottom: 16px;
-      background: #faf9f6;
-      border-radius: 10px;
-      overflow: hidden;
+    .guide-card-head {
       display: flex;
       align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(0, 0, 0, 0.04);
+      gap: 10px;
+      margin-bottom: 14px;
     }
-    .focus-num {
-      position: absolute;
-      top: 10px;
-      left: 10px;
+    .guide-step {
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--text-light);
-      background: rgba(255, 255, 255, 0.9);
-      padding: 1px 6px;
-      border-radius: 4px;
+      background: var(--bg-subtle);
       border: 1px solid var(--card-border);
-      z-index: 2;
+      padding: 2px 7px;
+      border-radius: 4px;
     }
-    .focus-card-art {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      display: block;
-    }
-    .focus-card-meta {
-      display: flex;
-      flex-direction: column;
-    }
-    .focus-en-tag {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      color: var(--text-light);
-      margin-bottom: 4px;
-      text-transform: uppercase;
-    }
-    .focus-title {
-      font-size: 17px;
+    .guide-card h3 {
+      font-size: 16px;
       font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.2px;
-      margin-bottom: 6px;
     }
-    .focus-desc {
+    .guide-text {
       font-size: 13px;
       color: var(--text-muted);
       line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .guide-param-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 12px;
+    }
+    .guide-param code {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text);
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-right: 6px;
+    }
+    .guide-tool-list, .guide-caution-list {
+      padding-left: 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .guide-tool-list li, .guide-caution-list li {
+      margin-bottom: 10px;
     }
 
-    /* 搜索与过滤 */
-    .search-bar-wrap {
-      position: relative;
-      max-width: 600px;
-      margin: 0 auto 16px;
-    }
-    .search-input {
-      width: 100%;
-      padding: 11px 16px;
-      font-size: 14px;
-      border-radius: 8px;
-      border: 1px solid var(--card-border);
-      background: var(--card-bg);
-      color: var(--text);
-      outline: none;
-      transition: all 0.15s;
-    }
-    .search-input:focus {
-      border-color: var(--text);
-    }
+    /* Filter Pills */
     .filter-pills {
       display: flex;
       gap: 6px;
@@ -717,6 +746,83 @@ const totalCount = platforms.length;
     .action-link {
       font-weight: 500;
       color: var(--text);
+    }
+
+    /* Focus Grid */
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+    .focus-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .focus-card:hover {
+      border-color: var(--text);
+      transform: translateY(-2px);
+    }
+    .focus-card-top {
+      position: relative;
+      margin-bottom: 16px;
+      background: #faf9f6;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+    .focus-num {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-light);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--card-border);
+      z-index: 2;
+    }
+    .focus-card-art {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+    }
+    .focus-card-meta {
+      display: flex;
+      flex-direction: column;
+    }
+    .focus-en-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .focus-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.2px;
+      margin-bottom: 6px;
+    }
+    .focus-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
     /* 保持联系 */

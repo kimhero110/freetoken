@@ -23,3 +23,9 @@ tags:
 - GPT-4o
 - Claude 3.5
 - 免绑卡
+api_base_url: https://models.inference.ai.azure.com
+free_models:
+- gpt-4o-mini
+- Meta-Llama-3.1-70B-Instruct
+- Phi-3.5-mini-instruct
+slug: github-models

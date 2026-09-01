@@ -23,3 +23,8 @@ tags:
 - DeepSeek-V3
 - Llama 3.3
 - 免信用卡
+api_base_url: https://api.hyperbolic.xyz/v1
+free_models:
+- meta-llama/Llama-3.3-70B-Instruct
+- deepseek-ai/DeepSeek-V3
+slug: hyperbolic

@@ -22,3 +22,7 @@ tags:
 - Agent必备
 - 每月刷新
 - 开发者神器
+api_base_url: https://api.tavily.com
+free_models:
+- tavily-search-api
+slug: tavily

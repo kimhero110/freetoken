@@ -22,3 +22,8 @@ tags:
 - H100算力
 - 注册赠送
 - 开源大模型
+api_base_url: https://api.studio.nebius.ai/v1
+free_models:
+- meta-llama/Meta-Llama-3.1-70B-Instruct
+- Qwen/Qwen2.5-Coder-32B-Instruct
+slug: nebius-ai

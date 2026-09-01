@@ -23,3 +23,8 @@ tags:
 - 向量嵌入
 - 注册赠送
 - 免信用卡
+api_base_url: https://r.jina.ai
+free_models:
+- jina-embeddings-v3
+- jina-reranker-v2-base-multilingual
+slug: jina-ai

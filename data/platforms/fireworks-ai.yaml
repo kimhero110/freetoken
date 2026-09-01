@@ -22,3 +22,8 @@ tags:
 - 注册赠送
 - 开源大模型
 - 开发必备
+api_base_url: https://api.fireworks.ai/inference/v1
+free_models:
+- accounts/fireworks/models/llama-v3p3-70b-instruct
+- accounts/fireworks/models/qwen2p5-72b-instruct
+slug: fireworks-ai

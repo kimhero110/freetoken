@@ -22,3 +22,8 @@ tags:
 - 文生图API
 - 注册赠送
 - 多模态
+api_base_url: https://api.novita.ai/v3/openai
+free_models:
+- meta-llama/llama-3.3-70b-instruct
+- deepseek/deepseek-r1-distill-qwen-32b
+slug: novita-ai

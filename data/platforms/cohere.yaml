@@ -22,3 +22,9 @@ tags:
 - 向量嵌入
 - RAG必备
 - 开发者首选
+api_base_url: https://api.cohere.ai/v1
+free_models:
+- command-r-plus
+- command-r
+- embed-multilingual-v3.0
+slug: cohere

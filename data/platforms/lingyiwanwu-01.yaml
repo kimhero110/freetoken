@@ -22,3 +22,8 @@ tags:
 - Yi系列
 - 多模态
 - 注册赠送
+api_base_url: https://api.lingyiwanwu.com/v1
+free_models:
+- yi-lightning
+- yi-large-turbo
+slug: lingyiwanwu-01

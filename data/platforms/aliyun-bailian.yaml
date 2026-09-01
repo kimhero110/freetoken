@@ -23,3 +23,9 @@ tags:
 - 国产云厂商
 - 超长有效期
 - 企业级稳定
+api_base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+free_models:
+- qwen-turbo
+- qwen-plus
+- qwen-max
+slug: aliyun-bailian

@@ -23,3 +23,9 @@ tags:
 - GLM-4
 - 免信用卡
 - 国内首选
+api_base_url: https://open.bigmodel.cn/api/paas/v4
+free_models:
+- glm-4-flash
+- glm-4-flashx
+- glm-4-plus
+slug: zhipu-ai

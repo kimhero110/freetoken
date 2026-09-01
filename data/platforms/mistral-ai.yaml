@@ -23,3 +23,9 @@ tags:
 - 永久免费
 - Codestral
 - 免绑卡
+api_base_url: https://api.mistral.ai/v1
+free_models:
+- mistral-small-latest
+- pixtral-12b-2409
+- codestral-latest
+slug: mistral-ai

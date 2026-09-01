@@ -22,3 +22,8 @@ tags:
 - 注册赠送
 - 千万额度
 - 中文理解
+api_base_url: https://api.baichuan-ai.com/v1
+free_models:
+- Baichuan4-Air
+- Baichuan4-Turbo
+slug: baichuan-ai

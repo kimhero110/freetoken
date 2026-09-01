@@ -17,6 +17,9 @@ const statusMap: Record<string, string> = {
   expired: '已失效',
   unverified: '待核实',
 };
+
+const apiBaseUrl = p.api_base_url || 'https://api.openai.com/v1';
+const primaryModel = p.free_models?.[0] || 'default-model';
 ---
 <Base title={`${p.name} 免费API额度与接入指南`} description={`${p.name} 免费API额度：${q.amount} ${q.unit ?? ''}。${p.intro}`}>
   <div class="container detail-container">
@@ -91,7 +94,7 @@ const statusMap: Record<string, string> = {
         </section>
       )}
 
-      <!-- 10 秒接入代码 -->
+      <!-- 10 秒接入代码 (精准平台接口地址与模型) -->
       <section class="detail-section">
         <h2 class="section-heading">10 秒快速接入代码</h2>
         <div class="code-box-container">
@@ -104,13 +107,15 @@ const statusMap: Record<string, string> = {
           <div class="code-block active" id="code-python">
             <pre><code>{`from openai import OpenAI
 
+# 1. 初始化客户端（使用 ${p.name} 专属 API 接口地址）
 client = OpenAI(
-    api_key="YOUR_API_KEY",  # 填入申请到的 API Key
-    base_url="${p.api_base_url || 'https://api.openai.com/v1'}"
+    api_key="YOUR_API_KEY",  # 填入申请到的 ${p.name} API Key
+    base_url="${apiBaseUrl}"
 )
 
+# 2. 发起对话请求（使用官方免费支持的模型）
 response = client.chat.completions.create(
-    model="${p.free_models?.[0] || 'default-model'}",
+    model="${primaryModel}",
     messages=[
         {"role": "user", "content": "你好！请用一句话介绍你自己。"}
     ]
@@ -120,23 +125,25 @@ print(response.choices[0].message.content)`}</code></pre>
           </div>
 
           <div class="code-block" id="code-curl">
-            <pre><code>{`curl ${p.api_base_url || 'https://api.openai.com/v1'}/chat/completions   -H "Content-Type: application/json"   -H "Authorization: Bearer YOUR_API_KEY"   -d '{
-    "model": "${p.free_models?.[0] || 'default-model'}",
-    "messages": [{"role": "user", "content": "Hello!"}]
+            <pre><code>{`curl ${apiBaseUrl}/chat/completions   -H "Content-Type: application/json"   -H "Authorization: Bearer YOUR_API_KEY"   -d '{
+    "model": "${primaryModel}",
+    "messages": [{"role": "user", "content": "你好！"}]
   }'`}</code></pre>
           </div>
 
           <div class="code-block" id="code-js">
             <pre><code>{`import OpenAI from "openai";
 
+// 1. 初始化客户端
 const openai = new OpenAI({
   apiKey: "YOUR_API_KEY",
-  baseURL: "${p.api_base_url || 'https://api.openai.com/v1'}",
+  baseURL: "${apiBaseUrl}",
 });
 
+// 2. 发起请求
 const response = await openai.chat.completions.create({
-  model: "${p.free_models?.[0] || 'default-model'}",
-  messages: [{ role: "user", content: "Hello!" }],
+  model: "${primaryModel}",
+  messages: [{ role: "user", content: "你好！" }],
 });
 
 console.log(response.choices[0].message.content);`}</code></pre>

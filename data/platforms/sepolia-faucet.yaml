@@ -23,3 +23,7 @@ tags:
 - 智能合约
 - 每日领取
 - 开发者刚需
+api_base_url: https://rpc.sepolia.org
+free_models:
+- ethereum-sepolia-testnet
+slug: sepolia-faucet

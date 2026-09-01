@@ -22,3 +22,9 @@ tags:
 - 每日刷新
 - Llama 3.3
 - 免信用卡
+api_base_url: https://api.sambanova.ai/v1
+free_models:
+- Meta-Llama-3.3-70B-Instruct
+- Qwen2.5-72B-Instruct
+- DeepSeek-R1-Distill-Llama-70B
+slug: sambanova

@@ -22,3 +22,8 @@ tags:
 - 注册赠送
 - 限时额度
 last_checked: '2026-08-30'
+api_base_url: https://api.deepseek.com
+free_models:
+- deepseek-chat
+- deepseek-reasoner
+slug: deepseek

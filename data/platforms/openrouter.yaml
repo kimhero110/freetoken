@@ -23,3 +23,9 @@ tags:
 - 统一API
 - 全球节点
 - 免绑卡
+api_base_url: https://openrouter.ai/api/v1
+free_models:
+- meta-llama/llama-3.3-70b-instruct:free
+- google/gemini-2.0-flash-exp:free
+- deepseek/deepseek-r1:free
+slug: openrouter

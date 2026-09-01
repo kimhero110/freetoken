@@ -23,3 +23,8 @@ tags:
 - 永久免费
 - 免信用卡
 - 国内直连
+api_base_url: https://qianfan.baidubce.com/v2
+free_models:
+- ernie-speed-128k
+- ernie-lite-8k
+slug: baidu-qianfan

@@ -26,3 +26,8 @@ tags:
 - 语音音乐
 - 免信用卡
 - GitHub登录
+api_base_url: https://api.gmicloud.ai/v1
+free_models:
+- minimax-abab6.5s-chat
+- minimax-text-01
+slug: gmi-cloud-minimax

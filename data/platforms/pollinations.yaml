@@ -23,3 +23,10 @@ tags:
 - 免APIKey
 - FLUX文生图
 - 开源神器
+api_base_url: https://text.pollinations.ai/openai
+free_models:
+- openai
+- mistral
+- flux
+- turbo
+slug: pollinations

@@ -23,3 +23,8 @@ tags:
 - 多模态
 - 全球CDN加速
 - 免信用卡
+api_base_url: https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1
+free_models:
+- '@cf/meta/llama-3.1-8b-instruct'
+- '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b'
+slug: cloudflare-workers-ai

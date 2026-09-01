@@ -22,3 +22,8 @@ tags:
 - 永久免费
 - 语音大厂
 - 免信用卡
+api_base_url: https://spark-api-open.xf-yun.com/v1
+free_models:
+- generalv3.5
+- spark-lite
+slug: xfyun-spark

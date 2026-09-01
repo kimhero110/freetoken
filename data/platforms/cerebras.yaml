@@ -22,3 +22,8 @@ tags:
 - 每日刷新
 - Llama 3.1
 - 免信用卡
+api_base_url: https://api.cerebras.ai/v1
+free_models:
+- llama-3.3-70b
+- llama3.1-8b
+slug: cerebras
