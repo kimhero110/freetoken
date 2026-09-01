@@ -1,0 +1,8 @@
+{
+  "name": "freetoken-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "cd site && npm run build"
+  }
+}
