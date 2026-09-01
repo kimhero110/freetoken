@@ -50,8 +50,13 @@ const totalCount = platforms.length;
           </div>
           <div class="telemetry-divider"></div>
           <div class="telemetry-item">
-            <span class="telemetry-label">下次巡检</span>
+            <span class="telemetry-label">额度巡检</span>
             <span id="radar-live-countdown" class="telemetry-timer">--:--:--</span>
+          </div>
+          <div class="telemetry-divider"></div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">新源雷达</span>
+            <span id="radar-discover-countdown" class="telemetry-timer">--:--:--</span>
           </div>
         </div>
 
@@ -881,27 +886,47 @@ const totalCount = platforms.length;
   <script is:inline>
     function updateRadarCountdown() {
       const timerEl = document.getElementById('radar-live-countdown');
-      if (!timerEl) return;
+      const discoverEl = document.getElementById('radar-discover-countdown');
+      if (!timerEl && !discoverEl) return;
 
       const now = new Date();
-      const nextRun = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
 
-      if (now.getHours() < 8) {
-        nextRun.setHours(8, 0, 0, 0);
-      } else if (now.getHours() < 20) {
-        nextRun.setHours(20, 0, 0, 0);
+      // 1. 额度巡检倒计时 (每日 01:30, 04:30, 07:30, 14:30, 20:30)
+      const currentHourDec = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+      const targetHours = [1.5, 4.5, 7.5, 14.5, 20.5];
+      let nextQuota = new Date(now);
+      let targetH = targetHours.find(h => h > currentHourDec);
+      if (targetH !== undefined) {
+        const h = Math.floor(targetH);
+        const m = Math.round((targetH - h) * 60);
+        nextQuota.setHours(h, m, 0, 0);
       } else {
-        nextRun.setDate(nextRun.getDate() + 1);
-        nextRun.setHours(8, 0, 0, 0);
+        nextQuota.setDate(nextQuota.getDate() + 1);
+        nextQuota.setHours(1, 30, 0, 0);
       }
 
-      const diffMs = nextRun.getTime() - now.getTime();
-      const hours = Math.floor(diffMs / (1000 * 60 * 60));
-      const mins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-      const secs = Math.floor((diffMs % (1000 * 60)) / 1000);
+      const diffQuota = Math.max(0, nextQuota.getTime() - now.getTime());
+      const qHours = Math.floor(diffQuota / (1000 * 60 * 60));
+      const qMins = Math.floor((diffQuota % (1000 * 60 * 60)) / (1000 * 60));
+      const qSecs = Math.floor((diffQuota % (1000 * 60)) / 1000);
+      if (timerEl) timerEl.textContent = `${pad(qHours)}:${pad(qMins)}:${pad(qSecs)}`;
 
-      const pad = (n) => String(n).padStart(2, '0');
-      timerEl.textContent = `${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+      // 2. 全球新平台雷达扫描倒计时 (每 2 天一次，北京时间凌晨 02:30)
+      const baseEpoch = new Date('2026-09-01T02:30:00+08:00').getTime();
+      const periodMs = 2 * 24 * 60 * 60 * 1000;
+      const elapsed = now.getTime() - baseEpoch;
+      let nextDiscoverMs = baseEpoch + Math.ceil(elapsed / periodMs) * periodMs;
+      if (nextDiscoverMs <= now.getTime()) nextDiscoverMs += periodMs;
+
+      const diffDisc = Math.max(0, nextDiscoverMs - now.getTime());
+      const dDays = Math.floor(diffDisc / (1000 * 60 * 60 * 24));
+      const dHours = Math.floor((diffDisc % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const dMins = Math.floor((diffDisc % (1000 * 60 * 60)) / (1000 * 60));
+      const dSecs = Math.floor((diffDisc % (1000 * 60)) / 1000);
+      if (discoverEl) {
+        discoverEl.textContent = dDays > 0 ? `${dDays}天 ${pad(dHours)}:${pad(dMins)}:${pad(dSecs)}` : `${pad(dHours)}:${pad(dMins)}:${pad(dSecs)}`;
+      }
     }
 
     setInterval(updateRadarCountdown, 1000);
