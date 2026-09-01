@@ -38,26 +38,12 @@ const totalCount = platforms.length;
         </div>
       </div>
 
-      <div class="hero-card-mascot">
-        <div class="mascot-inner">
-          <div class="mascot-header">
-            <span class="mascot-badge">🛰️ 实时雷达中枢</span>
-            <span class="mascot-status">● 运行正常</span>
+      <div class="hero-mascot-wrapper">
+        <div class="hero-card-mascot">
+          <img src="/images/hero-mascot.jpg" alt="思考的科技猫头鹰插画" class="hero-mascot-img" />
+          <div class="mascot-caption">
+            <p>工具让人走得更快，<br/>思考决定往哪里走。</p>
           </div>
-          <div class="mascot-stats">
-            <div class="stat-box">
-              <span class="stat-num">{totalCount}</span>
-              <span class="stat-label">精选大厂与GPU云</span>
-            </div>
-            <div class="stat-box">
-              <span class="stat-num">100%</span>
-              <span class="stat-label">官方合法免费</span>
-            </div>
-          </div>
-          <p class="mascot-quote">
-            工具让人走得更快，<br/>
-            思考决定往哪里走。
-          </p>
         </div>
       </div>
     </div>
@@ -75,7 +61,7 @@ const totalCount = platforms.length;
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">01</span>
-            <span class="focus-tag">永久免费</span>
+            <img src="/images/focus-01.jpg" alt="AI大厂永久基座" class="focus-img" />
           </div>
           <h3>大厂永久基座</h3>
           <p>Google Gemini (1500次/天)、智谱 GLM-4-Flash、GitHub Models，长期稳定的开发底座。</p>
@@ -84,7 +70,7 @@ const totalCount = platforms.length;
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">02</span>
-            <span class="focus-tag">限时福利</span>
+            <img src="/images/focus-02.jpg" alt="突发大额算力" class="focus-img" />
           </div>
           <h3>突发大额羊毛</h3>
           <p>GMI Cloud x MiniMax 20亿额度、Nebius $5 代金券、Fireworks $1，抢先锁定限时算力。</p>
@@ -93,7 +79,7 @@ const totalCount = platforms.length;
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">03</span>
-            <span class="focus-tag">每日刷新</span>
+            <img src="/images/focus-03.jpg" alt="极速推理芯片" class="focus-img" />
           </div>
           <h3>极速芯片推理</h3>
           <p>Groq 与 Cerebras 定制芯片驱动，每日免费调用最新 Llama 3.3，每秒几百 Token 极速响应。</p>
@@ -102,7 +88,7 @@ const totalCount = platforms.length;
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">04</span>
-            <span class="focus-tag">免密免签</span>
+            <img src="/images/focus-04.jpg" alt="开源代码工具箱" class="focus-img" />
           </div>
           <h3>开源即用工具</h3>
           <p>Pollinations 免注册文生图、Jina AI 网页解析、Sepolia 测试网水龙头，零门槛直调。</p>
@@ -339,66 +325,46 @@ const totalCount = platforms.length;
       background: var(--bg-subtle);
     }
 
-    /* Hero Mascot Card */
+    /* Hero Mascot Card (Inspired by ssgoo.net) */
+    .hero-mascot-wrapper {
+      display: flex;
+      justify-content: center;
+    }
     .hero-card-mascot {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 32px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.03);
-    }
-    .mascot-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    .mascot-badge {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-warm);
-      background: var(--accent-orange-bg);
-      border: 1px solid var(--accent-orange-border);
-      padding: 4px 10px;
-      border-radius: 20px;
-    }
-    .mascot-status {
-      font-size: 12px;
-      color: var(--accent-green);
-      font-weight: 600;
-    }
-    .mascot-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .stat-box {
-      background: var(--bg-subtle);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.04);
+      max-width: 440px;
+      width: 100%;
       text-align: center;
     }
-    .stat-num {
+    .hero-mascot-img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 18px;
+      border: 1px solid var(--card-border);
+      margin-bottom: 16px;
       display: block;
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1.1;
-      margin-bottom: 4px;
     }
-    .stat-label {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-    .mascot-quote {
-      border-top: 1px solid var(--card-border);
-      padding-top: 20px;
+    .mascot-caption {
       font-size: 14px;
       color: var(--text-muted);
-      font-style: italic;
       line-height: 1.6;
+      font-style: italic;
+      padding: 4px 12px 6px;
+    }
+
+    /* Focus Card Image */
+    .focus-img {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid var(--card-border);
     }
 
     /* Section Structure */
