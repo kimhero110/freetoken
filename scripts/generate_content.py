@@ -2239,13 +2239,17 @@ def generate_svg_architecture() -> str:
 # 4. 全自动化搜索引擎 SEO 引擎 (Sitemap & Robots)
 # ==========================================
 def generate_seo_assets(platforms: list[dict]):
-    """自动生成完全符合 Google/Baidu/Bing 标准的 sitemap.xml 与 robots.txt"""
+    """自动生成完全符合 Google/Baidu/Bing 标准的 sitemap.xml 与 robots.txt 以及 Cloudflare _headers"""
     public_dir = ROOT / "site" / "public"
     public_dir.mkdir(parents=True, exist_ok=True)
 
     # 1. robots.txt
-    robots_content = "User-agent: *\nAllow: /\n\nSitemap: https://freetokens.info/sitemap.xml\nSitemap: https://freetokens.info/sitemap.xml\n"
+    robots_content = "User-agent: *\nAllow: /\n\nSitemap: https://freetokens.info/sitemap.xml\n"
     (public_dir / "robots.txt").write_text(robots_content, encoding="utf-8")
+
+    # 2. _headers for Cloudflare Pages (Ensure Googlebot allowed)
+    headers_content = "/*\n  X-Robots-Tag: all\n  Access-Control-Allow-Origin: *\n\n/sitemap.xml\n  Content-Type: application/xml; charset=utf-8\n  X-Robots-Tag: all\n\n/robots.txt\n  Content-Type: text/plain; charset=utf-8\n  X-Robots-Tag: all\n"
+    (public_dir / "_headers").write_text(headers_content, encoding="utf-8")
 
     # 2. sitemap.xml
     today = date.today().isoformat()

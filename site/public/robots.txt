@@ -2,4 +2,3 @@ User-agent: *
 Allow: /
 
 Sitemap: https://freetokens.info/sitemap.xml
-Sitemap: https://freetokens.info/sitemap.xml
