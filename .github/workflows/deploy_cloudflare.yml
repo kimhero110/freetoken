@@ -1,0 +1,37 @@
+name: 全球极速发布到 Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: 构建静态站点
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+
+      - name: 发布至 Cloudflare Pages 全球 CDN
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN || 'cfat_uvFZz6SINjuzXWRvcfVgEjmFxKCKM6sp0ChAFplf5beaa375' }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || 'd09d506101e7dd99fc79050beab9b263' }}
+          command: pages deploy site/dist --project-name freetoken
+
