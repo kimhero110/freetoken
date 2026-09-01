@@ -49,49 +49,61 @@ const totalCount = platforms.length;
     </div>
   </section>
 
-  <!-- 2. 四个核心坐标 (Four Focus Dimensions) -->
+  <!-- 2. 四个长期坐标 (Four Focus Dimensions - ssgoo.net 经典大图海报卡片) -->
   <section class="section-wrap" id="focus">
     <div class="container">
       <header class="section-head">
         <p class="section-eyebrow">四个长期坐标</p>
-        <h2 class="section-title">从四个维度，建立一套零成本开发能力。</h2>
+        <h2 class="section-title">从四个方向，建立一套长期判断系统。</h2>
       </header>
 
       <div class="focus-grid">
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">01</span>
-            <img src="/images/focus-01.jpg" alt="AI大厂永久基座" class="focus-img" />
+            <img src="/images/focus-01.jpg" alt="AI 引导未来 智能罗盘" class="focus-card-art" />
           </div>
-          <h3>大厂永久基座</h3>
-          <p>Google Gemini (1500次/天)、智谱 GLM-4-Flash、GitHub Models，长期稳定的开发底座。</p>
+          <div class="focus-card-meta">
+            <span class="focus-en-tag">INTELLIGENCE COMPASS</span>
+            <h3 class="focus-title">AI 引导未来</h3>
+            <p class="focus-desc">研究模型、思维与协作范式，在技术狂潮中保持敏锐的独立判断力与人机共生边界。</p>
+          </div>
         </article>
 
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">02</span>
-            <img src="/images/focus-02.jpg" alt="突发大额算力" class="focus-img" />
+            <img src="/images/focus-02.jpg" alt="Token 就是能源 无限光子环" class="focus-card-art" />
           </div>
-          <h3>突发大额羊毛</h3>
-          <p>GMI Cloud x MiniMax 20亿额度、Nebius $5 代金券、Fireworks $1，抢先锁定限时算力。</p>
+          <div class="focus-card-meta">
+            <span class="focus-en-tag">TOKEN AS ENERGY</span>
+            <h3 class="focus-title">Token 就是能源</h3>
+            <p class="focus-desc">算力的流动即是价值的流动。掌握充沛且低成本的 Token，就是掌握数字工厂的能源自主权。</p>
+          </div>
         </article>
 
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">03</span>
-            <img src="/images/focus-03.jpg" alt="极速推理芯片" class="focus-img" />
+            <img src="/images/focus-03.jpg" alt="世界代码化 架构与阶梯" class="focus-card-art" />
           </div>
-          <h3>极速芯片推理</h3>
-          <p>Groq 与 Cerebras 定制芯片驱动，每日免费调用最新 Llama 3.3，每秒几百 Token 极速响应。</p>
+          <div class="focus-card-meta">
+            <span class="focus-en-tag">CODIFIED REALITY</span>
+            <h3 class="focus-title">世界代码化</h3>
+            <p class="focus-desc">把研究框架、业务逻辑与工作流沉淀为代码，用自动化与接口化杠杆放大个体的生产力半径。</p>
+          </div>
         </article>
 
         <article class="focus-card">
           <div class="focus-card-top">
             <span class="focus-num">04</span>
-            <img src="/images/focus-04.jpg" alt="开源代码工具箱" class="focus-img" />
+            <img src="/images/focus-04.jpg" alt="工具开源化 开放魔盒与钥匙" class="focus-card-art" />
           </div>
-          <h3>开源即用工具</h3>
-          <p>Pollinations 免注册文生图、Jina AI 网页解析、Sepolia 测试网水龙头，零门槛直调。</p>
+          <div class="focus-card-meta">
+            <span class="focus-en-tag">OPEN-SOURCE TOOLS</span>
+            <h3 class="focus-title">工具开源化</h3>
+            <p class="focus-desc">拥抱开放权重、开源协议与公共基础设施，让技术的主权与自由永远留在构建者手里。</p>
+          </div>
         </article>
       </div>
     </div>
@@ -394,54 +406,88 @@ const totalCount = platforms.length;
       letter-spacing: -0.3px;
     }
 
-    /* Focus Grid (四个坐标) */
+    /* Focus Grid (ssgoo.net 经典高质感海报卡片) */
     .focus-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
+      gap: 24px;
     }
     .focus-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
+      border-radius: 20px;
       padding: 24px;
-      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
     }
     .focus-card:hover {
       border-color: var(--card-border-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.06);
     }
     .focus-card-top {
+      position: relative;
+      margin-bottom: 20px;
+      background: #faf9f6;
+      border-radius: 14px;
+      overflow: hidden;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      justify-content: center;
+      border: 1px solid rgba(0, 0, 0, 0.04);
     }
     .focus-num {
+      position: absolute;
+      top: 12px;
+      left: 14px;
       font-family: var(--font-mono);
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--text-light);
-    }
-    .focus-tag {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--accent-warm);
-      background: var(--accent-orange-bg);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(4px);
       padding: 2px 8px;
-      border-radius: 4px;
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+      z-index: 2;
     }
-    .focus-card h3 {
-      font-size: 17px;
+    .focus-card-art {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .focus-card:hover .focus-card-art {
+      transform: scale(1.03);
+    }
+    .focus-card-meta {
+      display: flex;
+      flex-direction: column;
+    }
+    .focus-en-tag {
+      font-size: 10px;
       font-weight: 700;
+      letter-spacing: 0.8px;
+      color: var(--accent-warm);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .focus-title {
+      font-size: 20px;
+      font-weight: 800;
       color: var(--text);
+      letter-spacing: -0.3px;
       margin-bottom: 8px;
     }
-    .focus-card p {
+    .focus-desc {
       font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     /* 搜索与过滤 */
