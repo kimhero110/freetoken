@@ -10,6 +10,7 @@ free_quota:
   - 腾讯云开通混元 API 赠送 100 万 Tokens 免费测试额度
   - 支持混元 Pro, Standard, Lite 全系列模型
   - 支持超长文本理解与微信生态无缝接入
+  details_en: 100,000 free tokens for Hunyuan-Lite/Standard on registration.
 register_url: https://console.cloud.tencent.com/hunyuan
 docs_url: https://cloud.tencent.com/document/product/1729
 source_urls:
@@ -28,3 +29,8 @@ free_models:
 - hunyuan-lite
 slug: tencent-hunyuan
 last_checked: '2026-09-01'
+intro_en: Tencent foundation model platform featuring Hunyuan-Large, Hunyuan-Pro,
+  and 3D/Image generative models.
+gotchas_en:
+- Requires Tencent Cloud account with real-name verification
+- Trial tokens valid for limited period

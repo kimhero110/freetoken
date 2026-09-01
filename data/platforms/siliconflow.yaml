@@ -10,6 +10,8 @@ free_quota:
   - 新用户注册赠送 2000 万 tokens（约 14 元额度）
   - 部分小参数模型（如 Qwen2.5-7B）长期免费不限量
   - 通过邀请链接注册双方均可获得额外额度
+  details_en: 20,000,000 free tokens granted upon phone registration + multiple permanently
+    free models.
 register_url: https://cloud.siliconflow.cn/i/jFtM9PqG
 docs_url: https://docs.siliconflow.cn/
 source_urls:
@@ -30,3 +32,8 @@ free_models:
 - deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
 - THUDM/glm-4-9b-chat
 slug: siliconflow
+intro_en: Leading high-concurrency model hub in Asia with 20 Million free tokens on
+  sign-up, hosting DeepSeek R1, Qwen 2.5, and SDXL.
+gotchas_en:
+- Requires mobile SMS verification
+- Permanently free models (Qwen/Qwen2.5-7B-Instruct) do not consume trial balance

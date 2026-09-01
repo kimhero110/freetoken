@@ -1,5 +1,5 @@
 name: Jina AI
-name_en: Jina AI
+name_en: Jina AI (Reader & Embeddings)
 website: https://jina.ai
 category: tools
 free_quota:
@@ -10,6 +10,7 @@ free_quota:
   - 注册即赠送 1000 万 Tokens 免费额度
   - Jina Reader (r.jina.ai) 免费将任意网页转化为大模型友好的 Clean Markdown
   - 提供前沿的高质量多语言 Embedding & Reranker 接口
+  details_en: 1,000,000 free tokens granted on registration + 10M free reader requests.
 register_url: https://jina.ai/
 docs_url: https://jina.ai/reader/
 source_urls:
@@ -29,3 +30,8 @@ free_models:
 - jina-reranker-v2-base-multilingual
 slug: jina-ai
 last_checked: '2026-09-01'
+intro_en: Developer APIs for converting URLs into clean LLM markdown (r.jina.ai),
+  multi-lingual embeddings, and rerankers.
+gotchas_en:
+- Prepend https://r.jina.ai/ before any URL for instant web scraping into LLM markdown
+- API key optional for Reader, required for Embeddings

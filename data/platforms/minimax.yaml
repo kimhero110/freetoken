@@ -1,5 +1,5 @@
 name: MiniMax 开放平台
-name_en: MiniMax
+name_en: MiniMax Open Platform
 website: https://platform.minimaxi.com
 category: multimodal
 free_quota:
@@ -10,6 +10,7 @@ free_quota:
   - 新注册认证用户赠送 15 元全品类 API 体验金
   - abab 6.5 系列大模型与全球超高拟真度的语音大模型 (T2A)
   - 适合做角色扮演、拟人对话及语音克隆产品
+  details_en: 15,000,000 free tokens or free audio synthesis credits on registration.
 register_url: https://platform.minimaxi.com/register
 docs_url: https://platform.minimaxi.com/document/guides/chat-model/pro/api
 source_urls:
@@ -28,3 +29,8 @@ free_models:
 - abab6.5g-chat
 slug: minimax
 last_checked: '2026-09-01'
+intro_en: Frontier multimodal AI with outstanding text generation (ABAB 6.5s) and
+  hyper-realistic Voice/TTS synthesis.
+gotchas_en:
+- Requires phone number sign-up
+- Voice cloning and speech generation consume quota by character count

@@ -10,6 +10,8 @@ free_quota:
   - 新用户注册赠送 500 万 tokens
   - 赠送额度有效期 30 天
   - 需绑定手机号
+  details_en: 5,000,000 free tokens granted upon phone registration (valid for 30
+    days).
 register_url: https://platform.deepseek.com/sign_up
 docs_url: https://api-docs.deepseek.com/zh-cn/
 source_urls:
@@ -27,3 +29,8 @@ free_models:
 - deepseek-chat
 - deepseek-reasoner
 slug: deepseek
+intro_en: State-of-the-art open reasoning (R1) and general LLM (V3) offering industry-leading
+  cost-performance and 5M free tokens.
+gotchas_en:
+- High demand may occasionally result in peak-hour concurrency queueing
+- Trial credits expire after 30 days

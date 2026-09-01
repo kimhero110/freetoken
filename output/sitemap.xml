@@ -1,183 +1,484 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <!-- Chinese & English Homepages -->
   <url>
     <loc>https://freetokens.info/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/aliyun-bailian/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/aliyun-bailian/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/aliyun-bailian/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/aliyun-bailian/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/aliyun-bailian/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/aliyun-bailian/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/baichuan-ai/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/baichuan-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/baichuan-ai/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/baichuan-ai/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/baichuan-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/baichuan-ai/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/baidu-qianfan/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/baidu-qianfan/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/baidu-qianfan/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/baidu-qianfan/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/baidu-qianfan/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/baidu-qianfan/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/cerebras/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/cerebras/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/cerebras/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/cerebras/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/cerebras/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/cerebras/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/cloudflare-workers-ai/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/cloudflare-workers-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/cloudflare-workers-ai/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/cloudflare-workers-ai/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/cloudflare-workers-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/cloudflare-workers-ai/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/cohere/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/cohere/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/cohere/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/cohere/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/cohere/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/cohere/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/deepseek/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/deepseek/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/deepseek/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/deepseek/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/deepseek/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/deepseek/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/fireworks-ai/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/fireworks-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/fireworks-ai/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/fireworks-ai/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/fireworks-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/fireworks-ai/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/github-models/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/github-models/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/github-models/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/github-models/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/github-models/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/github-models/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/gmi-cloud-minimax/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/gmi-cloud-minimax/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/gmi-cloud-minimax/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/gmi-cloud-minimax/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/gmi-cloud-minimax/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/gmi-cloud-minimax/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/google-ai-studio/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/google-ai-studio/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/google-ai-studio/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/google-ai-studio/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/google-ai-studio/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/google-ai-studio/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/groq/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/groq/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/groq/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/groq/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/groq/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/groq/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/hyperbolic/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/hyperbolic/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/hyperbolic/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/hyperbolic/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/hyperbolic/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/hyperbolic/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/jina-ai/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/jina-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/jina-ai/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/jina-ai/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/jina-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/jina-ai/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/lingyiwanwu-01/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/lingyiwanwu-01/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/lingyiwanwu-01/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/lingyiwanwu-01/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/lingyiwanwu-01/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/lingyiwanwu-01/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/minimax/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/minimax/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/minimax/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/minimax/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/minimax/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/minimax/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/mistral-ai/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/mistral-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/mistral-ai/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/mistral-ai/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/mistral-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/mistral-ai/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/nebius-ai/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/nebius-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/nebius-ai/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/nebius-ai/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/nebius-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/nebius-ai/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/novita-ai/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/novita-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/novita-ai/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/novita-ai/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/novita-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/novita-ai/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/openrouter/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/openrouter/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/openrouter/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/openrouter/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/openrouter/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/openrouter/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/pollinations/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/pollinations/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/pollinations/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/pollinations/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/pollinations/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/pollinations/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/sambanova/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/sambanova/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/sambanova/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/sambanova/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/sambanova/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/sambanova/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/sepolia-faucet/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/sepolia-faucet/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/sepolia-faucet/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/sepolia-faucet/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/sepolia-faucet/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/sepolia-faucet/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/siliconflow/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/siliconflow/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/siliconflow/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/siliconflow/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/siliconflow/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/siliconflow/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/tavily/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/tavily/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/tavily/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/tavily/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/tavily/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/tavily/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/tencent-hunyuan/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/tencent-hunyuan/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/tencent-hunyuan/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/tencent-hunyuan/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/tencent-hunyuan/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/tencent-hunyuan/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/together-ai/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/together-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/together-ai/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/together-ai/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/together-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/together-ai/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/xfyun-spark/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/xfyun-spark/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/xfyun-spark/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/xfyun-spark/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/xfyun-spark/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/xfyun-spark/"/>
   </url>
   <url>
     <loc>https://freetokens.info/platform/zhipu-ai/</loc>
     <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/zhipu-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/zhipu-ai/"/>
+  </url>
+  <url>
+    <loc>https://freetokens.info/en/platform/zhipu-ai/</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/zhipu-ai/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/zhipu-ai/"/>
   </url>
 </urlset>

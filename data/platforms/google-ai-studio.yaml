@@ -1,5 +1,5 @@
 name: Google AI Studio
-name_en: Google AI Studio
+name_en: Google AI Studio (Gemini)
 website: https://aistudio.google.com
 category: llm-api
 free_quota:
@@ -10,6 +10,8 @@ free_quota:
   - Gemini 1.5 Flash / 2.0 Flash 永久免费
   - 免费层提供最高 15 RPM (每分钟请求数) 和 100万 Tokens 上下文
   - 只需 Google 账号即可生成 API Key，无需绑定海外信用卡
+  details_en: 1,500 Requests Per Day (RPD) and 15 RPM completely free forever on Gemini
+    1.5 Flash.
 register_url: https://aistudio.google.com/
 docs_url: https://ai.google.dev/pricing
 source_urls:
@@ -30,3 +32,8 @@ free_models:
 - gemini-1.5-pro
 slug: google-ai-studio
 last_checked: '2026-09-01'
+intro_en: Official developer gateway to Google Gemini 1.5 Flash and Gemini 1.5 Pro
+  with a massive 1M token context window.
+gotchas_en:
+- Free tier data may be logged by Google for model tuning (use paid tier for privacy)
+- Requires Google account in supported regions

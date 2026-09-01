@@ -10,6 +10,7 @@ free_quota:
   - 每天赠送 10,000 Neurons 免费神经元算力（约可跑几万 Tokens 推理）
   - 全球 300+ 边缘数据中心加速，毫秒级响应
   - 支持 Llama 3, Qwen, Whisper 语音转写, BGE 嵌入等
+  details_en: 10,000 Neurons per day completely free forever across global edge locations.
 register_url: https://dash.cloudflare.com/
 docs_url: https://developers.cloudflare.com/workers-ai/
 source_urls:
@@ -29,3 +30,8 @@ free_models:
 - '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b'
 slug: cloudflare-workers-ai
 last_checked: '2026-09-01'
+intro_en: Serverless GPU inference at Cloudflare global edge network, running LLaMA
+  3.3, Mistral, and DeepSeek.
+gotchas_en:
+- Daily quota resets at 00:00 UTC
+- Requires a free Cloudflare account

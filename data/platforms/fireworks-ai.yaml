@@ -1,5 +1,5 @@
 name: Fireworks AI
-name_en: Fireworks.ai
+name_en: Fireworks AI
 website: https://fireworks.ai
 category: llm-api
 free_quota:
@@ -10,6 +10,7 @@ free_quota:
   - 新注册账号赠送  美元免费调用额度
   - 拥有业内顶尖的首字延迟 (TTFT) 与生成速度
   - 支持数十款精选开源大模型与微调服务
+  details_en: .00 USD free credit on account creation for serverless inference testing.
 register_url: https://fireworks.ai/login
 docs_url: https://docs.fireworks.ai/
 source_urls:
@@ -28,3 +29,8 @@ free_models:
 - accounts/fireworks/models/qwen2p5-72b-instruct
 slug: fireworks-ai
 last_checked: '2026-09-01'
+intro_en: Blazing fast inference platform for open-source foundation models (LLaMA
+  3.1, Qwen 2.5, DeepSeek R1).
+gotchas_en:
+- Requires email and phone verification for free credit
+- Paid billing required after credit exhaustion

@@ -10,6 +10,7 @@ free_quota:
   - Spark Lite 模型永久免费无限制调用
   - 新认证用户免费赠送 Spark 3.5 / 4.0 200 万 Tokens 礼包
   - 语音合成、语音识别及中文语法表现极佳
+  details_en: 2,000,000 free tokens granted for Spark Lite upon developer certification.
 register_url: https://xinghuo.xfyun.cn/sparkapi
 docs_url: https://www.xfyun.cn/doc/spark/Web.html
 source_urls:
@@ -28,3 +29,8 @@ free_models:
 - spark-lite
 slug: xfyun-spark
 last_checked: '2026-09-01'
+intro_en: iFLYTEK cognitive foundation model platform with high Chinese NLP accuracy,
+  math, and voice transcription.
+gotchas_en:
+- Requires real-name certification on iFLYTEK Open Platform
+- Spark Lite is permanently free; advanced models consume trial balances

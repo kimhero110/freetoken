@@ -1,5 +1,5 @@
 name: Nebius AI Studio
-name_en: Nebius AI
+name_en: Nebius AI Studio
 website: https://nebius.com/studio
 category: cloud
 free_quota:
@@ -10,6 +10,7 @@ free_quota:
   - 新开发者注册 Nebius AI Studio 赠送 \ 免费算力金
   - 欧洲超算级 H100/H200 GPU 集群驱动，企业级超高稳定性
   - 支持 Llama 3.3, Qwen 2.5, DeepSeek 等全系热门开源模型
+  details_en: .00 USD free balance upon initial registration for developer testing.
 register_url: https://studio.nebius.com/
 docs_url: https://docs.nebius.com/
 source_urls:
@@ -28,3 +29,8 @@ free_models:
 - Qwen/Qwen2.5-Coder-32B-Instruct
 slug: nebius-ai
 last_checked: '2026-09-01'
+intro_en: High-performance AI cloud hosting DeepSeek R1, LLaMA 3.3 70B, and Qwen 2.5
+  on dedicated NVIDIA H100 clusters.
+gotchas_en:
+- Credit card authorization may be requested for identity verification
+- High throughput on H100 infrastructure

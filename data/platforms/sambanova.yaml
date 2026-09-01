@@ -10,6 +10,8 @@ free_quota:
   - Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用
   - 推理速度高达 1000+ tokens/秒
   - 标准 OpenAI 兼容接口，注册生成 Key 即用
+  details_en: Free developer tier offering up to 500 requests/day on LLaMA 3.3 70B
+    and LLaMA 3.1 405B.
 register_url: https://cloud.sambanova.ai/
 docs_url: https://docs.sambanova.ai/
 source_urls:
@@ -29,3 +31,8 @@ free_models:
 - DeepSeek-R1-Distill-Llama-70B
 slug: sambanova
 last_checked: '2026-09-01'
+intro_en: Enterprise-speed inference platform powered by SN40L Reconfigurable Dataflow
+  Units (RDU), running full 405B models.
+gotchas_en:
+- Requires developer sign-up
+- Free tier has rate limits designed for evaluation and benchmarking

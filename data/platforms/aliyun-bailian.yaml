@@ -1,5 +1,5 @@
 name: 阿里云百炼 (DashScope)
-name_en: Aliyun DashScope
+name_en: Alibaba Cloud Bailian
 website: https://bailian.console.aliyun.com
 category: cloud
 free_quota:
@@ -10,6 +10,8 @@ free_quota:
   - 通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens
   - 有效期 180 天（半年超长使用周期）
   - 阿里云账号开通百炼即可领取
+  details_en: 1,000,000 free tokens for Qwen-Turbo and Qwen-Plus valid for 180 days
+    upon account sign-up.
 register_url: https://bailian.console.aliyun.com/
 docs_url: https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio
 source_urls:
@@ -30,3 +32,8 @@ free_models:
 - qwen-max
 slug: aliyun-bailian
 last_checked: '2026-09-01'
+intro_en: Alibaba Cloud enterprise model platform offering Qwen 2.5, Qwen-Max, and
+  Wanx multimodal models with free developer credits.
+gotchas_en:
+- Requires Alibaba Cloud account and SMS/enterprise verification
+- Free quota expires after 180 days; paid tier kicks in if balance depleted

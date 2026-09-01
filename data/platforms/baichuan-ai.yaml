@@ -10,6 +10,8 @@ free_quota:
   - 新用户注册实名认证即送 1000 万 Tokens 免费体验金
   - 支持 Baichuan4, Baichuan3-Turbo 等多款高性能中文大模型
   - 在中文医疗、金融等行业知识库上表现优异
+  details_en: 1,000,000 free tokens for Baichuan-NPC and Baichuan-4 on new developer
+    accounts.
 register_url: https://platform.baichuan-ai.com/register
 docs_url: https://platform.baichuan-ai.com/docs/api
 source_urls:
@@ -28,3 +30,8 @@ free_models:
 - Baichuan4-Turbo
 slug: baichuan-ai
 last_checked: '2026-09-01'
+intro_en: Leading Chinese LLM provider with strong medical, factual, and long-context
+  capabilities (Baichuan 4).
+gotchas_en:
+- Requires mobile SMS verification
+- Check model pricing tiers after trial tokens are exhausted

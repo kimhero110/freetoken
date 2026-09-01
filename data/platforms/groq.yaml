@@ -1,5 +1,5 @@
 name: Groq
-name_en: Groq
+name_en: Groq (LPU Inference Engine)
 website: https://groq.com
 category: llm-api
 free_quota:
@@ -10,6 +10,8 @@ free_quota:
   - Free 层级按模型有每日 token 与每分钟请求数（RPM）限制
   - 无需信用卡即可使用免费层级
   - 超出限速后返回 429，次日重置
+  details_en: Generous free tier with daily rolling token quotas (30 RPM, up to 14,400
+    RPD) across LLaMA and Mixtral.
 register_url: https://console.groq.com/login
 docs_url: https://console.groq.com/docs/overview
 source_urls:
@@ -30,3 +32,8 @@ free_models:
 - llama-3.1-8b-instant
 - mixtral-8x7b-32768
 slug: groq
+intro_en: World fastest LLM inference powered by Language Processing Units (LPU),
+  reaching 500+ tokens/sec on LLaMA 3.3.
+gotchas_en:
+- Strict RPM/TPM limits on free keys; handle 429 retries with backoff
+- Free tier rate limits apply per IP and account

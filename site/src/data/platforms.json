@@ -1,7 +1,7 @@
 [
   {
     "name": "阿里云百炼 (DashScope)",
-    "name_en": "Aliyun DashScope",
+    "name_en": "Alibaba Cloud Bailian",
     "website": "https://bailian.console.aliyun.com",
     "category": "cloud",
     "free_quota": {
@@ -12,7 +12,8 @@
         "通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens",
         "有效期 180 天（半年超长使用周期）",
         "阿里云账号开通百炼即可领取"
-      ]
+      ],
+      "details_en": "1,000,000 free tokens for Qwen-Turbo and Qwen-Plus valid for 180 days upon account sign-up."
     },
     "register_url": "https://bailian.console.aliyun.com/",
     "docs_url": "https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio",
@@ -36,7 +37,12 @@
       "qwen-max"
     ],
     "slug": "aliyun-bailian",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Alibaba Cloud enterprise model platform offering Qwen 2.5, Qwen-Max, and Wanx multimodal models with free developer credits.",
+    "gotchas_en": [
+      "Requires Alibaba Cloud account and SMS/enterprise verification",
+      "Free quota expires after 180 days; paid tier kicks in if balance depleted"
+    ]
   },
   {
     "name": "百川智能开放平台",
@@ -51,7 +57,8 @@
         "新用户注册实名认证即送 1000 万 Tokens 免费体验金",
         "支持 Baichuan4, Baichuan3-Turbo 等多款高性能中文大模型",
         "在中文医疗、金融等行业知识库上表现优异"
-      ]
+      ],
+      "details_en": "1,000,000 free tokens for Baichuan-NPC and Baichuan-4 on new developer accounts."
     },
     "register_url": "https://platform.baichuan-ai.com/register",
     "docs_url": "https://platform.baichuan-ai.com/docs/api",
@@ -73,11 +80,16 @@
       "Baichuan4-Turbo"
     ],
     "slug": "baichuan-ai",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Leading Chinese LLM provider with strong medical, factual, and long-context capabilities (Baichuan 4).",
+    "gotchas_en": [
+      "Requires mobile SMS verification",
+      "Check model pricing tiers after trial tokens are exhausted"
+    ]
   },
   {
     "name": "百度千帆大模型平台",
-    "name_en": "Baidu Qianfan",
+    "name_en": "Baidu Qianfan ModelBuilder",
     "website": "https://cloud.baidu.com/product/wenxinworkshop",
     "category": "cloud",
     "free_quota": {
@@ -88,7 +100,8 @@
         "ERNIE-Speed, ERNIE-Lite 等主流轻量模型永久免费调用",
         "新认证企业/个人用户赠送 2000 万 Tokens 算力代金券",
         "兼容 OpenAI 接口规范，国内访问极速稳定"
-      ]
+      ],
+      "details_en": "ERNIE Speed and ERNIE Lite are permanently free; new accounts get 20,000,000 free tokens for ERNIE 4.0."
     },
     "register_url": "https://console.bce.baidu.com/qianfan/ais/console/onlineService",
     "docs_url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html",
@@ -111,11 +124,16 @@
       "ernie-lite-8k"
     ],
     "slug": "baidu-qianfan",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Baidu foundation model platform featuring ERNIE 4.0, ERNIE Speed, and ERNIE Lite (permanent free tier).",
+    "gotchas_en": [
+      "Requires Baidu Cloud account with real-name verification",
+      "ERNIE Speed/Lite are free forever, premium models consume trial balances"
+    ]
   },
   {
     "name": "Cerebras Inference",
-    "name_en": "Cerebras",
+    "name_en": "Cerebras Inference",
     "website": "https://cerebras.ai",
     "category": "llm-api",
     "free_quota": {
@@ -126,7 +144,8 @@
         "每天刷新 100 万免费 Tokens",
         "推理速度高达 1800+ tokens/秒（全球最快之一）",
         "免费提供 Llama 3.1 8B / 70B 等开源模型"
-      ]
+      ],
+      "details_en": "1,000,000 free daily tokens across LLaMA 3.1 8B and 70B models."
     },
     "register_url": "https://cloud.cerebras.ai/",
     "docs_url": "https://inference-docs.cerebras.ai/",
@@ -148,7 +167,12 @@
       "llama3.1-8b"
     ],
     "slug": "cerebras",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Ultra-high-speed LLM inference powered by wafer-scale engine chips (CS-3), generating over 2,000 tokens per second.",
+    "gotchas_en": [
+      "Strict RPM/TPM rate limits on the free tier (up to 30 RPM)",
+      "Free tier is intended for evaluation and non-commercial development"
+    ]
   },
   {
     "name": "Cloudflare Workers AI",
@@ -163,7 +187,8 @@
         "每天赠送 10,000 Neurons 免费神经元算力（约可跑几万 Tokens 推理）",
         "全球 300+ 边缘数据中心加速，毫秒级响应",
         "支持 Llama 3, Qwen, Whisper 语音转写, BGE 嵌入等"
-      ]
+      ],
+      "details_en": "10,000 Neurons per day completely free forever across global edge locations."
     },
     "register_url": "https://dash.cloudflare.com/",
     "docs_url": "https://developers.cloudflare.com/workers-ai/",
@@ -186,7 +211,12 @@
       "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
     ],
     "slug": "cloudflare-workers-ai",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Serverless GPU inference at Cloudflare global edge network, running LLaMA 3.3, Mistral, and DeepSeek.",
+    "gotchas_en": [
+      "Daily quota resets at 00:00 UTC",
+      "Requires a free Cloudflare account"
+    ]
   },
   {
     "name": "Cohere",
@@ -201,7 +231,8 @@
         "免费 Trial API Key 提供 1000 次 API/月与 10 RPM 并发",
         "全球顶级 Rerank 重排序与 Multilingual Embedding 向量模型",
         "RAG 检索增强系统必备开发组件"
-      ]
+      ],
+      "details_en": "Free Trial API Key provides 1,000 free requests per month and 10 RPM for development."
     },
     "register_url": "https://dashboard.cohere.com/welcome/register",
     "docs_url": "https://docs.cohere.com/",
@@ -224,7 +255,12 @@
       "embed-multilingual-v3.0"
     ],
     "slug": "cohere",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Enterprise-grade language models specializing in Command R+, Rerank 3, and high-accuracy Embeddings.",
+    "gotchas_en": [
+      "Trial keys include a rate limit of 10 requests/minute",
+      "Cannot be used for production high-concurrency traffic"
+    ]
   },
   {
     "name": "DeepSeek",
@@ -239,7 +275,8 @@
         "新用户注册赠送 500 万 tokens",
         "赠送额度有效期 30 天",
         "需绑定手机号"
-      ]
+      ],
+      "details_en": "5,000,000 free tokens granted upon phone registration (valid for 30 days)."
     },
     "register_url": "https://platform.deepseek.com/sign_up",
     "docs_url": "https://api-docs.deepseek.com/zh-cn/",
@@ -260,11 +297,16 @@
       "deepseek-chat",
       "deepseek-reasoner"
     ],
-    "slug": "deepseek"
+    "slug": "deepseek",
+    "intro_en": "State-of-the-art open reasoning (R1) and general LLM (V3) offering industry-leading cost-performance and 5M free tokens.",
+    "gotchas_en": [
+      "High demand may occasionally result in peak-hour concurrency queueing",
+      "Trial credits expire after 30 days"
+    ]
   },
   {
     "name": "Fireworks AI",
-    "name_en": "Fireworks.ai",
+    "name_en": "Fireworks AI",
     "website": "https://fireworks.ai",
     "category": "llm-api",
     "free_quota": {
@@ -275,7 +317,8 @@
         "新注册账号赠送  美元免费调用额度",
         "拥有业内顶尖的首字延迟 (TTFT) 与生成速度",
         "支持数十款精选开源大模型与微调服务"
-      ]
+      ],
+      "details_en": ".00 USD free credit on account creation for serverless inference testing."
     },
     "register_url": "https://fireworks.ai/login",
     "docs_url": "https://docs.fireworks.ai/",
@@ -297,7 +340,12 @@
       "accounts/fireworks/models/qwen2p5-72b-instruct"
     ],
     "slug": "fireworks-ai",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Blazing fast inference platform for open-source foundation models (LLaMA 3.1, Qwen 2.5, DeepSeek R1).",
+    "gotchas_en": [
+      "Requires email and phone verification for free credit",
+      "Paid billing required after credit exhaustion"
+    ]
   },
   {
     "name": "GitHub Models",
@@ -312,7 +360,8 @@
         "免费调用 GPT-4o, GPT-4o-mini, Claude 3.5 Sonnet, Llama 3.3 70B 等",
         "使用 GitHub Personal Access Token (PAT) 即可直接认证",
         "适合个人开发者日常轻量体验或调试"
-      ]
+      ],
+      "details_en": "50 requests/day for top models (GPT-4o, Claude 3.5), 150 requests/day for low-latency models."
     },
     "register_url": "https://github.com/marketplace/models",
     "docs_url": "https://docs.github.com/en/github-models",
@@ -336,11 +385,16 @@
       "Phi-3.5-mini-instruct"
     ],
     "slug": "github-models",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Direct prototyping access to GPT-4o, Claude 3.5 Sonnet, LLaMA 3.3, and DeepSeek via GitHub Personal Access Tokens.",
+    "gotchas_en": [
+      "Requires GitHub account",
+      "Personal Access Token (classic or fine-grained) needed for authentication"
+    ]
   },
   {
     "name": "GMI Cloud (MiniMax 专场)",
-    "name_en": "GMI Cloud x MiniMax",
+    "name_en": "GMI Cloud (MiniMax Free 2B)",
     "website": "https://www.gmicloud.ai/en",
     "category": "multimodal",
     "free_quota": {
@@ -352,7 +406,8 @@
         "免费调用 MiniMax-M3, M2.7, Speech 2.8 语音与 Music 3.0 音乐模型",
         "支持 GitHub / Google 账号一键快捷登录，直接生成 API Key，免绑卡",
         "兼容标准 OpenAI / Anthropic 双协议，Base URL: https://api.gmi-serving.com/v1"
-      ]
+      ],
+      "details_en": "2,000,000,000 free tokens granted upon developer sign-up."
     },
     "register_url": "https://www.gmicloud.ai/en",
     "docs_url": "https://www.gmicloud.ai/en",
@@ -376,11 +431,16 @@
       "minimax-text-01"
     ],
     "slug": "gmi-cloud-minimax",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Global GPU cloud offering a massive 2 Billion free tokens for MiniMax-Text-01 under developer promotion.",
+    "gotchas_en": [
+      "Promotional quota may adjust based on campaign duration",
+      "Configure base URL to GMI Cloud custom OpenAI endpoint"
+    ]
   },
   {
     "name": "Google AI Studio",
-    "name_en": "Google AI Studio",
+    "name_en": "Google AI Studio (Gemini)",
     "website": "https://aistudio.google.com",
     "category": "llm-api",
     "free_quota": {
@@ -391,7 +451,8 @@
         "Gemini 1.5 Flash / 2.0 Flash 永久免费",
         "免费层提供最高 15 RPM (每分钟请求数) 和 100万 Tokens 上下文",
         "只需 Google 账号即可生成 API Key，无需绑定海外信用卡"
-      ]
+      ],
+      "details_en": "1,500 Requests Per Day (RPD) and 15 RPM completely free forever on Gemini 1.5 Flash."
     },
     "register_url": "https://aistudio.google.com/",
     "docs_url": "https://ai.google.dev/pricing",
@@ -415,11 +476,16 @@
       "gemini-1.5-pro"
     ],
     "slug": "google-ai-studio",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Official developer gateway to Google Gemini 1.5 Flash and Gemini 1.5 Pro with a massive 1M token context window.",
+    "gotchas_en": [
+      "Free tier data may be logged by Google for model tuning (use paid tier for privacy)",
+      "Requires Google account in supported regions"
+    ]
   },
   {
     "name": "Groq",
-    "name_en": "Groq",
+    "name_en": "Groq (LPU Inference Engine)",
     "website": "https://groq.com",
     "category": "llm-api",
     "free_quota": {
@@ -430,7 +496,8 @@
         "Free 层级按模型有每日 token 与每分钟请求数（RPM）限制",
         "无需信用卡即可使用免费层级",
         "超出限速后返回 429，次日重置"
-      ]
+      ],
+      "details_en": "Generous free tier with daily rolling token quotas (30 RPM, up to 14,400 RPD) across LLaMA and Mixtral."
     },
     "register_url": "https://console.groq.com/login",
     "docs_url": "https://console.groq.com/docs/overview",
@@ -454,11 +521,16 @@
       "llama-3.1-8b-instant",
       "mixtral-8x7b-32768"
     ],
-    "slug": "groq"
+    "slug": "groq",
+    "intro_en": "World fastest LLM inference powered by Language Processing Units (LPU), reaching 500+ tokens/sec on LLaMA 3.3.",
+    "gotchas_en": [
+      "Strict RPM/TPM limits on free keys; handle 429 retries with backoff",
+      "Free tier rate limits apply per IP and account"
+    ]
   },
   {
     "name": "Hyperbolic AI",
-    "name_en": "Hyperbolic",
+    "name_en": "Hyperbolic AI",
     "website": "https://hyperbolic.xyz",
     "category": "llm-api",
     "free_quota": {
@@ -469,7 +541,8 @@
         "提供 DeepSeek-V3, Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用",
         "全球去中心化 GPU 算力加速，推理速度快",
         "注册生成 API Key 即可使用，免绑信用卡"
-      ]
+      ],
+      "details_en": ".00 free compute credits granted upon sign-up and developer verification."
     },
     "register_url": "https://app.hyperbolic.xyz/",
     "docs_url": "https://docs.hyperbolic.xyz/",
@@ -492,11 +565,16 @@
       "deepseek-ai/DeepSeek-V3"
     ],
     "slug": "hyperbolic",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Decentralized high-performance GPU compute network serving DeepSeek R1, LLaMA 3.3, and Qwen 2.5.",
+    "gotchas_en": [
+      "Requires GitHub or Google OAuth verification",
+      "Standard per-token billing deducted from free balance"
+    ]
   },
   {
     "name": "Jina AI",
-    "name_en": "Jina AI",
+    "name_en": "Jina AI (Reader & Embeddings)",
     "website": "https://jina.ai",
     "category": "tools",
     "free_quota": {
@@ -507,7 +585,8 @@
         "注册即赠送 1000 万 Tokens 免费额度",
         "Jina Reader (r.jina.ai) 免费将任意网页转化为大模型友好的 Clean Markdown",
         "提供前沿的高质量多语言 Embedding & Reranker 接口"
-      ]
+      ],
+      "details_en": "1,000,000 free tokens granted on registration + 10M free reader requests."
     },
     "register_url": "https://jina.ai/",
     "docs_url": "https://jina.ai/reader/",
@@ -530,7 +609,12 @@
       "jina-reranker-v2-base-multilingual"
     ],
     "slug": "jina-ai",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Developer APIs for converting URLs into clean LLM markdown (r.jina.ai), multi-lingual embeddings, and rerankers.",
+    "gotchas_en": [
+      "Prepend https://r.jina.ai/ before any URL for instant web scraping into LLM markdown",
+      "API key optional for Reader, required for Embeddings"
+    ]
   },
   {
     "name": "零一万物 (01.AI)",
@@ -545,7 +629,8 @@
         "李开复创立的零一万物开放平台，注册赠送 30 元体验金",
         "支持 Yi-Large, Yi-Medium, Yi-Vision 视觉多模态全系列模型",
         "在各权威大模型基准评测榜单上名列前茅"
-      ]
+      ],
+      "details_en": "30 free API calls/day or 50,000 token initial credit for new developer accounts."
     },
     "register_url": "https://platform.lingyiwanwu.com/",
     "docs_url": "https://platform.lingyiwanwu.com/docs",
@@ -567,11 +652,16 @@
       "yi-large-turbo"
     ],
     "slug": "lingyiwanwu-01",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Dr. Kai-Fu Lee AI venture offering bilingual Yi-Lightning, Yi-Large, and multimodal vision models.",
+    "gotchas_en": [
+      "Requires mobile verification",
+      "Check balance periodically in 01.AI open platform console"
+    ]
   },
   {
     "name": "MiniMax 开放平台",
-    "name_en": "MiniMax",
+    "name_en": "MiniMax Open Platform",
     "website": "https://platform.minimaxi.com",
     "category": "multimodal",
     "free_quota": {
@@ -582,7 +672,8 @@
         "新注册认证用户赠送 15 元全品类 API 体验金",
         "abab 6.5 系列大模型与全球超高拟真度的语音大模型 (T2A)",
         "适合做角色扮演、拟人对话及语音克隆产品"
-      ]
+      ],
+      "details_en": "15,000,000 free tokens or free audio synthesis credits on registration."
     },
     "register_url": "https://platform.minimaxi.com/register",
     "docs_url": "https://platform.minimaxi.com/document/guides/chat-model/pro/api",
@@ -604,11 +695,16 @@
       "abab6.5g-chat"
     ],
     "slug": "minimax",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Frontier multimodal AI with outstanding text generation (ABAB 6.5s) and hyper-realistic Voice/TTS synthesis.",
+    "gotchas_en": [
+      "Requires phone number sign-up",
+      "Voice cloning and speech generation consume quota by character count"
+    ]
   },
   {
     "name": "Mistral AI (La Plateforme)",
-    "name_en": "Mistral AI",
+    "name_en": "Mistral AI (La Plateforme)",
     "website": "https://mistral.ai",
     "category": "llm-api",
     "free_quota": {
@@ -619,7 +715,8 @@
         "提供 Codestral, Mistral Small, Mistral NeMo 等免费 Experiment API",
         "代码生成与推理能力处于全球第一梯队",
         "支持 Function Calling 与 JSON 结构化输出"
-      ]
+      ],
+      "details_en": "Free experimentation tier (La Plateforme Free) providing rate-limited access across all open models."
     },
     "register_url": "https://console.mistral.ai/",
     "docs_url": "https://docs.mistral.ai/",
@@ -643,11 +740,16 @@
       "codestral-latest"
     ],
     "slug": "mistral-ai",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Europe leading AI powerhouse behind Mistral Large 2, Codestral (coding champion), and Pixtral (multimodal).",
+    "gotchas_en": [
+      "Free tier requires phone verification",
+      "Rate limited to 1 request/second and monthly token thresholds"
+    ]
   },
   {
     "name": "Nebius AI Studio",
-    "name_en": "Nebius AI",
+    "name_en": "Nebius AI Studio",
     "website": "https://nebius.com/studio",
     "category": "cloud",
     "free_quota": {
@@ -658,7 +760,8 @@
         "新开发者注册 Nebius AI Studio 赠送 \\ 免费算力金",
         "欧洲超算级 H100/H200 GPU 集群驱动，企业级超高稳定性",
         "支持 Llama 3.3, Qwen 2.5, DeepSeek 等全系热门开源模型"
-      ]
+      ],
+      "details_en": ".00 USD free balance upon initial registration for developer testing."
     },
     "register_url": "https://studio.nebius.com/",
     "docs_url": "https://docs.nebius.com/",
@@ -680,11 +783,16 @@
       "Qwen/Qwen2.5-Coder-32B-Instruct"
     ],
     "slug": "nebius-ai",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "High-performance AI cloud hosting DeepSeek R1, LLaMA 3.3 70B, and Qwen 2.5 on dedicated NVIDIA H100 clusters.",
+    "gotchas_en": [
+      "Credit card authorization may be requested for identity verification",
+      "High throughput on H100 infrastructure"
+    ]
   },
   {
     "name": "Novita AI",
-    "name_en": "Novita.ai",
+    "name_en": "Novita AI",
     "website": "https://novita.ai",
     "category": "multimodal",
     "free_quota": {
@@ -695,7 +803,8 @@
         "注册赠送免费 API 试用金",
         "支持 FLUX.1, SDXL 等上万款热门生图模型与 Llama 3 大模型",
         "提供极简的 OpenAI 兼容接口与按次计费模式"
-      ]
+      ],
+      "details_en": ".50 free trial credits for new accounts to test LLM and SDXL inference."
     },
     "register_url": "https://novita.ai/",
     "docs_url": "https://novita.ai/docs",
@@ -717,11 +826,16 @@
       "deepseek/deepseek-r1-distill-qwen-32b"
     ],
     "slug": "novita-ai",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Serverless API platform offering 100+ LLMs and image models with fast cold starts and competitive pricing.",
+    "gotchas_en": [
+      "Ideal for prototyping before upgrading to paid prepaid credits",
+      "OpenAI-compatible endpoints"
+    ]
   },
   {
     "name": "OpenRouter (Free Tier)",
-    "name_en": "OpenRouter",
+    "name_en": "OpenRouter (Free Models)",
     "website": "https://openrouter.ai",
     "category": "aggregator",
     "free_quota": {
@@ -732,7 +846,8 @@
         "所有带 :free 后缀的模型（如 deepseek-r1:free, llama-3.3-70b:free）完全免费",
         "统一 OpenAI 兼容接口，一行代码切换全球模型",
         "支持免登录试用或注册生成免费 Key"
-      ]
+      ],
+      "details_en": "20+ models (including LLaMA 3.3 70B Free, Gemma 2 9B Free, DeepSeek Free) available forever at 0 cost."
     },
     "register_url": "https://openrouter.ai/",
     "docs_url": "https://openrouter.ai/docs",
@@ -756,11 +871,16 @@
       "deepseek/deepseek-r1:free"
     ],
     "slug": "openrouter",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Unified gateway routing to 200+ AI models, featuring a permanent collection of 20+ completely free LLM models (:free).",
+    "gotchas_en": [
+      "Add :free suffix to model names (e.g. meta-llama/llama-3.3-70b-instruct:free)",
+      "Free models are supported by community donations and partner compute"
+    ]
   },
   {
     "name": "Pollinations AI",
-    "name_en": "Pollinations.ai",
+    "name_en": "Pollinations AI",
     "website": "https://pollinations.ai",
     "category": "multimodal",
     "free_quota": {
@@ -771,7 +891,8 @@
         "100% 永久免费、开源、免注册、无需 API Key",
         "支持 FLUX, SDXL, Midjourney 风格等多款顶级画图模型",
         "直接通过 HTTP GET URL 即可无限制生成图像或文本"
-      ]
+      ],
+      "details_en": "Unlimited free requests without any API key or credit card needed."
     },
     "register_url": "https://pollinations.ai/",
     "docs_url": "https://github.com/pollinations/pollinations",
@@ -796,7 +917,12 @@
       "turbo"
     ],
     "slug": "pollinations",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "100% free, open-access, zero-authentication API for text generation and image generation. No API key required.",
+    "gotchas_en": [
+      "No authentication required — perfect for quick prototypes and educational tools",
+      "Community-shared servers; rate limits apply during peak hours"
+    ]
   },
   {
     "name": "Represent 加拿大民选官员与选区API",
@@ -842,7 +968,8 @@
         "Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用",
         "推理速度高达 1000+ tokens/秒",
         "标准 OpenAI 兼容接口，注册生成 Key 即用"
-      ]
+      ],
+      "details_en": "Free developer tier offering up to 500 requests/day on LLaMA 3.3 70B and LLaMA 3.1 405B."
     },
     "register_url": "https://cloud.sambanova.ai/",
     "docs_url": "https://docs.sambanova.ai/",
@@ -865,11 +992,16 @@
       "DeepSeek-R1-Distill-Llama-70B"
     ],
     "slug": "sambanova",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Enterprise-speed inference platform powered by SN40L Reconfigurable Dataflow Units (RDU), running full 405B models.",
+    "gotchas_en": [
+      "Requires developer sign-up",
+      "Free tier has rate limits designed for evaluation and benchmarking"
+    ]
   },
   {
     "name": "Sepolia Testnet 水龙头聚合",
-    "name_en": "Ethereum Sepolia Faucets",
+    "name_en": "Sepolia Ethereum Faucet",
     "website": "https://sepoliafaucet.com",
     "category": "web3-faucet",
     "free_quota": {
@@ -880,7 +1012,8 @@
         "Alchemy, Google Cloud Web3, Infura 等水龙头每日免费领 0.1~0.5 ETH",
         "智能合约开发、DApp 部署必备测试代币",
         "无需真实资产，测试网永久免费"
-      ]
+      ],
+      "details_en": "0.5 Sepolia ETH daily free drip from Google Cloud, Infura, and Alchemy faucets."
     },
     "register_url": "https://cloud.google.com/application/web3/faucet/ethereum/sepolia",
     "docs_url": "https://ethereum.org/en/developers/docs/networks/#sepolia",
@@ -902,7 +1035,12 @@
       "ethereum-sepolia-testnet"
     ],
     "slug": "sepolia-faucet",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Curated developer faucet aggregator for claiming free Sepolia ETH testnet tokens to test smart contracts and Web3 AI agents.",
+    "gotchas_en": [
+      "May require GitHub login or minimal mainnet balance (0.001 ETH) to prevent sybil attacks",
+      "Testnet coins have no real-world monetary value"
+    ]
   },
   {
     "name": "硅基流动",
@@ -917,7 +1055,8 @@
         "新用户注册赠送 2000 万 tokens（约 14 元额度）",
         "部分小参数模型（如 Qwen2.5-7B）长期免费不限量",
         "通过邀请链接注册双方均可获得额外额度"
-      ]
+      ],
+      "details_en": "20,000,000 free tokens granted upon phone registration + multiple permanently free models."
     },
     "register_url": "https://cloud.siliconflow.cn/i/jFtM9PqG",
     "docs_url": "https://docs.siliconflow.cn/",
@@ -941,11 +1080,16 @@
       "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
       "THUDM/glm-4-9b-chat"
     ],
-    "slug": "siliconflow"
+    "slug": "siliconflow",
+    "intro_en": "Leading high-concurrency model hub in Asia with 20 Million free tokens on sign-up, hosting DeepSeek R1, Qwen 2.5, and SDXL.",
+    "gotchas_en": [
+      "Requires mobile SMS verification",
+      "Permanently free models (Qwen/Qwen2.5-7B-Instruct) do not consume trial balance"
+    ]
   },
   {
     "name": "Tavily AI Search",
-    "name_en": "Tavily Search",
+    "name_en": "Tavily AI Search",
     "website": "https://tavily.com",
     "category": "tools",
     "free_quota": {
@@ -956,7 +1100,8 @@
         "免费层每月提供 1,000 次无死角实时搜索请求",
         "LangChain / AutoGPT / Dify 等 AI Agent 框架官方默认推荐搜索源",
         "支持直接返回提炼后的问答与网页摘要"
-      ]
+      ],
+      "details_en": "1,000 free search API calls per month completely free forever."
     },
     "register_url": "https://app.tavily.com/sign-up",
     "docs_url": "https://docs.tavily.com/",
@@ -977,7 +1122,12 @@
       "tavily-search-api"
     ],
     "slug": "tavily",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Real-time web search API purpose-built for LLM agents, RAG pipelines, and autonomous research workflows.",
+    "gotchas_en": [
+      "Free tier resets monthly",
+      "Natively supported by LangChain, LlamaIndex, Dify, and AutoGen"
+    ]
   },
   {
     "name": "腾讯混元大模型",
@@ -992,7 +1142,8 @@
         "腾讯云开通混元 API 赠送 100 万 Tokens 免费测试额度",
         "支持混元 Pro, Standard, Lite 全系列模型",
         "支持超长文本理解与微信生态无缝接入"
-      ]
+      ],
+      "details_en": "100,000 free tokens for Hunyuan-Lite/Standard on registration."
     },
     "register_url": "https://console.cloud.tencent.com/hunyuan",
     "docs_url": "https://cloud.tencent.com/document/product/1729",
@@ -1014,11 +1165,16 @@
       "hunyuan-lite"
     ],
     "slug": "tencent-hunyuan",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Tencent foundation model platform featuring Hunyuan-Large, Hunyuan-Pro, and 3D/Image generative models.",
+    "gotchas_en": [
+      "Requires Tencent Cloud account with real-name verification",
+      "Trial tokens valid for limited period"
+    ]
   },
   {
     "name": "Together AI",
-    "name_en": "Together.ai",
+    "name_en": "Together AI",
     "website": "https://together.ai",
     "category": "llm-api",
     "free_quota": {
@@ -1029,7 +1185,8 @@
         "新注册开发者绑定手机号赠送  免费调用金",
         "提供数百款前沿开源大模型、FLUX 生图与微调服务",
         "支持全球极速推理与标准 OpenAI 接口"
-      ]
+      ],
+      "details_en": ".00 USD free credits upon registration to test any model on the platform."
     },
     "register_url": "https://api.together.ai/signup",
     "docs_url": "https://docs.together.ai/",
@@ -1051,7 +1208,12 @@
       "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"
     ],
     "slug": "together-ai",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "Leading decentralized AI research and inference platform running 100+ open-source models with dedicated endpoints.",
+    "gotchas_en": [
+      "Requires phone number and email verification",
+      "Consumes credits based on model parameter size"
+    ]
   },
   {
     "name": "讯飞星火认知大模型",
@@ -1066,7 +1228,8 @@
         "Spark Lite 模型永久免费无限制调用",
         "新认证用户免费赠送 Spark 3.5 / 4.0 200 万 Tokens 礼包",
         "语音合成、语音识别及中文语法表现极佳"
-      ]
+      ],
+      "details_en": "2,000,000 free tokens granted for Spark Lite upon developer certification."
     },
     "register_url": "https://xinghuo.xfyun.cn/sparkapi",
     "docs_url": "https://www.xfyun.cn/doc/spark/Web.html",
@@ -1088,11 +1251,16 @@
       "spark-lite"
     ],
     "slug": "xfyun-spark",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "iFLYTEK cognitive foundation model platform with high Chinese NLP accuracy, math, and voice transcription.",
+    "gotchas_en": [
+      "Requires real-name certification on iFLYTEK Open Platform",
+      "Spark Lite is permanently free; advanced models consume trial balances"
+    ]
   },
   {
     "name": "智谱 AI 开放平台",
-    "name_en": "Zhipu AI (BigModel)",
+    "name_en": "Zhipu AI (GLM-4)",
     "website": "https://open.bigmodel.cn",
     "category": "llm-api",
     "free_quota": {
@@ -1103,7 +1271,8 @@
         "GLM-4-Flash / GLM-4-FlashX 模型永久免费无限量调用",
         "新注册实名用户赠送 2500 万大模型 Token 资源包",
         "支持 Coding、联网搜索、工具调用插件"
-      ]
+      ],
+      "details_en": "GLM-4-Flash is permanently free (unlimited tokens); new accounts get 25,000,000 tokens for GLM-4."
     },
     "register_url": "https://open.bigmodel.cn/invite?icode=free",
     "docs_url": "https://open.bigmodel.cn/dev/api",
@@ -1127,6 +1296,11 @@
       "glm-4-plus"
     ],
     "slug": "zhipu-ai",
-    "last_checked": "2026-09-01"
+    "last_checked": "2026-09-01",
+    "intro_en": "China leading pioneer in large models behind GLM-4-Plus, GLM-4-Flash (free forever), and CogVideoX.",
+    "gotchas_en": [
+      "GLM-4-Flash is 100% free forever for all developers",
+      "Requires phone registration"
+    ]
   }
 ]

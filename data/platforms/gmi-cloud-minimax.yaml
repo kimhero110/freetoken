@@ -1,5 +1,5 @@
 name: GMI Cloud (MiniMax 专场)
-name_en: GMI Cloud x MiniMax
+name_en: GMI Cloud (MiniMax Free 2B)
 website: https://www.gmicloud.ai/en
 category: multimodal
 free_quota:
@@ -11,6 +11,7 @@ free_quota:
   - 免费调用 MiniMax-M3, M2.7, Speech 2.8 语音与 Music 3.0 音乐模型
   - 支持 GitHub / Google 账号一键快捷登录，直接生成 API Key，免绑卡
   - '兼容标准 OpenAI / Anthropic 双协议，Base URL: https://api.gmi-serving.com/v1'
+  details_en: 2,000,000,000 free tokens granted upon developer sign-up.
 register_url: https://www.gmicloud.ai/en
 docs_url: https://www.gmicloud.ai/en
 source_urls:
@@ -32,3 +33,8 @@ free_models:
 - minimax-text-01
 slug: gmi-cloud-minimax
 last_checked: '2026-09-01'
+intro_en: Global GPU cloud offering a massive 2 Billion free tokens for MiniMax-Text-01
+  under developer promotion.
+gotchas_en:
+- Promotional quota may adjust based on campaign duration
+- Configure base URL to GMI Cloud custom OpenAI endpoint

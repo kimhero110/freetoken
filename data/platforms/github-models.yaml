@@ -10,6 +10,8 @@ free_quota:
   - 免费调用 GPT-4o, GPT-4o-mini, Claude 3.5 Sonnet, Llama 3.3 70B 等
   - 使用 GitHub Personal Access Token (PAT) 即可直接认证
   - 适合个人开发者日常轻量体验或调试
+  details_en: 50 requests/day for top models (GPT-4o, Claude 3.5), 150 requests/day
+    for low-latency models.
 register_url: https://github.com/marketplace/models
 docs_url: https://docs.github.com/en/github-models
 source_urls:
@@ -30,3 +32,8 @@ free_models:
 - Phi-3.5-mini-instruct
 slug: github-models
 last_checked: '2026-09-01'
+intro_en: Direct prototyping access to GPT-4o, Claude 3.5 Sonnet, LLaMA 3.3, and DeepSeek
+  via GitHub Personal Access Tokens.
+gotchas_en:
+- Requires GitHub account
+- Personal Access Token (classic or fine-grained) needed for authentication

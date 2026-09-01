@@ -1,5 +1,5 @@
 name: Cerebras Inference
-name_en: Cerebras
+name_en: Cerebras Inference
 website: https://cerebras.ai
 category: llm-api
 free_quota:
@@ -10,6 +10,7 @@ free_quota:
   - 每天刷新 100 万免费 Tokens
   - 推理速度高达 1800+ tokens/秒（全球最快之一）
   - 免费提供 Llama 3.1 8B / 70B 等开源模型
+  details_en: 1,000,000 free daily tokens across LLaMA 3.1 8B and 70B models.
 register_url: https://cloud.cerebras.ai/
 docs_url: https://inference-docs.cerebras.ai/
 source_urls:
@@ -28,3 +29,8 @@ free_models:
 - llama3.1-8b
 slug: cerebras
 last_checked: '2026-09-01'
+intro_en: Ultra-high-speed LLM inference powered by wafer-scale engine chips (CS-3),
+  generating over 2,000 tokens per second.
+gotchas_en:
+- Strict RPM/TPM rate limits on the free tier (up to 30 RPM)
+- Free tier is intended for evaluation and non-commercial development

@@ -1,5 +1,5 @@
 name: Together AI
-name_en: Together.ai
+name_en: Together AI
 website: https://together.ai
 category: llm-api
 free_quota:
@@ -10,6 +10,7 @@ free_quota:
   - 新注册开发者绑定手机号赠送  免费调用金
   - 提供数百款前沿开源大模型、FLUX 生图与微调服务
   - 支持全球极速推理与标准 OpenAI 接口
+  details_en: .00 USD free credits upon registration to test any model on the platform.
 register_url: https://api.together.ai/signup
 docs_url: https://docs.together.ai/
 source_urls:
@@ -28,3 +29,8 @@ free_models:
 - deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
 slug: together-ai
 last_checked: '2026-09-01'
+intro_en: Leading decentralized AI research and inference platform running 100+ open-source
+  models with dedicated endpoints.
+gotchas_en:
+- Requires phone number and email verification
+- Consumes credits based on model parameter size

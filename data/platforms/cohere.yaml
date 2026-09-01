@@ -10,6 +10,8 @@ free_quota:
   - 免费 Trial API Key 提供 1000 次 API/月与 10 RPM 并发
   - 全球顶级 Rerank 重排序与 Multilingual Embedding 向量模型
   - RAG 检索增强系统必备开发组件
+  details_en: Free Trial API Key provides 1,000 free requests per month and 10 RPM
+    for development.
 register_url: https://dashboard.cohere.com/welcome/register
 docs_url: https://docs.cohere.com/
 source_urls:
@@ -29,3 +31,8 @@ free_models:
 - embed-multilingual-v3.0
 slug: cohere
 last_checked: '2026-09-01'
+intro_en: Enterprise-grade language models specializing in Command R+, Rerank 3, and
+  high-accuracy Embeddings.
+gotchas_en:
+- Trial keys include a rate limit of 10 requests/minute
+- Cannot be used for production high-concurrency traffic

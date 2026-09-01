@@ -1,5 +1,5 @@
 name: Tavily AI Search
-name_en: Tavily Search
+name_en: Tavily AI Search
 website: https://tavily.com
 category: tools
 free_quota:
@@ -10,6 +10,7 @@ free_quota:
   - 免费层每月提供 1,000 次无死角实时搜索请求
   - LangChain / AutoGPT / Dify 等 AI Agent 框架官方默认推荐搜索源
   - 支持直接返回提炼后的问答与网页摘要
+  details_en: 1,000 free search API calls per month completely free forever.
 register_url: https://app.tavily.com/sign-up
 docs_url: https://docs.tavily.com/
 source_urls:
@@ -27,3 +28,8 @@ free_models:
 - tavily-search-api
 slug: tavily
 last_checked: '2026-09-01'
+intro_en: Real-time web search API purpose-built for LLM agents, RAG pipelines, and
+  autonomous research workflows.
+gotchas_en:
+- Free tier resets monthly
+- Natively supported by LangChain, LlamaIndex, Dify, and AutoGen

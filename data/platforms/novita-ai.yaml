@@ -1,5 +1,5 @@
 name: Novita AI
-name_en: Novita.ai
+name_en: Novita AI
 website: https://novita.ai
 category: multimodal
 free_quota:
@@ -10,6 +10,7 @@ free_quota:
   - 注册赠送免费 API 试用金
   - 支持 FLUX.1, SDXL 等上万款热门生图模型与 Llama 3 大模型
   - 提供极简的 OpenAI 兼容接口与按次计费模式
+  details_en: .50 free trial credits for new accounts to test LLM and SDXL inference.
 register_url: https://novita.ai/
 docs_url: https://novita.ai/docs
 source_urls:
@@ -28,3 +29,8 @@ free_models:
 - deepseek/deepseek-r1-distill-qwen-32b
 slug: novita-ai
 last_checked: '2026-09-01'
+intro_en: Serverless API platform offering 100+ LLMs and image models with fast cold
+  starts and competitive pricing.
+gotchas_en:
+- Ideal for prototyping before upgrading to paid prepaid credits
+- OpenAI-compatible endpoints

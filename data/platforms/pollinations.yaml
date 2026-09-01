@@ -1,5 +1,5 @@
 name: Pollinations AI
-name_en: Pollinations.ai
+name_en: Pollinations AI
 website: https://pollinations.ai
 category: multimodal
 free_quota:
@@ -10,6 +10,7 @@ free_quota:
   - 100% 永久免费、开源、免注册、无需 API Key
   - 支持 FLUX, SDXL, Midjourney 风格等多款顶级画图模型
   - 直接通过 HTTP GET URL 即可无限制生成图像或文本
+  details_en: Unlimited free requests without any API key or credit card needed.
 register_url: https://pollinations.ai/
 docs_url: https://github.com/pollinations/pollinations
 source_urls:
@@ -31,3 +32,8 @@ free_models:
 - turbo
 slug: pollinations
 last_checked: '2026-09-01'
+intro_en: 100% free, open-access, zero-authentication API for text generation and
+  image generation. No API key required.
+gotchas_en:
+- No authentication required — perfect for quick prototypes and educational tools
+- Community-shared servers; rate limits apply during peak hours

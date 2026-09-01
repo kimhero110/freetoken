@@ -1,5 +1,5 @@
 name: Mistral AI (La Plateforme)
-name_en: Mistral AI
+name_en: Mistral AI (La Plateforme)
 website: https://mistral.ai
 category: llm-api
 free_quota:
@@ -10,6 +10,8 @@ free_quota:
   - 提供 Codestral, Mistral Small, Mistral NeMo 等免费 Experiment API
   - 代码生成与推理能力处于全球第一梯队
   - 支持 Function Calling 与 JSON 结构化输出
+  details_en: Free experimentation tier (La Plateforme Free) providing rate-limited
+    access across all open models.
 register_url: https://console.mistral.ai/
 docs_url: https://docs.mistral.ai/
 source_urls:
@@ -30,3 +32,8 @@ free_models:
 - codestral-latest
 slug: mistral-ai
 last_checked: '2026-09-01'
+intro_en: Europe leading AI powerhouse behind Mistral Large 2, Codestral (coding champion),
+  and Pixtral (multimodal).
+gotchas_en:
+- Free tier requires phone verification
+- Rate limited to 1 request/second and monthly token thresholds

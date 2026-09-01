@@ -2251,16 +2251,27 @@ def generate_seo_assets(platforms: list[dict]):
     headers_content = "/*\n  X-Robots-Tag: all\n  Access-Control-Allow-Origin: *\n\n/sitemap.xml\n  Content-Type: application/xml; charset=utf-8\n  X-Robots-Tag: all\n\n/robots.txt\n  Content-Type: text/plain; charset=utf-8\n  X-Robots-Tag: all\n"
     (public_dir / "_headers").write_text(headers_content, encoding="utf-8")
 
-    # 2. sitemap.xml
+    # 3. Bilingual sitemap.xml with hreflang
     today = date.today().isoformat()
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
+        '  <!-- Chinese & English Homepages -->',
         '  <url>',
         '    <loc>https://freetokens.info/</loc>',
         f'    <lastmod>{today}</lastmod>',
         '    <changefreq>daily</changefreq>',
         '    <priority>1.0</priority>',
+        '    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/"/>',
+        '    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/"/>',
+        '  </url>',
+        '  <url>',
+        '    <loc>https://freetokens.info/en/</loc>',
+        f'    <lastmod>{today}</lastmod>',
+        '    <changefreq>daily</changefreq>',
+        '    <priority>1.0</priority>',
+        '    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/"/>',
+        '    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/"/>',
         '  </url>',
     ]
 
@@ -2273,6 +2284,16 @@ def generate_seo_assets(platforms: list[dict]):
                 f'    <lastmod>{today}</lastmod>',
                 '    <changefreq>weekly</changefreq>',
                 '    <priority>0.8</priority>',
+                f'    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/{slug}/"/>',
+                f'    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/{slug}/"/>',
+                '  </url>',
+                '  <url>',
+                f'    <loc>https://freetokens.info/en/platform/{slug}/</loc>',
+                f'    <lastmod>{today}</lastmod>',
+                '    <changefreq>weekly</changefreq>',
+                '    <priority>0.8</priority>',
+                f'    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/{slug}/"/>',
+                f'    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/{slug}/"/>',
                 '  </url>',
             ])
 

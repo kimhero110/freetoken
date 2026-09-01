@@ -10,6 +10,8 @@ free_quota:
   - 李开复创立的零一万物开放平台，注册赠送 30 元体验金
   - 支持 Yi-Large, Yi-Medium, Yi-Vision 视觉多模态全系列模型
   - 在各权威大模型基准评测榜单上名列前茅
+  details_en: 30 free API calls/day or 50,000 token initial credit for new developer
+    accounts.
 register_url: https://platform.lingyiwanwu.com/
 docs_url: https://platform.lingyiwanwu.com/docs
 source_urls:
@@ -28,3 +30,8 @@ free_models:
 - yi-large-turbo
 slug: lingyiwanwu-01
 last_checked: '2026-09-01'
+intro_en: Dr. Kai-Fu Lee AI venture offering bilingual Yi-Lightning, Yi-Large, and
+  multimodal vision models.
+gotchas_en:
+- Requires mobile verification
+- Check balance periodically in 01.AI open platform console
