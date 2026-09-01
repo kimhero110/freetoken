@@ -115,10 +115,10 @@
         else if (currentFilter === 'tools') matchFilter = card.getAttribute('data-tools') === 'true';
 
         if (matchSearch && matchFilter) {
-          (card as HTMLElement).style.display = 'flex';
+          card.style.display = 'flex';
           visibleCount++;
         } else {
-          (card as HTMLElement).style.display = 'none';
+          card.style.display = 'none';
         }
       });
 

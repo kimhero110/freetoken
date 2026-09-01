@@ -117,10 +117,10 @@
         else if (currentFilter === 'web3') matchFilter = card.getAttribute('data-web3') === 'true';
 
         if (matchSearch && matchFilter) {
-          (card as HTMLElement).style.display = 'flex';
+          card.style.display = 'flex';
           visibleCount++;
         } else {
-          (card as HTMLElement).style.display = 'none';
+          card.style.display = 'none';
         }
       });
 
