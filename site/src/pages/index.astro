@@ -213,12 +213,25 @@ const totalCount = platforms.length;
         <article class="guide-card">
           <div class="guide-card-head">
             <span class="guide-step">02</span>
-            <h3>常用 AI 客户端与编程工具配置</h3>
+            <h3>常用开源 AI 工具与客户端接入</h3>
           </div>
           <ul class="guide-tool-list">
-            <li><strong>OpenCode / Cursor / Cline</strong>：在设置 ➔ Custom OpenAI Provider 中，填入平台 Base URL 与 API Key，即可零成本驱动终端代码生成与自动重构。</li>
-            <li><strong>Cherry Studio / Chatbox / NextChat</strong>：在设置 ➔ 自定义服务商中，填入对应平台的 API 地址与 Key，选择免费模型即可秒级对话。</li>
-            <li><strong>One API / New API 网关聚合</strong>：强烈推荐将本站 29 家平台的免费 Key 统一挂载至聚合网关，开启负载均衡与自动轮询，实现无上限并发调用。</li>
+            <li>
+              <strong>终端与编程自动化</strong>：
+              <a href="https://github.com/OpenCode-AI/opencode" target="_blank" rel="noopener" class="guide-repo-link">OpenCode ↗</a>、
+              <a href="https://github.com/cline/cline" target="_blank" rel="noopener" class="guide-repo-link">Cline ↗</a> 或 Cursor，在设置中配置自定义 <code>Base URL</code> 与密钥即可零成本驱动代码生成。
+            </li>
+            <li>
+              <strong>多模型对话客户端</strong>：
+              <a href="https://github.com/CherryHQ/cherry-studio" target="_blank" rel="noopener" class="guide-repo-link">Cherry Studio ↗</a>、
+              <a href="https://github.com/Bin-Huang/chatbox" target="_blank" rel="noopener" class="guide-repo-link">Chatbox ↗</a> 或 
+              <a href="https://github.com/ChatGPTNextWeb/ChatGPT-Next-Web" target="_blank" rel="noopener" class="guide-repo-link">NextChat ↗</a>，支持多模型同屏对比与多平台免费 Key 轮询。
+            </li>
+            <li>
+              <strong>网关聚合与负载均衡</strong>：
+              推荐使用 <a href="https://github.com/songquanpeng/one-api" target="_blank" rel="noopener" class="guide-repo-link">One API ↗</a> 或 
+              <a href="https://github.com/Calcium-Affliction/new-api" target="_blank" rel="noopener" class="guide-repo-link">New API ↗</a> 将全网 29 家免费 Key 统一挂载为一个聚合分发接口，自动高可用轮询。
+            </li>
           </ul>
         </article>
 
@@ -255,6 +268,9 @@ const totalCount = platforms.length;
             <span class="focus-en-tag">INTELLIGENCE COMPASS</span>
             <h3 class="focus-title">AI 引导未来</h3>
             <p class="focus-desc">研究模型、思维与协作范式，在技术狂潮中保持敏锐的独立判断力与人机共生边界。</p>
+            <div class="focus-anchor-link">
+              <a href="https://github.com/lm-sys/FastChat" target="_blank" rel="noopener">LMSYS Chatbot Arena 基准 ↗</a>
+            </div>
           </div>
         </article>
 
@@ -267,6 +283,9 @@ const totalCount = platforms.length;
             <span class="focus-en-tag">TOKEN AS ENERGY</span>
             <h3 class="focus-title">Token 就是能源</h3>
             <p class="focus-desc">算力的流动即是价值的流动。掌握充沛且低成本的 Token，就是掌握数字工厂的能源自主权。</p>
+            <div class="focus-anchor-link">
+              <a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener">vLLM 高并发推理引擎 ↗</a>
+            </div>
           </div>
         </article>
 
@@ -279,6 +298,9 @@ const totalCount = platforms.length;
             <span class="focus-en-tag">CODIFIED REALITY</span>
             <h3 class="focus-title">世界代码化</h3>
             <p class="focus-desc">把研究框架、业务逻辑与工作流沉淀为代码，用自动化与接口化杠杆放大个体的生产力半径。</p>
+            <div class="focus-anchor-link">
+              <a href="https://github.com/langgenius/dify" target="_blank" rel="noopener">Dify 开源应用编排 ↗</a>
+            </div>
           </div>
         </article>
 
@@ -291,6 +313,9 @@ const totalCount = platforms.length;
             <span class="focus-en-tag">OPEN-SOURCE TOOLS</span>
             <h3 class="focus-title">工具开源化</h3>
             <p class="focus-desc">拥抱开放权重、开源协议与公共基础设施，让技术的主权与自由永远留在构建者手里。</p>
+            <div class="focus-anchor-link">
+              <a href="https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard" target="_blank" rel="noopener">Open LLM 开放榜单 ↗</a>
+            </div>
           </div>
         </article>
       </div>
@@ -634,6 +659,35 @@ const totalCount = platforms.length;
     }
     .guide-tool-list li, .guide-caution-list li {
       margin-bottom: 10px;
+    }
+    .guide-repo-link {
+      color: var(--text);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: #cbd5e1;
+      transition: all 0.15s;
+    }
+    .guide-repo-link:hover {
+      text-decoration-color: var(--text);
+      color: #000000;
+    }
+    .focus-anchor-link {
+      margin-top: 14px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--card-border);
+    }
+    .focus-anchor-link a {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.15s;
+    }
+    .focus-anchor-link a:hover {
+      color: var(--text);
     }
 
     /* Filter Pills */

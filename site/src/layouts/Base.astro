@@ -196,9 +196,28 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       gap: 20px;
       flex-wrap: wrap;
     }
+    .footer-ecosystem {
+      border-top: 1px solid var(--card-border);
+      margin-top: 24px;
+      padding-top: 16px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .footer-ecosystem a {
+      color: var(--text-muted);
+      transition: color 0.15s;
+    }
+    .footer-ecosystem a:hover {
+      color: var(--text);
+    }
+
     .footer-bottom {
       border-top: 1px solid var(--card-border);
-      margin-top: 32px;
+      margin-top: 20px;
       padding-top: 20px;
       display: flex;
       justify-content: space-between;
@@ -300,6 +319,13 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
           <a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank">推荐新源</a>
           <a href="https://github.com/kimhero110/freetoken" target="_blank">GitHub 仓库</a>
         </div>
+      </div>
+      <div class="footer-ecosystem">
+        <span>生态基础设施：</span>
+        <a href="https://github.com/withastro/astro" target="_blank" rel="noopener">Astro 极速引擎 ↗</a>
+        <a href="https://github.com/BerriAI/litellm" target="_blank" rel="noopener">LiteLLM 接口网关 ↗</a>
+        <a href="https://github.com/openai/openai-python" target="_blank" rel="noopener">OpenAI Python SDK ↗</a>
+        <a href="https://github.com/langgenius/dify" target="_blank" rel="noopener">Dify 应用编排 ↗</a>
       </div>
       <div class="footer-bottom">
         <span>© 2026 FreeTokens.info · 工具让人走得更快，思考决定往哪里走。</span>
