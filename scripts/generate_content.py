@@ -27,11 +27,11 @@ def load_platforms() -> list[dict]:
 
 
 # ==========================================
-# 0. 暖色极客/独立工作室风格页面模板 (ssgoo.net 风格)
+# 0. 暖色极客/独立工作室风格页面模板 (magazine.net 风格)
 # ==========================================
-def render_ssgoo_base_astro() -> str:
+def render_base_astro() -> str:
     return """---
-// 站点基础布局：暖色极客/独立工作室社群风格 (Inspired by ssgoo.net)
+// FreeTokens.info 基础布局 - 极简主义科技杂志风格
 interface Props {
   title?: string;
   description?: string;
@@ -43,7 +43,7 @@ const {
 
 const pageTitle = title === 'FreeToken 免费Token情报局'
   ? title
-  : `${title} - 免费Token情报局`;
+  : `${title} - FreeToken 免费Token情报局`;
 
 const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href;
 ---
@@ -57,7 +57,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
   <meta name="keywords" content="免费Token, 免费大模型API, 免费LLM, Gemini免费API, DeepSeek免费API, 白嫖API, OpenAI接口免费, 免费算力, AI API Faucet" />
   <link rel="canonical" href={canonicalURL} />
 
-  <!-- Preload LCP WebP Mascot Image -->
+  <!-- Preload WebP Hero Asset -->
   <link rel="preload" as="image" href="/images/hero-mascot.webp" type="image/webp" />
 
   <!-- Open Graph -->
@@ -67,45 +67,33 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
   <meta property="og:description" content={description} />
   <meta property="og:site_name" content="FreeToken 免费Token情报局" />
 
-  <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={pageTitle} />
   <meta name="twitter:description" content={description} />
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- Schema.org JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "FreeToken",
     "url": "https://freetokens.info/",
     "description": "全球各大 LLM 与云平台免费 API 额度情报聚合雷达",
-    "inLanguage": "zh-CN",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://freetokens.info/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+    "inLanguage": "zh-CN"
   })} />
 
   <style is:global>
     :root {
-      --bg: #fcfbf9;
-      --bg-subtle: #f5f4ef;
+      --bg: #fbfbfa;
+      --bg-subtle: #f4f4f2;
       --card-bg: #ffffff;
-      --card-border: #e8e6df;
-      --card-border-hover: #d2cfc4;
-      --text: #191816;
-      --text-muted: #6b675e;
-      --text-light: #9c978b;
-      --primary: #191816;
-      --accent-warm: #c25e00;
-      --accent-green: #15803d;
-      --accent-green-bg: #f0fdf4;
-      --accent-green-border: #bbf7d0;
-      --accent-orange-bg: #fffaf0;
-      --accent-orange-border: #feebc8;
+      --card-border: #e6e4de;
+      --card-border-hover: #18181b;
+      --text: #18181b;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --primary: #18181b;
+      --accent-warm: #b45309;
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
@@ -123,23 +111,23 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       padding: 0 24px;
     }
 
-    /* 顶部导航 (Editorial Nav) */
+    /* 顶部导航 */
     .site-header {
       border-bottom: 1px solid var(--card-border);
-      background: rgba(252, 251, 249, 0.95);
+      background: rgba(251, 251, 250, 0.95);
       backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
     }
     .header-inner {
-      height: 66px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .brand {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--text);
       display: flex;
@@ -149,18 +137,19 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
     }
     .brand-tag {
       font-size: 11px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      padding: 2px 8px;
-      border-radius: 20px;
       font-weight: 500;
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--bg-subtle);
     }
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 18px;
-      font-size: 14px;
+      gap: 20px;
+      font-size: 13px;
+      font-weight: 500;
       color: var(--text-muted);
     }
     .nav-links a {
@@ -170,34 +159,24 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       color: var(--text);
     }
 
-    /* 优雅温润的公众号按钮 */
+    /* 极简克制公众号按钮 */
     .nav-btn-wechat {
-      background: #faf8f5;
-      border: 1px solid #e2ded5;
-      color: #191816;
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text);
       font-size: 13px;
-      font-weight: 600;
-      padding: 7px 14px;
-      border-radius: 8px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.15s ease;
     }
     .nav-btn-wechat:hover {
-      background: #f2eee3;
-      border-color: var(--accent-warm);
-      color: var(--accent-warm);
-      transform: translateY(-1px);
-    }
-    .live-pulse-dot {
-      width: 7px;
-      height: 7px;
-      background: #15803d;
-      border-radius: 50%;
-      display: inline-block;
-      box-shadow: 0 0 0 2px rgba(21, 128, 61, 0.2);
+      border-color: var(--text);
+      background: #ffffff;
     }
 
     .nav-github-link {
@@ -205,35 +184,25 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       align-items: center;
       gap: 6px;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--text);
-      background: var(--bg-subtle);
       border: 1px solid var(--card-border);
       padding: 6px 12px;
-      border-radius: 8px;
+      border-radius: 6px;
       transition: all 0.15s;
     }
     .nav-github-link:hover {
-      border-color: var(--card-border-hover);
+      border-color: var(--text);
       background: #ffffff;
-    }
-    .nav-star-pill {
-      font-size: 11px;
-      background: #fef3c7;
-      color: #92400e;
-      border: 1px solid #fde68a;
-      padding: 1px 6px;
-      border-radius: 10px;
-      font-weight: 700;
     }
 
     /* 页脚 */
     .site-footer {
       border-top: 1px solid var(--card-border);
       background: var(--bg-subtle);
-      padding: 56px 0 36px;
+      padding: 48px 0 32px;
       margin-top: auto;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-muted);
     }
     .footer-inner {
@@ -244,34 +213,34 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       gap: 32px;
     }
     .footer-brand h4 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .footer-brand p {
-      max-width: 460px;
+      max-width: 480px;
       line-height: 1.6;
       font-size: 13px;
     }
     .footer-links {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       flex-wrap: wrap;
     }
     .footer-bottom {
       border-top: 1px solid var(--card-border);
-      margin-top: 36px;
-      padding-top: 24px;
+      margin-top: 32px;
+      padding-top: 20px;
       display: flex;
       justify-content: space-between;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-light);
       flex-wrap: wrap;
       gap: 12px;
     }
 
-    /* 微信关注弹窗 (WeChat Modal) */
+    /* 微信关注弹窗 */
     .wechat-modal-backdrop {
       position: fixed;
       inset: 0;
@@ -294,12 +263,12 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
     .wechat-modal-card {
       background: #ffffff;
       border: 1px solid var(--card-border);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 32px;
-      max-width: 380px;
+      max-width: 360px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
       position: relative;
     }
     .modal-close-btn {
@@ -316,7 +285,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
     .modal-qrcode-img {
       width: 190px;
       height: 190px;
-      border-radius: 12px;
+      border-radius: 8px;
       border: 1px solid var(--card-border);
       margin: 16px auto;
       display: block;
@@ -327,21 +296,18 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="/">
-        <span>⚡ 免费Token情报局</span>
-        <span class="brand-tag">FreeTokens.info</span>
+        <span>FreeTokens.info</span>
+        <span class="brand-tag">免费算力情报</span>
       </a>
       <div class="nav-links">
-        <a href="/#products">🔥 免费资源库</a>
-        <a href="/#focus">🧭 四个坐标</a>
-        <a href="/#community">✨ 关于与矩阵</a>
+        <a href="/#products">资源目录</a>
+        <a href="/#focus">长期坐标</a>
+        <a href="/#community">保持联系</a>
         <button class="nav-btn-wechat" id="btn-open-wechat">
-          <span class="live-pulse-dot"></span>
-          <span>关注公众号</span>
+          关注公众号
         </button>
         <a href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener" class="nav-github-link">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-          <span>GitHub</span>
-          <span class="nav-star-pill">★ Star</span>
+          GitHub
         </a>
       </div>
     </div>
@@ -355,34 +321,33 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
     <div class="container">
       <div class="footer-inner">
         <div class="footer-brand">
-          <h4>⚡ 免费Token情报局 (FreeTokens.info)</h4>
-          <p>全天候自动监测全球主流大模型与云平台免费 API 额度，为独立开发者与 AI 爱好者提供清晰、透明、可复用的接入指南。</p>
+          <h4>FreeTokens.info · 免费Token情报局</h4>
+          <p>持续追踪全球主流大模型与云平台免费 API 配额，为独立开发者与 AI 爱好者提供清晰、透明、可复用的接入指南。</p>
         </div>
         <div class="footer-links">
           <a href="/#products">资源目录</a>
           <a href="/sitemap.xml" target="_blank">Sitemap</a>
-          <a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank">➕ 推荐新源</a>
-          <a href="https://github.com/kimhero110/freetoken" target="_blank">GitHub 开源库</a>
+          <a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank">推荐新源</a>
+          <a href="https://github.com/kimhero110/freetoken" target="_blank">GitHub 仓库</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 免费Token情报局 · 工具让人走得更快，思考决定往哪里走。</span>
-        <span>托管于 Cloudflare 全球 Anycast 边缘网络</span>
+        <span>© 2026 FreeTokens.info · 工具让人走得更快，思考决定往哪里走。</span>
+        <span>托管于 Cloudflare Anycast 边缘网络</span>
       </div>
     </div>
   </footer>
 
-  <!-- 微信关注弹窗 -->
   <div class="wechat-modal-backdrop" id="wechat-modal">
     <div class="wechat-modal-card">
       <button class="modal-close-btn" id="modal-close-btn">×</button>
-      <div style="font-size: 13px; font-weight: 700; color: #c25e00; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
-        ⚡ 免费Token情报局
+      <div style="font-size: 12px; font-weight: 600; color: var(--accent-warm); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">
+        FreeTokens.info
       </div>
-      <h3 style="font-size: 18px; font-weight: 700; color: #191816; margin-bottom: 6px;">微信扫码一键关注</h3>
-      <p style="font-size: 13px; color: #6b675e; line-height: 1.5;">全天候雷达探测，第一时间为你推送突发限时大额免费大模型与算力羊毛！</p>
+      <h3 style="font-size: 17px; font-weight: 700; color: #18181b; margin-bottom: 6px;">微信扫码关注</h3>
+      <p style="font-size: 13px; color: #64748b; line-height: 1.5;">全天候雷达监测，第一时间推送突发限时大额免费算力与大模型接口。</p>
       <img src="/wechat-qrcode.jpg" alt="微信公众号二维码" class="modal-qrcode-img" />
-      <div style="font-size: 12px; color: #9c978b;">👆 微信长按或扫码识别关注</div>
+      <div style="font-size: 12px; color: #94a3b8;">微信长按或扫码识别</div>
     </div>
   </div>
 
@@ -412,17 +377,11 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
 </html>"""
 
 
-def render_ssgoo_index_astro() -> str:
+def render_index_astro() -> str:
     return """---
-// 首页：小声工作室 (ssgoo.net) 暖色极客/独立工作室风格
+// FreeTokens.info 首页 - 极简主义科技杂志风格
 import Base from '../layouts/Base.astro';
 import platforms from '../data/platforms.json';
-
-const statusText: Record<string, string> = {
-  active: '有效',
-  expired: '已失效',
-  unverified: '待核实',
-};
 
 function formatQuota(p: any): string {
   const q = p.free_quota;
@@ -433,105 +392,99 @@ function formatQuota(p: any): string {
 const totalCount = platforms.length;
 ---
 <Base>
-  <!-- 1. Hero 区域 (紧凑首屏 + 实时雷达看板 + 王炸速报) -->
+  <!-- 1. Hero 区域 (纯粹克制排版 + 实时仪表条 + 重点索引) -->
   <section class="hero-editorial">
     <div class="container hero-editorial-inner">
       <div class="hero-copy">
-        <div class="hero-badge-wrap">
-          <span class="hero-eyebrow-badge">🧭 独立开发者算力雷达</span>
-        </div>
+        <p class="hero-eyebrow">一人公司 · AI 算力与开源情报</p>
         <h1 class="hero-headline">
           用免费 Token 做工具，<br/>
           也提醒自己保持思考。
         </h1>
         <p class="hero-lead">
-          全网精选 29+ 家主流大模型与云平台免费 API 额度，每日自动雷达清洗检测，助你零成本跑通 AI 独立项目。
+          持续追踪全球主流大模型与云平台免费 API 配额，提供透明规则与 10 秒接入代码。
         </p>
 
-        <!-- 实时雷达时效看板 -->
-        <div class="radar-live-card">
-          <div class="radar-card-item">
-            <div class="radar-item-head">
-              <span class="radar-live-dot"></span>
-              <span class="radar-sub">雷达监控</span>
-            </div>
-            <strong class="radar-strong">{totalCount} / {totalCount} 平台在线</strong>
+        <!-- 极简中性仪表条 -->
+        <div class="radar-telemetry-bar">
+          <div class="telemetry-item">
+            <span class="telemetry-label">监测节点</span>
+            <span class="telemetry-value">{totalCount} / {totalCount} 正常</span>
           </div>
-          <div class="radar-card-divider"></div>
-          <div class="radar-card-item">
-            <span class="radar-sub">上次全网校验</span>
-            <strong class="radar-val">今日 14:30 (双重核验)</strong>
+          <div class="telemetry-divider"></div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">上次核验</span>
+            <span class="telemetry-value">今日 14:30</span>
           </div>
-          <div class="radar-card-divider"></div>
-          <div class="radar-card-item">
-            <span class="radar-sub">下次自动巡检</span>
-            <strong id="radar-live-countdown" class="radar-val-countdown">计算中...</strong>
+          <div class="telemetry-divider"></div>
+          <div class="telemetry-item">
+            <span class="telemetry-label">下次巡检</span>
+            <span id="radar-live-countdown" class="telemetry-timer">--:--:--</span>
           </div>
         </div>
 
-        <!-- 今日王炸高额免费额度速报 -->
-        <div class="quick-access-wrap">
-          <span class="quick-access-label">🔥 核心王炸直达：</span>
-          <div class="quick-access-pills">
-            <a href="/platform/google-ai-studio/" class="quick-pill">💎 Gemini <small>1500次/天</small></a>
-            <a href="/platform/siliconflow/" class="quick-pill">🇨🇳 硅基流动 <small>送2000万</small></a>
-            <a href="/platform/gmi-cloud-minimax/" class="quick-pill">⚡ GMI Cloud <small>限时20亿</small></a>
-            <a href="/platform/groq/" class="quick-pill">🚀 Groq <small>300+ T/s</small></a>
+        <!-- 重点索引 (纯文字线框，无多余符号) -->
+        <div class="quick-index-bar">
+          <span class="quick-index-label">重点索引</span>
+          <div class="quick-index-links">
+            <a href="/platform/google-ai-studio/" class="quick-link">Google Gemini · 1500次/天</a>
+            <a href="/platform/siliconflow/" class="quick-link">硅基流动 · 2000万Tokens</a>
+            <a href="/platform/gmi-cloud-minimax/" class="quick-link">GMI Cloud · 20亿限时</a>
+            <a href="/platform/groq/" class="quick-link">Groq · 极速推理</a>
           </div>
         </div>
 
         <div class="hero-actions">
-          <a class="btn-hero-primary" href="#products">浏览全部 29 家平台 ↓</a>
+          <a class="btn-hero-primary" href="#products">浏览全部资源库</a>
           <button class="btn-hero-secondary open-wechat-trigger">
-            关注公众号 <span aria-hidden="true">↗</span>
+            关注公众号 ↗
           </button>
         </div>
       </div>
 
       <div class="hero-mascot-wrapper">
         <div class="hero-card-mascot">
-          <img src="/images/hero-mascot.webp" alt="思考的科技猫头鹰插画" class="hero-mascot-img" width="400" height="400" />
+          <img src="/images/hero-mascot.webp" alt="思考的科技猫头鹰插画" class="hero-mascot-img" width="380" height="380" />
           <div class="mascot-caption">
-            <p>工具让人走得更快，<br/>思考决定往哪里走。</p>
+            <p>工具让人走得更快，思考决定往哪里走。</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 2. 平台资源库 (直接置于首屏下半部，即刻检索) -->
+  <!-- 2. 平台资源库 (即刻检索) -->
   <section class="section-wrap section-bg" id="products">
     <div class="container">
       <header class="section-head">
         <p class="section-eyebrow">资源与实践</p>
-        <h2 class="section-title">全网免费 API Token 清单与 10 秒接入代码。</h2>
+        <h2 class="section-title">全网免费 API Token 清单与 10 秒接入代码</h2>
       </header>
 
       <!-- 搜索框 -->
       <div class="search-bar-wrap">
-        <span class="search-icon">🔍</span>
         <input
           type="text"
           id="search-input"
           class="search-input"
-          placeholder="输入平台名、模型（如 Gemini, GLM-4, DeepSeek, MiniMax）或特性检索..."
+          placeholder="搜索平台、模型名称（如 Gemini, GLM-4, DeepSeek, MiniMax）或标签..."
           autocomplete="off"
         />
       </div>
 
-      <!-- 分类过滤 Tab -->
+      <!-- 分类过滤 Tab (去 Emoji 纯净文字) -->
       <div class="filter-pills" id="filter-tabs">
-        <button class="filter-pill active" data-filter="all">🌟 全部平台 ({totalCount})</button>
-        <button class="filter-pill" data-filter="limited">🔥 限时大额活动</button>
-        <button class="filter-pill" data-filter="permanent">💎 永久免费大厂</button>
-        <button class="filter-pill" data-filter="daily">⚡ 每日刷新配额</button>
-        <button class="filter-pill" data-filter="domestic">🇨🇳 国产直连</button>
-        <button class="filter-pill" data-filter="tools">🛠️ Agent & 搜索</button>
-        <button class="filter-pill" data-filter="multimodal">🎨 生图与语音</button>
-        <button class="filter-pill" data-filter="web3">🪙 Web3 水龙头</button>
+        <button class="filter-pill active" data-filter="all">全部平台 ({totalCount})</button>
+        <button class="filter-pill" data-filter="limited">限时活动</button>
+        <button class="filter-pill" data-filter="permanent">大厂基座</button>
+        <button class="filter-pill" data-filter="daily">每日刷新</button>
+        <button class="filter-pill" data-filter="domestic">国产直连</button>
+        <button class="filter-pill" data-filter="tools">开发与搜索</button>
+        <button class="filter-pill" data-filter="multimodal">多模态生图</button>
+        <button class="filter-pill" data-filter="web3">测试网络</button>
       </div>
 
-      <!-- 平台卡片网格 (ssgoo 风格卡片) -->
+      <!-- 平台卡片网格 -->
       <div class="editorial-grid" id="platform-grid">
         {platforms.map((p: any) => {
           const q = p.free_quota ?? {};
@@ -562,7 +515,7 @@ const totalCount = platforms.length;
                 <div class="card-meta-top">
                   <span class="card-category">{p.category}</span>
                   {isLimited ? (
-                    <span class="badge-tag badge-limited">🔥 限时福利</span>
+                    <span class="badge-tag badge-limited">限时活动</span>
                   ) : (
                     <span class="badge-tag badge-type">{q.type ?? '免费额度'}</span>
                   )}
@@ -590,21 +543,19 @@ const totalCount = platforms.length;
         })}
       </div>
 
-      <!-- 无搜索结果提示 -->
       <div id="no-result" class="no-result-box" style="display:none;">
-        <p style="font-size: 32px; margin-bottom: 12px;">🔍</p>
         <p style="font-size: 16px; font-weight: 600;">未找到符合条件的免费平台</p>
-        <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">可尝试更换搜索词，或在 GitHub 上提交新平台推荐</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">可尝试更换搜索词，或在 GitHub 上提交新推荐</p>
       </div>
     </div>
   </section>
 
-  <!-- 3. 四个长期坐标 (Four Focus Dimensions - 哲学与世界观) -->
+  <!-- 3. 四个长期坐标 -->
   <section class="section-wrap" id="focus">
     <div class="container">
       <header class="section-head">
-        <p class="section-eyebrow">四个长期坐标</p>
-        <h2 class="section-title">从四个方向，建立一套长期判断系统。</h2>
+        <p class="section-eyebrow">长期坐标</p>
+        <h2 class="section-title">从四个方向，建立一套长期判断系统</h2>
       </header>
 
       <div class="focus-grid">
@@ -659,24 +610,21 @@ const totalCount = platforms.length;
     </div>
   </section>
 
-  <!-- 4. 保持联系与矩阵 (精细 SVG 图标) -->
+  <!-- 4. 保持联系 -->
   <section class="section-wrap section-bg" id="community">
     <div class="container">
       <header class="section-head">
         <p class="section-eyebrow">保持联系</p>
-        <h2 class="section-title">选择你习惯的入口。</h2>
+        <h2 class="section-title">选择你习惯的入口</h2>
       </header>
 
       <div class="connect-grid">
         <div class="connect-card wechat-connect-card open-wechat-trigger">
           <div class="connect-card-top">
-            <span class="connect-svg-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path></svg>
-            </span>
+            <span class="connect-type">微信公众号</span>
             <span class="connect-action">扫码关注 ↗</span>
           </div>
           <div>
-            <span class="connect-type">微信公众号</span>
             <h3 class="connect-name">免费Token情报局</h3>
             <p class="connect-desc">突发限时大额免费大模型与算力羊毛推送</p>
           </div>
@@ -684,13 +632,10 @@ const totalCount = platforms.length;
 
         <a class="connect-card" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">
           <div class="connect-card-top">
-            <span class="connect-svg-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-            </span>
+            <span class="connect-type">GitHub 仓库</span>
             <span class="connect-action">Star 仓库 ↗</span>
           </div>
           <div>
-            <span class="connect-type">GitHub 开源库</span>
             <h3 class="connect-name">freetoken</h3>
             <p class="connect-desc">全套自动化探测雷达与数据源开源共建</p>
           </div>
@@ -698,13 +643,10 @@ const totalCount = platforms.length;
 
         <a class="connect-card" href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank" rel="noopener">
           <div class="connect-card-top">
-            <span class="connect-svg-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-            </span>
+            <span class="connect-type">社区共建</span>
             <span class="connect-action">提交 Issue ↗</span>
           </div>
           <div>
-            <span class="connect-type">社区共建</span>
             <h3 class="connect-name">推荐新免费源</h3>
             <p class="connect-desc">发现新免费额度？欢迎提交推荐合并入库</p>
           </div>
@@ -713,42 +655,33 @@ const totalCount = platforms.length;
     </div>
   </section>
 
-  <!-- 页面专属 CSS (暖色 Editorial 风格) -->
   <style>
-    /* Hero Editorial */
+    /* Hero */
     .hero-editorial {
-      padding: 48px 0 40px;
+      padding: 56px 0 44px;
       border-bottom: 1px solid var(--card-border);
     }
     .hero-editorial-inner {
       display: grid;
       grid-template-columns: 1.25fr 0.75fr;
-      gap: 40px;
+      gap: 48px;
       align-items: center;
     }
     @media (max-width: 880px) {
       .hero-editorial-inner { grid-template-columns: 1fr; gap: 32px; }
     }
-    .hero-badge-wrap {
-      margin-bottom: 14px;
-    }
-    .hero-eyebrow-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
+    .hero-eyebrow {
+      font-size: 13px;
       font-weight: 600;
-      color: var(--accent-warm);
-      background: var(--accent-orange-bg);
-      border: 1px solid var(--accent-orange-border);
-      padding: 3px 10px;
-      border-radius: 20px;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+      margin-bottom: 14px;
     }
     .hero-headline {
       font-size: 36px;
       font-weight: 800;
       color: var(--text);
-      line-height: 1.28;
+      line-height: 1.25;
       letter-spacing: -0.5px;
       margin-bottom: 16px;
     }
@@ -760,147 +693,116 @@ const totalCount = platforms.length;
       color: var(--text-muted);
       line-height: 1.65;
       margin-bottom: 24px;
-      max-width: 540px;
+      max-width: 520px;
     }
 
-    /* 实时雷达看板 */
-    .radar-live-card {
+    /* 极简遥测条 */
+    .radar-telemetry-bar {
       display: flex;
       align-items: center;
       gap: 16px;
-      background: #ffffff;
+      background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 12px 18px;
+      border-radius: 8px;
+      padding: 10px 16px;
       margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      font-size: 12px;
       flex-wrap: wrap;
     }
-    .radar-card-item {
+    .telemetry-item {
       display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .radar-item-head {
-      display: flex;
-      align-items: center;
       gap: 6px;
+      align-items: center;
     }
-    .radar-live-dot {
-      width: 7px;
-      height: 7px;
-      background: #15803d;
-      border-radius: 50%;
-      box-shadow: 0 0 0 2px rgba(21, 128, 61, 0.2);
-    }
-    .radar-sub {
-      font-size: 11px;
+    .telemetry-label {
       color: var(--text-light);
-      font-weight: 500;
     }
-    .radar-strong {
-      font-size: 13px;
-      font-weight: 700;
+    .telemetry-value {
+      font-weight: 600;
       color: var(--text);
     }
-    .radar-val {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-    .radar-val-countdown {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--accent-warm);
+    .telemetry-timer {
       font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--accent-warm);
     }
-    .radar-card-divider {
+    .telemetry-divider {
       width: 1px;
-      height: 28px;
+      height: 14px;
       background: var(--card-border);
     }
     @media (max-width: 600px) {
-      .radar-card-divider { display: none; }
+      .telemetry-divider { display: none; }
     }
 
-    /* 今日王炸直达 */
-    .quick-access-wrap {
+    /* 重点索引 */
+    .quick-index-bar {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      align-items: baseline;
+      gap: 12px;
       margin-bottom: 24px;
       flex-wrap: wrap;
     }
-    .quick-access-label {
+    .quick-index-label {
       font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
+      font-weight: 600;
+      color: var(--text-light);
     }
-    .quick-access-pills {
+    .quick-index-links {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
     }
-    .quick-pill {
+    .quick-link {
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--text);
-      background: #ffffff;
+      background: var(--card-bg);
       border: 1px solid var(--card-border);
-      padding: 4px 10px;
-      border-radius: 6px;
+      padding: 3px 9px;
+      border-radius: 4px;
       transition: all 0.15s;
     }
-    .quick-pill small {
-      color: var(--accent-warm);
-      font-weight: 700;
-      margin-left: 2px;
-    }
-    .quick-pill:hover {
-      border-color: var(--accent-warm);
-      background: var(--accent-orange-bg);
-      transform: translateY(-1px);
+    .quick-link:hover {
+      border-color: var(--text);
+      background: var(--bg-subtle);
     }
 
     .hero-actions {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       align-items: center;
       flex-wrap: wrap;
     }
     .btn-hero-primary {
       background: var(--text);
       color: #ffffff;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 11px 22px;
-      border-radius: 8px;
+      font-weight: 500;
+      font-size: 13px;
+      padding: 9px 18px;
+      border-radius: 6px;
       transition: all 0.15s;
     }
     .btn-hero-primary:hover {
       background: #000000;
-      transform: translateY(-1px);
     }
     .btn-hero-secondary {
       background: transparent;
       border: 1px solid var(--card-border);
       color: var(--text);
-      font-weight: 600;
-      font-size: 14px;
-      padding: 10px 18px;
-      border-radius: 8px;
+      font-weight: 500;
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 6px;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
       transition: all 0.15s;
     }
     .btn-hero-secondary:hover {
-      border-color: var(--card-border-hover);
-      background: var(--bg-subtle);
+      border-color: var(--text);
+      background: #ffffff;
     }
 
-    /* Hero Mascot Card (Inspired by ssgoo.net) */
+    /* Hero Mascot Card */
     .hero-mascot-wrapper {
       display: flex;
       justify-content: center;
@@ -908,10 +810,9 @@ const totalCount = platforms.length;
     .hero-card-mascot {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 20px;
+      border-radius: 16px;
       padding: 16px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.03);
-      max-width: 380px;
+      max-width: 360px;
       width: 100%;
       text-align: center;
     }
@@ -920,17 +821,15 @@ const totalCount = platforms.length;
       height: auto;
       aspect-ratio: 1 / 1;
       object-fit: cover;
-      border-radius: 14px;
+      border-radius: 10px;
       border: 1px solid var(--card-border);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       display: block;
     }
     .mascot-caption {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
       line-height: 1.5;
-      font-style: italic;
-      padding: 2px 8px 4px;
     }
 
     /* Section Structure */
@@ -943,50 +842,48 @@ const totalCount = platforms.length;
       border-bottom: 1px solid var(--card-border);
     }
     .section-head {
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
     .section-eyebrow {
       font-size: 12px;
-      font-weight: 700;
-      color: var(--accent-warm);
+      font-weight: 600;
+      color: var(--text-light);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .section-title {
-      font-size: 24px;
-      font-weight: 800;
+      font-size: 22px;
+      font-weight: 700;
       color: var(--text);
       letter-spacing: -0.3px;
     }
 
-    /* Focus Grid (ssgoo.net 经典高质感海报卡片) */
+    /* Focus Grid */
     .focus-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 22px;
+      gap: 20px;
     }
     .focus-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 18px;
+      border-radius: 14px;
       padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: all 0.25s ease;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
     }
     .focus-card:hover {
-      border-color: var(--card-border-hover);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.06);
+      border-color: var(--text);
+      transform: translateY(-2px);
     }
     .focus-card-top {
       position: relative;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       background: #faf9f6;
-      border-radius: 12px;
+      border-radius: 10px;
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -996,15 +893,14 @@ const totalCount = platforms.length;
     .focus-num {
       position: absolute;
       top: 10px;
-      left: 12px;
+      left: 10px;
       font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 800;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--text-light);
       background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(4px);
-      padding: 2px 8px;
-      border-radius: 6px;
+      padding: 1px 6px;
+      border-radius: 4px;
       border: 1px solid var(--card-border);
       z-index: 2;
     }
@@ -1014,10 +910,6 @@ const totalCount = platforms.length;
       aspect-ratio: 1 / 1;
       object-fit: cover;
       display: block;
-      transition: transform 0.3s ease;
-    }
-    .focus-card:hover .focus-card-art {
-      transform: scale(1.03);
     }
     .focus-card-meta {
       display: flex;
@@ -1025,68 +917,59 @@ const totalCount = platforms.length;
     }
     .focus-en-tag {
       font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.8px;
-      color: var(--accent-warm);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
       margin-bottom: 4px;
       text-transform: uppercase;
     }
     .focus-title {
-      font-size: 19px;
-      font-weight: 800;
+      font-size: 17px;
+      font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.3px;
-      margin-bottom: 8px;
+      letter-spacing: -0.2px;
+      margin-bottom: 6px;
     }
     .focus-desc {
       font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.65;
+      line-height: 1.6;
     }
 
     /* 搜索与过滤 */
     .search-bar-wrap {
       position: relative;
       max-width: 600px;
-      margin: 0 auto 20px;
+      margin: 0 auto 16px;
     }
     .search-input {
       width: 100%;
-      padding: 13px 20px 13px 44px;
+      padding: 11px 16px;
       font-size: 14px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: 1px solid var(--card-border);
       background: var(--card-bg);
       color: var(--text);
       outline: none;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
     .search-input:focus {
       border-color: var(--text);
-      box-shadow: 0 0 0 3px rgba(25, 24, 22, 0.08);
-    }
-    .search-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
     }
     .filter-pills {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
     .filter-pill {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-muted);
-      padding: 6px 13px;
-      border-radius: 7px;
-      font-size: 13px;
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.15s;
@@ -1097,54 +980,52 @@ const totalCount = platforms.length;
       border-color: var(--text);
     }
 
-    /* 平台卡片流 (Editorial Cards) */
+    /* 平台卡片流 */
     .editorial-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 18px;
     }
     .editorial-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 22px;
+      border-radius: 12px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      transition: all 0.15s ease;
     }
     .editorial-card:hover {
-      border-color: var(--card-border-hover);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+      border-color: var(--text);
+      transform: translateY(-2px);
     }
     .card-meta-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .card-category {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       color: var(--text-light);
     }
     .badge-tag {
       font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
+      font-weight: 500;
+      padding: 2px 6px;
       border-radius: 4px;
     }
-    .badge-limited { background: #ffedd5; color: #9a3412; }
+    .badge-limited { background: #fee2e2; color: #991b1b; }
     .badge-type { background: #f1f5f9; color: #475569; }
     .card-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       display: flex;
       align-items: baseline;
       gap: 6px;
@@ -1157,25 +1038,25 @@ const totalCount = platforms.length;
     .card-quota-box {
       background: var(--bg-subtle);
       border: 1px solid var(--card-border);
-      border-radius: 9px;
-      padding: 10px 14px;
-      margin-bottom: 12px;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
     }
     .quota-label {
       font-size: 11px;
       color: var(--text-muted);
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
     .quota-amount {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--accent-warm);
     }
     .card-intro {
       font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 16px;
+      line-height: 1.55;
+      margin-bottom: 14px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -1186,7 +1067,7 @@ const totalCount = platforms.length;
       justify-content: space-between;
       align-items: center;
       border-top: 1px solid var(--card-border);
-      padding-top: 12px;
+      padding-top: 10px;
       margin-top: auto;
       font-size: 12px;
     }
@@ -1194,76 +1075,64 @@ const totalCount = platforms.length;
       color: var(--text-light);
     }
     .action-link {
-      font-weight: 600;
+      font-weight: 500;
       color: var(--text);
     }
 
-    /* 社群矩阵 (Connect Grid) */
+    /* 保持联系 */
     .connect-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
     }
     .connect-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 22px;
+      border-radius: 12px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
     .connect-card:hover {
-      border-color: var(--card-border-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+      border-color: var(--text);
     }
     .connect-card-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
-    }
-    .connect-svg-icon {
-      color: var(--text);
-      display: flex;
-      align-items: center;
+      margin-bottom: 12px;
     }
     .connect-action {
       font-size: 12px;
-      font-weight: 600;
       color: var(--text-muted);
-    }
-    .connect-card:hover .connect-action {
-      color: var(--text);
     }
     .connect-type {
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--text-light);
       text-transform: uppercase;
     }
     .connect-name {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text);
-      margin: 4px 0;
+      margin: 2px 0;
     }
     .connect-desc {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
     }
 
     .no-result-box {
       text-align: center;
-      padding: 60px 0;
+      padding: 48px 0;
     }
   </style>
 
   <script is:inline>
-    // 1. 动态计算下次雷达巡检倒计时 (每日 08:00 与 20:00 巡检)
     function updateRadarCountdown() {
       const timerEl = document.getElementById('radar-live-countdown');
       if (!timerEl) return;
@@ -1292,7 +1161,6 @@ const totalCount = platforms.length;
     setInterval(updateRadarCountdown, 1000);
     updateRadarCountdown();
 
-    // 2. 搜索与分类过滤
     const searchInput = document.getElementById('search-input');
     const filterTabs = document.querySelectorAll('.filter-pill');
     const cards = document.querySelectorAll('.editorial-card');
@@ -1343,13 +1211,13 @@ const totalCount = platforms.length;
 </Base>"""
 
 
-def render_ssgoo_slug_astro() -> str:
+def render_slug_astro() -> str:
     return """---
-// 平台详情页：小声工作室 (ssgoo.net) 暖色高质感风格
+// FreeTokens.info 平台详情页 - 极简主义技术文档风格
 import Base from '../../layouts/Base.astro';
 import platforms from '../../data/platforms.json';
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
   return platforms.map((p: any) => ({
     params: { slug: p.slug },
     props: { platform: p },
@@ -1357,379 +1225,420 @@ export function getStaticPaths() {
 }
 
 const { platform: p } = Astro.props;
-const statusText: Record<string, string> = {
-  active: '有效',
+const q = p.free_quota ?? {};
+const statusMap: Record<string, string> = {
+  active: '正常可用',
   expired: '已失效',
   unverified: '待核实',
 };
-const q = p.free_quota ?? {};
+---
+<Base title={`${p.name} 免费API额度与接入指南`} description={`${p.name} 免费API额度：${q.amount} ${q.unit ?? ''}。${p.intro}`}>
+  <div class="container detail-container">
+    <!-- 面包屑 -->
+    <nav class="breadcrumb">
+      <a href="/">首页</a>
+      <span>/</span>
+      <a href="/#products">资源目录</a>
+      <span>/</span>
+      <span class="current">{p.name}</span>
+    </nav>
 
-const apiConfigMap: Record<string, { baseUrl: string; model: string; note?: string }> = {
-  'deepseek': { baseUrl: 'https://api.deepseek.com', model: 'deepseek-chat' },
-  'siliconflow': { baseUrl: 'https://api.siliconflow.cn/v1', model: 'deepseek-ai/DeepSeek-V3' },
-  'zhipu-ai': { baseUrl: 'https://open.bigmodel.cn/api/paas/v4', model: 'glm-4-flash' },
-  'aliyun-bailian': { baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1', model: 'qwen-plus' },
-  'gmi-cloud-minimax': { baseUrl: 'https://api.gmi-serving.com/v1', model: 'MiniMaxAI/MiniMax-M3' },
-  'groq': { baseUrl: 'https://api.groq.com/openai/v1', model: 'llama-3.3-70b-versatile' },
-  'cerebras': { baseUrl: 'https://api.cerebras.ai/v1', model: 'llama3.1-70b' },
-  'sambanova': { baseUrl: 'https://api.sambanova.ai/v1', model: 'Meta-Llama-3.1-70B-Instruct' },
-  'together-ai': { baseUrl: 'https://api.together.xyz/v1', model: 'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo' },
-  'mistral-ai': { baseUrl: 'https://api.mistral.ai/v1', model: 'mistral-small-latest' },
-  'hyperbolic': { baseUrl: 'https://api.hyperbolic.xyz/v1', model: 'deepseek-ai/DeepSeek-V3' },
-  'fireworks-ai': { baseUrl: 'https://api.fireworks.ai/inference/v1', model: 'accounts/fireworks/models/llama-v3p3-70b-instruct' },
-  'nebius-ai': { baseUrl: 'https://api.studio.nebius.ai/v1', model: 'meta-llama/Meta-Llama-3.1-70B-Instruct' },
-  'novita-ai': { baseUrl: 'https://api.novita.ai/v3/openai', model: 'meta-llama/llama-3.1-8b-instruct' },
-  'google-ai-studio': { baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai/', model: 'gemini-1.5-flash' },
-  'github-models': { baseUrl: 'https://models.inference.ai.azure.com', model: 'gpt-4o' },
-  'openrouter': { baseUrl: 'https://openrouter.ai/api/v1', model: 'meta-llama/llama-3.3-70b-instruct:free' },
-  'cloudflare-workers-ai': { baseUrl: 'https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1', model: '@cf/meta/llama-3-8b-instruct' },
-  'baichuan-ai': { baseUrl: 'https://api.baichuan-ai.com/v1', model: 'Baichuan4-Air' },
-  'baidu-qianfan': { baseUrl: 'https://qianfan.baidubce.com/v2', model: 'ernie-speed-128k' },
-  'tencent-hunyuan': { baseUrl: 'https://api.hunyuan.cloud.tencent.com/v1', model: 'hunyuan-lite' },
-  'xfyun-spark': { baseUrl: 'https://spark-api-open.xf-yun.com/v1', model: 'lite' },
-  'minimax': { baseUrl: 'https://api.minimax.chat/v1', model: 'abab6.5s-chat' },
-  'lingyiwanwu-01': { baseUrl: 'https://api.lingyiwanwu.com/v1', model: 'yi-lightning' },
-  'jina-ai': { baseUrl: 'https://r.jina.ai', model: 'reader-v1' },
-  'tavily': { baseUrl: 'https://api.tavily.com', model: 'search-v1' },
-  'cohere': { baseUrl: 'https://api.cohere.com/v2', model: 'command-r-plus' },
-  'pollinations': { baseUrl: 'https://pollinations.ai/p/', model: 'flux' },
-  'sepolia-faucet': { baseUrl: 'https://rpc.sepolia.org', model: 'eth-sepolia' }
-};
+    <!-- 主详情卡片 -->
+    <article class="detail-card">
+      <header class="detail-header">
+        <div class="detail-meta">
+          <span class="category-badge">{p.category}</span>
+          <span class="status-pill status-active">
+            {statusMap[p.status] ?? '正常可用'}
+          </span>
+        </div>
+        <h1 class="detail-title">
+          {p.name}
+          {p.name_en && <small class="detail-name-en">{p.name_en}</small>}
+        </h1>
+        <p class="detail-intro">{p.intro}</p>
+      </header>
 
-const currentConfig = apiConfigMap[p.slug] || {
-  baseUrl: p.api_base_url || 'https://api.openai.com/v1',
-  model: p.default_model || 'default-model'
-};
+      <!-- 核心免费额度专区 -->
+      <div class="quota-highlight-box">
+        <div class="quota-head">核心免费额度</div>
+        <div class="quota-main">
+          <span class="quota-big">{q.amount} {q.unit ?? ''}</span>
+          {q.type && <span class="quota-type-tag">{q.type}</span>}
+        </div>
+        {q.details && <p class="quota-details-text">{q.details}</p>}
+        {q.reset_period && <p class="quota-reset-hint">刷新周期：{q.reset_period}</p>}
+      </div>
 
-const pythonCode = `# Python (使用官方 openai 库接入 ${p.name})
-from openai import OpenAI
+      <!-- 申领条件与限制规则 -->
+      <section class="detail-section">
+        <h2 class="section-heading">申领条件与风控要求</h2>
+        <div class="conditions-grid">
+          <div class="condition-item">
+            <span class="cond-label">手机验证</span>
+            <span class="cond-value">{p.conditions?.phone_required ? '需要' : '免绑手机'}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">信用卡绑定</span>
+            <span class="cond-value">{p.conditions?.credit_card_required ? '需要' : '免绑信用卡'}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">网络环境</span>
+            <span class="cond-value">{p.conditions?.region_restrictions?.join(', ') || '全球直连'}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">并发限制</span>
+            <span class="cond-value">RPM {p.limits?.rpm ?? '无特殊限制'} · TPM {p.limits?.tpm ?? '无限制'}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 支持模型 -->
+      {p.free_models && p.free_models.length > 0 && (
+        <section class="detail-section">
+          <h2 class="section-heading">免费可用模型</h2>
+          <div class="models-pill-wrap">
+            {p.free_models.map((m: string) => (
+              <span class="model-pill">{m}</span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- 10 秒接入代码 -->
+      <section class="detail-section">
+        <h2 class="section-heading">10 秒快速接入代码</h2>
+        <div class="code-box-container">
+          <div class="code-tabs" id="code-tabs">
+            <button class="code-tab active" data-lang="python">Python</button>
+            <button class="code-tab" data-lang="curl">cURL</button>
+            <button class="code-tab" data-lang="js">JavaScript</button>
+          </div>
+
+          <div class="code-block active" id="code-python">
+            <pre><code>{`from openai import OpenAI
 
 client = OpenAI(
-    api_key="YOUR_API_KEY", # 替换为你领取的免费 API Key
-    base_url="${currentConfig.baseUrl}"
+    api_key="YOUR_API_KEY",  # 填入申请到的 API Key
+    base_url="${p.api_base_url || 'https://api.openai.com/v1'}"
 )
 
 response = client.chat.completions.create(
-    model="${currentConfig.model}",
-    messages=[{"role": "user", "content": "你好，请用一句话介绍你自己！"}]
+    model="${p.free_models?.[0] || 'default-model'}",
+    messages=[
+        {"role": "user", "content": "你好！请用一句话介绍你自己。"}
+    ]
 )
 
-print(response.choices[0].message.content)`;
+print(response.choices[0].message.content)`}</code></pre>
+          </div>
 
-const curlCode = `# cURL 终端命令行快速测试
-curl -X POST "${currentConfig.baseUrl}/chat/completions" \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
+          <div class="code-block" id="code-curl">
+            <pre><code>{`curl ${p.api_base_url || 'https://api.openai.com/v1'}/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -d '{
-    "model": "${currentConfig.model}",
+    "model": "${p.free_models?.[0] || 'default-model'}",
     "messages": [{"role": "user", "content": "Hello!"}]
-  }'`;
+  }'`}</code></pre>
+          </div>
 
-const jsCode = `// Node.js / 浏览器 Fetch 接入
-const response = await fetch("${currentConfig.baseUrl}/chat/completions", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer YOUR_API_KEY",
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    model: "${currentConfig.model}",
-    messages: [{ role: "user", content: "Hello!" }]
-  })
+          <div class="code-block" id="code-js">
+            <pre><code>{`import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: "YOUR_API_KEY",
+  baseURL: "${p.api_base_url || 'https://api.openai.com/v1'}",
 });
 
-const data = await response.json();
-console.log(data.choices?.[0]?.message?.content || data);`;
----
-<Base title={`${p.name} 免费额度`} description={p.intro}>
-  <div class="detail-page-wrap">
-    <div class="container">
-      <div style="margin-bottom: 24px; padding-top: 32px;">
-        <a href="/" class="back-link">← 返回所有免费资源清单</a>
-      </div>
+const response = await openai.chat.completions.create({
+  model: "${p.free_models?.[0] || 'default-model'}",
+  messages: [{ role: "user", content: "Hello!" }],
+});
 
-      <!-- 头部概览卡片 -->
-      <div class="detail-editorial-card">
-        <div class="detail-top-row">
-          <div>
-            <div class="detail-category-tag">{p.category}</div>
-            <h1 class="detail-title">
-              {p.name}
-              {p.name_en && <small class="detail-name-en">{p.name_en}</small>}
-            </h1>
-            <div class="badges-row">
-              <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
-              <span class="badge type">{q.type ?? '免费额度'}</span>
-              {(p.tags ?? []).map((t: string) => (
-                <span class="badge tag">{t}</span>
-              ))}
-            </div>
-          </div>
-
-          <div class="detail-action-right">
-            {p.register_url && (
-              <a class="btn-register-main" href={p.register_url} target="_blank" rel="nofollow noopener">
-                🚀 直达领取 / 注册入口 ↗
-              </a>
-            )}
+console.log(response.choices[0].message.content);`}</code></pre>
           </div>
         </div>
+      </section>
 
-        <div class="detail-quota-callout">
-          <div class="callout-label">🎁 核心免费配额：</div>
-          <div class="callout-val">{q.amount != null ? `${q.amount} ${q.unit ?? ''}` : '暂无明确免费额度'}</div>
-        </div>
-
-        <p class="detail-intro">{p.intro}</p>
-
-        <div class="detail-meta-footer">
-          <span>📅 最后人工核实：{p.last_verified}</span>
-          {p.last_checked && <span style="margin-left:16px;">🔄 最后自动检查：{p.last_checked}</span>}
-        </div>
-      </div>
-
-      <!-- 使用条件与避坑指南 -->
-      {q.conditions && q.conditions.length > 0 && (
-        <div class="detail-editorial-card">
-          <h2 class="card-section-title">📋 免费额度使用条件与避坑指南</h2>
-          <ul class="condition-list">
-            {q.conditions.map((c: string) => (
-              <li>{c}</li>
+      <!-- 避坑与注意事项 -->
+      {p.gotchas && p.gotchas.length > 0 && (
+        <section class="detail-section gotchas-section">
+          <h2 class="section-heading">避坑提示与风控防范</h2>
+          <ul class="gotchas-list">
+            {p.gotchas.map((g: string) => (
+              <li>{g}</li>
             ))}
           </ul>
-        </div>
+        </section>
       )}
 
-      <!-- 10秒快速接入代码 -->
-      <div class="detail-editorial-card">
-        <h2 class="card-section-title">⚡ 10 秒快速接入代码示例</h2>
-        <div class="code-box">
-          <div class="code-header">
-            <div class="code-tabs">
-              <button class="code-tab active" data-lang="python">Python (OpenAI SDK)</button>
-              <button class="code-tab" data-lang="curl">cURL 命令行</button>
-              <button class="code-tab" data-lang="javascript">JavaScript (Fetch)</button>
-            </div>
-            <button class="copy-btn" id="copy-btn">📋 复制代码</button>
-          </div>
-          <pre id="code-content"><code id="code-text">{pythonCode}</code></pre>
+      <!-- 底部操作栏 -->
+      <footer class="detail-footer-bar">
+        <div class="footer-meta">
+          <span>最近核验：{p.last_verified}</span>
         </div>
-      </div>
-
-      <!-- 官方直达链接 -->
-      <div class="detail-editorial-card" style="margin-bottom: 64px;">
-        <h2 class="card-section-title">🔗 官方相关直达链接</h2>
-        <ul class="links-list">
-          {p.website && <li>🌐 官方主站：<a href={p.website} target="_blank" rel="nofollow noopener">{p.website}</a></li>}
-          {p.register_url && <li>🎁 免费额度/注册直达：<a href={p.register_url} target="_blank" rel="nofollow noopener">{p.register_url}</a></li>}
-          {p.docs_url && <li>📖 开发者文档：<a href={p.docs_url} target="_blank" rel="nofollow noopener">{p.docs_url}</a></li>}
-        </ul>
-      </div>
-    </div>
+        <div class="footer-buttons">
+          <a class="btn-register" href={p.register_url} target="_blank" rel="noopener">
+            直达官网领取额度 ↗
+          </a>
+        </div>
+      </footer>
+    </article>
   </div>
 
   <style>
-    .detail-page-wrap {
-      background: var(--bg);
-      min-height: calc(100vh - 180px);
+    .detail-container {
+      padding: 36px 24px 64px;
+      max-width: 840px;
     }
-    .back-link {
-      font-size: 14px;
+    .breadcrumb {
+      font-size: 13px;
       color: var(--text-muted);
-      font-weight: 500;
-      transition: color 0.15s;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 8px;
     }
-    .back-link:hover { color: var(--text); }
-    .detail-editorial-card {
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .detail-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 32px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      border-radius: 14px;
+      padding: 36px;
     }
-    .detail-top-row {
+    @media (max-width: 640px) {
+      .detail-card { padding: 20px; }
+    }
+    .detail-meta {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 20px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
-    .detail-category-tag {
+    .category-badge {
       font-size: 11px;
-      font-weight: 700;
-      color: var(--text-light);
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
+      color: var(--text-light);
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .status-pill {
+      font-size: 11px;
+      font-weight: 500;
+      color: #166534;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 2px 7px;
+      border-radius: 4px;
     }
     .detail-title {
       font-size: 28px;
       font-weight: 800;
       color: var(--text);
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
       margin-bottom: 12px;
+      letter-spacing: -0.3px;
     }
     .detail-name-en {
-      font-size: 15px;
+      font-size: 16px;
       color: var(--text-light);
       font-weight: 400;
-    }
-    .badges-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .badge {
-      font-size: 12px;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-weight: 600;
-    }
-    .badge.active { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
-    .badge.type { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
-    .badge.tag { background: #f4f4f5; color: #52525b; }
-    .btn-register-main {
-      background: var(--text);
-      color: #ffffff;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s;
-    }
-    .btn-register-main:hover {
-      background: #000000;
-      transform: translateY(-1px);
-    }
-    .detail-quota-callout {
-      background: var(--bg-subtle);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 18px 24px;
-      margin: 20px 0;
-    }
-    .callout-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-    .callout-val {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--accent-warm);
+      margin-left: 8px;
     }
     .detail-intro {
       font-size: 15px;
-      color: var(--text);
-      line-height: 1.7;
-      margin-bottom: 16px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 28px;
     }
-    .detail-meta-footer {
+    .quota-highlight-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 32px;
+    }
+    .quota-head {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+    }
+    .quota-main {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .quota-big {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accent-warm);
+    }
+    .quota-type-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: #1e293b;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .quota-details-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .quota-reset-hint {
       font-size: 12px;
       color: var(--text-light);
-      border-top: 1px solid var(--card-border);
-      padding-top: 14px;
     }
-    .card-section-title {
-      font-size: 18px;
+    .detail-section {
+      margin-bottom: 32px;
+    }
+    .section-heading {
+      font-size: 16px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
     }
-    .condition-list {
-      padding-left: 20px;
-      line-height: 1.8;
-      font-size: 14px;
-      color: var(--text-muted);
+    .conditions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
     }
-    .condition-list li { margin-bottom: 6px; }
-    .links-list {
-      list-style: none;
-      line-height: 2;
-      font-size: 14px;
-      color: var(--text-muted);
+    .condition-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 14px;
     }
-    .links-list a {
-      color: var(--primary);
-      text-decoration: underline;
-      text-underline-offset: 3px;
+    .cond-label {
+      font-size: 11px;
+      color: var(--text-light);
+      display: block;
+      margin-bottom: 2px;
     }
-    .code-box {
-      background: #191816;
-      border: 1px solid #33312e;
-      border-radius: 12px;
+    .cond-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .models-pill-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .model-pill {
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--font-mono);
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: var(--text);
+    }
+    .code-box-container {
+      background: #18181b;
+      border-radius: 10px;
       overflow: hidden;
-      margin-top: 12px;
+      border: 1px solid #27272a;
     }
-    .code-header {
-      background: #24221f;
-      padding: 10px 16px;
+    .code-tabs {
+      display: flex;
+      background: #09090b;
+      border-bottom: 1px solid #27272a;
+    }
+    .code-tab {
+      background: none;
+      border: none;
+      color: #a1a1aa;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 9px 16px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .code-tab.active {
+      color: #ffffff;
+      border-bottom-color: #f59e0b;
+      background: #18181b;
+    }
+    .code-block {
+      display: none;
+      padding: 16px;
+      overflow-x: auto;
+    }
+    .code-block.active {
+      display: block;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      color: #f4f4f5;
+    }
+    .gotchas-list {
+      padding-left: 20px;
+      font-size: 13px;
+      color: #991b1b;
+      line-height: 1.7;
+    }
+    .detail-footer-bar {
+      border-top: 1px solid var(--card-border);
+      padding-top: 24px;
+      margin-top: 36px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #33312e;
+      flex-wrap: wrap;
+      gap: 16px;
     }
-    .code-tabs { display: flex; gap: 8px; }
-    .code-tab {
-      background: transparent;
-      border: none;
-      color: #9c978b;
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .code-tab.active { background: #33312e; color: #fdfdfc; font-weight: 600; }
-    .copy-btn {
-      background: #33312e;
-      border: 1px solid #45423d;
-      color: #e8e6df;
-      padding: 4px 12px;
-      border-radius: 4px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .copy-btn:hover { background: #45423d; color: #fff; }
-    pre {
-      padding: 18px;
-      margin: 0;
-      overflow-x: auto;
-      font-family: var(--font-mono);
+    .footer-meta {
       font-size: 13px;
-      line-height: 1.65;
-      color: #f5f4ef;
+      color: var(--text-light);
+    }
+    .btn-register {
+      background: var(--text);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .btn-register:hover {
+      background: #000000;
     }
   </style>
 
-  <script is:inline define:vars={{ pythonCode, curlCode, jsCode }}>
-    const tabs = document.querySelectorAll('.code-tab');
-    const codeText = document.getElementById('code-text');
-    const copyBtn = document.getElementById('copy-btn');
+  <script is:inline>
+    const codeTabs = document.querySelectorAll('.code-tab');
+    const codeBlocks = document.querySelectorAll('.code-block');
 
-    tabs.forEach(tab => {
+    codeTabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
+        codeTabs.forEach(t => t.classList.remove('active'));
+        codeBlocks.forEach(b => b.classList.remove('active'));
+
         tab.classList.add('active');
         const lang = tab.getAttribute('data-lang');
-        if (lang === 'python') codeText.textContent = pythonCode;
-        else if (lang === 'curl') codeText.textContent = curlCode;
-        else if (lang === 'javascript') codeText.textContent = jsCode;
-      });
-    });
-
-    copyBtn?.addEventListener('click', () => {
-      const text = codeText?.textContent || '';
-      navigator.clipboard.writeText(text).then(() => {
-        const orig = copyBtn.innerText;
-        copyBtn.innerText = '✅ 已复制！';
-        setTimeout(() => { copyBtn.innerText = orig; }, 2000);
+        const activeBlock = document.getElementById(`code-${lang}`);
+        activeBlock?.classList.add('active');
       });
     });
   </script>
@@ -1737,10 +1646,10 @@ console.log(data.choices?.[0]?.message?.content || data);`;
 
 
 def update_frontend_files():
-    (ROOT / "site" / "src" / "layouts" / "Base.astro").write_text(render_ssgoo_base_astro(), encoding="utf-8")
-    (ROOT / "site" / "src" / "pages" / "index.astro").write_text(render_ssgoo_index_astro(), encoding="utf-8")
-    (ROOT / "site" / "src" / "pages" / "platform" / "[slug].astro").write_text(render_ssgoo_slug_astro(), encoding="utf-8")
-    print("✅ [ssgoo.net 风格 UI 模板] 成功更新 Base.astro, index.astro, [slug].astro！")
+    (ROOT / "site" / "src" / "layouts" / "Base.astro").write_text(render_base_astro(), encoding="utf-8")
+    (ROOT / "site" / "src" / "pages" / "index.astro").write_text(render_index_astro(), encoding="utf-8")
+    (ROOT / "site" / "src" / "pages" / "platform" / "[slug].astro").write_text(render_slug_astro(), encoding="utf-8")
+    print("✅ [极简主义科技杂志风格 UI 模板] 成功更新 Base.astro, index.astro, [slug].astro！")
 
 
 # ==========================================
@@ -2150,7 +2059,7 @@ def main():
     generate_seo_assets(platforms)
     print(f"✅ [SEO Sitemap.xml & Robots.txt] -> site/public/sitemap.xml")
 
-    # 5. 更新前端页面为 ssgoo.net 暖色高质感风格
+    # 5. 更新前端页面为 magazine.net 暖色高质感风格
     update_frontend_files()
 
     print("\n🎉 All content and SEO assets generated successfully!")

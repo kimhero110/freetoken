@@ -1,9 +1,9 @@
 ---
-// 平台详情页：小声工作室 (ssgoo.net) 暖色高质感风格
+// FreeTokens.info 平台详情页 - 极简主义技术文档风格
 import Base from '../../layouts/Base.astro';
 import platforms from '../../data/platforms.json';
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
   return platforms.map((p: any) => ({
     params: { slug: p.slug },
     props: { platform: p },
@@ -11,379 +11,417 @@ export function getStaticPaths() {
 }
 
 const { platform: p } = Astro.props;
-const statusText: Record<string, string> = {
-  active: '有效',
+const q = p.free_quota ?? {};
+const statusMap: Record<string, string> = {
+  active: '正常可用',
   expired: '已失效',
   unverified: '待核实',
 };
-const q = p.free_quota ?? {};
+---
+<Base title={`${p.name} 免费API额度与接入指南`} description={`${p.name} 免费API额度：${q.amount} ${q.unit ?? ''}。${p.intro}`}>
+  <div class="container detail-container">
+    <!-- 面包屑 -->
+    <nav class="breadcrumb">
+      <a href="/">首页</a>
+      <span>/</span>
+      <a href="/#products">资源目录</a>
+      <span>/</span>
+      <span class="current">{p.name}</span>
+    </nav>
 
-const apiConfigMap: Record<string, { baseUrl: string; model: string; note?: string }> = {
-  'deepseek': { baseUrl: 'https://api.deepseek.com', model: 'deepseek-chat' },
-  'siliconflow': { baseUrl: 'https://api.siliconflow.cn/v1', model: 'deepseek-ai/DeepSeek-V3' },
-  'zhipu-ai': { baseUrl: 'https://open.bigmodel.cn/api/paas/v4', model: 'glm-4-flash' },
-  'aliyun-bailian': { baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1', model: 'qwen-plus' },
-  'gmi-cloud-minimax': { baseUrl: 'https://api.gmi-serving.com/v1', model: 'MiniMaxAI/MiniMax-M3' },
-  'groq': { baseUrl: 'https://api.groq.com/openai/v1', model: 'llama-3.3-70b-versatile' },
-  'cerebras': { baseUrl: 'https://api.cerebras.ai/v1', model: 'llama3.1-70b' },
-  'sambanova': { baseUrl: 'https://api.sambanova.ai/v1', model: 'Meta-Llama-3.1-70B-Instruct' },
-  'together-ai': { baseUrl: 'https://api.together.xyz/v1', model: 'meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo' },
-  'mistral-ai': { baseUrl: 'https://api.mistral.ai/v1', model: 'mistral-small-latest' },
-  'hyperbolic': { baseUrl: 'https://api.hyperbolic.xyz/v1', model: 'deepseek-ai/DeepSeek-V3' },
-  'fireworks-ai': { baseUrl: 'https://api.fireworks.ai/inference/v1', model: 'accounts/fireworks/models/llama-v3p3-70b-instruct' },
-  'nebius-ai': { baseUrl: 'https://api.studio.nebius.ai/v1', model: 'meta-llama/Meta-Llama-3.1-70B-Instruct' },
-  'novita-ai': { baseUrl: 'https://api.novita.ai/v3/openai', model: 'meta-llama/llama-3.1-8b-instruct' },
-  'google-ai-studio': { baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai/', model: 'gemini-1.5-flash' },
-  'github-models': { baseUrl: 'https://models.inference.ai.azure.com', model: 'gpt-4o' },
-  'openrouter': { baseUrl: 'https://openrouter.ai/api/v1', model: 'meta-llama/llama-3.3-70b-instruct:free' },
-  'cloudflare-workers-ai': { baseUrl: 'https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1', model: '@cf/meta/llama-3-8b-instruct' },
-  'baichuan-ai': { baseUrl: 'https://api.baichuan-ai.com/v1', model: 'Baichuan4-Air' },
-  'baidu-qianfan': { baseUrl: 'https://qianfan.baidubce.com/v2', model: 'ernie-speed-128k' },
-  'tencent-hunyuan': { baseUrl: 'https://api.hunyuan.cloud.tencent.com/v1', model: 'hunyuan-lite' },
-  'xfyun-spark': { baseUrl: 'https://spark-api-open.xf-yun.com/v1', model: 'lite' },
-  'minimax': { baseUrl: 'https://api.minimax.chat/v1', model: 'abab6.5s-chat' },
-  'lingyiwanwu-01': { baseUrl: 'https://api.lingyiwanwu.com/v1', model: 'yi-lightning' },
-  'jina-ai': { baseUrl: 'https://r.jina.ai', model: 'reader-v1' },
-  'tavily': { baseUrl: 'https://api.tavily.com', model: 'search-v1' },
-  'cohere': { baseUrl: 'https://api.cohere.com/v2', model: 'command-r-plus' },
-  'pollinations': { baseUrl: 'https://pollinations.ai/p/', model: 'flux' },
-  'sepolia-faucet': { baseUrl: 'https://rpc.sepolia.org', model: 'eth-sepolia' }
-};
+    <!-- 主详情卡片 -->
+    <article class="detail-card">
+      <header class="detail-header">
+        <div class="detail-meta">
+          <span class="category-badge">{p.category}</span>
+          <span class="status-pill status-active">
+            {statusMap[p.status] ?? '正常可用'}
+          </span>
+        </div>
+        <h1 class="detail-title">
+          {p.name}
+          {p.name_en && <small class="detail-name-en">{p.name_en}</small>}
+        </h1>
+        <p class="detail-intro">{p.intro}</p>
+      </header>
 
-const currentConfig = apiConfigMap[p.slug] || {
-  baseUrl: p.api_base_url || 'https://api.openai.com/v1',
-  model: p.default_model || 'default-model'
-};
+      <!-- 核心免费额度专区 -->
+      <div class="quota-highlight-box">
+        <div class="quota-head">核心免费额度</div>
+        <div class="quota-main">
+          <span class="quota-big">{q.amount} {q.unit ?? ''}</span>
+          {q.type && <span class="quota-type-tag">{q.type}</span>}
+        </div>
+        {q.details && <p class="quota-details-text">{q.details}</p>}
+        {q.reset_period && <p class="quota-reset-hint">刷新周期：{q.reset_period}</p>}
+      </div>
 
-const pythonCode = `# Python (使用官方 openai 库接入 ${p.name})
-from openai import OpenAI
+      <!-- 申领条件与限制规则 -->
+      <section class="detail-section">
+        <h2 class="section-heading">申领条件与风控要求</h2>
+        <div class="conditions-grid">
+          <div class="condition-item">
+            <span class="cond-label">手机验证</span>
+            <span class="cond-value">{p.conditions?.phone_required ? '需要' : '免绑手机'}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">信用卡绑定</span>
+            <span class="cond-value">{p.conditions?.credit_card_required ? '需要' : '免绑信用卡'}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">网络环境</span>
+            <span class="cond-value">{p.conditions?.region_restrictions?.join(', ') || '全球直连'}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">并发限制</span>
+            <span class="cond-value">RPM {p.limits?.rpm ?? '无特殊限制'} · TPM {p.limits?.tpm ?? '无限制'}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 支持模型 -->
+      {p.free_models && p.free_models.length > 0 && (
+        <section class="detail-section">
+          <h2 class="section-heading">免费可用模型</h2>
+          <div class="models-pill-wrap">
+            {p.free_models.map((m: string) => (
+              <span class="model-pill">{m}</span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- 10 秒接入代码 -->
+      <section class="detail-section">
+        <h2 class="section-heading">10 秒快速接入代码</h2>
+        <div class="code-box-container">
+          <div class="code-tabs" id="code-tabs">
+            <button class="code-tab active" data-lang="python">Python</button>
+            <button class="code-tab" data-lang="curl">cURL</button>
+            <button class="code-tab" data-lang="js">JavaScript</button>
+          </div>
+
+          <div class="code-block active" id="code-python">
+            <pre><code>{`from openai import OpenAI
 
 client = OpenAI(
-    api_key="YOUR_API_KEY", # 替换为你领取的免费 API Key
-    base_url="${currentConfig.baseUrl}"
+    api_key="YOUR_API_KEY",  # 填入申请到的 API Key
+    base_url="${p.api_base_url || 'https://api.openai.com/v1'}"
 )
 
 response = client.chat.completions.create(
-    model="${currentConfig.model}",
-    messages=[{"role": "user", "content": "你好，请用一句话介绍你自己！"}]
+    model="${p.free_models?.[0] || 'default-model'}",
+    messages=[
+        {"role": "user", "content": "你好！请用一句话介绍你自己。"}
+    ]
 )
 
-print(response.choices[0].message.content)`;
+print(response.choices[0].message.content)`}</code></pre>
+          </div>
 
-const curlCode = `# cURL 终端命令行快速测试
-curl -X POST "${currentConfig.baseUrl}/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "${currentConfig.model}",
+          <div class="code-block" id="code-curl">
+            <pre><code>{`curl ${p.api_base_url || 'https://api.openai.com/v1'}/chat/completions   -H "Content-Type: application/json"   -H "Authorization: Bearer YOUR_API_KEY"   -d '{
+    "model": "${p.free_models?.[0] || 'default-model'}",
     "messages": [{"role": "user", "content": "Hello!"}]
-  }'`;
+  }'`}</code></pre>
+          </div>
 
-const jsCode = `// Node.js / 浏览器 Fetch 接入
-const response = await fetch("${currentConfig.baseUrl}/chat/completions", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer YOUR_API_KEY",
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    model: "${currentConfig.model}",
-    messages: [{ role: "user", content: "Hello!" }]
-  })
+          <div class="code-block" id="code-js">
+            <pre><code>{`import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: "YOUR_API_KEY",
+  baseURL: "${p.api_base_url || 'https://api.openai.com/v1'}",
 });
 
-const data = await response.json();
-console.log(data.choices?.[0]?.message?.content || data);`;
----
-<Base title={`${p.name} 免费额度`} description={p.intro}>
-  <div class="detail-page-wrap">
-    <div class="container">
-      <div style="margin-bottom: 24px; padding-top: 32px;">
-        <a href="/" class="back-link">← 返回所有免费资源清单</a>
-      </div>
+const response = await openai.chat.completions.create({
+  model: "${p.free_models?.[0] || 'default-model'}",
+  messages: [{ role: "user", content: "Hello!" }],
+});
 
-      <!-- 头部概览卡片 -->
-      <div class="detail-editorial-card">
-        <div class="detail-top-row">
-          <div>
-            <div class="detail-category-tag">{p.category}</div>
-            <h1 class="detail-title">
-              {p.name}
-              {p.name_en && <small class="detail-name-en">{p.name_en}</small>}
-            </h1>
-            <div class="badges-row">
-              <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
-              <span class="badge type">{q.type ?? '免费额度'}</span>
-              {(p.tags ?? []).map((t: string) => (
-                <span class="badge tag">{t}</span>
-              ))}
-            </div>
-          </div>
-
-          <div class="detail-action-right">
-            {p.register_url && (
-              <a class="btn-register-main" href={p.register_url} target="_blank" rel="nofollow noopener">
-                🚀 直达领取 / 注册入口 ↗
-              </a>
-            )}
+console.log(response.choices[0].message.content);`}</code></pre>
           </div>
         </div>
+      </section>
 
-        <div class="detail-quota-callout">
-          <div class="callout-label">🎁 核心免费配额：</div>
-          <div class="callout-val">{q.amount != null ? `${q.amount} ${q.unit ?? ''}` : '暂无明确免费额度'}</div>
-        </div>
-
-        <p class="detail-intro">{p.intro}</p>
-
-        <div class="detail-meta-footer">
-          <span>📅 最后人工核实：{p.last_verified}</span>
-          {p.last_checked && <span style="margin-left:16px;">🔄 最后自动检查：{p.last_checked}</span>}
-        </div>
-      </div>
-
-      <!-- 使用条件与避坑指南 -->
-      {q.conditions && q.conditions.length > 0 && (
-        <div class="detail-editorial-card">
-          <h2 class="card-section-title">📋 免费额度使用条件与避坑指南</h2>
-          <ul class="condition-list">
-            {q.conditions.map((c: string) => (
-              <li>{c}</li>
+      <!-- 避坑与注意事项 -->
+      {p.gotchas && p.gotchas.length > 0 && (
+        <section class="detail-section gotchas-section">
+          <h2 class="section-heading">避坑提示与风控防范</h2>
+          <ul class="gotchas-list">
+            {p.gotchas.map((g: string) => (
+              <li>{g}</li>
             ))}
           </ul>
-        </div>
+        </section>
       )}
 
-      <!-- 10秒快速接入代码 -->
-      <div class="detail-editorial-card">
-        <h2 class="card-section-title">⚡ 10 秒快速接入代码示例</h2>
-        <div class="code-box">
-          <div class="code-header">
-            <div class="code-tabs">
-              <button class="code-tab active" data-lang="python">Python (OpenAI SDK)</button>
-              <button class="code-tab" data-lang="curl">cURL 命令行</button>
-              <button class="code-tab" data-lang="javascript">JavaScript (Fetch)</button>
-            </div>
-            <button class="copy-btn" id="copy-btn">📋 复制代码</button>
-          </div>
-          <pre id="code-content"><code id="code-text">{pythonCode}</code></pre>
+      <!-- 底部操作栏 -->
+      <footer class="detail-footer-bar">
+        <div class="footer-meta">
+          <span>最近核验：{p.last_verified}</span>
         </div>
-      </div>
-
-      <!-- 官方直达链接 -->
-      <div class="detail-editorial-card" style="margin-bottom: 64px;">
-        <h2 class="card-section-title">🔗 官方相关直达链接</h2>
-        <ul class="links-list">
-          {p.website && <li>🌐 官方主站：<a href={p.website} target="_blank" rel="nofollow noopener">{p.website}</a></li>}
-          {p.register_url && <li>🎁 免费额度/注册直达：<a href={p.register_url} target="_blank" rel="nofollow noopener">{p.register_url}</a></li>}
-          {p.docs_url && <li>📖 开发者文档：<a href={p.docs_url} target="_blank" rel="nofollow noopener">{p.docs_url}</a></li>}
-        </ul>
-      </div>
-    </div>
+        <div class="footer-buttons">
+          <a class="btn-register" href={p.register_url} target="_blank" rel="noopener">
+            直达官网领取额度 ↗
+          </a>
+        </div>
+      </footer>
+    </article>
   </div>
 
   <style>
-    .detail-page-wrap {
-      background: var(--bg);
-      min-height: calc(100vh - 180px);
+    .detail-container {
+      padding: 36px 24px 64px;
+      max-width: 840px;
     }
-    .back-link {
-      font-size: 14px;
+    .breadcrumb {
+      font-size: 13px;
       color: var(--text-muted);
-      font-weight: 500;
-      transition: color 0.15s;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 8px;
     }
-    .back-link:hover { color: var(--text); }
-    .detail-editorial-card {
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .detail-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 32px;
-      margin-bottom: 24px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      border-radius: 14px;
+      padding: 36px;
     }
-    .detail-top-row {
+    @media (max-width: 640px) {
+      .detail-card { padding: 20px; }
+    }
+    .detail-meta {
       display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 20px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
-    .detail-category-tag {
+    .category-badge {
       font-size: 11px;
-      font-weight: 700;
-      color: var(--text-light);
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
+      color: var(--text-light);
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .status-pill {
+      font-size: 11px;
+      font-weight: 500;
+      color: #166534;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 2px 7px;
+      border-radius: 4px;
     }
     .detail-title {
       font-size: 28px;
       font-weight: 800;
       color: var(--text);
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
       margin-bottom: 12px;
+      letter-spacing: -0.3px;
     }
     .detail-name-en {
-      font-size: 15px;
+      font-size: 16px;
       color: var(--text-light);
       font-weight: 400;
-    }
-    .badges-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .badge {
-      font-size: 12px;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-weight: 600;
-    }
-    .badge.active { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
-    .badge.type { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
-    .badge.tag { background: #f4f4f5; color: #52525b; }
-    .btn-register-main {
-      background: var(--text);
-      color: #ffffff;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 12px 24px;
-      border-radius: 8px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s;
-    }
-    .btn-register-main:hover {
-      background: #000000;
-      transform: translateY(-1px);
-    }
-    .detail-quota-callout {
-      background: var(--bg-subtle);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 18px 24px;
-      margin: 20px 0;
-    }
-    .callout-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-    .callout-val {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--accent-warm);
+      margin-left: 8px;
     }
     .detail-intro {
       font-size: 15px;
-      color: var(--text);
-      line-height: 1.7;
-      margin-bottom: 16px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 28px;
     }
-    .detail-meta-footer {
+    .quota-highlight-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 32px;
+    }
+    .quota-head {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+    }
+    .quota-main {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .quota-big {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accent-warm);
+    }
+    .quota-type-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: #1e293b;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .quota-details-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .quota-reset-hint {
       font-size: 12px;
       color: var(--text-light);
-      border-top: 1px solid var(--card-border);
-      padding-top: 14px;
     }
-    .card-section-title {
-      font-size: 18px;
+    .detail-section {
+      margin-bottom: 32px;
+    }
+    .section-heading {
+      font-size: 16px;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
     }
-    .condition-list {
-      padding-left: 20px;
-      line-height: 1.8;
-      font-size: 14px;
-      color: var(--text-muted);
+    .conditions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
     }
-    .condition-list li { margin-bottom: 6px; }
-    .links-list {
-      list-style: none;
-      line-height: 2;
-      font-size: 14px;
-      color: var(--text-muted);
+    .condition-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 14px;
     }
-    .links-list a {
-      color: var(--primary);
-      text-decoration: underline;
-      text-underline-offset: 3px;
+    .cond-label {
+      font-size: 11px;
+      color: var(--text-light);
+      display: block;
+      margin-bottom: 2px;
     }
-    .code-box {
-      background: #191816;
-      border: 1px solid #33312e;
-      border-radius: 12px;
+    .cond-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .models-pill-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .model-pill {
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--font-mono);
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: var(--text);
+    }
+    .code-box-container {
+      background: #18181b;
+      border-radius: 10px;
       overflow: hidden;
-      margin-top: 12px;
+      border: 1px solid #27272a;
     }
-    .code-header {
-      background: #24221f;
-      padding: 10px 16px;
+    .code-tabs {
+      display: flex;
+      background: #09090b;
+      border-bottom: 1px solid #27272a;
+    }
+    .code-tab {
+      background: none;
+      border: none;
+      color: #a1a1aa;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 9px 16px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .code-tab.active {
+      color: #ffffff;
+      border-bottom-color: #f59e0b;
+      background: #18181b;
+    }
+    .code-block {
+      display: none;
+      padding: 16px;
+      overflow-x: auto;
+    }
+    .code-block.active {
+      display: block;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      color: #f4f4f5;
+    }
+    .gotchas-list {
+      padding-left: 20px;
+      font-size: 13px;
+      color: #991b1b;
+      line-height: 1.7;
+    }
+    .detail-footer-bar {
+      border-top: 1px solid var(--card-border);
+      padding-top: 24px;
+      margin-top: 36px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #33312e;
+      flex-wrap: wrap;
+      gap: 16px;
     }
-    .code-tabs { display: flex; gap: 8px; }
-    .code-tab {
-      background: transparent;
-      border: none;
-      color: #9c978b;
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .code-tab.active { background: #33312e; color: #fdfdfc; font-weight: 600; }
-    .copy-btn {
-      background: #33312e;
-      border: 1px solid #45423d;
-      color: #e8e6df;
-      padding: 4px 12px;
-      border-radius: 4px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .copy-btn:hover { background: #45423d; color: #fff; }
-    pre {
-      padding: 18px;
-      margin: 0;
-      overflow-x: auto;
-      font-family: var(--font-mono);
+    .footer-meta {
       font-size: 13px;
-      line-height: 1.65;
-      color: #f5f4ef;
+      color: var(--text-light);
+    }
+    .btn-register {
+      background: var(--text);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .btn-register:hover {
+      background: #000000;
     }
   </style>
 
-  <script is:inline define:vars={{ pythonCode, curlCode, jsCode }}>
-    const tabs = document.querySelectorAll('.code-tab');
-    const codeText = document.getElementById('code-text');
-    const copyBtn = document.getElementById('copy-btn');
+  <script is:inline>
+    const codeTabs = document.querySelectorAll('.code-tab');
+    const codeBlocks = document.querySelectorAll('.code-block');
 
-    tabs.forEach(tab => {
+    codeTabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
+        codeTabs.forEach(t => t.classList.remove('active'));
+        codeBlocks.forEach(b => b.classList.remove('active'));
+
         tab.classList.add('active');
         const lang = tab.getAttribute('data-lang');
-        if (lang === 'python') codeText.textContent = pythonCode;
-        else if (lang === 'curl') codeText.textContent = curlCode;
-        else if (lang === 'javascript') codeText.textContent = jsCode;
-      });
-    });
-
-    copyBtn?.addEventListener('click', () => {
-      const text = codeText?.textContent || '';
-      navigator.clipboard.writeText(text).then(() => {
-        const orig = copyBtn.innerText;
-        copyBtn.innerText = '✅ 已复制！';
-        setTimeout(() => { copyBtn.innerText = orig; }, 2000);
+        const activeBlock = document.getElementById(`code-${lang}`);
+        activeBlock?.classList.add('active');
       });
     });
   </script>
