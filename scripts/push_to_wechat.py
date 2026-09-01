@@ -86,7 +86,7 @@ def push_draft_article(
     digest: str,
     content_html: str,
     thumb_media_id: str,
-    source_url: str = "https://witkit.zone",
+    source_url: str = "https://freetokens.info",
 ) -> str:
     """调用微信官方草稿箱接口新增草稿"""
     url = f"https://api.weixin.qq.com/cgi-bin/draft/add?access_token={access_token}"
@@ -186,7 +186,7 @@ def main() -> int:
             digest=digest,
             content_html=html_content,
             thumb_media_id=thumb_media_id,
-            source_url="https://witkit.zone",
+            source_url="https://freetokens.info",
         )
 
         print("\n========================================")

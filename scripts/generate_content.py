@@ -123,7 +123,7 @@ def generate_wechat_article(platforms: list[dict]) -> str:
       所有平台提供 Python (OpenAI SDK)、cURL、JavaScript 真实调用代码
     </p>
     <div style="display: inline-block; background: #38bdf8; color: #0f172a; font-weight: 700; font-size: 14px; padding: 8px 20px; border-radius: 8px;">
-      🌐 访问在线雷达站：https://witkit.zone
+      🌐 访问在线雷达站：https://freetokens.info
     </div>
   </div>
 
@@ -225,7 +225,7 @@ def generate_xhs_cards(platforms: list[dict]) -> str:
       </div>
     </div>
     <div class="card-footer">
-      <span>🌐 在线工具: witkit.zone</span>
+      <span>🌐 在线工具: freetokens.info</span>
       <span>2/4</span>
     </div>
   </div>
@@ -267,7 +267,7 @@ def generate_xhs_cards(platforms: list[dict]) -> str:
     </div>
     <div style="font-size: 13px; color: #94a3b8; line-height: 1.8;">
       浏览器直达在线实时雷达站：<br>
-      <strong style="color: #38bdf8; font-size: 15px;">👉 https://witkit.zone</strong><br>
+      <strong style="color: #38bdf8; font-size: 15px;">👉 https://freetokens.info</strong><br>
       或关注微信公众号：<br>
       <strong style="color: #4ade80; font-size: 15px;">📱【免费Token情报局】</strong>
     </div>
@@ -329,7 +329,7 @@ def generate_svg_architecture() -> str:
     <text x="20" y="35" class="text-title" fill="#38bdf8">💻 核心门户与矩阵</text>
     <text x="20" y="55" class="text-sub">实时监控 29+ 精选平台</text>
     <rect x="15" y="75" width="180" height="50" class="box" />
-    <text x="25" y="98" class="text-title" font-size="13">witkit.zone</text>
+    <text x="25" y="98" class="text-title" font-size="13">freetokens.info</text>
     <text x="25" y="115" class="text-sub">即时搜索 / 一键复制代码</text>
     <rect x="15" y="135" width="180" height="50" class="box-orange" />
     <text x="25" y="158" class="text-title" font-size="13" fill="#fb923c">📱 免费Token情报局</text>
@@ -364,7 +364,7 @@ def generate_seo_assets(platforms: list[dict]):
     public_dir.mkdir(parents=True, exist_ok=True)
 
     # 1. robots.txt
-    robots_content = "User-agent: *\nAllow: /\n\nSitemap: https://witkit.zone/sitemap.xml\nSitemap: https://freetokens.info/sitemap.xml\n"
+    robots_content = "User-agent: *\nAllow: /\n\nSitemap: https://freetokens.info/sitemap.xml\nSitemap: https://freetokens.info/sitemap.xml\n"
     (public_dir / "robots.txt").write_text(robots_content, encoding="utf-8")
 
     # 2. sitemap.xml
@@ -373,7 +373,7 @@ def generate_seo_assets(platforms: list[dict]):
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
         '  <url>',
-        '    <loc>https://witkit.zone/</loc>',
+        '    <loc>https://freetokens.info/</loc>',
         f'    <lastmod>{today}</lastmod>',
         '    <changefreq>daily</changefreq>',
         '    <priority>1.0</priority>',
@@ -385,7 +385,7 @@ def generate_seo_assets(platforms: list[dict]):
         if slug:
             lines.extend([
                 '  <url>',
-                f'    <loc>https://witkit.zone/platform/{slug}/</loc>',
+                f'    <loc>https://freetokens.info/platform/{slug}/</loc>',
                 f'    <lastmod>{today}</lastmod>',
                 '    <changefreq>weekly</changefreq>',
                 '    <priority>0.8</priority>',
