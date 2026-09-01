@@ -1,5 +1,5 @@
 ---
-// 首页：以现代卡片流形式列出所有平台的免费额度信息，支持实时搜索与分类过滤
+// 首页：小声工作室 (ssgoo.net) 暖色极客/独立工作室风格
 import Base from '../layouts/Base.astro';
 import platforms from '../data/platforms.json';
 
@@ -16,115 +16,685 @@ function formatQuota(p: any): string {
 }
 
 const totalCount = platforms.length;
-const activeCount = platforms.filter((p: any) => p.status === 'active').length;
 ---
 <Base>
-  <div class="hero-section">
-    <h1 class="hero-title">⚡ 全球与国内免费 API Token 额度聚合</h1>
-    <p class="hero-subtitle">
-      收集各大 LLM、开源模型云平台、AI 智能体工具与 Web3 测试网的免费调用额度。每日定时自动检测与清洗，助你零成本跑通 AI 项目！
-    </p>
-    <div class="stat-pills">
-      <div class="stat-pill">📦 已收录平台：<strong>{totalCount} 个</strong></div>
-      <div class="stat-pill">✨ 活跃有效：<strong>{activeCount} 个</strong></div>
-      <div class="stat-pill">🔄 自动雷达：<strong>定时检测中</strong></div>
-    </div>
-  </div>
+  <!-- 1. Hero 区域 (ssgoo.net 标志性布局) -->
+  <section class="hero-editorial">
+    <div class="container hero-editorial-inner">
+      <div class="hero-copy">
+        <p class="hero-eyebrow">一人公司 · AI 免费算力雷达</p>
+        <h1 class="hero-headline">
+          用免费 Token 做工具，<br/>
+          也提醒自己保持思考。
+        </h1>
+        <p class="hero-lead">
+          免费Token情报局持续追踪全球各大主流大模型与云平台免费 API 额度，把分散的配额规则、避坑条件与 10 秒接入代码整理成清晰透明的实践索引。
+        </p>
+        <div class="hero-actions">
+          <a class="btn-hero-primary" href="#products">浏览全部资源库</a>
+          <button class="btn-hero-secondary open-wechat-trigger">
+            关注公众号 <span aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </div>
 
-  <div class="search-box-wrapper">
-    <span class="search-icon">🔍</span>
-    <input
-      type="text"
-      id="search-input"
-      class="search-input"
-      placeholder="搜索平台、模型（如 Gemini, GLM-4, Llama 3, DeepSeek）或特性标签..."
-      autocomplete="off"
-    />
-  </div>
-
-  <div class="filter-tabs" id="filter-tabs">
-    <button class="filter-btn active" data-filter="all">🌟 全部收录 ({totalCount})</button>
-    <button class="filter-btn" data-filter="limited">🔥 限时活动 / 限时免费</button>
-    <button class="filter-btn" data-filter="permanent">💎 永久免费</button>
-    <button class="filter-btn" data-filter="daily">⚡ 每日刷新</button>
-    <button class="filter-btn" data-filter="domestic">🇨🇳 国产直连</button>
-    <button class="filter-btn" data-filter="tools">🛠️ Agent & 工具</button>
-    <button class="filter-btn" data-filter="multimodal">🎨 生图与语音</button>
-    <button class="filter-btn" data-filter="web3">🪙 Web3 水龙头</button>
-  </div>
-
-  <div class="card-grid" id="platform-grid">
-    {platforms.map((p: any) => {
-      const q = p.free_quota ?? {};
-      const isLimited = q.type === '限时' || (p.tags ?? []).some((t: string) => t.includes('限时') || t.includes('活动') || t.includes('专场') || t.includes('体验金') || t.includes('送'));
-      const isPermanent = q.type === '永久' || (p.tags ?? []).some((t: string) => t.includes('永久'));
-      const isDaily = q.type === '每日' || (p.tags ?? []).some((t: string) => t.includes('每日') || t.includes('天'));
-      const isDomestic = (p.tags ?? []).some((t: string) => t.includes('国产') || t.includes('国内') || t.includes('阿里') || t.includes('百度') || t.includes('腾讯') || t.includes('智谱') || t.includes('星火'));
-      const isTools = p.category === 'tools' || (p.tags ?? []).some((t: string) => t.includes('Agent') || t.includes('搜索') || t.includes('向量') || t.includes('Rerank'));
-      const isMultimodal = p.category === 'multimodal' || (p.tags ?? []).some((t: string) => t.includes('图') || t.includes('语音') || t.includes('FLUX'));
-      const isWeb3 = p.category === 'web3-faucet' || (p.tags ?? []).some((t: string) => t.includes('Web3') || t.includes('水龙头'));
-
-      const searchTerms = `${p.name} ${p.name_en ?? ''} ${p.slug} ${p.intro ?? ''} ${(p.tags ?? []).join(' ')} ${formatQuota(p)}`.toLowerCase();
-
-      return (
-        <a
-          class="card platform-card"
-          href={`/platform/${p.slug}/`}
-          data-limited={isLimited ? "true" : "false"}
-          data-permanent={isPermanent ? "true" : "false"}
-          data-daily={isDaily ? "true" : "false"}
-          data-domestic={isDomestic ? "true" : "false"}
-          data-tools={isTools ? "true" : "false"}
-          data-multimodal={isMultimodal ? "true" : "false"}
-          data-web3={isWeb3 ? "true" : "false"}
-          data-search={searchTerms}
-        >
-          <div>
-            <div class="card-header">
-              <div class="card-title">
-                {p.name}
-                <small>{p.name_en}</small>
-              </div>
-              <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
-            </div>
-
-            <div class="badges-row">
-              {isLimited ? (
-                <span class="badge limited">🔥 限时免费</span>
-              ) : (
-                <span class="badge type">{q.type ?? '免费额度'}</span>
-              )}
-              {(p.tags ?? []).slice(0, 3).map((t: string) => (
-                <span class="badge tag">{t}</span>
-              ))}
-            </div>
-
-            <div class="quota">
-              <span>🎁 {formatQuota(p)}</span>
-            </div>
-
-            <p class="intro">{p.intro}</p>
+      <div class="hero-card-mascot">
+        <div class="mascot-inner">
+          <div class="mascot-header">
+            <span class="mascot-badge">🛰️ 实时雷达中枢</span>
+            <span class="mascot-status">● 运行正常</span>
           </div>
+          <div class="mascot-stats">
+            <div class="stat-box">
+              <span class="stat-num">{totalCount}</span>
+              <span class="stat-label">精选大厂与GPU云</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num">100%</span>
+              <span class="stat-label">官方合法免费</span>
+            </div>
+          </div>
+          <p class="mascot-quote">
+            工具让人走得更快，<br/>
+            思考决定往哪里走。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="card-footer">
-            <span>核实：{p.last_verified}</span>
-            <span class="view-btn">查看详情 & 接入代码 ➔</span>
+  <!-- 2. 四个核心坐标 (Four Focus Dimensions) -->
+  <section class="section-wrap" id="focus">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow">四个长期坐标</p>
+        <h2 class="section-title">从四个维度，建立一套零成本开发能力。</h2>
+      </header>
+
+      <div class="focus-grid">
+        <article class="focus-card">
+          <div class="focus-card-top">
+            <span class="focus-num">01</span>
+            <span class="focus-tag">永久免费</span>
+          </div>
+          <h3>大厂永久基座</h3>
+          <p>Google Gemini (1500次/天)、智谱 GLM-4-Flash、GitHub Models，长期稳定的开发底座。</p>
+        </article>
+
+        <article class="focus-card">
+          <div class="focus-card-top">
+            <span class="focus-num">02</span>
+            <span class="focus-tag">限时福利</span>
+          </div>
+          <h3>突发大额羊毛</h3>
+          <p>GMI Cloud x MiniMax 20亿额度、Nebius $5 代金券、Fireworks $1，抢先锁定限时算力。</p>
+        </article>
+
+        <article class="focus-card">
+          <div class="focus-card-top">
+            <span class="focus-num">03</span>
+            <span class="focus-tag">每日刷新</span>
+          </div>
+          <h3>极速芯片推理</h3>
+          <p>Groq 与 Cerebras 定制芯片驱动，每日免费调用最新 Llama 3.3，每秒几百 Token 极速响应。</p>
+        </article>
+
+        <article class="focus-card">
+          <div class="focus-card-top">
+            <span class="focus-num">04</span>
+            <span class="focus-tag">免密免签</span>
+          </div>
+          <h3>开源即用工具</h3>
+          <p>Pollinations 免注册文生图、Jina AI 网页解析、Sepolia 测试网水龙头，零门槛直调。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 平台资源库 (Product & Platform Grid) -->
+  <section class="section-wrap section-bg" id="products">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow">资源与实践</p>
+        <h2 class="section-title">全网免费 API Token 清单与接入代码。</h2>
+      </header>
+
+      <!-- 搜索框 -->
+      <div class="search-bar-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          id="search-input"
+          class="search-input"
+          placeholder="搜索平台名、模型（如 Gemini, GLM-4, DeepSeek, MiniMax）或特性标签..."
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- 分类过滤 Tab -->
+      <div class="filter-pills" id="filter-tabs">
+        <button class="filter-pill active" data-filter="all">🌟 全部平台 ({totalCount})</button>
+        <button class="filter-pill" data-filter="limited">🔥 限时大额活动</button>
+        <button class="filter-pill" data-filter="permanent">💎 永久免费大厂</button>
+        <button class="filter-pill" data-filter="daily">⚡ 每日刷新配额</button>
+        <button class="filter-pill" data-filter="domestic">🇨🇳 国产直连</button>
+        <button class="filter-pill" data-filter="tools">🛠️ Agent & 搜索</button>
+        <button class="filter-pill" data-filter="multimodal">🎨 生图与语音</button>
+        <button class="filter-pill" data-filter="web3">🪙 Web3 水龙头</button>
+      </div>
+
+      <!-- 平台卡片网格 (ssgoo 风格卡片) -->
+      <div class="editorial-grid" id="platform-grid">
+        {platforms.map((p: any) => {
+          const q = p.free_quota ?? {};
+          const isLimited = q.type === '限时' || (p.tags ?? []).some((t: string) => t.includes('限时') || t.includes('活动') || t.includes('专场') || t.includes('体验金') || t.includes('送'));
+          const isPermanent = q.type === '永久' || (p.tags ?? []).some((t: string) => t.includes('永久'));
+          const isDaily = q.type === '每日' || (p.tags ?? []).some((t: string) => t.includes('每日') || t.includes('天'));
+          const isDomestic = (p.tags ?? []).some((t: string) => t.includes('国产') || t.includes('国内') || t.includes('阿里') || t.includes('百度') || t.includes('腾讯') || t.includes('智谱') || t.includes('星火'));
+          const isTools = p.category === 'tools' || (p.tags ?? []).some((t: string) => t.includes('Agent') || t.includes('搜索') || t.includes('向量') || t.includes('Rerank'));
+          const isMultimodal = p.category === 'multimodal' || (p.tags ?? []).some((t: string) => t.includes('图') || t.includes('语音') || t.includes('FLUX'));
+          const isWeb3 = p.category === 'web3-faucet' || (p.tags ?? []).some((t: string) => t.includes('Web3') || t.includes('水龙头'));
+
+          const searchTerms = `${p.name} ${p.name_en ?? ''} ${p.slug} ${p.intro ?? ''} ${(p.tags ?? []).join(' ')} ${formatQuota(p)}`.toLowerCase();
+
+          return (
+            <a
+              class="editorial-card"
+              href={`/platform/${p.slug}/`}
+              data-limited={isLimited ? "true" : "false"}
+              data-permanent={isPermanent ? "true" : "false"}
+              data-daily={isDaily ? "true" : "false"}
+              data-domestic={isDomestic ? "true" : "false"}
+              data-tools={isTools ? "true" : "false"}
+              data-multimodal={isMultimodal ? "true" : "false"}
+              data-web3={isWeb3 ? "true" : "false"}
+              data-search={searchTerms}
+            >
+              <div class="card-main-content">
+                <div class="card-meta-top">
+                  <span class="card-category">{p.category}</span>
+                  {isLimited ? (
+                    <span class="badge-tag badge-limited">🔥 限时福利</span>
+                  ) : (
+                    <span class="badge-tag badge-type">{q.type ?? '免费额度'}</span>
+                  )}
+                </div>
+
+                <h3 class="card-title">
+                  {p.name}
+                  {p.name_en && <small class="card-name-en">{p.name_en}</small>}
+                </h3>
+
+                <div class="card-quota-box">
+                  <div class="quota-label">核心免费额度</div>
+                  <div class="quota-amount">{formatQuota(p)}</div>
+                </div>
+
+                <p class="card-intro">{p.intro}</p>
+              </div>
+
+              <div class="card-action-bar">
+                <span class="action-date">核实：{p.last_verified}</span>
+                <span class="action-link">查看详情 & 代码 ➔</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+
+      <!-- 无搜索结果提示 -->
+      <div id="no-result" class="no-result-box" style="display:none;">
+        <p style="font-size: 32px; margin-bottom: 12px;">🔍</p>
+        <p style="font-size: 16px; font-weight: 600;">未找到符合条件的免费平台</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">可尝试更换搜索词，或在 GitHub 上提交新平台推荐</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 保持联系与矩阵 (Connect Section) -->
+  <section class="section-wrap" id="community">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow">保持联系</p>
+        <h2 class="section-title">选择你习惯的入口。</h2>
+      </header>
+
+      <div class="connect-grid">
+        <div class="connect-card wechat-connect-card open-wechat-trigger">
+          <div class="connect-card-top">
+            <span class="connect-icon">📱</span>
+            <span class="connect-action">点击查看二维码 ↗</span>
+          </div>
+          <div>
+            <span class="connect-type">微信公众号</span>
+            <h3 class="connect-name">免费Token情报局</h3>
+            <p class="connect-desc">突发限时免费大模型与算力羊毛推送</p>
+          </div>
+        </div>
+
+        <a class="connect-card" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">
+          <div class="connect-card-top">
+            <span class="connect-icon">💻</span>
+            <span class="connect-action">访问 GitHub ↗</span>
+          </div>
+          <div>
+            <span class="connect-type">开源仓库</span>
+            <h3 class="connect-name">freetoken</h3>
+            <p class="connect-desc">全套自动化探测雷达与数据源开源共建</p>
           </div>
         </a>
-      );
-    })}
-  </div>
 
-  <div id="no-result" style="display:none; text-align:center; padding: 60px 0; color: var(--muted);">
-    <p style="font-size: 32px; margin-bottom: 12px;">🔍</p>
-    <p style="font-size: 16px; color: #cbd5e1;">未找到符合条件的免费 Token 平台</p>
-    <p style="font-size: 13px; margin-top: 6px;">可尝试更换搜索关键词，或前往 GitHub 提交新平台收录</p>
-  </div>
+        <a class="connect-card" href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank" rel="noopener">
+          <div class="connect-card-top">
+            <span class="connect-icon">➕</span>
+            <span class="connect-action">提交 Issue ↗</span>
+          </div>
+          <div>
+            <span class="connect-type">社区共建</span>
+            <h3 class="connect-name">推荐新免费源</h3>
+            <p class="connect-desc">发现新免费额度？欢迎提交推荐合并入库</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页面专属 CSS (暖色 Editorial 风格) -->
+  <style>
+    /* Hero Editorial */
+    .hero-editorial {
+      padding: 64px 0 48px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .hero-editorial-inner {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .hero-editorial-inner { grid-template-columns: 1fr; gap: 32px; }
+    }
+    .hero-eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-warm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .hero-headline {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+      letter-spacing: -0.5px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 640px) {
+      .hero-headline { font-size: 28px; }
+    }
+    .hero-lead {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-hero-primary {
+      background: var(--text);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+    .btn-hero-primary:hover {
+      background: #000000;
+      transform: translateY(-1px);
+    }
+    .btn-hero-secondary {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 11px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .btn-hero-secondary:hover {
+      border-color: var(--card-border-hover);
+      background: var(--bg-subtle);
+    }
+
+    /* Hero Mascot Card */
+    .hero-card-mascot {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.03);
+    }
+    .mascot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .mascot-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-warm);
+      background: var(--accent-orange-bg);
+      border: 1px solid var(--accent-orange-border);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .mascot-status {
+      font-size: 12px;
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+    .mascot-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-num {
+      display: block;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .mascot-quote {
+      border-top: 1px solid var(--card-border);
+      padding-top: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* Section Structure */
+    .section-wrap {
+      padding: 64px 0;
+    }
+    .section-bg {
+      background: var(--bg-subtle);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .section-head {
+      margin-bottom: 36px;
+    }
+    .section-eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-warm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    /* Focus Grid (四个坐标) */
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .focus-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 24px;
+      transition: all 0.2s;
+    }
+    .focus-card:hover {
+      border-color: var(--card-border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+    }
+    .focus-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .focus-num {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+    .focus-tag {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-warm);
+      background: var(--accent-orange-bg);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .focus-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .focus-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* 搜索与过滤 */
+    .search-bar-wrap {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 24px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 14px 20px 14px 44px;
+      font-size: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: var(--text);
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--text);
+      box-shadow: 0 0 0 3px rgba(25, 24, 22, 0.08);
+    }
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+    }
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+    .filter-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-pill:hover, .filter-pill.active {
+      background: var(--text);
+      color: #ffffff;
+      border-color: var(--text);
+    }
+
+    /* 平台卡片流 (Editorial Cards) */
+    .editorial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 22px;
+    }
+    .editorial-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+    .editorial-card:hover {
+      border-color: var(--card-border-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.06);
+    }
+    .card-meta-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .card-category {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+    }
+    .badge-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .badge-limited { background: #ffedd5; color: #9a3412; }
+    .badge-type { background: #f1f5f9; color: #475569; }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .card-name-en {
+      font-size: 12px;
+      color: var(--text-light);
+      font-weight: 400;
+    }
+    .card-quota-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+    }
+    .quota-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .quota-amount {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent-warm);
+    }
+    .card-intro {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .card-action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--card-border);
+      padding-top: 14px;
+      margin-top: auto;
+      font-size: 12px;
+    }
+    .action-date {
+      color: var(--text-light);
+    }
+    .action-link {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* 社群矩阵 (Connect Grid) */
+    .connect-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .connect-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .connect-card:hover {
+      border-color: var(--card-border-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+    }
+    .connect-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .connect-icon {
+      font-size: 24px;
+    }
+    .connect-action {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .connect-type {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+    .connect-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 4px 0;
+    }
+    .connect-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .no-result-box {
+      text-align: center;
+      padding: 60px 0;
+    }
+  </style>
 
   <script is:inline>
     const searchInput = document.getElementById('search-input');
-    const filterTabs = document.querySelectorAll('.filter-btn');
-    const cards = document.querySelectorAll('.platform-card');
+    const filterTabs = document.querySelectorAll('.filter-pill');
+    const cards = document.querySelectorAll('.editorial-card');
     const noResult = document.getElementById('no-result');
     let currentFilter = 'all';
 

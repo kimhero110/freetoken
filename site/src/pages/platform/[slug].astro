@@ -1,5 +1,5 @@
 ---
-// 平台详情页：展示单个平台的免费额度、使用条件、一键复制代码与注册直达
+// 平台详情页：小声工作室 (ssgoo.net) 暖色高质感风格
 import Base from '../../layouts/Base.astro';
 import platforms from '../../data/platforms.json';
 
@@ -18,7 +18,6 @@ const statusText: Record<string, string> = {
 };
 const q = p.free_quota ?? {};
 
-// 精准的各大平台官方 OpenAI 兼容 API 接入地址与推荐免费模型库
 const apiConfigMap: Record<string, { baseUrl: string; model: string; note?: string }> = {
   'deepseek': { baseUrl: 'https://api.deepseek.com', model: 'deepseek-chat' },
   'siliconflow': { baseUrl: 'https://api.siliconflow.cn/v1', model: 'deepseek-ai/DeepSeek-V3' },
@@ -44,14 +43,16 @@ const apiConfigMap: Record<string, { baseUrl: string; model: string; note?: stri
   'xfyun-spark': { baseUrl: 'https://spark-api-open.xf-yun.com/v1', model: 'lite' },
   'minimax': { baseUrl: 'https://api.minimax.chat/v1', model: 'abab6.5s-chat' },
   'lingyiwanwu-01': { baseUrl: 'https://api.lingyiwanwu.com/v1', model: 'yi-lightning' },
+  'jina-ai': { baseUrl: 'https://r.jina.ai', model: 'reader-v1' },
+  'tavily': { baseUrl: 'https://api.tavily.com', model: 'search-v1' },
   'cohere': { baseUrl: 'https://api.cohere.com/v2', model: 'command-r-plus' },
-  'jina-ai': { baseUrl: 'https://r.jina.ai', model: 'reader-api' },
-  'tavily': { baseUrl: 'https://api.tavily.com', model: 'search' },
+  'pollinations': { baseUrl: 'https://pollinations.ai/p/', model: 'flux' },
+  'sepolia-faucet': { baseUrl: 'https://rpc.sepolia.org', model: 'eth-sepolia' }
 };
 
 const currentConfig = apiConfigMap[p.slug] || {
-  baseUrl: 'https://api.openai.com/v1',
-  model: 'default-model'
+  baseUrl: p.api_base_url || 'https://api.openai.com/v1',
+  model: p.default_model || 'default-model'
 };
 
 const pythonCode = `# Python (使用官方 openai 库接入 ${p.name})
@@ -70,9 +71,9 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)`;
 
 const curlCode = `# cURL 终端命令行快速测试
-curl -X POST "${currentConfig.baseUrl}/chat/completions" \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -H "Content-Type: application/json" \\
+curl -X POST "${currentConfig.baseUrl}/chat/completions" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
   -d '{
     "model": "${currentConfig.model}",
     "messages": [{"role": "user", "content": "Hello!"}]
@@ -95,117 +96,294 @@ const data = await response.json();
 console.log(data.choices?.[0]?.message?.content || data);`;
 ---
 <Base title={`${p.name} 免费额度`} description={p.intro}>
-  <div style="margin-bottom: 16px;">
-    <a href="/" style="color:var(--muted); text-decoration:none; font-size:14px;">← 返回所有免费平台列表</a>
-  </div>
+  <div class="detail-page-wrap">
+    <div class="container">
+      <div style="margin-bottom: 24px; padding-top: 32px;">
+        <a href="/" class="back-link">← 返回所有免费资源清单</a>
+      </div>
 
-  <div class="detail-section">
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
-      <div>
-        <h1 style="font-size:26px; font-weight:800; color:#fff; margin-bottom:4px;">
-          {p.name}
-          <small style="font-size:15px; color:var(--muted); font-weight:400; margin-left:8px;">{p.name_en}</small>
-        </h1>
-        <div style="display:flex; gap:8px; margin: 8px 0 12px; flex-wrap:wrap;">
-          <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
-          <span class="badge type">{q.type ?? '免费额度'}</span>
-          <span class="badge tag">{p.category}</span>
+      <!-- 头部概览卡片 -->
+      <div class="detail-editorial-card">
+        <div class="detail-top-row">
+          <div>
+            <div class="detail-category-tag">{p.category}</div>
+            <h1 class="detail-title">
+              {p.name}
+              {p.name_en && <small class="detail-name-en">{p.name_en}</small>}
+            </h1>
+            <div class="badges-row">
+              <span class={`badge ${p.status}`}>{statusText[p.status] ?? p.status}</span>
+              <span class="badge type">{q.type ?? '免费额度'}</span>
+              {(p.tags ?? []).map((t: string) => (
+                <span class="badge tag">{t}</span>
+              ))}
+            </div>
+          </div>
+
+          <div class="detail-action-right">
+            {p.register_url && (
+              <a class="btn-register-main" href={p.register_url} target="_blank" rel="nofollow noopener">
+                🚀 直达领取 / 注册入口 ↗
+              </a>
+            )}
+          </div>
+        </div>
+
+        <div class="detail-quota-callout">
+          <div class="callout-label">🎁 核心免费配额：</div>
+          <div class="callout-val">{q.amount != null ? `${q.amount} ${q.unit ?? ''}` : '暂无明确免费额度'}</div>
+        </div>
+
+        <p class="detail-intro">{p.intro}</p>
+
+        <div class="detail-meta-footer">
+          <span>📅 最后人工核实：{p.last_verified}</span>
+          {p.last_checked && <span style="margin-left:16px;">🔄 最后自动检查：{p.last_checked}</span>}
         </div>
       </div>
 
-      <div class="action-btn-row" style="margin-top:0;">
-        {p.register_url && (
-          <a class="btn-primary" href={p.register_url} target="_blank" rel="nofollow noopener">
-            🚀 直达领取 / 注册入口 ↗
-          </a>
-        )}
-      </div>
-    </div>
-
-    <div style="background:rgba(56, 189, 248, 0.08); border:1px solid rgba(56, 189, 248, 0.2); padding:16px 20px; border-radius:10px; margin:16px 0;">
-      <div style="font-size:13px; color:var(--muted); margin-bottom:4px;">🎁 核心免费配额：</div>
-      <div style="font-size:22px; font-weight:800; color:var(--primary);">
-        {q.amount != null ? `${q.amount} ${q.unit ?? ''}` : '暂无明确免费额度信息'}
-      </div>
-    </div>
-
-    <p style="font-size:15px; color:#cbd5e1; line-height:1.7;">{p.intro}</p>
-
-    <div style="font-size:13px; color:var(--muted); margin-top:16px; border-top:1px solid rgba(255,255,255,0.06); padding-top:12px;">
-      <span>📅 最后人工核实：{p.last_verified}</span>
-      {p.last_checked && <span style="margin-left:16px;">🔄 最后自动检查：{p.last_checked}</span>}
-    </div>
-  </div>
-
-  {q.conditions && q.conditions.length > 0 && (
-    <div class="detail-section">
-      <h2>📋 免费额度使用条件与避坑指南</h2>
-      <ul style="line-height:1.8;">
-        {q.conditions.map((c: string) => <li>{c}</li>)}
-      </ul>
-    </div>
-  )}
-
-  <div class="detail-section">
-    <h2>⚡ 10 秒快速接入代码示例</h2>
-    <div class="code-box">
-      <div class="code-header">
-        <div class="code-tabs">
-          <button class="code-tab active" data-lang="python">Python (OpenAI SDK)</button>
-          <button class="code-tab" data-lang="curl">cURL 命令行</button>
-          <button class="code-tab" data-lang="javascript">JavaScript (Fetch)</button>
+      <!-- 使用条件与避坑指南 -->
+      {q.conditions && q.conditions.length > 0 && (
+        <div class="detail-editorial-card">
+          <h2 class="card-section-title">📋 免费额度使用条件与避坑指南</h2>
+          <ul class="condition-list">
+            {q.conditions.map((c: string) => (
+              <li>{c}</li>
+            ))}
+          </ul>
         </div>
-        <button class="copy-btn" id="copy-btn">📋 复制代码</button>
+      )}
+
+      <!-- 10秒快速接入代码 -->
+      <div class="detail-editorial-card">
+        <h2 class="card-section-title">⚡ 10 秒快速接入代码示例</h2>
+        <div class="code-box">
+          <div class="code-header">
+            <div class="code-tabs">
+              <button class="code-tab active" data-lang="python">Python (OpenAI SDK)</button>
+              <button class="code-tab" data-lang="curl">cURL 命令行</button>
+              <button class="code-tab" data-lang="javascript">JavaScript (Fetch)</button>
+            </div>
+            <button class="copy-btn" id="copy-btn">📋 复制代码</button>
+          </div>
+          <pre id="code-content"><code id="code-text">{pythonCode}</code></pre>
+        </div>
       </div>
 
-      <pre id="code-content"><code id="code-text">{pythonCode}</code></pre>
+      <!-- 官方直达链接 -->
+      <div class="detail-editorial-card" style="margin-bottom: 64px;">
+        <h2 class="card-section-title">🔗 官方相关直达链接</h2>
+        <ul class="links-list">
+          {p.website && <li>🌐 官方主站：<a href={p.website} target="_blank" rel="nofollow noopener">{p.website}</a></li>}
+          {p.register_url && <li>🎁 免费额度/注册直达：<a href={p.register_url} target="_blank" rel="nofollow noopener">{p.register_url}</a></li>}
+          {p.docs_url && <li>📖 开发者文档：<a href={p.docs_url} target="_blank" rel="nofollow noopener">{p.docs_url}</a></li>}
+        </ul>
+      </div>
     </div>
   </div>
 
-  <div class="detail-section">
-    <h2>🔗 官方相关直达链接</h2>
-    <ul style="line-height:2;">
-      <li>🌐 官方主站：<a href={p.website} rel="nofollow noopener" target="_blank">{p.website}</a></li>
-      {p.register_url && <li>🎁 免费额度/注册直达：<a href={p.register_url} rel="nofollow noopener" target="_blank">{p.register_url}</a></li>}
-      {p.docs_url && <li>📖 开发者文档：<a href={p.docs_url} rel="nofollow noopener" target="_blank">{p.docs_url}</a></li>}
-    </ul>
-  </div>
-
-  <div class="detail-section">
-    <h2>🏷️ 分类与特性标签</h2>
-    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-      {(p.tags ?? []).map((t: string) => <span class="badge tag" style="font-size:13px; padding:4px 12px;">{t}</span>)}
-    </div>
-  </div>
+  <style>
+    .detail-page-wrap {
+      background: var(--bg);
+      min-height: calc(100vh - 180px);
+    }
+    .back-link {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--text); }
+    .detail-editorial-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+    .detail-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .detail-category-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .detail-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .detail-name-en {
+      font-size: 15px;
+      color: var(--text-light);
+      font-weight: 400;
+    }
+    .badges-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .badge.active { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge.type { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .badge.tag { background: #f4f4f5; color: #52525b; }
+    .btn-register-main {
+      background: var(--text);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .btn-register-main:hover {
+      background: #000000;
+      transform: translateY(-1px);
+    }
+    .detail-quota-callout {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 18px 24px;
+      margin: 20px 0;
+    }
+    .callout-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .callout-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent-warm);
+    }
+    .detail-intro {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .detail-meta-footer {
+      font-size: 12px;
+      color: var(--text-light);
+      border-top: 1px solid var(--card-border);
+      padding-top: 14px;
+    }
+    .card-section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .condition-list {
+      padding-left: 20px;
+      line-height: 1.8;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .condition-list li { margin-bottom: 6px; }
+    .links-list {
+      list-style: none;
+      line-height: 2;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .links-list a {
+      color: var(--primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .code-box {
+      background: #191816;
+      border: 1px solid #33312e;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    .code-header {
+      background: #24221f;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #33312e;
+    }
+    .code-tabs { display: flex; gap: 8px; }
+    .code-tab {
+      background: transparent;
+      border: none;
+      color: #9c978b;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .code-tab.active { background: #33312e; color: #fdfdfc; font-weight: 600; }
+    .copy-btn {
+      background: #33312e;
+      border: 1px solid #45423d;
+      color: #e8e6df;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: #45423d; color: #fff; }
+    pre {
+      padding: 18px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.65;
+      color: #f5f4ef;
+    }
+  </style>
 
   <script is:inline define:vars={{ pythonCode, curlCode, jsCode }}>
     const tabs = document.querySelectorAll('.code-tab');
     const codeText = document.getElementById('code-text');
     const copyBtn = document.getElementById('copy-btn');
-    let currentCode = pythonCode;
-
-    const codeMap = {
-      python: pythonCode,
-      curl: curlCode,
-      javascript: jsCode
-    };
 
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         const lang = tab.getAttribute('data-lang');
-        currentCode = codeMap[lang] || pythonCode;
-        if (codeText) codeText.textContent = currentCode;
+        if (lang === 'python') codeText.textContent = pythonCode;
+        else if (lang === 'curl') codeText.textContent = curlCode;
+        else if (lang === 'javascript') codeText.textContent = jsCode;
       });
     });
 
     copyBtn?.addEventListener('click', () => {
-      navigator.clipboard.writeText(currentCode).then(() => {
-        copyBtn.textContent = '✅ 已复制！';
-        setTimeout(() => {
-          copyBtn.textContent = '📋 复制代码';
-        }, 2000);
+      const text = codeText?.textContent || '';
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = copyBtn.innerText;
+        copyBtn.innerText = '✅ 已复制！';
+        setTimeout(() => { copyBtn.innerText = orig; }, 2000);
       });
     });
   </script>

@@ -1,16 +1,18 @@
 ---
-// 站点基础布局：SEO meta + 页头页脚
+// 站点基础布局：暖色极客/独立工作室社群风格 (Inspired by ssgoo.net)
 interface Props {
   title?: string;
   description?: string;
 }
 const {
-  title = 'FreeToken 免费Token信息聚合',
+  title = 'FreeToken 免费Token情报局',
   description = '聚合各大 LLM 与云平台的免费 API 额度信息，帮助你找到免费的 Token 与调用配额。',
 } = Astro.props;
-const pageTitle = title === 'FreeToken 免费Token信息聚合'
+
+const pageTitle = title === 'FreeToken 免费Token情报局'
   ? title
-  : `${title} - FreeToken 免费Token信息聚合`;
+  : `${title} - 免费Token情报局`;
+
 const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href;
 ---
 <!DOCTYPE html>
@@ -23,7 +25,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
   <meta name="keywords" content="免费Token, 免费大模型API, 免费LLM, Gemini免费API, DeepSeek免费API, 白嫖API, OpenAI接口免费, 免费算力, AI API Faucet" />
   <link rel="canonical" href={canonicalURL} />
 
-  <!-- Open Graph / Facebook / 微信分享卡片 -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content={canonicalURL} />
   <meta property="og:title" content={pageTitle} />
@@ -37,7 +39,7 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- 结构化数据 (JSON-LD Structured Data for Google/Baidu Rich Snippets) -->
+  <!-- Schema.org JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -51,442 +53,201 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
       "query-input": "required name=search_term_string"
     }
   })} />
+
   <style is:global>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --card-border: #334155;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --primary: #38bdf8;
-      --primary-hover: #0ea5e9;
-      --accent: #818cf8;
-      --green: #4ade80;
-      --green-bg: rgba(74, 222, 128, 0.12);
-      --orange: #fbbf24;
-      --orange-bg: rgba(251, 191, 36, 0.12);
-      --red: #f87171;
-      --red-bg: rgba(248, 113, 113, 0.12);
-      --blue-bg: rgba(56, 189, 248, 0.12);
+      --bg: #fcfbf9;
+      --bg-subtle: #f5f4ef;
+      --card-bg: #ffffff;
+      --card-border: #e8e6df;
+      --card-border-hover: #d2cfc4;
+      --text: #191816;
+      --text-muted: #6b675e;
+      --text-light: #9c978b;
+      --primary: #191816;
+      --accent-warm: #c25e00;
+      --accent-green: #15803d;
+      --accent-green-bg: #f0fdf4;
+      --accent-green-border: #bbf7d0;
+      --accent-orange-bg: #fffaf0;
+      --accent-orange-border: #feebc8;
+      --accent-blue-bg: #f0f7ff;
+      --accent-blue-border: #cce3fe;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    html { background: var(--bg); color: var(--text); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body { min-height: 100vh; display: flex; flex-direction: column; line-height: 1.65; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; width: 100%; }
-    header.site-header {
-      background: rgba(30, 41, 59, 0.8);
-      backdrop-filter: blur(12px);
+
+    /* 顶部导航 (Editorial Nav) */
+    .site-header {
       border-bottom: 1px solid var(--card-border);
-      padding: 16px 0;
+      background: rgba(252, 251, 249, 0.94);
+      backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
     }
     .header-inner {
+      height: 68px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
     }
-    header.site-header a.brand {
-      font-size: 22px;
-      font-weight: 800;
+    .brand {
+      font-size: 19px;
+      font-weight: 700;
       color: var(--text);
-      text-decoration: none;
       display: flex;
       align-items: center;
       gap: 8px;
+      letter-spacing: -0.3px;
     }
-    header.site-header a.brand span {
-      background: linear-gradient(135deg, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .brand-tag {
+      font-size: 11px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 500;
     }
     .nav-links {
       display: flex;
-      gap: 16px;
       align-items: center;
+      gap: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
     }
     .nav-links a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.15s ease;
+      transition: color 0.15s;
     }
-    .nav-links a:hover { color: var(--primary); }
-    .hero-section {
-      text-align: center;
-      padding: 40px 0 24px;
-    }
-    .hero-title {
-      font-size: 32px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .hero-subtitle {
-      color: var(--muted);
-      font-size: 16px;
-      max-width: 680px;
-      margin: 0 auto 24px;
-    }
-    .stat-pills {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-    .stat-pill {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 13px;
+    .nav-links a:hover {
       color: var(--text);
+    }
+    .nav-btn-wechat {
+      background: var(--text);
+      color: #ffffff;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
+      transition: all 0.15s;
     }
-    .stat-pill strong { color: var(--primary); }
-    .search-box-wrapper {
-      position: relative;
-      max-width: 580px;
-      margin: 0 auto 24px;
+    .nav-btn-wechat:hover {
+      background: #000000;
+      transform: translateY(-1px);
     }
-    .search-input {
-      width: 100%;
-      padding: 14px 20px 14px 44px;
-      font-size: 15px;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-      background: var(--card);
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+
+    /* 页脚 */
+    .site-footer {
+      border-top: 1px solid var(--card-border);
+      background: var(--bg-subtle);
+      padding: 56px 0 36px;
+      margin-top: auto;
+      font-size: 14px;
+      color: var(--text-muted);
     }
-    .search-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-    }
-    .search-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      pointer-events: none;
-    }
-    .filter-tabs {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 12px;
-      margin-bottom: 24px;
-      scrollbar-width: none;
-    }
-    .filter-tabs::-webkit-scrollbar { display: none; }
-    .filter-btn {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      color: var(--muted);
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s ease;
-    }
-    .filter-btn:hover, .filter-btn.active {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #0f172a;
-      font-weight: 600;
-    }
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 22px;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: var(--primary);
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.15);
-    }
-    .card-header {
+    .footer-inner {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 12px;
-    }
-    .card-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-    .card-title small {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 400;
-      margin-top: 2px;
-    }
-    .badges-row {
-      display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 12px;
+      gap: 32px;
     }
-    .badge {
-      font-size: 12px;
-      font-weight: 500;
-      padding: 3px 10px;
-      border-radius: 12px;
-    }
-    .badge.active { background: var(--green-bg); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.2); }
-    .badge.expired { background: var(--red-bg); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.2); }
-    .badge.unverified { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(251, 191, 36, 0.2); }
-    .badge.type { background: var(--blue-bg); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.2); }
-    .badge.limited { background: rgba(249, 115, 22, 0.18); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4); font-weight: 700; }
-    .badge.tag { background: #334155; color: #cbd5e1; }
-    .quota {
-      font-size: 17px;
+    .footer-brand h4 {
+      font-size: 16px;
       font-weight: 700;
-      color: #38bdf8;
-      margin: 8px 0 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      color: var(--text);
+      margin-bottom: 8px;
     }
-    .intro {
-      font-size: 14px;
-      color: #94a3b8;
-      line-height: 1.5;
-      margin-bottom: 16px;
-      flex-grow: 1;
-    }
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--muted);
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 12px;
-    }
-    .view-btn {
-      color: var(--primary);
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .detail-section {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 24px;
-      margin-bottom: 20px;
-    }
-    .detail-section h2 {
-      font-size: 17px;
-      margin-bottom: 14px;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .detail-section ul { padding-left: 20px; }
-    .detail-section li { margin-bottom: 8px; color: #cbd5e1; }
-    .detail-section a { color: var(--primary); text-decoration: none; }
-    .detail-section a:hover { text-decoration: underline; }
-    .code-box {
-      background: #090d16;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 14px;
-    }
-    .code-header {
-      background: #131d31;
-      padding: 8px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #1e293b;
-    }
-    .code-tabs { display: flex; gap: 8px; }
-    .code-tab {
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      font-size: 12px;
-      padding: 4px 8px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .code-tab.active { background: #1e293b; color: var(--primary); font-weight: 600; }
-    .copy-btn {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #cbd5e1;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .copy-btn:hover { background: var(--primary); color: #0f172a; }
-    pre {
-      padding: 16px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    .footer-brand p {
+      max-width: 460px;
+      line-height: 1.6;
       font-size: 13px;
-      color: #e2e8f0;
-      overflow-x: auto;
     }
-    .action-btn-row {
+    .footer-links {
       display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-bottom {
+      border-top: 1px solid var(--card-border);
+      margin-top: 36px;
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--text-light);
+      flex-wrap: wrap;
       gap: 12px;
-      margin-top: 20px;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #38bdf8, #818cf8);
-      color: #0f172a;
-      font-weight: 700;
-      padding: 12px 24px;
-      border-radius: 10px;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: opacity 0.2s;
-    }
-    .btn-primary:hover { opacity: 0.9; text-decoration: none; }
-    .submit-btn-nav {
-      background: rgba(56, 189, 248, 0.15);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      color: var(--primary) !important;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 20px;
-      transition: all 0.2s;
-    }
-    .submit-btn-nav:hover {
-      background: var(--primary);
-      color: #0f172a !important;
-    }
-    .wechat-btn-nav {
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.4);
-      color: #4ade80 !important;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 13px;
-      transition: all 0.2s;
-    }
-    .wechat-btn-nav:hover {
-      background: #22c55e;
-      color: #0f172a !important;
-    }
-    /* 微信二维码弹窗 */
-    .modal-overlay {
-      display: none;
+
+    /* 微信关注弹窗 (WeChat Modal) */
+    .wechat-modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(6px);
-      z-index: 9999;
-      justify-content: center;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      display: none;
       align-items: center;
+      justify-content: center;
+      z-index: 9999;
       padding: 20px;
     }
-    .modal-card {
-      background: #131d31;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+    .wechat-modal-backdrop.open {
+      display: flex;
+      animation: fadeIn 0.2s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .wechat-modal-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 28px;
+      padding: 32px;
       max-width: 380px;
       width: 100%;
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
       position: relative;
-      animation: modalFadeIn 0.25s ease-out;
     }
-    @keyframes modalFadeIn {
-      from { opacity: 0; transform: scale(0.92); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    .modal-close {
+    .modal-close-btn {
       position: absolute;
-      top: 14px;
-      right: 14px;
-      background: transparent;
+      top: 16px;
+      right: 16px;
+      background: none;
       border: none;
-      color: var(--muted);
       font-size: 20px;
+      color: var(--text-light);
       cursor: pointer;
-      padding: 4px;
-      line-height: 1;
+      padding: 4px 8px;
     }
-    .modal-close:hover { color: #fff; }
-    .qr-img {
-      width: 200px;
-      height: 200px;
+    .modal-qrcode-img {
+      width: 190px;
+      height: 190px;
       border-radius: 12px;
+      border: 1px solid var(--card-border);
       margin: 16px auto;
       display: block;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-    footer.site-footer {
-      margin-top: auto;
-      padding: 40px 0 32px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-      border-top: 1px solid var(--card-border);
-      background: rgba(15, 23, 42, 0.95);
-    }
-    .footer-wechat-box {
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
-      background: rgba(30, 41, 59, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 12px 24px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      text-align: left;
-    }
-    .footer-qr {
-      width: 64px;
-      height: 64px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
@@ -494,73 +255,78 @@ const canonicalURL = new URL(Astro.url.pathname, 'https://freetokens.info').href
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="/">
-        <span>⚡ FreeToken</span>
-        <small style="font-weight:400;color:var(--muted);font-size:12px;margin-left:4px;">/ 免费API额度聚合</small>
+        <span>⚡ 免费Token情报局</span>
+        <span class="brand-tag">FreeTokens.info</span>
       </a>
       <div class="nav-links">
-        <a href="/">全部资源</a>
-        <button class="wechat-btn-nav" id="btn-open-wechat">📱 关注公众号</button>
-        <a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank" rel="noopener" class="submit-btn-nav">➕ 推荐新免费源</a>
+        <a href="/#products">资源目录</a>
+        <a href="/#focus">四个坐标</a>
+        <a href="/#community">关于与矩阵</a>
+        <button class="nav-btn-wechat" id="btn-open-wechat">📱 关注公众号</button>
         <a href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
     </div>
   </header>
 
-  <main class="container" style="flex:1; padding-top: 20px; padding-bottom: 40px;">
+  <main style="flex: 1;">
     <slot />
   </main>
 
-  <!-- 微信公众号关注弹窗 -->
-  <div class="modal-overlay" id="wechat-modal">
-    <div class="modal-card">
-      <button class="modal-close" id="btn-close-wechat">&times;</button>
-      <div style="font-size: 32px; margin-bottom: 6px;">📱</div>
-      <h3 style="font-size: 18px; color: #fff; margin-bottom: 4px; font-weight: 700;">关注【免费Token情报局】</h3>
-      <p style="font-size: 12px; color: var(--muted);">微信扫一扫下方二维码</p>
-      
-      <img src="/wechat-qrcode.jpg" alt="免费Token情报局 公众号二维码" class="qr-img" />
-      
-      <p style="font-size: 13px; color: #cbd5e1; line-height: 1.6; margin-top: 8px;">
-        🔥 第一时间获取<strong>全网突发限时免费 Token</strong><br>
-        🎁 免费大模型算力活动 & 开发者白嫖攻略推送
-      </p>
-    </div>
-  </div>
-
   <footer class="site-footer">
     <div class="container">
-      <div class="footer-wechat-box">
-        <img src="/wechat-qrcode.jpg" alt="微信二维码" class="footer-qr" />
-        <div>
-          <div style="font-size: 14px; font-weight: 600; color: #f8fafc; margin-bottom: 2px;">
-            📱 关注公众号：<span style="color: #4ade80;">免费Token情报局</span>
-          </div>
-          <div style="font-size: 12px; color: var(--muted);">
-            微信扫码关注 · 第一时间接收全网突发大额免费 Token 与算力羊毛
-          </div>
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <h4>⚡ 免费Token情报局 (FreeTokens.info)</h4>
+          <p>全天候自动监测全球主流大模型与云平台免费 API 额度，为独立开发者与 AI 爱好者提供清晰、透明、可复用的接入指南。</p>
+        </div>
+        <div class="footer-links">
+          <a href="/#products">资源目录</a>
+          <a href="/sitemap.xml" target="_blank">Sitemap</a>
+          <a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank">➕ 推荐新源</a>
+          <a href="https://github.com/kimhero110/freetoken" target="_blank">开源仓库</a>
         </div>
       </div>
-      
-      <p style="margin-bottom:6px;">⚡ FreeToken - 汇聚全球与国内顶尖免费 API Token 额度 | 自动检测更新与清洗</p>
-      <p style="color:#64748b;font-size:12px;">开源共建 · 全球雷达自动探测 · 信息仅供参考，以各平台官方定价为准</p>
+      <div class="footer-bottom">
+        <span>© 2026 免费Token情报局 · 工具让人走得更快，思考决定往哪里走。</span>
+        <span>托管于 Cloudflare 全球 Anycast 边缘网络</span>
+      </div>
     </div>
   </footer>
 
+  <!-- 微信关注弹窗 -->
+  <div class="wechat-modal-backdrop" id="wechat-modal">
+    <div class="wechat-modal-card">
+      <button class="modal-close-btn" id="modal-close-btn">×</button>
+      <div style="font-size: 13px; font-weight: 700; color: #c25e00; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">
+        ⚡ 免费Token情报局
+      </div>
+      <h3 style="font-size: 18px; font-weight: 700; color: #191816; margin-bottom: 6px;">微信扫码一键关注</h3>
+      <p style="font-size: 13px; color: #6b675e; line-height: 1.5;">全天候雷达探测，第一时间为你推送突发限时大额免费大模型与算力羊毛！</p>
+      <img src="/wechat-qrcode.jpg" alt="微信公众号二维码" class="modal-qrcode-img" />
+      <div style="font-size: 12px; color: #9c978b;">👆 微信长按或扫码识别关注</div>
+    </div>
+  </div>
+
   <script is:inline>
     const modal = document.getElementById('wechat-modal');
-    const openBtn = document.getElementById('btn-open-wechat');
-    const closeBtn = document.getElementById('btn-close-wechat');
+    const openBtns = document.querySelectorAll('#btn-open-wechat, .open-wechat-trigger');
+    const closeBtn = document.getElementById('modal-close-btn');
 
-    openBtn?.addEventListener('click', () => {
-      if (modal) modal.style.display = 'flex';
+    openBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal?.classList.add('open');
+      });
     });
 
     closeBtn?.addEventListener('click', () => {
-      if (modal) modal.style.display = 'none';
+      modal?.classList.remove('open');
     });
 
     modal?.addEventListener('click', (e) => {
-      if (e.target === modal) modal.style.display = 'none';
+      if (e.target === modal) {
+        modal?.classList.remove('open');
+      }
     });
   </script>
 </body>
