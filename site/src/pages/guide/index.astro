@@ -1,0 +1,1113 @@
+---
+import Base from '../../layouts/Base.astro';
+import platforms from '../../data/platforms.json';
+
+const totalCount = platforms.length;
+---
+
+<Base 
+  title="实战指南与 10 秒代码生成器 · 全球大模型与 OpenClaw 接入白皮书" 
+  description="全网免费 API 交互式接入配置生成器与 6 大重磅实战长文。包含 4.5 亿 Tokens 算账模型、多 Key 聚合池网关搭建、5 小时滑动窗口避坑、OpenClaw 降本 90% 极客技巧与国内外大模型选型矩阵。"
+  lang="zh"
+>
+  <!-- Hero Section -->
+  <section class="guide-hero-section">
+    <div class="container">
+      <div class="guide-hero-badge">PRACTICE PLAYBOOK · 开发者实战白皮书</div>
+      <h1 class="guide-hero-title">全网免费 API 交互式接入配置生成器与实战指南</h1>
+      <p class="guide-hero-desc">
+        消除参数配置心智负担，系统化掌握大模型算力调度。上部提供 <strong>10 秒代码即时合成工具</strong>，下部涵盖 <strong>6 篇深度实战长文</strong>（算账模型、网关搭建、5小时滑动窗口机制、降本 90% 技巧与全网选型矩阵）。
+      </p>
+
+      <!-- 文章快速锚点导航条 -->
+      <nav class="guide-toc-nav">
+        <span class="toc-nav-label">目录速达：</span>
+        <a href="#tool-generator" class="toc-link">⚡ 10秒代码生成器</a>
+        <a href="#art-01" class="toc-link">01 · OpenAI 协议体系</a>
+        <a href="#art-02" class="toc-link">02 · 4.5亿 Tokens 算账</a>
+        <a href="#art-03" class="toc-link">03 · 多 Key 聚合池</a>
+        <a href="#art-04" class="toc-link">04 · 5小时滑动窗口</a>
+        <a href="#art-05" class="toc-link">05 · OpenClaw 降本 90%</a>
+        <a href="#art-06" class="toc-link">06 · 选型与评测矩阵</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 置顶工具：交互式配置生成器 -->
+  <section class="section-wrap" id="tool-generator">
+    <div class="container">
+      <div class="config-generator-card">
+        <div class="generator-header">
+          <div class="gen-title-wrap">
+            <span class="gen-icon">⚡</span>
+            <div>
+              <h2 class="gen-title">10 秒交互式配置代码生成器</h2>
+              <p class="gen-desc">选择目标框架与大模型源，瞬时生成 100% 语法国标的配置文件或启动脚本</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="generator-controls">
+          <div class="control-group">
+            <label class="control-label">1. 选择目标工具 / 框架</label>
+            <div class="tool-pills" id="tool-pills">
+              <button class="tool-pill active" data-tool="openclaw">OpenClaw (智能体)</button>
+              <button class="tool-pill" data-tool="claude-code">Claude Code (终端)</button>
+              <button class="tool-pill" data-tool="cursor">Cursor / Cline (IDE)</button>
+              <button class="tool-pill" data-tool="cherry">Cherry Studio (桌面端)</button>
+              <button class="tool-pill" data-tool="freellmapi">FreeLLMAPI (聚合池)</button>
+              <button class="tool-pill" data-tool="python">Python SDK</button>
+              <button class="tool-pill" data-tool="curl">cURL / Shell</button>
+            </div>
+          </div>
+
+          <div class="control-group" style="margin-top: 18px;">
+            <label class="control-label" for="platform-select">2. 选择大模型平台源 (当前已收录 {totalCount} 家)</label>
+            <div class="select-wrap">
+              <select id="platform-select" class="platform-select-box">
+                {platforms.map((p, idx) => (
+                  <option value={p.slug} selected={idx === 0}>
+                    {p.name} · {p.category} ({p.free_models?.[0] || '默认模型'})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 代码预览与复制面板 -->
+        <div class="code-preview-box">
+          <div class="code-header">
+            <div class="code-meta">
+              <span class="code-dot"></span>
+              <span id="code-filename" class="code-filename">config.yaml</span>
+              <span id="code-tag" class="code-tag">适用于 OpenClaw v2.4+</span>
+            </div>
+            <button id="btn-copy-code" class="btn-copy-code">
+              <span id="copy-btn-text">一键复制代码</span>
+            </button>
+          </div>
+          <pre class="code-pre"><code id="code-snippet" class="code-content"></code></pre>
+          <div class="code-footer">
+            <span class="security-badge">🔒 离线安全保证：代码在本地浏览器字符串即时合成，零网络传输，绝不上传您的私有 API Key</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 篇深度实战长文专区 -->
+  <section class="section-wrap section-bg">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-eyebrow">PRACTICE PLAYBOOK · 核心长文</p>
+        <h2 class="section-title">全球大模型接入与 Agent 降本实战白皮书</h2>
+      </header>
+
+      <div class="articles-stack">
+        
+        <!-- 文章 01 -->
+        <article class="article-card" id="art-01">
+          <div class="article-header">
+            <span class="article-num">01</span>
+            <div class="article-title-wrap">
+              <h2>标准 OpenAI 协议 3 参数体系与 4 大主流场景实战</h2>
+              <p class="article-subtitle">为什么只需 3 个参数就能打通全球 40+ 平台？OpenClaw、Claude Code、Cursor 与桌面端配置规范。</p>
+            </div>
+          </div>
+          <div class="article-body">
+            <p>
+              目前全球 95% 以上的大模型提供商（无论是海外的 xAI Grok、Google Gemini、Groq，还是国内的智谱、阿里千问、火山方舟、DeepSeek）均原生支持 <strong>OpenAI REST API 标准接口协议</strong>。在任何智能体、IDE 或开源项目中，您无需安装厂商专属 SDK，只需掌握以下 <strong>3 个核心参数</strong>：
+            </p>
+            
+            <div class="guide-param-table-wrap">
+              <table class="guide-table">
+                <thead>
+                  <tr>
+                    <th>参数名 (Parameter)</th>
+                    <th>作用说明</th>
+                    <th>典型示例</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>Base URL</code> (接入端点)</td>
+                    <td>大模型提供商的兼容服务接入网关地址</td>
+                    <td><code>https://api.deepseek.com/v1</code> 或 <code>https://dashscope.aliyuncs.com/compatible-mode/v1</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>API Key</code> (身份凭证)</td>
+                    <td>在平台控制台创建并保存的私密访问密钥</td>
+                    <td><code>sk-xxxxxxxxxxxxxxxxxxxxxxxx</code> (建议注入为系统环境变量)</td>
+                  </tr>
+                  <tr>
+                    <td><code>Model Name</code> (模型标识)</td>
+                    <td>目标平台的模型唯一标识符</td>
+                    <td><code>deepseek-chat</code>, <code>qwen-plus</code>, <code>grok-4.1-fast</code>, <code>glm-4-flash</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>四大典型场景接入要点：</h3>
+            <ul class="article-list">
+              <li><strong>OpenClaw 智能体场景</strong>：在 <code>config.yaml</code> 中指定 <code>provider: openai</code>，将 <code>base_url</code> 与 <code>api_key</code> 映射到环境变量，避免明文提交代码仓库；</li>
+              <li><strong>Claude Code 终端代理场景</strong>：通过 <code>export ANTHROPIC_BASE_URL="xxx"</code> 和 <code>export ANTHROPIC_API_KEY="xxx"</code> 将终端流量透明转发给兼容端点；</li>
+              <li><strong>Cursor / Cline IDE 场景</strong>：在设置页面勾选 <em>"Override OpenAI Base URL"</em>，输入对应平台的 Base URL 与 Key，并在模型列表中通过 <code>+ Add Model</code> 手动添加模型名；</li>
+              <li><strong>Cherry Studio / Chatbox 桌面场景</strong>：选择 <code>OpenAI</code> 协议类型，填入 Base URL 与 Key 后点击“获取模型列表”即可快速拉取。</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- 文章 02 -->
+        <article class="article-card" id="art-02">
+          <div class="article-header">
+            <span class="article-num">02</span>
+            <div class="article-title-wrap">
+              <h2>2026 全球免费算力硬核算账：4.5 亿 Tokens 如何实现「0 成本永动机」？</h2>
+              <p class="article-subtitle">全网免费额度总和深度测算：一次性赠送池 + 每日循环池的数学消耗模型。</p>
+            </div>
+          </div>
+          <div class="article-body">
+            <p>
+              经过对全球 40+ 免费大模型平台的拉网式实测与聚合，我们统计出了全网开发者可直接获取的免费算力总盘子：
+            </p>
+
+            <div class="stats-highlight-grid">
+              <div class="stats-box">
+                <div class="stats-num">4.5 亿+</div>
+                <div class="stats-label">一次性赠送 Tokens 总和 (价值 $200+ USD)</div>
+                <div class="stats-desc">国家超算 10M + 硅基 20M + GMI 20亿限时 + 百炼 10M + xAI $25 + 智谱 25M</div>
+              </div>
+              <div class="stats-box">
+                <div class="stats-num">550 万+</div>
+                <div class="stats-label">每日自动刷新 Tokens / 天 (永久可持续)</div>
+                <div class="stats-desc">火山引擎 2M/天 + 智谱 Flash 1M + 百度 ERNIE 1M + Cerebras 1M + Gemini 1500次</div>
+              </div>
+            </div>
+
+            <h3>💡 中度开发者消耗模型实测：</h3>
+            <p>
+              按一名全栈独立开发者或重度 AI 编程工程师每天深度使用 OpenClaw / Cursor，平均每天消耗 <strong>200 万 Tokens</strong>（约合 40-60 次复杂任务交互）计算：
+            </p>
+            <ul class="article-list">
+              <li><strong>阶段一（体验金爆发期 · 0-7 个月）</strong>：优先轮流消耗各大厂商赠送的 4.5 亿一次性额度，可在 <strong>225 天（超 7 个月）内无需支付任何算力费用</strong>；</li>
+              <li><strong>阶段二（每日循环永动机 · 长期无限）</strong>：当一次性体验金耗尽后，仅依靠火山引擎（2M/天）、智谱 GLM-4-Flash（无限量免费）、百度千帆（免费层）、Cerebras（1M/天）与 Google Gemini（1500次/天），每天可稳定获得 <strong>550 万+ Tokens</strong> 的永久免费算力，<strong>彻底覆盖 200 万/天的日常开发开销，实现真正意义上的 0 成本永动机！</strong></li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- 文章 03 -->
+        <article class="article-card" id="art-03">
+          <div class="article-header">
+            <span class="article-num">03</span>
+            <div class="article-title-wrap">
+              <h2>多 Key 聚合池与高可用网关实操指南（FreeLLMAPI & One API）</h2>
+              <p class="article-subtitle">如何把 40 家平台的免费 Key 汇聚成一条永远不宕机、无感自动降级的私有 API？</p>
+            </div>
+          </div>
+          <div class="article-body">
+            <p>
+              单个免费平台的 Key 往往存在速率限制（RPM/TPM）或偶发超时。通过在本地或服务器搭建轻量级 API 网关，可以将 40 家平台的免费 Key 打包为一个统一的虚拟端口：
+            </p>
+
+            <h3>主流网关方案选型与搭建：</h3>
+            <div class="gateway-compare-grid">
+              <div class="gateway-card">
+                <h4>1. 极简开源网关：FreeLLMAPI</h4>
+                <p>专为个人开发者打造的轻量 Node.js 网关，自带 SQLite 存储，支持单 Key 自动跨平台降级。</p>
+                <pre class="gateway-code"><code># 一键克隆与启动
+git clone https://github.com/tashfeenahmed/freellmapi.git
+cd freellmapi && npm install && npm run dev
+# 统一访问: http://localhost:3001/v1/chat/completions</code></pre>
+              </div>
+
+              <div class="gateway-card">
+                <h4>2. 企业级聚合网关：One API / New API</h4>
+                <p>支持多渠道轮询、加权负载均衡、令牌限额与多用户分发的工业级反向代理系统。</p>
+                <pre class="gateway-code"><code># Docker 极速部署 One API
+docker run -d --restart always --name one-api \
+  -p 3000:3000 \
+  -v /var/data/one-api:/data \
+  justsong/one-api</code></pre>
+              </div>
+            </div>
+
+            <h3>高可用故障降级链（Fallback Chain）设计原则：</h3>
+            <ol class="article-list-ordered">
+              <li><strong>首选主通道（High Performance）</strong>：优先配置速度极快的推理源（如 Groq LPU、Cerebras、DeepSeek V3）；</li>
+              <li><strong>第一级降级（Rich Quota）</strong>：主通道触发 429 限流时，毫秒级自动切换到火山方舟（2M/天）或硅基流动；</li>
+              <li><strong>保底兜底源（Infinite Safe）</strong>：自动降级至智谱 GLM-4-Flash、百度 ERNIE-Speed 或本地 Ollama，确保代码生成永不中断报错。</li>
+            </ol>
+          </div>
+        </article>
+
+        <!-- 文章 04 -->
+        <article class="article-card" id="art-04">
+          <div class="article-header">
+            <span class="article-num">04</span>
+            <div class="article-title-wrap">
+              <h2>Agent 计费避坑：5 小时滑动窗口机制与扣费陷阱深度解密</h2>
+              <p class="article-subtitle">为什么购买了商业 Coding Plan 连续写 2 小时代码就撞墙？滑动窗口恢复算法与计费真相。</p>
+            </div>
+          </div>
+          <div class="article-body">
+            <p>
+              很多开发者在使用 OpenClaw、Cursor 或各平台 Coding Plan 时常有疑惑：<em>“明明显示每月有数万次配额，为什么写了两个小时代码就被限制了？”</em>
+            </p>
+
+            <div class="alert-box alert-warning">
+              <strong>⚠️ 核心真相：5 小时滑动窗口（Rolling Window）限制</strong>
+              <p>
+                绝大多数代码生成平台（包括 Claude 官方、各大 Coding Plan）采用的并非“按天”或“按月”清零，而是 <strong>5 小时连续滑动窗口</strong>。系统会实时统计当前时间往前倒推 5 小时内的总调用量。一旦在 2-3 小时内密集重构或执行 Agent 循环，极易瞬间撞满滑动窗口限额。额度只能随着时间推移逐分钟匀速释放。
+              </p>
+            </div>
+
+            <h3>必须警惕的 3 大计费陷阱：</h3>
+            <ul class="article-list">
+              <li>
+                <strong>计费单位陷阱（API 请求次数 vs Prompt 轮次）</strong>：
+                云厂商通常按“底层 API 请求次数”扣费（OpenClaw 执行一个子任务可能触发 10-30 次内部工具调用）；而模型提供商按“Prompt 轮次”扣费（1 轮用户输入可能等价于 15 次底层请求）。如果未做并发控制，额度消耗速度会比预期快 10 倍。
+              </li>
+              <li>
+                <strong>体验金有效期优先消耗原则</strong>：
+                平台赠送的额度通常有明确保质期（如国家超算 1000万为 30-90 天，阿里云百炼为 180 天）。在开发密集期应优先消耗这些有期限的高阶算力券，将每日循环源作为长期保底。
+              </li>
+              <li>
+                <strong>高峰期并发降权与厂商特殊规则</strong>：
+                部分平台在工作日高峰期（14:00~18:00）可能会对免费层调低并发权重；火山引擎等平台需在 Model 字段填入控制台创建的 Endpoint ID，避免因配置错误导致请求失败。
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- 文章 05 -->
+        <article class="article-card" id="art-05">
+          <div class="article-header">
+            <span class="article-num">05</span>
+            <div class="article-title-wrap">
+              <h2>OpenClaw 与 Coding Agent 降本 90% 的 6 大极客技巧</h2>
+              <p class="article-subtitle">从根源堵住 Token 吞噬黑洞，让有限的算力额度发挥 10 倍效能。</p>
+            </div>
+          </div>
+          <div class="article-body">
+            <p>
+              在自主智能体（Agent）运行过程中，Token 的消耗分布通常为：<strong>上下文累积（40-50%）、工具调用输出（20-30%）、系统提示词重复（10-15%）、多轮推理（10-15%）、后台任务（5-10%）</strong>。运用以下 6 项技巧可将消耗直降 90%：
+            </p>
+
+            <div class="hacks-grid">
+              <div class="hack-item">
+                <div class="hack-title">1. 关闭隐形后台任务（立省 70%）</div>
+                <p>在 OpenClaw 设置中关闭“自动生成会话标题”、“自动打标签”与“后台心跳检测”。实测 30 轮调用的 Token 消耗直接从 120 万降低至 36 万。</p>
+              </div>
+
+              <div class="hack-item">
+                <div class="hack-title">2. 智能三级模型路由（省 60-80%）</div>
+                <p>
+                  <strong>Tier 1 (轻量/免费)</strong>：使用 <code>GLM-4-Flash / DeepSeek V3</code> 处理文本总结与格式清洗；<br/>
+                  <strong>Tier 2 (编码主力)</strong>：使用 <code>Claude 3.5 Sonnet / Qwen 2.5 72B</code> 编写代码；<br/>
+                  <strong>Tier 3 (重度推理)</strong>：仅在疑难架构设计时调用 <code>DeepSeek R1 / Opus</code>。
+                </p>
+              </div>
+
+              <div class="hack-item">
+                <div class="hack-title">3. 启用 Prompt 缓存（省 80-90%）</div>
+                <p>开启 Prefix Caching（前缀缓存）机制。当系统提示词（如 1.5 万 Token 的 Agent 规则定义）保持不变时，命中缓存的输入 Token 成本仅为常态的 10%。</p>
+              </div>
+
+              <div class="hack-item">
+                <div class="hack-title">4. QMD 本地知识库切片检索（省 85-97%）</div>
+                <p>禁止将数百页完整文档暴力 Dump 进 Prompt。使用本地向量切片检索（QMD），仅将与当前问题最相关的 200 行代码注入上下文。</p>
+              </div>
+
+              <div class="hack-item">
+                <div class="hack-title">5. 会话及时压缩与清除（省 50-70%）</div>
+                <p>在长会话中每完成一个独立阶段，执行 <code>/compact</code> 命令生成阶段摘要，清空前序庞大的 Tool Call 输出历史。</p>
+              </div>
+
+              <div class="hack-item">
+                <div class="hack-title">6. 本地 Ollama 零成本兜底</div>
+                <p>在本地 M4 / RTX 显卡上部署 <code>Qwen 2.5 Coder 7B</code>，将单测生成与简单语法校验全部放在本地运行，消耗 0 外部 Token。</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- 文章 06 -->
+        <article class="article-card" id="art-06">
+          <div class="article-header">
+            <span class="article-num">06</span>
+            <div class="article-title-wrap">
+              <h2>国内外主流大模型在智能体场景的实战评测与选型矩阵</h2>
+              <p class="article-subtitle">40+ 家模型在代码编写、工具调用严格度、长上下文与网络环境上的综合能力画像。</p>
+            </div>
+          </div>
+          <div class="article-body">
+            <p>
+              不同大模型在处理复杂 Agent 任务时的表现截然不同。根据 2026 年最新实测基准，我们构建了以下综合选型矩阵：
+            </p>
+
+            <div class="guide-param-table-wrap">
+              <table class="guide-table matrix-table">
+                <thead>
+                  <tr>
+                    <th>模型 / 平台</th>
+                    <th>推理智力 (Reasoning)</th>
+                    <th>Tool Calling 严格度</th>
+                    <th>上下文窗口</th>
+                    <th>网络要求</th>
+                    <th>最佳适用场景</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>DeepSeek R1 / V3</strong></td>
+                    <td><span class="matrix-star">★★★★★</span> (满血最强)</td>
+                    <td><span class="matrix-star">★★★★☆</span></td>
+                    <td>64K - 128K</td>
+                    <td>国内直连 / 国际可用</td>
+                    <td>复杂算法推理、重度架构设计、代码审查</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Claude 3.5 Sonnet</strong></td>
+                    <td><span class="matrix-star">★★★★★</span> (编程标杆)</td>
+                    <td><span class="matrix-star">★★★★★</span></td>
+                    <td>200K</td>
+                    <td>海外原生网络</td>
+                    <td>全工程自主重构、高难度 Bug 修复、Agent 主脑</td>
+                  </tr>
+                  <tr>
+                    <td><strong>xAI Grok 4.1 Fast</strong></td>
+                    <td><span class="matrix-star">★★★★☆</span></td>
+                    <td><span class="matrix-star">★★★★☆</span></td>
+                    <td>2,000K (2M 超长)</td>
+                    <td>合规海外网络</td>
+                    <td>海量代码库全局检索、超长文档分析、数据共享补贴</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Google Gemini 2.5 Flash</strong></td>
+                    <td><span class="matrix-star">★★★★☆</span></td>
+                    <td><span class="matrix-star">★★★★☆</span></td>
+                    <td>1,000K (1M)</td>
+                    <td>合规海外网络</td>
+                    <td>每日 1500 次高频调用、跨模态生图与视频理解</td>
+                  </tr>
+                  <tr>
+                    <td><strong>通义千问 Qwen 2.5 72B</strong></td>
+                    <td><span class="matrix-star">★★★★☆</span></td>
+                    <td><span class="matrix-star">★★★★☆</span></td>
+                    <td>128K</td>
+                    <td>国内直连</td>
+                    <td>中文语义理解、国产化替代、全栈业务代码生成</td>
+                  </tr>
+                  <tr>
+                    <td><strong>智谱 GLM-4-Flash</strong></td>
+                    <td><span class="matrix-star">★★★☆☆</span></td>
+                    <td><span class="matrix-star">★★★★☆</span></td>
+                    <td>128K</td>
+                    <td>国内直连</td>
+                    <td>完全永久免费保底、格式化清洗、会话摘要压缩</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- 底部返回与哲学入口 -->
+      <div class="guide-back-bar">
+        <a href="/" class="btn-guide-back">← 返回 40+ 免费算力雷达大厅</a>
+        <a href="/about/" class="btn-guide-about">阅读四个长期坐标与极客宣言 →</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .guide-hero-section {
+      padding: 56px 0 28px;
+      border-bottom: 1px solid var(--card-border);
+      background: #ffffff;
+    }
+    .guide-hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: var(--accent);
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+    }
+    .guide-hero-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.6px;
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .guide-hero-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    /* TOC Nav */
+    .guide-toc-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 14px;
+    }
+    .toc-nav-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+    .toc-link {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      padding: 3px 10px;
+      border-radius: 4px;
+      transition: all 0.15s;
+    }
+    .toc-link:hover {
+      border-color: var(--text);
+      background: var(--text);
+      color: #ffffff;
+    }
+
+    .section-wrap {
+      padding: 44px 0;
+    }
+    .section-bg {
+      background: var(--bg-subtle);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .section-head {
+      margin-bottom: 32px;
+    }
+    .section-eyebrow {
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .section-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.5px;
+    }
+
+    /* Interactive Config Generator */
+    .config-generator-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+    .generator-header {
+      margin-bottom: 22px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 16px;
+    }
+    .gen-title-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .gen-icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+    .gen-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .gen-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+    .generator-controls {
+      margin-bottom: 22px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .control-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+    .tool-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tool-pill {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tool-pill:hover {
+      border-color: var(--text);
+      background: #ffffff;
+    }
+    .tool-pill.active {
+      background: var(--text);
+      color: #ffffff;
+      border-color: var(--text);
+    }
+    .platform-select-box {
+      width: 100%;
+      background: var(--bg-subtle);
+      border: 1.5px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .platform-select-box:focus {
+      border-color: var(--text);
+      background: #ffffff;
+    }
+
+    /* Code Preview Box */
+    .code-preview-box {
+      background: #18181b;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #27272a;
+    }
+    .code-header {
+      background: #27272a;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #3f3f46;
+    }
+    .code-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #a1a1aa;
+    }
+    .code-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+    .code-filename {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: #ffffff;
+    }
+    .code-tag {
+      background: #3f3f46;
+      color: #d4d4d8;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+    .btn-copy-code {
+      background: #3f3f46;
+      color: #ffffff;
+      border: 1px solid #52525b;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-copy-code:hover {
+      background: #52525b;
+    }
+    .code-pre {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+      max-height: 380px;
+    }
+    .code-content {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.6;
+      color: #e4e4e7;
+      white-space: pre;
+    }
+    .code-footer {
+      background: #1f1f23;
+      padding: 8px 16px;
+      border-top: 1px solid #27272a;
+      font-size: 11.5px;
+      color: #71717a;
+    }
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Articles Stack */
+    .articles-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .article-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+      scroll-margin-top: 80px;
+    }
+    .article-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 18px;
+    }
+    .article-num {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 800;
+      background: var(--text);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .article-title-wrap h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.4px;
+      margin-bottom: 4px;
+    }
+    .article-subtitle {
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+    .article-body {
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: var(--text);
+    }
+    .article-body p {
+      margin-bottom: 16px;
+    }
+    .article-body h3 {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 22px 0 12px;
+    }
+    .article-list, .article-list-ordered {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .article-list strong, .article-list-ordered strong {
+      color: var(--text);
+    }
+
+    /* Tables */
+    .guide-param-table-wrap {
+      overflow-x: auto;
+      margin: 16px 0 20px;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+    }
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+    .guide-table th {
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+      font-weight: 700;
+      color: var(--text);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .guide-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--text-muted);
+    }
+    .guide-table tr:last-child td {
+      border-bottom: none;
+    }
+    .guide-table code {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--bg-subtle);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .matrix-star {
+      color: #f59e0b;
+      font-weight: 700;
+    }
+
+    /* Stats Grid */
+    .stats-highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 16px 0 22px;
+    }
+    @media (max-width: 640px) {
+      .stats-highlight-grid { grid-template-columns: 1fr; }
+    }
+    .stats-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .stats-num {
+      font-family: var(--font-mono);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .stats-label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .stats-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Gateway Compare Grid */
+    .gateway-compare-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 16px 0 20px;
+    }}
+    @media (max-width: 768px) {
+      .gateway-compare-grid { grid-template-columns: 1fr; }
+    }
+    .gateway-card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .gateway-card h4 {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .gateway-card p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .gateway-code {
+      background: #18181b;
+      color: #e4e4e7;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+
+    /* Alert Box */
+    .alert-box {
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin: 16px 0 20px;
+      font-size: 13.5px;
+      line-height: 1.65;
+    }
+    .alert-warning {
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      color: #92400e;
+    }
+    .alert-warning strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #78350f;
+    }
+
+    /* Hacks Grid */
+    .hacks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 16px 0 20px;
+    }
+    @media (max-width: 768px) {
+      .hacks-grid { grid-template-columns: 1fr; }
+    }
+    .hack-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .hack-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .hack-item p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .guide-back-bar {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-top: 1px solid var(--card-border);
+      padding-top: 24px;
+    }
+    .btn-guide-back, .btn-guide-about {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text);
+      border: 1px solid var(--card-border);
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .btn-guide-back:hover, .btn-guide-about:hover {
+      background: var(--text);
+      color: #ffffff;
+    }
+  </style>
+
+  <script is:inline>
+    const platformData = [{"name": "阿里云百炼 (DashScope)", "name_en": "Alibaba Cloud Bailian", "website": "https://bailian.console.aliyun.com", "category": "cloud", "free_quota": {"amount": 1000, "unit": "万 tokens", "type": "限时", "conditions": ["通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens", "有效期 180 天（半年超长使用周期）", "阿里云账号开通百炼即可领取"], "details_en": "1,000,000 free tokens for Qwen-Turbo and Qwen-Plus valid for 180 days upon account sign-up."}, "register_url": "https://bailian.console.aliyun.com/", "docs_url": "https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio", "source_urls": ["https://help.aliyun.com/zh/model-studio/billing-for-model-studio/billing-overview"], "last_verified": "2026-09-01", "status": "active", "intro": "阿里云官方大模型服务平台，聚合千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。", "tags": ["顶级大厂", "通义千问", "国产云厂商", "超长有效期", "企业级稳定"], "api_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "free_models": ["qwen-turbo", "qwen-plus", "qwen-max"], "slug": "aliyun-bailian", "last_checked": "2026-09-01", "intro_en": "Alibaba Cloud enterprise model platform offering Qwen 2.5, Qwen-Max, and Wanx multimodal models with free developer credits.", "gotchas_en": ["Requires Alibaba Cloud account and SMS/enterprise verification", "Free quota expires after 180 days; paid tier kicks in if balance depleted"]}, {"name": "百川智能开放平台", "name_en": "Baichuan AI", "website": "https://platform.baichuan-ai.com", "category": "llm-api", "free_quota": {"amount": 1000, "unit": "万 tokens", "type": "限时", "conditions": ["新用户注册实名认证即送 1000 万 Tokens 免费体验金", "支持 Baichuan4, Baichuan3-Turbo 等多款高性能中文大模型", "在中文医疗、金融等行业知识库上表现优异"], "details_en": "1,000,000 free tokens for Baichuan-NPC and Baichuan-4 on new developer accounts."}, "register_url": "https://platform.baichuan-ai.com/register", "docs_url": "https://platform.baichuan-ai.com/docs/api", "source_urls": ["https://platform.baichuan-ai.com/price"], "last_verified": "2026-09-01", "status": "active", "intro": "王小川创立的百川智能开放平台，新注册即可领取千万大额 Token 包，中文知识库与推理能力卓越。", "tags": ["国产大模型", "注册赠送", "千万额度", "中文理解"], "api_base_url": "https://api.baichuan-ai.com/v1", "free_models": ["Baichuan4-Air", "Baichuan4-Turbo"], "slug": "baichuan-ai", "last_checked": "2026-09-01", "intro_en": "Leading Chinese LLM provider with strong medical, factual, and long-context capabilities (Baichuan 4).", "gotchas_en": ["Requires mobile SMS verification", "Check model pricing tiers after trial tokens are exhausted"]}, {"name": "百度千帆大模型平台", "name_en": "Baidu Qianfan ModelBuilder", "website": "https://cloud.baidu.com/product/wenxinworkshop", "category": "cloud", "free_quota": {"amount": 2000, "unit": "万 tokens + 部分模型永久免费", "type": "永久", "conditions": ["ERNIE-Speed, ERNIE-Lite 等主流轻量模型永久免费调用", "新认证企业/个人用户赠送 2000 万 Tokens 算力代金券", "兼容 OpenAI 接口规范，国内访问极速稳定"], "details_en": "ERNIE Speed and ERNIE Lite are permanently free; new accounts get 20,000,000 free tokens for ERNIE 4.0."}, "register_url": "https://console.bce.baidu.com/qianfan/ais/console/onlineService", "docs_url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html", "source_urls": ["https://cloud.baidu.com/doc/WENXINWORKSHOP/s/hlrk4akp7"], "last_verified": "2026-09-01", "status": "active", "intro": "百度千帆大模型平台，ERNIE-Speed/Lite 系列全面永久免费开放，并提供大额新手代金券。", "tags": ["国产大厂", "文心一言", "永久免费", "免信用卡", "国内直连"], "api_base_url": "https://qianfan.baidubce.com/v2", "free_models": ["ernie-speed-128k", "ernie-lite-8k"], "slug": "baidu-qianfan", "last_checked": "2026-09-01", "intro_en": "Baidu foundation model platform featuring ERNIE 4.0, ERNIE Speed, and ERNIE Lite (permanent free tier).", "gotchas_en": ["Requires Baidu Cloud account with real-name verification", "ERNIE Speed/Lite are free forever, premium models consume trial balances"]}, {"name": "Cerebras Inference", "name_en": "Cerebras Inference", "website": "https://cerebras.ai", "category": "llm-api", "free_quota": {"amount": 100, "unit": "万 tokens / 天", "type": "每日", "conditions": ["每天刷新 100 万免费 Tokens", "推理速度高达 1800+ tokens/秒（全球最快之一）", "免费提供 Llama 3.1 8B / 70B 等开源模型"], "details_en": "1,000,000 free daily tokens across LLaMA 3.1 8B and 70B models."}, "register_url": "https://cloud.cerebras.ai/", "docs_url": "https://inference-docs.cerebras.ai/", "source_urls": ["https://cerebras.ai/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "基于晶圆级超级芯片的极速推理云，推理速度秒杀传统 GPU，每天提供 100 万免费 tokens 额度。", "tags": ["极致速度", "每日刷新", "Llama 3.1", "免信用卡"], "api_base_url": "https://api.cerebras.ai/v1", "free_models": ["llama-3.3-70b", "llama3.1-8b"], "slug": "cerebras", "last_checked": "2026-09-01", "intro_en": "Ultra-high-speed LLM inference powered by wafer-scale engine chips (CS-3), generating over 2,000 tokens per second.", "gotchas_en": ["Strict RPM/TPM rate limits on the free tier (up to 30 RPM)", "Free tier is intended for evaluation and non-commercial development"]}, {"name": "Cloudflare Workers AI", "name_en": "Cloudflare Workers AI", "website": "https://ai.cloudflare.com", "category": "cloud", "free_quota": {"amount": 10000, "unit": "Neurons / 每天", "type": "每日", "conditions": ["每天赠送 10,000 Neurons 免费神经元算力（约可跑几万 Tokens 推理）", "全球 300+ 边缘数据中心加速，毫秒级响应", "支持 Llama 3, Qwen, Whisper 语音转写, BGE 嵌入等"], "details_en": "10,000 Neurons per day completely free forever across global edge locations."}, "register_url": "https://dash.cloudflare.com/", "docs_url": "https://developers.cloudflare.com/workers-ai/", "source_urls": ["https://developers.cloudflare.com/workers-ai/platform/pricing/"], "last_verified": "2026-09-01", "status": "active", "intro": "网络巨头 Cloudflare 提供的边缘 AI 计算，每天免费刷新额度，支持文本生成、图像识别、语音转写等全栈模型。", "tags": ["边缘计算", "每日刷新", "多模态", "全球CDN加速", "免信用卡"], "api_base_url": "https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1", "free_models": ["@cf/meta/llama-3.1-8b-instruct", "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"], "slug": "cloudflare-workers-ai", "last_checked": "2026-09-01", "intro_en": "Serverless GPU inference at Cloudflare global edge network, running LLaMA 3.3, Mistral, and DeepSeek.", "gotchas_en": ["Daily quota resets at 00:00 UTC", "Requires a free Cloudflare account"]}, {"name": "Cohere", "name_en": "Cohere", "website": "https://cohere.com", "category": "tools", "free_quota": {"amount": 1000, "unit": "次调用/月 (免费试用 Key)", "type": "永久", "conditions": ["免费 Trial API Key 提供 1000 次 API/月与 10 RPM 并发", "全球顶级 Rerank 重排序与 Multilingual Embedding 向量模型", "RAG 检索增强系统必备开发组件"], "details_en": "Free Trial API Key provides 1,000 free requests per month and 10 RPM for development."}, "register_url": "https://dashboard.cohere.com/welcome/register", "docs_url": "https://docs.cohere.com/", "source_urls": ["https://cohere.com/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "企业级语义搜索与 RAG 领域的标杆，其 Rerank 与 Embed 接口提供永久免费的 Trial 开发者额度。", "tags": ["Rerank重排", "向量嵌入", "RAG必备", "开发者首选"], "api_base_url": "https://api.cohere.ai/v1", "free_models": ["command-r-plus", "command-r", "embed-multilingual-v3.0"], "slug": "cohere", "last_checked": "2026-09-01", "intro_en": "Enterprise-grade language models specializing in Command R+, Rerank 3, and high-accuracy Embeddings.", "gotchas_en": ["Trial keys include a rate limit of 10 requests/minute", "Cannot be used for production high-concurrency traffic"]}, {"name": "DeepSeek", "name_en": "DeepSeek", "website": "https://www.deepseek.com", "category": "llm-api", "free_quota": {"amount": 5000000, "unit": "tokens", "type": "限时", "conditions": ["新用户注册赠送 500 万 tokens", "赠送额度有效期 30 天", "需绑定手机号"], "details_en": "5,000,000 free tokens granted upon phone registration (valid for 30 days)."}, "register_url": "https://platform.deepseek.com/sign_up", "docs_url": "https://api-docs.deepseek.com/zh-cn/", "source_urls": ["https://api-docs.deepseek.com/zh-cn/quick_start/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "DeepSeek API提供多种模型，按量计费，价格透明，支持缓存命中优惠，适合各类AI应用开发。", "tags": ["国产大模型", "注册赠送", "限时额度"], "last_checked": "2026-09-01", "api_base_url": "https://api.deepseek.com", "free_models": ["deepseek-chat", "deepseek-reasoner"], "slug": "deepseek", "intro_en": "State-of-the-art open reasoning (R1) and general LLM (V3) offering industry-leading cost-performance and 5M free tokens.", "gotchas_en": ["High demand may occasionally result in peak-hour concurrency queueing", "Trial credits expire after 30 days"]}, {"name": "Fireworks AI", "name_en": "Fireworks AI", "website": "https://fireworks.ai", "category": "llm-api", "free_quota": {"amount": 1, "unit": "美元免费额度 (约上百万 Tokens)", "type": "限时", "conditions": ["新注册账号赠送  美元免费调用额度", "拥有业内顶尖的首字延迟 (TTFT) 与生成速度", "支持数十款精选开源大模型与微调服务"], "details_en": ".00 USD free credit on account creation for serverless inference testing."}, "register_url": "https://fireworks.ai/login", "docs_url": "https://docs.fireworks.ai/", "source_urls": ["https://fireworks.ai/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "全球推理速度最快的模型托管平台之一，新注册用户赠送免费体验金，兼具极致性能与超高性价比。", "tags": ["极致速度", "注册赠送", "开源大模型", "开发必备"], "api_base_url": "https://api.fireworks.ai/inference/v1", "free_models": ["accounts/fireworks/models/llama-v3p3-70b-instruct", "accounts/fireworks/models/qwen2p5-72b-instruct"], "slug": "fireworks-ai", "last_checked": "2026-09-01", "intro_en": "Blazing fast inference platform for open-source foundation models (LLaMA 3.1, Qwen 2.5, DeepSeek R1).", "gotchas_en": ["Requires email and phone verification for free credit", "Paid billing required after credit exhaustion"]}, {"name": "GitHub Models", "name_en": "GitHub Models", "website": "https://github.com/marketplace/models", "category": "llm-api", "free_quota": {"amount": 50, "unit": "次请求/天 (各主流顶级模型)", "type": "每日", "conditions": ["免费调用 GPT-4o, GPT-4o-mini, Claude 3.5 Sonnet, Llama 3.3 70B 等", "使用 GitHub Personal Access Token (PAT) 即可直接认证", "适合个人开发者日常轻量体验或调试"], "details_en": "50 requests/day for top models (GPT-4o, Claude 3.5), 150 requests/day for low-latency models."}, "register_url": "https://github.com/marketplace/models", "docs_url": "https://docs.github.com/en/github-models", "source_urls": ["https://docs.github.com/en/github-models/prototyping-with-ai-models"], "last_verified": "2026-09-01", "status": "active", "intro": "微软与 GitHub 推出的免费 AI Playground 接口，一个 GitHub Token 即可免费体验全球所有顶级闭源与开源模型。", "tags": ["全球顶级", "每日免费", "GPT-4o", "Claude 3.5", "免绑卡"], "api_base_url": "https://models.inference.ai.azure.com", "free_models": ["gpt-4o-mini", "Meta-Llama-3.1-70B-Instruct", "Phi-3.5-mini-instruct"], "slug": "github-models", "last_checked": "2026-09-01", "intro_en": "Direct prototyping access to GPT-4o, Claude 3.5 Sonnet, LLaMA 3.3, and DeepSeek via GitHub Personal Access Tokens.", "gotchas_en": ["Requires GitHub account", "Personal Access Token (classic or fine-grained) needed for authentication"]}, {"name": "GMI Cloud (MiniMax 专场)", "name_en": "GMI Cloud (MiniMax Free 2B)", "website": "https://www.gmicloud.ai/en", "category": "multimodal", "free_quota": {"amount": 200000, "unit": "万 tokens (最高20亿Tokens)", "type": "限时", "conditions": ["GMI Cloud 联合 MiniMax 限时免费活动（2026.08.24 - 2026.09.06）", "免费调用 MiniMax-M3, M2.7, Speech 2.8 语音与 Music 3.0 音乐模型", "支持 GitHub / Google 账号一键快捷登录，直接生成 API Key，免绑卡", "兼容标准 OpenAI / Anthropic 双协议，Base URL: https://api.gmi-serving.com/v1"], "details_en": "2,000,000,000 free tokens granted upon developer sign-up."}, "register_url": "https://www.gmicloud.ai/en", "docs_url": "https://www.gmicloud.ai/en", "source_urls": ["https://www.gmicloud.ai/en"], "last_verified": "2026-09-01", "status": "active", "intro": "GMI Cloud 联合 MiniMax 推出限时免费福利，免费使用 MiniMax-M3、Speech 语音与 Music 音乐大模型，测试可用额度高达 20 亿 Tokens！", "tags": ["爆款限时", "20亿Tokens", "MiniMax-M3", "语音音乐", "免信用卡", "GitHub登录"], "api_base_url": "https://api.gmicloud.ai/v1", "free_models": ["minimax-abab6.5s-chat", "minimax-text-01"], "slug": "gmi-cloud-minimax", "last_checked": "2026-09-01", "intro_en": "Global GPU cloud offering a massive 2 Billion free tokens for MiniMax-Text-01 under developer promotion.", "gotchas_en": ["Promotional quota may adjust based on campaign duration", "Configure base URL to GMI Cloud custom OpenAI endpoint"]}, {"name": "Google AI Studio", "name_en": "Google AI Studio (Gemini)", "website": "https://aistudio.google.com", "category": "llm-api", "free_quota": {"amount": 1500, "unit": "请求/天 (RPD)", "type": "永久", "conditions": ["Gemini 1.5 Flash / 2.0 Flash 永久免费", "免费层提供最高 15 RPM (每分钟请求数) 和 100万 Tokens 上下文", "只需 Google 账号即可生成 API Key，无需绑定海外信用卡"], "details_en": "1,500 Requests Per Day (RPD) and 15 RPM completely free forever on Gemini 1.5 Flash."}, "register_url": "https://aistudio.google.com/", "docs_url": "https://ai.google.dev/pricing", "source_urls": ["https://ai.google.dev/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "全球最慷慨的大模型免费 API 之一，Gemini 1.5/2.0 Flash 永久免费提供高并发与超长上下文调用。", "tags": ["顶级大厂", "永久免费", "Gemini", "长上下文", "免信用卡"], "api_base_url": "https://generativelanguage.googleapis.com/v1beta/openai/", "free_models": ["gemini-1.5-flash", "gemini-2.0-flash-exp", "gemini-1.5-pro"], "slug": "google-ai-studio", "last_checked": "2026-09-01", "intro_en": "Official developer gateway to Google Gemini 1.5 Flash and Gemini 1.5 Pro with a massive 1M token context window.", "gotchas_en": ["Free tier data may be logged by Google for model tuning (use paid tier for privacy)", "Requires Google account in supported regions"]}, {"name": "Groq", "name_en": "Groq (LPU Inference Engine)", "website": "https://groq.com", "category": "llm-api", "free_quota": {"amount": 1000000, "unit": "tokens/天", "type": "每日", "conditions": ["Free 层级按模型有每日 token 与每分钟请求数（RPM）限制", "无需信用卡即可使用免费层级", "超出限速后返回 429，次日重置"], "details_en": "Generous free tier with daily rolling token quotas (30 RPM, up to 14,400 RPD) across LLaMA and Mixtral."}, "register_url": "https://console.groq.com/login", "docs_url": "https://console.groq.com/docs/overview", "source_urls": ["https://console.groq.com/docs/rate-limits", "https://groq.com/pricing/"], "last_verified": "2026-09-01", "status": "active", "intro": "Groq是领先的AI推理云平台，提供快速、可靠的推理服务，支持大规模AI应用。", "tags": ["海外平台", "每日额度", "高速推理", "开源模型"], "last_checked": "2026-09-01", "api_base_url": "https://api.groq.com/openai/v1", "free_models": ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"], "slug": "groq", "intro_en": "World fastest LLM inference powered by Language Processing Units (LPU), reaching 500+ tokens/sec on LLaMA 3.3.", "gotchas_en": ["Strict RPM/TPM limits on free keys; handle 429 retries with backoff", "Free tier rate limits apply per IP and account"]}, {"name": "Hyperbolic AI", "name_en": "Hyperbolic AI", "website": "https://hyperbolic.xyz", "category": "llm-api", "free_quota": {"amount": 100, "unit": "请求/天 (免费开发层)", "type": "每日", "conditions": ["提供 DeepSeek-V3, Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用", "全球去中心化 GPU 算力加速，推理速度快", "注册生成 API Key 即可使用，免绑信用卡"], "details_en": ".00 free compute credits granted upon sign-up and developer verification."}, "register_url": "https://app.hyperbolic.xyz/", "docs_url": "https://docs.hyperbolic.xyz/", "source_urls": ["https://hyperbolic.xyz/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "去中心化高性能 GPU 推理云，提供包含 DeepSeek-V3、Llama 3.3 在内的超多顶级开源模型免费推理 API。", "tags": ["极速推理", "每日刷新", "DeepSeek-V3", "Llama 3.3", "免信用卡"], "api_base_url": "https://api.hyperbolic.xyz/v1", "free_models": ["meta-llama/Llama-3.3-70B-Instruct", "deepseek-ai/DeepSeek-V3"], "slug": "hyperbolic", "last_checked": "2026-09-01", "intro_en": "Decentralized high-performance GPU compute network serving DeepSeek R1, LLaMA 3.3, and Qwen 2.5.", "gotchas_en": ["Requires GitHub or Google OAuth verification", "Standard per-token billing deducted from free balance"]}, {"name": "Jina AI", "name_en": "Jina AI (Reader & Embeddings)", "website": "https://jina.ai", "category": "tools", "free_quota": {"amount": 1000, "unit": "万 tokens", "type": "永久", "conditions": ["注册即赠送 1000 万 Tokens 免费额度", "Jina Reader (r.jina.ai) 免费将任意网页转化为大模型友好的 Clean Markdown", "提供前沿的高质量多语言 Embedding & Reranker 接口"], "details_en": "1,000,000 free tokens granted on registration + 10M free reader requests."}, "register_url": "https://jina.ai/", "docs_url": "https://jina.ai/reader/", "source_urls": ["https://jina.ai/pricing/"], "last_verified": "2026-09-01", "status": "active", "intro": "为 AI Agent 与 LLM 生态而生的数据基础设施，不仅赠送千万额度，其 Reader 网页抽取工具更是开发者神器。", "tags": ["网页爬虫清洗", "Agent必备", "向量嵌入", "注册赠送", "免信用卡"], "api_base_url": "https://r.jina.ai", "free_models": ["jina-embeddings-v3", "jina-reranker-v2-base-multilingual"], "slug": "jina-ai", "last_checked": "2026-09-01", "intro_en": "Developer APIs for converting URLs into clean LLM markdown (r.jina.ai), multi-lingual embeddings, and rerankers.", "gotchas_en": ["Prepend https://r.jina.ai/ before any URL for instant web scraping into LLM markdown", "API key optional for Reader, required for Embeddings"]}, {"name": "零一万物 (01.AI)", "name_en": "01.AI (Yi Models)", "website": "https://platform.lingyiwanwu.com", "category": "llm-api", "free_quota": {"amount": 30, "unit": "元体验金 (约几百万 Tokens)", "type": "限时", "conditions": ["李开复创立的零一万物开放平台，注册赠送 30 元体验金", "支持 Yi-Large, Yi-Medium, Yi-Vision 视觉多模态全系列模型", "在各权威大模型基准评测榜单上名列前茅"], "details_en": "30 free API calls/day or 50,000 token initial credit for new developer accounts."}, "register_url": "https://platform.lingyiwanwu.com/", "docs_url": "https://platform.lingyiwanwu.com/docs", "source_urls": ["https://platform.lingyiwanwu.com/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "零一万物开放平台，支持 Yi 系列超强开源与商业化大模型，新用户赠送大额代金券体验金。", "tags": ["国产大模型", "Yi系列", "多模态", "注册赠送"], "api_base_url": "https://api.lingyiwanwu.com/v1", "free_models": ["yi-lightning", "yi-large-turbo"], "slug": "lingyiwanwu-01", "last_checked": "2026-09-01", "intro_en": "Dr. Kai-Fu Lee AI venture offering bilingual Yi-Lightning, Yi-Large, and multimodal vision models.", "gotchas_en": ["Requires mobile verification", "Check balance periodically in 01.AI open platform console"]}, {"name": "MiniMax 开放平台", "name_en": "MiniMax Open Platform", "website": "https://platform.minimaxi.com", "category": "multimodal", "free_quota": {"amount": 15, "unit": "元体验金 (约百万 Tokens + 语音合成)", "type": "限时", "conditions": ["新注册认证用户赠送 15 元全品类 API 体验金", "abab 6.5 系列大模型与全球超高拟真度的语音大模型 (T2A)", "适合做角色扮演、拟人对话及语音克隆产品"], "details_en": "15,000,000 free tokens or free audio synthesis credits on registration."}, "register_url": "https://platform.minimaxi.com/register", "docs_url": "https://platform.minimaxi.com/document/guides/chat-model/pro/api", "source_urls": ["https://platform.minimaxi.com/document/price"], "last_verified": "2026-09-01", "status": "active", "intro": "国内顶尖多模态与拟人大模型厂商，新注册即送免费体验金，在角色扮演对话与超逼真语音生成领域领跑。", "tags": ["国产大模型", "拟人对话", "超逼真语音", "注册赠送"], "api_base_url": "https://api.minimax.chat/v1", "free_models": ["abab6.5s-chat", "abab6.5g-chat"], "slug": "minimax", "last_checked": "2026-09-01", "intro_en": "Frontier multimodal AI with outstanding text generation (ABAB 6.5s) and hyper-realistic Voice/TTS synthesis.", "gotchas_en": ["Requires phone number sign-up", "Voice cloning and speech generation consume quota by character count"]}, {"name": "Mistral AI (La Plateforme)", "name_en": "Mistral AI (La Plateforme)", "website": "https://mistral.ai", "category": "llm-api", "free_quota": {"amount": 100, "unit": "请求/分钟 (免费实验层)", "type": "永久", "conditions": ["提供 Codestral, Mistral Small, Mistral NeMo 等免费 Experiment API", "代码生成与推理能力处于全球第一梯队", "支持 Function Calling 与 JSON 结构化输出"], "details_en": "Free experimentation tier (La Plateforme Free) providing rate-limited access across all open models."}, "register_url": "https://console.mistral.ai/", "docs_url": "https://docs.mistral.ai/", "source_urls": ["https://mistral.ai/technology/#pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "欧洲最强 AI 独角兽 Mistral 官方平台，提供针对开发者完全免费的 Codestral 代码模型与多款轻量模型实验层。", "tags": ["欧洲顶尖", "代码神器", "永久免费", "Codestral", "免绑卡"], "api_base_url": "https://api.mistral.ai/v1", "free_models": ["mistral-small-latest", "pixtral-12b-2409", "codestral-latest"], "slug": "mistral-ai", "last_checked": "2026-09-01", "intro_en": "Europe leading AI powerhouse behind Mistral Large 2, Codestral (coding champion), and Pixtral (multimodal).", "gotchas_en": ["Free tier requires phone verification", "Rate limited to 1 request/second and monthly token thresholds"]}, {"slug": "modelscope", "name": "魔搭社区 (ModelScope)", "name_en": "ModelScope (Alibaba Cloud)", "category": "国内主流", "intro": "阿里达摩院旗下开源 AI 社区，绑定阿里云账号即可获得全天候免费 API 推理额度，支持 Qwen 2.5 全系列、DeepSeek R1/V3 与 GLM 等模型。", "intro_en": "Alibaba open AI ecosystem providing free hosted inference API for Qwen 2.5, DeepSeek R1/V3, and GLM models via Alibaba Cloud binding.", "website": "https://modelscope.cn", "doc_url": "https://modelscope.cn/docs/model-service/API-Inference/intro", "api_base_url": "https://api-inference.modelscope.cn/v1", "free_models": ["Qwen/Qwen2.5-72B-Instruct", "deepseek-ai/DeepSeek-R1", "ZhipuAI/glm-4-9b-chat"], "free_quota": {"type": "永久免费", "amount": "每日循环", "unit": "免费推理配额 (含并发限制)", "reset_period": "每日循环", "details": "社区开发者认证后提供每日免费推理调用配额（支持 Qwen 全系列），单模型限制并发为 1-3 QPS，适合个人开发与调试。", "details_en": "Free daily community inference tier for Qwen and DeepSeek models with 1-3 QPS concurrency limits."}, "verification": "阿里云账号/手机号认证", "status": "active", "last_verified": "2026-09-02", "tags": ["永久", "国产直连", "OpenAI兼容", "大厂基座"], "gotchas": ["需要绑定阿里云实名账号获取 Token。", "社区推理层有 QPS 频控限制，生产环境建议搭配重试机制。"], "gotchas_en": ["Requires Alibaba Cloud verified account binding.", "Community tier has modest QPS concurrency limits."]}, {"name": "Nebius AI Studio", "name_en": "Nebius AI Studio", "website": "https://nebius.com/studio", "category": "cloud", "free_quota": {"amount": 5, "unit": "美元新用户代金券", "type": "限时", "conditions": ["新开发者注册 Nebius AI Studio 赠送 \\ 免费算力金", "欧洲超算级 H100/H200 GPU 集群驱动，企业级超高稳定性", "支持 Llama 3.3, Qwen 2.5, DeepSeek 等全系热门开源模型"], "details_en": ".00 USD free balance upon initial registration for developer testing."}, "register_url": "https://studio.nebius.com/", "docs_url": "https://docs.nebius.com/", "source_urls": ["https://nebius.com/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "欧洲前沿的 AI 算力与模型推理平台，提供基于顶级硬件的推理服务，新注册开发者可享大额免费体验金。", "tags": ["欧洲顶尖", "H100算力", "注册赠送", "开源大模型"], "api_base_url": "https://api.studio.nebius.ai/v1", "free_models": ["meta-llama/Meta-Llama-3.1-70B-Instruct", "Qwen/Qwen2.5-Coder-32B-Instruct"], "slug": "nebius-ai", "last_checked": "2026-09-01", "intro_en": "High-performance AI cloud hosting DeepSeek R1, LLaMA 3.3 70B, and Qwen 2.5 on dedicated NVIDIA H100 clusters.", "gotchas_en": ["Credit card authorization may be requested for identity verification", "High throughput on H100 infrastructure"]}, {"name": "Novita AI", "name_en": "Novita AI", "website": "https://novita.ai", "category": "multimodal", "free_quota": {"amount": 0.5, "unit": "美元试用金 (可生成数百张图片或调用LLM)", "type": "限时", "conditions": ["注册赠送免费 API 试用金", "支持 FLUX.1, SDXL 等上万款热门生图模型与 Llama 3 大模型", "提供极简的 OpenAI 兼容接口与按次计费模式"], "details_en": ".50 free trial credits for new accounts to test LLM and SDXL inference."}, "register_url": "https://novita.ai/", "docs_url": "https://novita.ai/docs", "source_urls": ["https://novita.ai/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "面向生成式 AI 开发者的一站式无服务器 GPU 平台，提供文生图、图像放大及大模型对话的免费试用额度。", "tags": ["FLUX生图", "文生图API", "注册赠送", "多模态"], "api_base_url": "https://api.novita.ai/v3/openai", "free_models": ["meta-llama/llama-3.3-70b-instruct", "deepseek/deepseek-r1-distill-qwen-32b"], "slug": "novita-ai", "last_checked": "2026-09-01", "intro_en": "Serverless API platform offering 100+ LLMs and image models with fast cold starts and competitive pricing.", "gotchas_en": ["Ideal for prototyping before upgrading to paid prepaid credits", "OpenAI-compatible endpoints"]}, {"slug": "nvidia-nim", "name": "NVIDIA NIM (英伟达开发者)", "name_en": "NVIDIA NIM (API Catalog)", "category": "大厂基座", "intro": "英伟达官方模型推理微服务平台，注册即送 1000 积分免费额度，畅调 LLaMA 3.3 70B、DeepSeek R1/V3、Nemotron 等顶级开源模型。", "intro_en": "NVIDIA official enterprise AI inference microservices. Get 1,000 free API credits on sign-up to run LLaMA 3.3, DeepSeek R1, and Nemotron.", "website": "https://build.nvidia.com", "doc_url": "https://docs.api.nvidia.com", "api_base_url": "https://integrate.api.nvidia.com/v1", "free_models": ["meta/llama-3.3-70b-instruct", "deepseek-ai/deepseek-r1", "nvidia/llama-3.1-nemotron-70b-instruct"], "free_quota": {"type": "注册赠送", "amount": "1,000", "unit": "API Credits (约数百万Tokens)", "reset_period": "一次性", "details": "注册个人开发者账号即可获得 1,000 API Credits 免费体验额度，消耗完毕后可通过加入 NVIDIA Developer Program 获取更多算力。", "details_en": "Register a free developer account to receive 1,000 API credits. Additional quotas available via NVIDIA Developer Program."}, "verification": "邮箱注册", "status": "active", "last_verified": "2026-09-02", "tags": ["限时", "大厂基座", "OpenAI兼容", "高速推理"], "gotchas": ["国内网络直连可能不稳定，建议配置国际网络或镜像加速。", "免费 Credits 消耗完后需要绑定支付方式或申请开发者计划扩容。"], "gotchas_en": ["Requires stable international network access.", "Credits reset/expand upon approval of NVIDIA Developer Program application."]}, {"name": "OpenRouter (Free Tier)", "name_en": "OpenRouter (Free Models)", "website": "https://openrouter.ai", "category": "aggregator", "free_quota": {"amount": 20, "unit": "请求/分钟 (包含数十款 :free 模型)", "type": "永久", "conditions": ["所有带 :free 后缀的模型（如 deepseek-r1:free, llama-3.3-70b:free）完全免费", "统一 OpenAI 兼容接口，一行代码切换全球模型", "支持免登录试用或注册生成免费 Key"], "details_en": "20+ models (including LLaMA 3.3 70B Free, Gemma 2 9B Free, DeepSeek Free) available forever at 0 cost."}, "register_url": "https://openrouter.ai/", "docs_url": "https://openrouter.ai/docs", "source_urls": ["https://openrouter.ai/models?q=free"], "last_verified": "2026-09-01", "status": "active", "intro": "全球最著名的多模型聚合网关，内置数十款带有 :free 标签的永久免费模型路由，极度方便开发切换。", "tags": ["聚合网关", "永久免费", "统一API", "全球节点", "免绑卡"], "api_base_url": "https://openrouter.ai/api/v1", "free_models": ["meta-llama/llama-3.3-70b-instruct:free", "google/gemini-2.0-flash-exp:free", "deepseek/deepseek-r1:free"], "slug": "openrouter", "last_checked": "2026-09-01", "intro_en": "Unified gateway routing to 200+ AI models, featuring a permanent collection of 20+ completely free LLM models (:free).", "gotchas_en": ["Add :free suffix to model names (e.g. meta-llama/llama-3.3-70b-instruct:free)", "Free models are supported by community donations and partner compute"]}, {"name": "Pollinations AI", "name_en": "Pollinations AI", "website": "https://pollinations.ai", "category": "multimodal", "free_quota": {"amount": 99999, "unit": "不限量 (文生图 + 文本对话)", "type": "永久", "conditions": ["100% 永久免费、开源、免注册、无需 API Key", "支持 FLUX, SDXL, Midjourney 风格等多款顶级画图模型", "直接通过 HTTP GET URL 即可无限制生成图像或文本"], "details_en": "Unlimited free requests without any API key or credit card needed."}, "register_url": "https://pollinations.ai/", "docs_url": "https://github.com/pollinations/pollinations", "source_urls": ["https://pollinations.ai/"], "last_verified": "2026-09-01", "status": "active", "intro": "开源社区的超级福利！完全无需注册、无需任何 API Key，直接发 HTTP 请求就能免费生成高清 AI 图像和文本。", "tags": ["永久免费", "免注册", "免APIKey", "FLUX文生图", "开源神器"], "api_base_url": "https://text.pollinations.ai/openai", "free_models": ["openai", "mistral", "flux", "turbo"], "slug": "pollinations", "last_checked": "2026-09-01", "intro_en": "100% free, open-access, zero-authentication API for text generation and image generation. No API key required.", "gotchas_en": ["No authentication required — perfect for quick prototypes and educational tools", "Community-shared servers; rate limits apply during peak hours"]}, {"name": "SambaNova Cloud", "name_en": "SambaNova Cloud", "website": "https://cloud.sambanova.ai", "category": "llm-api", "free_quota": {"amount": 500, "unit": "次请求/天 (免费开发层)", "type": "每日", "conditions": ["Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用", "推理速度高达 1000+ tokens/秒", "标准 OpenAI 兼容接口，注册生成 Key 即用"], "details_en": "Free developer tier offering up to 500 requests/day on LLaMA 3.3 70B and LLaMA 3.1 405B."}, "register_url": "https://cloud.sambanova.ai/", "docs_url": "https://docs.sambanova.ai/", "source_urls": ["https://cloud.sambanova.ai/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "全球极速推理云代表之一，基于 Reconfigurable Dataflow 架构，提供顶级超高并发与极速响应的免费开源模型 API。", "tags": ["极速推理", "每日刷新", "Llama 3.3", "免信用卡"], "api_base_url": "https://api.sambanova.ai/v1", "free_models": ["Meta-Llama-3.3-70B-Instruct", "Qwen2.5-72B-Instruct", "DeepSeek-R1-Distill-Llama-70B"], "slug": "sambanova", "last_checked": "2026-09-01", "intro_en": "Enterprise-speed inference platform powered by SN40L Reconfigurable Dataflow Units (RDU), running full 405B models.", "gotchas_en": ["Requires developer sign-up", "Free tier has rate limits designed for evaluation and benchmarking"]}, {"name": "Sepolia Testnet 水龙头聚合", "name_en": "Sepolia Ethereum Faucet", "website": "https://sepoliafaucet.com", "category": "web3-faucet", "free_quota": {"amount": 0.5, "unit": "Sepolia ETH / 每天", "type": "每日", "conditions": ["Alchemy, Google Cloud Web3, Infura 等水龙头每日免费领 0.1~0.5 ETH", "智能合约开发、DApp 部署必备测试代币", "无需真实资产，测试网永久免费"], "details_en": "0.5 Sepolia ETH daily free drip from Google Cloud, Infura, and Alchemy faucets."}, "register_url": "https://cloud.google.com/application/web3/faucet/ethereum/sepolia", "docs_url": "https://ethereum.org/en/developers/docs/networks/#sepolia", "source_urls": ["https://sepoliafaucet.com/"], "last_verified": "2026-09-01", "status": "active", "intro": "以太坊主网官方推荐的 Sepolia 测试网水龙头聚合，智能合约与 Web3 开发者必备，每日免费领取测试代币。", "tags": ["Web3水龙头", "以太坊", "智能合约", "每日领取", "开发者刚需"], "api_base_url": "https://rpc.sepolia.org", "free_models": ["ethereum-sepolia-testnet"], "slug": "sepolia-faucet", "last_checked": "2026-09-01", "intro_en": "Curated developer faucet aggregator for claiming free Sepolia ETH testnet tokens to test smart contracts and Web3 AI agents.", "gotchas_en": ["May require GitHub login or minimal mainnet balance (0.001 ETH) to prevent sybil attacks", "Testnet coins have no real-world monetary value"]}, {"name": "硅基流动", "name_en": "SiliconFlow", "website": "https://siliconflow.cn", "category": "cloud", "free_quota": {"amount": 2000, "unit": "万 tokens", "type": "永久", "conditions": ["新用户注册赠送 2000 万 tokens（约 14 元额度）", "部分小参数模型（如 Qwen2.5-7B）长期免费不限量", "通过邀请链接注册双方均可获得额外额度"], "details_en": "20,000,000 free tokens granted upon phone registration + multiple permanently free models."}, "register_url": "https://cloud.siliconflow.cn/i/jFtM9PqG", "docs_url": "https://docs.siliconflow.cn/", "source_urls": ["https://docs.siliconflow.cn/cn/userguide/introduction", "https://siliconflow.cn/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "硅基流动提供大模型API服务，部分模型免费，价格透明，支持对话、生图、语音、视频等多种模型。", "tags": ["国产平台", "开源模型聚合", "注册赠送", "永久免费模型"], "last_checked": "2026-09-01", "api_base_url": "https://api.siliconflow.cn/v1", "free_models": ["Qwen/Qwen2.5-7B-Instruct", "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", "THUDM/glm-4-9b-chat"], "slug": "siliconflow", "intro_en": "Leading high-concurrency model hub in Asia with 20 Million free tokens on sign-up, hosting DeepSeek R1, Qwen 2.5, and SDXL.", "gotchas_en": ["Requires mobile SMS verification", "Permanently free models (Qwen/Qwen2.5-7B-Instruct) do not consume trial balance"]}, {"name": "Tavily AI Search", "name_en": "Tavily AI Search", "website": "https://tavily.com", "category": "tools", "free_quota": {"amount": 1000, "unit": "次搜索/月", "type": "每日", "conditions": ["免费层每月提供 1,000 次无死角实时搜索请求", "LangChain / AutoGPT / Dify 等 AI Agent 框架官方默认推荐搜索源", "支持直接返回提炼后的问答与网页摘要"], "details_en": "1,000 free search API calls per month completely free forever."}, "register_url": "https://app.tavily.com/sign-up", "docs_url": "https://docs.tavily.com/", "source_urls": ["https://tavily.com/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "专门为大模型和自主智能体设计的实时联网搜索 API，每月免费 1000 次，返回结构化、零广告的高精度搜索数据。", "tags": ["联网搜索", "Agent必备", "每月刷新", "开发者神器"], "api_base_url": "https://api.tavily.com", "free_models": ["tavily-search-api"], "slug": "tavily", "last_checked": "2026-09-01", "intro_en": "Real-time web search API purpose-built for LLM agents, RAG pipelines, and autonomous research workflows.", "gotchas_en": ["Free tier resets monthly", "Natively supported by LangChain, LlamaIndex, Dify, and AutoGen"]}, {"name": "腾讯混元大模型", "name_en": "Tencent Hunyuan", "website": "https://hunyuan.tencent.com", "category": "cloud", "free_quota": {"amount": 100, "unit": "万 tokens", "type": "限时", "conditions": ["腾讯云开通混元 API 赠送 100 万 Tokens 免费测试额度", "支持混元 Pro, Standard, Lite 全系列模型", "支持超长文本理解与微信生态无缝接入"], "details_en": "100,000 free tokens for Hunyuan-Lite/Standard on registration."}, "register_url": "https://console.cloud.tencent.com/hunyuan", "docs_url": "https://cloud.tencent.com/document/product/1729", "source_urls": ["https://cloud.tencent.com/document/product/1729/97731"], "last_verified": "2026-09-01", "status": "active", "intro": "腾讯自研混元大模型，开通即赠送百万测试 Tokens，具备优秀的中文长文本理解与微信生态集成优势。", "tags": ["国产大厂", "腾讯云", "注册赠送", "中文理解"], "api_base_url": "https://api.hunyuan.cloud.tencent.com/v1", "free_models": ["hunyuan-standard", "hunyuan-lite"], "slug": "tencent-hunyuan", "last_checked": "2026-09-01", "intro_en": "Tencent foundation model platform featuring Hunyuan-Large, Hunyuan-Pro, and 3D/Image generative models.", "gotchas_en": ["Requires Tencent Cloud account with real-name verification", "Trial tokens valid for limited period"]}, {"name": "Together AI", "name_en": "Together AI", "website": "https://together.ai", "category": "llm-api", "free_quota": {"amount": 5, "unit": "美元免费额度", "type": "限时", "conditions": ["新注册开发者绑定手机号赠送  免费调用金", "提供数百款前沿开源大模型、FLUX 生图与微调服务", "支持全球极速推理与标准 OpenAI 接口"], "details_en": ".00 USD free credits upon registration to test any model on the platform."}, "register_url": "https://api.together.ai/signup", "docs_url": "https://docs.together.ai/", "source_urls": ["https://together.ai/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "全球著名的开源 AI 算力与模型推理平台，新用户赠送  额度，支持 Llama 3、FLUX.1 及各类前沿研究模型。", "tags": ["全球顶尖", "注册赠送", "开源聚合", "FLUX生图"], "api_base_url": "https://api.together.xyz/v1", "free_models": ["meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo", "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"], "slug": "together-ai", "last_checked": "2026-09-01", "intro_en": "Leading decentralized AI research and inference platform running 100+ open-source models with dedicated endpoints.", "gotchas_en": ["Requires phone number and email verification", "Consumes credits based on model parameter size"]}, {"name": "讯飞星火认知大模型", "name_en": "iFLYTEK Spark", "website": "https://xinghuo.xfyun.cn", "category": "llm-api", "free_quota": {"amount": 200, "unit": "万 tokens + Spark Lite 永久免费", "type": "永久", "conditions": ["Spark Lite 模型永久免费无限制调用", "新认证用户免费赠送 Spark 3.5 / 4.0 200 万 Tokens 礼包", "语音合成、语音识别及中文语法表现极佳"], "details_en": "2,000,000 free tokens granted for Spark Lite upon developer certification."}, "register_url": "https://xinghuo.xfyun.cn/sparkapi", "docs_url": "https://www.xfyun.cn/doc/spark/Web.html", "source_urls": ["https://xinghuo.xfyun.cn/sparkapi"], "last_verified": "2026-09-01", "status": "active", "intro": "科大讯飞旗下星火大模型，Spark Lite 模型永久免费开放，在语音、数学、教育等场景具备独特优势。", "tags": ["国产大模型", "永久免费", "语音大厂", "免信用卡"], "api_base_url": "https://spark-api-open.xf-yun.com/v1", "free_models": ["generalv3.5", "spark-lite"], "slug": "xfyun-spark", "last_checked": "2026-09-01", "intro_en": "iFLYTEK cognitive foundation model platform with high Chinese NLP accuracy, math, and voice transcription.", "gotchas_en": ["Requires real-name certification on iFLYTEK Open Platform", "Spark Lite is permanently free; advanced models consume trial balances"]}, {"name": "智谱 AI 开放平台", "name_en": "Zhipu AI (GLM-4)", "website": "https://open.bigmodel.cn", "category": "llm-api", "free_quota": {"amount": 2500, "unit": "万 tokens + GLM-4-Flash 永久免费", "type": "永久", "conditions": ["GLM-4-Flash / GLM-4-FlashX 模型永久免费无限量调用", "新注册实名用户赠送 2500 万大模型 Token 资源包", "支持 Coding、联网搜索、工具调用插件"], "details_en": "GLM-4-Flash is permanently free (unlimited tokens); new accounts get 25,000,000 tokens for GLM-4."}, "register_url": "https://open.bigmodel.cn/invite?icode=free", "docs_url": "https://open.bigmodel.cn/dev/api", "source_urls": ["https://open.bigmodel.cn/pricing"], "last_verified": "2026-09-01", "status": "active", "intro": "国内顶级大模型代表，GLM-4-Flash 宣布永久免费调用，国内访问极速且兼容 OpenAI 接口。", "tags": ["国产大模型", "永久免费", "GLM-4", "免信用卡", "国内首选"], "api_base_url": "https://open.bigmodel.cn/api/paas/v4", "free_models": ["glm-4-flash", "glm-4-flashx", "glm-4-plus"], "slug": "zhipu-ai", "last_checked": "2026-09-01", "intro_en": "China leading pioneer in large models behind GLM-4-Plus, GLM-4-Flash (free forever), and CogVideoX.", "gotchas_en": ["GLM-4-Flash is 100% free forever for all developers", "Requires phone registration"]}];
+    let selectedTool = 'openclaw';
+    let selectedPlatformSlug = platformData[0] ? platformData[0].slug : 'siliconflow';
+
+    const toolPills = document.querySelectorAll('#tool-pills .tool-pill');
+    const platformSelect = document.getElementById('platform-select');
+    const codeSnippetEl = document.getElementById('code-snippet');
+    const codeFilenameEl = document.getElementById('code-filename');
+    const codeTagEl = document.getElementById('code-tag');
+    const btnCopyCode = document.getElementById('btn-copy-code');
+    const copyBtnText = document.getElementById('copy-btn-text');
+
+    function getPlatform(slug) {
+      return platformData.find(p => p.slug === slug) || platformData[0];
+    }
+
+    function renderGeneratedCode() {
+      const p = getPlatform(selectedPlatformSlug);
+      const baseUrl = p.api_base_url || 'https://api.openai.com/v1';
+      const modelName = (p.free_models && p.free_models[0]) ? p.free_models[0] : 'default-model';
+      const pName = p.name || 'AI Platform';
+
+      let code = '';
+      let filename = 'config.yaml';
+      let tag = '适用于 OpenClaw v2.4+';
+
+      if (selectedTool === 'openclaw') {
+        filename = 'config.yaml';
+        tag = '适用于 OpenClaw 智能体';
+        code = `# OpenClaw 智能体配置文件 (${pName} 专属)
+# 官方文档: https://github.com/OpenClaw/OpenClaw
+models:
+  - name: "${modelName}"
+    provider: "openai"
+    base_url: "${baseUrl}"
+    api_key: "ENV:${p.slug.toUpperCase().replace(/-/g, '_')}_API_KEY" # 建议配置环境变量，或在此填入实际私有 Key
+    temperature: 0.7
+    max_tokens: 4096
+
+# 执行命令: openclaw run --model ${modelName}`;
+      } else if (selectedTool === 'claude-code') {
+        filename = 'setup_claude.sh';
+        tag = '适用于 Claude Code 终端代理';
+        code = `#!/bin/bash
+# Claude Code 终端代理一键直连环境变量 (${pName})
+export ANTHROPIC_BASE_URL="${baseUrl}"
+export ANTHROPIC_API_KEY="YOUR_${p.slug.toUpperCase().replace(/-/g, '_')}_API_KEY"
+export ANTHROPIC_MODEL="${modelName}"
+
+# 启动 Claude Code 编程代理
+claude`;
+      } else if (selectedTool === 'cursor') {
+        filename = 'Cursor_Settings.txt';
+        tag = '适用于 Cursor / Cline / OpenCode';
+        code = `【Cursor / Cline / OpenCode IDE 接入指南】
+
+1. 打开 Cursor / VS Code 设置 -> Models -> OpenAI API Key
+2. 勾选 "Override OpenAI Base URL" 并填入：
+   Base URL: ${baseUrl}
+3. 填入你的 API Key:
+   API Key: YOUR_API_KEY
+4. 在模型列表中点击 "+ Add Model" 新增模型名称：
+   Model Name: ${modelName}
+5. 点击 Save 即可开始在编辑器内享受 AI 编程与 Agent 代码补全！`;
+      } else if (selectedTool === 'cherry') {
+        filename = 'cherry_provider.json';
+        tag = '适用于 Cherry Studio / Chatbox';
+        code = `{
+  "id": "${p.slug}",
+  "name": "${pName}",
+  "apiType": "openai",
+  "baseUrl": "${baseUrl}",
+  "apiKey": "sk-xxxxxxxxxxxxxxxx",
+  "models": [
+    {
+      "id": "${modelName}",
+      "name": "${modelName}"
+    }
+  ]
+}`;
+      } else if (selectedTool === 'freellmapi') {
+        filename = 'freellmapi_pool.sh';
+        tag = '适用于 FreeLLMAPI / One API 多 Key 聚合池';
+        code = `# 1. 克隆轻量级开源网关 FreeLLMAPI
+git clone https://github.com/tashfeenahmed/freellmapi.git && cd freellmapi
+npm install
+
+# 2. 注入 ${pName} 作为高可用上游通道
+# Base URL: ${baseUrl}
+# Model: ${modelName}
+
+# 3. 启动并开启智能自动降级 (Fallback Chain)
+npm run dev
+# 访问 http://localhost:3001 查看统一聚合端点，支持单 Key 畅调！`;
+      } else if (selectedTool === 'python') {
+        filename = 'test_llm.py';
+        tag = '适用于 Python / OpenAI SDK';
+        code = `from openai import OpenAI
+
+# 初始化 ${pName} 客户端
+client = OpenAI(
+    base_url="${baseUrl}",
+    api_key="YOUR_API_KEY"
+)
+
+response = client.chat.completions.create(
+    model="${modelName}",
+    messages=[
+        {"role": "system", "content": "你是由 ${pName} 驱动的专业智能助手。"},
+        {"role": "user", "content": "你好！请用一句话介绍你最强大的特性。"}
+    ],
+    temperature=0.7
+)
+
+print(response.choices[0].message.content)`;
+      } else if (selectedTool === 'curl') {
+        filename = 'test_curl.sh';
+        tag = '适用于 Linux / macOS / WSL 终端';
+        code = `curl -X POST "${baseUrl}/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "${modelName}",
+    "messages": [
+      {"role": "user", "content": "Hello, please reply in one sentence."}
+    ],
+    "stream": false
+  }'`;
+      }
+
+      if (codeSnippetEl) codeSnippetEl.textContent = code;
+      if (codeFilenameEl) codeFilenameEl.textContent = filename;
+      if (codeTagEl) codeTagEl.textContent = tag;
+    }
+
+    toolPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        toolPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        selectedTool = pill.getAttribute('data-tool') || 'openclaw';
+        renderGeneratedCode();
+      });
+    });
+
+    platformSelect?.addEventListener('change', (e) => {
+      selectedPlatformSlug = e.target.value;
+      renderGeneratedCode();
+    });
+
+    btnCopyCode?.addEventListener('click', () => {
+      const code = codeSnippetEl?.textContent || '';
+      navigator.clipboard.writeText(code).then(() => {
+        if (copyBtnText) copyBtnText.textContent = '已复制到剪贴板 ✓';
+        btnCopyCode.style.background = '#2563eb';
+        btnCopyCode.style.color = '#ffffff';
+        setTimeout(() => {
+          if (copyBtnText) copyBtnText.textContent = '一键复制代码';
+          btnCopyCode.style.background = '';
+          btnCopyCode.style.color = '';
+        }, 2000);
+      });
+    });
+
+    renderGeneratedCode();
+  </script>
+</Base>
