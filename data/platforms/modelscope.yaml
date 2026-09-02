@@ -1,0 +1,37 @@
+slug: modelscope
+name: 魔搭社区 (ModelScope)
+name_en: ModelScope (Alibaba Cloud)
+category: 国内主流
+intro: 阿里达摩院旗下开源 AI 社区，绑定阿里云账号即可获得全天候免费 API 推理额度，支持 Qwen 2.5 全系列、DeepSeek R1/V3 与
+  GLM 等模型。
+intro_en: Alibaba open AI ecosystem providing free hosted inference API for Qwen 2.5,
+  DeepSeek R1/V3, and GLM models via Alibaba Cloud binding.
+website: https://modelscope.cn
+doc_url: https://modelscope.cn/docs/model-service/API-Inference/intro
+api_base_url: https://api-inference.modelscope.cn/v1
+free_models:
+- Qwen/Qwen2.5-72B-Instruct
+- deepseek-ai/DeepSeek-R1
+- ZhipuAI/glm-4-9b-chat
+free_quota:
+  type: 永久免费
+  amount: 每日循环
+  unit: 免费推理配额 (含并发限制)
+  reset_period: 每日循环
+  details: 社区开发者认证后提供每日免费推理调用配额（支持 Qwen 全系列），单模型限制并发为 1-3 QPS，适合个人开发与调试。
+  details_en: Free daily community inference tier for Qwen and DeepSeek models with
+    1-3 QPS concurrency limits.
+verification: 阿里云账号/手机号认证
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 国产直连
+- OpenAI兼容
+- 大厂基座
+gotchas:
+- 需要绑定阿里云实名账号获取 Token。
+- 社区推理层有 QPS 频控限制，生产环境建议搭配重试机制。
+gotchas_en:
+- Requires Alibaba Cloud verified account binding.
+- Community tier has modest QPS concurrency limits.
