@@ -10,7 +10,7 @@ function formatQuota(p: any): string {
 }
 
 function formatVerified(dateStr: any): string {
-  return '今日 14:30';
+  return dateStr || '2026-09-02';
 }
 
 const totalCount = platforms.length;
@@ -70,7 +70,7 @@ const totalCount = platforms.length;
               <div class="telemetry-divider"></div>
               <div class="telemetry-item">
                 <span class="telemetry-label">上次核验</span>
-                <span class="telemetry-value">今日 14:30</span>
+                <span id="telemetry-last-sweep" class="telemetry-value">今日 07:30</span>
               </div>
               <div class="telemetry-divider"></div>
               <div class="telemetry-item">
@@ -1092,7 +1092,27 @@ const totalCount = platforms.length;
 
   <script is:inline>
     // 1. Radar Countdowns
+    function updateLastSweep() {
+      const sweepEl = document.getElementById('telemetry-last-sweep');
+      if (!sweepEl) return;
+      const now = new Date();
+      const currentDec = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+      const schedule = [1.5, 4.5, 7.5, 14.5, 20.5];
+      const past = schedule.filter(h => h <= currentDec);
+      const isEn = document.documentElement.lang && document.documentElement.lang.startsWith('en');
+      if (past.length > 0) {
+        const lastH = past[past.length - 1];
+        const h = Math.floor(lastH);
+        const m = Math.round((lastH - h) * 60);
+        const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        sweepEl.textContent = isEn ? `Today ${timeStr}` : `今日 ${timeStr}`;
+      } else {
+        sweepEl.textContent = isEn ? `Yesterday 20:30` : `昨日 20:30`;
+      }
+    }
+
     function updateRadarCountdown() {
+      updateLastSweep();
       const timerEl = document.getElementById('radar-live-countdown');
       const discoverEl = document.getElementById('radar-discover-countdown');
       if (!timerEl && !discoverEl) return;

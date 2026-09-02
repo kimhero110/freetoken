@@ -435,7 +435,7 @@ function formatQuota(p: any): string {
 }
 
 function formatVerified(dateStr: any): string {
-  return 'Today 14:30';
+  return '2026-09-02';
 }
 
 const totalCount = platforms.length;
@@ -475,7 +475,7 @@ const totalCount = platforms.length;
           <div class="telemetry-divider"></div>
           <div class="telemetry-item">
             <span class="telemetry-label">Last Sweep</span>
-            <span class="telemetry-value">Today 14:30</span>
+            <span class="telemetry-value">2026-09-02</span>
           </div>
           <div class="telemetry-divider"></div>
           <div class="telemetry-item">
@@ -1453,7 +1453,7 @@ const apiBaseUrl = p.api_base_url || 'https://api.openai.com/v1';
 const primaryModel = p.free_models?.[0] || 'default-model';
 
 function formatVerified(dateStr: any): string {
-  return 'Today 14:30';
+  return '2026-09-02';
 }
 ---
 <Base

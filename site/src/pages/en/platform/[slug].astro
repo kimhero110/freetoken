@@ -22,7 +22,7 @@ const apiBaseUrl = p.api_base_url || 'https://api.openai.com/v1';
 const primaryModel = p.free_models?.[0] || 'default-model';
 
 function formatVerified(dateStr: any): string {
-  return 'Today 14:30';
+  return dateStr || '2026-09-02';
 }
 ---
 <Base
