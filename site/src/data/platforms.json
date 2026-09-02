@@ -1,127 +1,5 @@
 [
   {
-    "slug": "xai-grok",
-    "name": "xAI (Grok 开放平台)",
-    "name_en": "xAI (Grok API)",
-    "category": "海外主流",
-    "intro": "马斯克旗下 xAI 开发者平台，注册即送 25 美元体验金；在控制台开启数据共享计划（Data Sharing）每月发放最高 150 美元/月免费算力！",
-    "intro_en": "Elon Musk's xAI platform. $25 sign-up credit plus up to $150/month free credits via Data Sharing program.",
-    "website": "https://x.ai/api",
-    "doc_url": "https://docs.x.ai/",
-    "api_base_url": "https://api.x.ai/v1",
-    "free_models": [
-      "grok-4.1-fast",
-      "grok-4",
-      "grok-3"
-    ],
-    "free_quota": {
-      "type": "每月循环",
-      "amount": "25 美元 + 150 美元/月",
-      "unit": "USD Credits (约数亿Tokens)",
-      "reset_period": "每月刷新",
-      "details": "注册发放 25 美元 API 额度；开启 Data Sharing 计划后每月发放 150 美元免费额度，支持 2M 超长上下文推理。",
-      "details_en": "$25 on sign-up, plus $150/month continuous credit when enrolled in the Data Sharing plan."
-    },
-    "verification": "海外手机号/绑定卡",
-    "status": "active",
-    "last_verified": "2026-09-02",
-    "tags": [
-      "限时",
-      "每日",
-      "海外主流",
-      "OpenAI兼容"
-    ],
-    "gotchas": [
-      "数据共享计划开启后 prompt 和响应将被用于训练且不可撤回。",
-      "需要合规网络访问。"
-    ],
-    "gotchas_en": [
-      "Data sharing agreement is irrevocable once enabled.",
-      "Requires compliant international network."
-    ]
-  },
-  {
-    "slug": "huggingface-inference",
-    "name": "Hugging Face (Serverless API)",
-    "name_en": "Hugging Face Serverless Inference",
-    "category": "海外主流",
-    "intro": "全球最大开源模型社区官方 Serverless 推理 API，300+ 款开源模型完全免费调用，共享算力池每小时提供 300 次调用。",
-    "intro_en": "Official Serverless Inference API by Hugging Face. Free access to 300+ open-source models with 300 req/hr tier.",
-    "website": "https://huggingface.co/docs/api-inference/",
-    "doc_url": "https://huggingface.co/docs/api-inference/",
-    "api_base_url": "https://api-inference.huggingface.co/v1",
-    "free_models": [
-      "deepseek-ai/DeepSeek-R1",
-      "Qwen/Qwen2.5-72B-Instruct",
-      "meta-llama/Llama-3.3-70B-Instruct"
-    ],
-    "free_quota": {
-      "type": "每日刷新",
-      "amount": "300 次 / 小时",
-      "unit": "Requests (永久免费)",
-      "reset_period": "每小时重置",
-      "details": "免费层提供每小时 300 次请求，覆盖 Hugging Face 托管的数百款前沿开源大模型，完全兼容 OpenAI 格式。",
-      "details_en": "300 requests per hour free tier for hundreds of popular open models."
-    },
-    "verification": "邮箱注册",
-    "status": "active",
-    "last_verified": "2026-09-02",
-    "tags": [
-      "每日",
-      "永久",
-      "海外主流",
-      "OpenAI兼容"
-    ],
-    "gotchas": [
-      "冷门模型可能存在冷启动排队延迟。",
-      "高并发请添加重试机制。"
-    ],
-    "gotchas_en": [
-      "Cold start latency may apply to less frequent models.",
-      "Include retry logic for rate limit spikes."
-    ]
-  },
-  {
-    "slug": "stepfun",
-    "name": "阶跃星辰 (StepFun 开放平台)",
-    "name_en": "StepFun AI",
-    "category": "国内主流",
-    "intro": "国内领先自研千亿大模型开放平台，新用户注册赠送 15 元代金券，支持 Step-2/Step-1 系列模型，中文语义理解强劲且无过度拦截。",
-    "intro_en": "Leading Chinese Foundation Model provider. 15 RMB free voucher on registration for Step-2 series models.",
-    "website": "https://platform.stepfun.com/",
-    "doc_url": "https://platform.stepfun.com/docs/llm/text",
-    "api_base_url": "https://api.stepfun.com/v1",
-    "free_models": [
-      "step-2-16k",
-      "step-1-8k",
-      "step-1-32k",
-      "step-1-128k"
-    ],
-    "free_quota": {
-      "type": "限时赠送",
-      "amount": "15 元",
-      "unit": "代金券 (约数百万Tokens)",
-      "reset_period": "一次性",
-      "details": "新注册开发者发放 15 元代金券，全面支持 Step 系列长文本与代码生成模型，100% 兼容 OpenAI 格式。",
-      "details_en": "15 RMB trial voucher upon registration for Step-2/Step-1 models."
-    },
-    "verification": "手机号注册",
-    "status": "active",
-    "last_verified": "2026-09-02",
-    "tags": [
-      "限时",
-      "国产直连",
-      "国内主流",
-      "OpenAI兼容"
-    ],
-    "gotchas": [
-      "代金券消耗完毕后按量计费，适合 Agent 测试与多模型对比。"
-    ],
-    "gotchas_en": [
-      "Standard billing applies after trial voucher is fully consumed."
-    ]
-  },
-  {
     "slug": "ai21-labs",
     "name": "AI21 Labs (Jamba)",
     "name_en": "AI21 Labs (Jamba)",
@@ -617,6 +495,47 @@
     ],
     "gotchas_en": [
       "Strict TPM limit applies on free tier."
+    ]
+  },
+  {
+    "slug": "huggingface-inference",
+    "name": "Hugging Face (Serverless API)",
+    "name_en": "Hugging Face Serverless Inference",
+    "category": "海外主流",
+    "intro": "全球最大开源模型社区官方 Serverless 推理 API，300+ 款开源模型完全免费调用，共享算力池每小时提供 300 次调用。",
+    "intro_en": "Official Serverless Inference API by Hugging Face. Free access to 300+ open-source models with 300 req/hr tier.",
+    "website": "https://huggingface.co/docs/api-inference/",
+    "doc_url": "https://huggingface.co/docs/api-inference/",
+    "api_base_url": "https://api-inference.huggingface.co/v1",
+    "free_models": [
+      "deepseek-ai/DeepSeek-R1",
+      "Qwen/Qwen2.5-72B-Instruct",
+      "meta-llama/Llama-3.3-70B-Instruct"
+    ],
+    "free_quota": {
+      "type": "每日刷新",
+      "amount": "300 次 / 小时",
+      "unit": "Requests (永久免费)",
+      "reset_period": "每小时重置",
+      "details": "免费层提供每小时 300 次请求，覆盖 Hugging Face 托管的数百款前沿开源大模型，完全兼容 OpenAI 格式。",
+      "details_en": "300 requests per hour free tier for hundreds of popular open models."
+    },
+    "verification": "邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "每日",
+      "永久",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "冷门模型可能存在冷启动排队延迟。",
+      "高并发请添加重试机制。"
+    ],
+    "gotchas_en": [
+      "Cold start latency may apply to less frequent models.",
+      "Include retry logic for rate limit spikes."
     ]
   },
   {
@@ -1271,6 +1190,46 @@
     ]
   },
   {
+    "slug": "stepfun",
+    "name": "阶跃星辰 (StepFun 开放平台)",
+    "name_en": "StepFun AI",
+    "category": "国内主流",
+    "intro": "国内领先自研千亿大模型开放平台，新用户注册赠送 15 元代金券，支持 Step-2/Step-1 系列模型，中文语义理解强劲且无过度拦截。",
+    "intro_en": "Leading Chinese Foundation Model provider. 15 RMB free voucher on registration for Step-2 series models.",
+    "website": "https://platform.stepfun.com/",
+    "doc_url": "https://platform.stepfun.com/docs/llm/text",
+    "api_base_url": "https://api.stepfun.com/v1",
+    "free_models": [
+      "step-2-16k",
+      "step-1-8k",
+      "step-1-32k",
+      "step-1-128k"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "15 元",
+      "unit": "代金券 (约数百万Tokens)",
+      "reset_period": "一次性",
+      "details": "新注册开发者发放 15 元代金券，全面支持 Step 系列长文本与代码生成模型，100% 兼容 OpenAI 格式。",
+      "details_en": "15 RMB trial voucher upon registration for Step-2/Step-1 models."
+    },
+    "verification": "手机号注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "代金券消耗完毕后按量计费，适合 Agent 测试与多模型对比。"
+    ],
+    "gotchas_en": [
+      "Standard billing applies after trial voucher is fully consumed."
+    ]
+  },
+  {
     "slug": "tavily",
     "name": "Tavily AI (AI 搜索专用引擎)",
     "name_en": "Tavily AI",
@@ -1462,6 +1421,47 @@
     ],
     "gotchas_en": [
       "Requires custom Endpoint ID in model parameter."
+    ]
+  },
+  {
+    "slug": "xai-grok",
+    "name": "xAI (Grok 开放平台)",
+    "name_en": "xAI (Grok API)",
+    "category": "海外主流",
+    "intro": "马斯克旗下 xAI 开发者平台，注册即送 25 美元体验金；在控制台开启数据共享计划（Data Sharing）每月发放最高 150 美元/月免费算力！",
+    "intro_en": "Elon Musk's xAI platform. $25 sign-up credit plus up to $150/month free credits via Data Sharing program.",
+    "website": "https://x.ai/api",
+    "doc_url": "https://docs.x.ai/",
+    "api_base_url": "https://api.x.ai/v1",
+    "free_models": [
+      "grok-4.1-fast",
+      "grok-4",
+      "grok-3"
+    ],
+    "free_quota": {
+      "type": "每月循环",
+      "amount": "25 美元 + 150 美元/月",
+      "unit": "USD Credits (约数亿Tokens)",
+      "reset_period": "每月刷新",
+      "details": "注册发放 25 美元 API 额度；开启 Data Sharing 计划后每月发放 150 美元免费额度，支持 2M 超长上下文推理。",
+      "details_en": "$25 on sign-up, plus $150/month continuous credit when enrolled in the Data Sharing plan."
+    },
+    "verification": "海外手机号/绑定卡",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "每日",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "数据共享计划开启后 prompt 和响应将被用于训练且不可撤回。",
+      "需要合规网络访问。"
+    ],
+    "gotchas_en": [
+      "Data sharing agreement is irrevocable once enabled.",
+      "Requires compliant international network."
     ]
   },
   {

@@ -3,10 +3,10 @@
 FreeToken Automated Pre-Flight Healthcheck & Regression Guard
 ------------------------------------------------------------
 Runs before any build/deploy to ensure zero-regression on critical features:
-1. Platform count >= 40
-2. Code Generator (7 tools) is present and functional
-3. Article system is present (>= 4 articles)
-4. Key routes return 200 OK
+1. Platform count >= 40 in data/platforms.json
+2. Code Generator (7 tools) is present and functional in CodeGenerator.astro
+3. Article system is present (>= 4 articles) in data/articles.json
+4. Key routes return 200 OK and navigation is intact
 """
 
 import sys
@@ -32,18 +32,18 @@ def run_checks():
         else:
             print(f"  [PASS] 1/4 Platforms DB: {len(platforms)}/40 platforms verified.")
 
-    # 2. Check Code Generator Tool in Guide
-    guide_file = ROOT / "site" / "src" / "pages" / "guide" / "index.astro"
-    if not guide_file.exists():
-        errors.append("site/src/pages/guide/index.astro missing!")
+    # 2. Check Code Generator Component
+    gen_file = ROOT / "site" / "src" / "components" / "CodeGenerator.astro"
+    if not gen_file.exists():
+        errors.append("site/src/components/CodeGenerator.astro missing!")
     else:
-        content = guide_file.read_text(encoding="utf-8")
+        content = gen_file.read_text(encoding="utf-8")
         tools = ['openclaw', 'claude-code', 'cursor', 'cherry', 'freellmapi', 'python', 'curl']
         missing_tools = [t for t in tools if t not in content]
         if missing_tools:
             errors.append(f"Code generator missing tools: {missing_tools}")
         else:
-            print("  [PASS] 2/4 Code Generator: All 7 developer tools verified.")
+            print("  [PASS] 2/4 Code Generator Component: All 7 developer tools verified.")
 
     # 3. Check Articles System
     articles_file = ROOT / "data" / "articles.json"

@@ -1,0 +1,381 @@
+---
+interface Props {
+  lang?: 'zh' | 'en';
+}
+const { lang = 'zh' } = Astro.props;
+const isEn = lang === 'en';
+---
+
+<section class="hero-editorial" id="hero-editorial">
+  <div class="container hero-editorial-inner">
+    <div class="hero-copy">
+      
+      <!-- 搜索框：置顶在第一交互位 -->
+      <div class="hero-search-wrap">
+        <input
+          type="text"
+          id="search-input"
+          class="hero-search-input"
+          placeholder={isEn ? "Search 40+ platforms, models (Grok, Gemini, DeepSeek, GLM-4) or features..." : "搜索 40+ 家平台、模型（如 Grok, Gemini, GLM-4, StepFun, DeepSeek）或特性..."}
+          autocomplete="off"
+        />
+      </div>
+
+      <!-- 双轨模式切换器 -->
+      <div class="hero-track-switcher">
+        <button class="track-tab active" data-slide="0" id="tab-slide-0">
+          <span class="track-num">01</span>
+          <span>{isEn ? 'Free Token Radar' : '免费算力雷达'}</span>
+        </button>
+        <button class="track-tab" data-slide="1" id="tab-slide-1">
+          <span class="track-num">02</span>
+          <span>{isEn ? 'Pro Developer Lab ↗' : '职业开发者 Lab ↗'}</span>
+        </button>
+        <div class="track-progress-bar">
+          <div class="track-progress-inner" id="track-progress-inner"></div>
+        </div>
+      </div>
+
+      <!-- 轮播幻灯片容器 -->
+      <div class="hero-slides-wrapper">
+        
+        <!-- Slide 0: 免费算力雷达 -->
+        <div class="hero-slide active" id="hero-slide-0">
+          <p class="hero-eyebrow">{isEn ? 'Solopreneur · AI Compute & Open Source Intelligence' : '一人公司 · AI 算力与开源情报'}</p>
+          <h1 class="hero-headline">
+            {isEn ? 'Build with Free Tokens,' : '用免费 Token 做工具，'}<br/>
+            {isEn ? 'and Keep Thinking Freely.' : '也提醒自己保持思考。'}
+          </h1>
+          <p class="hero-lead">
+            {isEn
+              ? 'Tracking 40+ global LLM and Cloud API free tiers in real time. Transparent rules, zero gotchas, and 10-second setup code for independent builders.'
+              : '持续追踪全球 40+ 主流大模型与云平台免费 API 配额。剔除噱头与套路，提供透明规则、避坑指南与 10 秒即用代码。'}
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn-hero-primary" href="#products">
+              <span>{isEn ? 'Explore 40+ Platforms ↓' : '浏览 40+ 平台清单 ↓'}</span>
+            </a>
+            <a class="btn-hero-secondary" href={isEn ? "/en/guide/" : "/guide/"}>
+              <span>{isEn ? '⚡ 10s Config Generator →' : '⚡ 10秒代码生成器 →'}</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Slide 1: 职业开发者算力实验室 -->
+        <div class="hero-slide" id="hero-slide-1">
+          <div class="lab-badge-wrap">
+            <span class="lab-pill">{isEn ? 'PRO COMPUTE LAB' : '商业级算力支撑'}</span>
+            <span class="lab-hot">{isEn ? 'Enterprise Ready' : '高并发 / 零封号 / 统一发票'}</span>
+          </div>
+
+          <h2 class="hero-headline hero-headline-lab">
+            {isEn ? 'Free Tiers for Exploration,' : '免费算力做探索，'}<br/>
+            {isEn ? 'Commercial Engines for Production.' : '商业算力稳交付。'}
+          </h2>
+
+          <p class="hero-lead">
+            {isEn
+              ? 'When free rate limits bottleneck your autonomous agents: FreeToken Lab provides high-concurrency domestic direct API pooling with official compliance.'
+              : '当 Agent 高频调用撞上免费层 20 RPM 限制时：FreeToken Lab 提供国内主流大模型企业级底价池化接入，零封号风险，对公转账与正规发票。'}
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn-hero-primary btn-hero-lab" href="https://freetokenlab.com" target="_blank" rel="noopener">
+              <span>{isEn ? 'Explore FreeToken Lab ↗' : '前往 FreeToken Lab 探索职业算力 ↗'}</span>
+            </a>
+            <a class="btn-hero-secondary" href={isEn ? "/en/articles/" : "/articles/"}>
+              <span>{isEn ? 'Read Technical Articles →' : '阅读深度技术专栏 →'}</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 右侧吉祥物卡片 -->
+    <div class="hero-mascot-wrapper">
+      <div class="hero-card-mascot">
+        <img src="/images/hero-mascot.webp" alt="思考的科技猫头鹰插画" class="hero-mascot-img" width="380" height="380" />
+        <div class="mascot-caption">
+          <p>{isEn ? 'Tools make you move faster; thinking decides where to go.' : '工具让人走得更快，思考决定往哪里走。'}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-editorial {
+    padding: 36px 0 28px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .hero-editorial-inner {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+  }
+  .hero-search-wrap {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  .hero-search-input {
+    width: 100%;
+    padding: 13px 18px;
+    font-size: 14.5px;
+    border: 2px solid var(--card-border);
+    border-radius: 8px;
+    background: var(--bg-subtle);
+    color: var(--text);
+    outline: none;
+    transition: all 0.2s;
+  }
+  .hero-search-input:focus {
+    border-color: var(--accent);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  .hero-track-switcher {
+    display: flex;
+    gap: 8px;
+    position: relative;
+    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 22px;
+    padding-bottom: 10px;
+  }
+  .track-tab {
+    background: transparent;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .track-tab.active {
+    color: var(--text);
+    background: var(--bg-subtle);
+  }
+  .track-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+  }
+  .track-progress-bar {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: transparent;
+  }
+  .track-progress-inner {
+    height: 100%;
+    width: 50%;
+    background: var(--accent);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hero-slides-wrapper {
+    position: relative;
+    min-height: 230px;
+  }
+  .hero-slide {
+    display: none;
+    animation: fadeIn 0.25s ease-out forwards;
+  }
+  .hero-slide.active {
+    display: block;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hero-headline {
+    font-size: clamp(24px, 3.2vw, 34px);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.6px;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .hero-lead {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 22px;
+    max-width: 560px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn-hero-primary {
+    background: var(--text);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 6px;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+  }
+  .btn-hero-primary:hover {
+    background: #000000;
+    transform: translateY(-1px);
+  }
+  .btn-hero-secondary {
+    background: transparent;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: 1px solid var(--card-border);
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+  }
+  .btn-hero-secondary:hover {
+    border-color: var(--text);
+    background: var(--bg-subtle);
+  }
+
+  .lab-badge-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .lab-pill {
+    font-size: 11px;
+    font-weight: 700;
+    color: #7c3aed;
+    background: rgba(124, 58, 237, 0.08);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .lab-hot {
+    font-size: 11px;
+    color: var(--text-light);
+  }
+  .btn-hero-lab {
+    background: #7c3aed;
+  }
+  .btn-hero-lab:hover {
+    background: #6d28d9;
+  }
+
+  .hero-mascot-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  .hero-card-mascot {
+    background: var(--bg-subtle);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.04);
+  }
+  .hero-mascot-img {
+    width: 100%;
+    height: auto;
+    max-height: 240px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  .mascot-caption p {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* 移动端全自适应 */
+  @media (max-width: 768px) {
+    .hero-editorial {
+      padding: 24px 0 20px;
+    }
+    .hero-editorial-inner {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .hero-mascot-wrapper {
+      order: -1;
+      width: 100%;
+    }
+    .hero-card-mascot {
+      max-width: 100%;
+      padding: 12px;
+    }
+    .hero-mascot-img {
+      max-height: 160px;
+    }
+    .hero-slides-wrapper {
+      min-height: auto;
+    }
+    .hero-headline {
+      font-size: 22px;
+    }
+    .hero-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    .btn-hero-primary, .btn-hero-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script is:inline>
+  const tab0 = document.getElementById('tab-slide-0');
+  const tab1 = document.getElementById('tab-slide-1');
+  const slide0 = document.getElementById('hero-slide-0');
+  const slide1 = document.getElementById('hero-slide-1');
+  const progressInner = document.getElementById('track-progress-inner');
+
+  function switchSlide(idx) {
+    if (idx === 0) {
+      tab0?.classList.add('active');
+      tab1?.classList.remove('active');
+      slide0?.classList.add('active');
+      slide1?.classList.remove('active');
+      if (progressInner) progressInner.style.transform = 'translateX(0%)';
+    } else {
+      tab1?.classList.add('active');
+      tab0?.classList.remove('active');
+      slide1?.classList.add('active');
+      slide0?.classList.remove('active');
+      if (progressInner) progressInner.style.transform = 'translateX(100%)';
+    }
+  }
+
+  tab0?.addEventListener('click', () => switchSlide(0));
+  tab1?.addEventListener('click', () => switchSlide(1));
+</script>

@@ -16,12 +16,6 @@
   <url><loc>https://freetokens.info/en/article/multi-key-gateway-pooling-tutorial/</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://freetokens.info/article/agent-5-hour-sliding-window-gotchas/</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://freetokens.info/en/article/agent-5-hour-sliding-window-gotchas/</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://freetokens.info/platform/xai-grok/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://freetokens.info/en/platform/xai-grok/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://freetokens.info/platform/huggingface-inference/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://freetokens.info/en/platform/huggingface-inference/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://freetokens.info/platform/stepfun/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://freetokens.info/en/platform/stepfun/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/ai21-labs/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/ai21-labs/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/aliyun-bailian/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
@@ -48,6 +42,8 @@
   <url><loc>https://freetokens.info/en/platform/google-ai-studio/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/groq/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/groq/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/platform/huggingface-inference/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/en/platform/huggingface-inference/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/hyperbolic/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/hyperbolic/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/infini-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
@@ -82,6 +78,8 @@
   <url><loc>https://freetokens.info/en/platform/sepolia-faucet/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/siliconflow/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/siliconflow/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/platform/stepfun/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/en/platform/stepfun/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/tavily/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/tavily/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/tencent-hunyuan/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
@@ -92,6 +90,8 @@
   <url><loc>https://freetokens.info/en/platform/tokenpony/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/volcengine/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/volcengine/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/platform/xai-grok/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/en/platform/xai-grok/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/xfyun-spark/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/xfyun-spark/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/zhipu-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>

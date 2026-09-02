@@ -1,0 +1,357 @@
+---
+interface Props {
+  platforms: any[];
+  lang?: 'zh' | 'en';
+}
+
+const { platforms = [], lang = 'zh' } = Astro.props;
+const isEn = lang === 'en';
+const platformJsonStr = JSON.stringify(platforms);
+---
+
+<div class="config-generator-card" id="code-generator">
+  <div class="generator-header">
+    <div class="gen-title-wrap">
+      <span class="gen-icon">⚡</span>
+      <div>
+        <h2 class="gen-title">{isEn ? '10-Second Drop-in Code Generator' : '10 秒多工具即用配置代码生成器'}</h2>
+        <p class="gen-desc">{isEn ? 'Zero mental overhead: Select your platform and generate exact configuration code for 7 mainstream developer tools.' : '消除参数心智负担：一键切换 7 大主流工具，自动合成标准配置代码。'}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 工具切换 Tab (移动端原生滑动手势) -->
+  <div class="gen-tabs-wrap">
+    <div class="code-gen-tabs" id="gen-tabs">
+      <button class="code-gen-tab active" data-tab="openclaw">🤖 OpenClaw (智能体)</button>
+      <button class="code-gen-tab" data-tab="claude-code">💻 Claude Code (CLI)</button>
+      <button class="code-gen-tab" data-tab="cursor">🖱️ Cursor / Cline (IDE)</button>
+      <button class="code-gen-tab" data-tab="cherry">🍒 Cherry Studio (桌面端)</button>
+      <button class="code-gen-tab" data-tab="freellmapi">⚙️ FreeLLMAPI (聚合池)</button>
+      <button class="code-gen-tab" data-tab="python">🐍 Python (SDK)</button>
+      <button class="code-gen-tab" data-tab="curl">🌐 cURL (Shell)</button>
+    </div>
+  </div>
+
+  <!-- 参数选择面板 -->
+  <div class="gen-controls-grid">
+    <div class="control-group">
+      <label for="select-platform">{isEn ? 'Select Free Tier Platform:' : '选择免费算力平台：'}</label>
+      <select id="select-platform" class="gen-select">
+        {platforms.map((p) => (
+          <option value={p.slug}>
+            {p.name} ({p.free_quota?.amount ? `${p.free_quota.amount} ${p.free_quota.unit || ''}` : p.category})
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="input-api-key">{isEn ? 'Your API Key (Local only):' : '输入您的 API Key（仅浏览器本地运算）：'}</label>
+      <input type="text" id="input-api-key" class="gen-input" placeholder="sk-..." value="sk-your-api-key-here" />
+    </div>
+
+    <div class="control-group">
+      <label for="select-model">{isEn ? 'Recommended Model:' : '推荐调优模型：'}</label>
+      <select id="select-model" class="gen-select">
+        <!-- JS 动态注入 -->
+      </select>
+    </div>
+  </div>
+
+  <!-- 生成的代码显示区 -->
+  <div class="gen-output-container">
+    <div class="output-topbar">
+      <span class="output-file-tag" id="output-file-name">config.json</span>
+      <button class="btn-copy-code" id="btn-copy-code">
+        <span>📋</span>
+        <span id="copy-btn-text">{isEn ? 'Copy Code' : '一键复制配置'}</span>
+      </button>
+    </div>
+    <pre class="code-output-pre"><code id="code-output-text" class="code-output-code"></code></pre>
+  </div>
+</div>
+
+<style>
+  .config-generator-card {
+    background: #ffffff;
+    border: 2px solid var(--text);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+    margin-bottom: 40px;
+  }
+  .generator-header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 16px;
+  }
+  .gen-title-wrap {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .gen-icon {
+    font-size: 26px;
+    line-height: 1;
+  }
+  .gen-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -0.4px;
+  }
+  .gen-desc {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .gen-tabs-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 22px;
+    padding-bottom: 4px;
+  }
+  .gen-tabs-wrap::-webkit-scrollbar {
+    display: none;
+  }
+  .code-gen-tabs {
+    display: flex;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .code-gen-tab {
+    background: var(--bg-subtle);
+    border: 1px solid var(--card-border);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .code-gen-tab.active {
+    background: var(--text);
+    color: #ffffff;
+    border-color: var(--text);
+  }
+
+  .gen-controls-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  @media (max-width: 800px) {
+    .gen-controls-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .control-group label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+  .gen-select, .gen-input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 13.5px;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    background: #ffffff;
+    color: var(--text);
+    outline: none;
+  }
+  .gen-select:focus, .gen-input:focus {
+    border-color: var(--accent);
+  }
+
+  .gen-output-container {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .output-topbar {
+    background: #27272a;
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .output-file-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: #a1a1aa;
+  }
+  .btn-copy-code {
+    background: #3f3f46;
+    border: none;
+    color: #f4f4f5;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .btn-copy-code:hover {
+    background: #52525b;
+  }
+  .code-output-pre {
+    padding: 16px 18px;
+    margin: 0;
+    overflow-x: auto;
+    background: transparent;
+  }
+  .code-output-code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: #38bdf8;
+    white-space: pre;
+    word-break: break-all;
+  }
+
+  @media (max-width: 640px) {
+    .config-generator-card {
+      padding: 18px 14px;
+    }
+    .gen-title {
+      font-size: 17px;
+    }
+  }
+</style>
+
+<script is:inline define:vars={{ platformJsonStr }}>
+  const platformsData = JSON.parse(platformJsonStr);
+  const platformSelect = document.getElementById('select-platform');
+  const modelSelect = document.getElementById('select-model');
+  const apiKeyInput = document.getElementById('input-api-key');
+  const codeOutputText = document.getElementById('code-output-text');
+  const fileNameTag = document.getElementById('output-file-name');
+  const copyBtn = document.getElementById('btn-copy-code');
+  const copyBtnText = document.getElementById('copy-btn-text');
+  const tabButtons = document.querySelectorAll('#gen-tabs .code-gen-tab');
+
+  let activeTab = 'openclaw';
+
+  function populateModels() {
+    const slug = platformSelect?.value;
+    const p = platformsData.find(x => x.slug === slug) || platformsData[0];
+    if (!modelSelect) return;
+    modelSelect.innerHTML = '';
+    const models = p.free_models && p.free_models.length ? p.free_models : ['default-model'];
+    models.forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m;
+      opt.textContent = m;
+      modelSelect.appendChild(opt);
+    });
+  }
+
+  function renderGeneratedCode() {
+    const slug = platformSelect?.value;
+    const p = platformsData.find(x => x.slug === slug) || platformsData[0];
+    const key = apiKeyInput?.value.trim() || 'sk-your-api-key-here';
+    const model = modelSelect?.value || (p.free_models && p.free_models[0]) || 'default-model';
+    const baseUrl = p.api_base_url || 'https://api.openai.com/v1';
+
+    let code = '';
+    let fileName = '';
+
+    if (activeTab === 'openclaw') {
+      fileName = 'config.json (OpenClaw 模型配置)';
+      code = JSON.stringify({
+        "models": {
+          "primary": {
+            "name": model,
+            "provider": "openai-compatible",
+            "base_url": baseUrl,
+            "api_key": key,
+            "max_tokens": 8192,
+            "temperature": 0.3
+          }
+        },
+        "settings": {
+          "enable_background_title": false,
+          "enable_background_heartbeat": false,
+          "prompt_cache": true
+        }
+      }, null, 2);
+    } else if (activeTab === 'claude-code') {
+      fileName = '终端命令 (Claude Code 环境变量)';
+      code = `# 1. 终端注入 OpenAI 兼容 Base URL 与 API 密钥\nexport ANTHROPIC_BASE_URL="${baseUrl}"\nexport ANTHROPIC_AUTH_TOKEN="${key}"\n\n# 2. 启动 Claude Code 编码\nclaude --model "${model}"`;
+    } else if (activeTab === 'cursor') {
+      fileName = 'Cursor Settings (Settings -> Models -> OpenAI Compatible)';
+      code = `// Cursor IDE 填空指引：\nBase URL:  ${baseUrl}\nAPI Key:   ${key}\nModel Name: ${model}\n\n// 测试 Prompt：\n"Hello, write a quick test script to verify API connectivity."`;
+    } else if (activeTab === 'cherry') {
+      fileName = 'Cherry Studio / NextChat 配置参数';
+      code = `// 客户端图形界面配置：\n提供商类型:  OpenAI 兼容 (OpenAI API)\nAPI 域名:   ${baseUrl}\nAPI Key:    ${key}\n模型名称:    ${model}`;
+    } else if (activeTab === 'freellmapi') {
+      fileName = 'freellmapi/config.json (多 Key 聚合网关)';
+      code = JSON.stringify({
+        "channel_name": p.name,
+        "base_url": baseUrl,
+        "api_key": key,
+        "models": [model],
+        "priority": 1,
+        "weight": 10,
+        "fallback_group": "free-tier"
+      }, null, 2);
+    } else if (activeTab === 'python') {
+      fileName = 'test_api.py (OpenAI Python SDK)';
+      code = `import openai\n\nclient = openai.OpenAI(\n    base_url="${baseUrl}",\n    api_key="${key}"\n)\n\nresponse = client.chat.completions.create(\n    model="${model}",\n    messages=[\n        {"role": "system", "content": "You are a helpful coding assistant."},\n        {"role": "user", "content": "Write a Python function to check prime numbers."}\n    ],\n    temperature=0.3\n)\n\nprint(response.choices[0].message.content)`;
+    } else if (activeTab === 'curl') {
+      fileName = 'curl_request.sh (终端直接运行)';
+      code = `curl -X POST "${baseUrl}/chat/completions" \\\n  -H "Content-Type: application/json" \\\n  -H "Authorization: Bearer ${key}" \\\n  -d '{\n    "model": "${model}",\n    "messages": [\n      {"role": "user", "content": "Ping API connectivity check."}\n    ],\n    "temperature": 0.5\n  }'`;
+    }
+
+    if (fileNameTag) fileNameTag.textContent = fileName;
+    if (codeOutputText) codeOutputText.textContent = code.replace(/\\n/g, '\n');
+  }
+
+  platformSelect?.addEventListener('change', () => {
+    populateModels();
+    renderGeneratedCode();
+  });
+  modelSelect?.addEventListener('change', renderGeneratedCode);
+  apiKeyInput?.addEventListener('input', renderGeneratedCode);
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTab = btn.dataset.tab || 'openclaw';
+      renderGeneratedCode();
+    });
+  });
+
+  copyBtn?.addEventListener('click', () => {
+    const text = codeOutputText?.textContent || '';
+    navigator.clipboard.writeText(text).then(() => {
+      if (copyBtnText) copyBtnText.textContent = '✅ 已成功复制！';
+      setTimeout(() => {
+        if (copyBtnText) copyBtnText.textContent = '一键复制配置';
+      }, 2000);
+    });
+  });
+
+  // Init
+  populateModels();
+  renderGeneratedCode();
+</script>
