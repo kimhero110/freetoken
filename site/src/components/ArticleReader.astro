@@ -9,6 +9,51 @@ interface Props {
 
 const { article, relatedArticles = [], lang = 'zh' } = Astro.props;
 const isEn = lang === 'en';
+
+// =========================================================================
+// 🛡️ Markdown 安全与 SEO 加固解析器 (XSS Sanitizer & SEO Protection)
+// =========================================================================
+const renderer = new marked.Renderer();
+
+// 1. 严格过滤外链：阻断 javascript: 伪协议，对所有外部链接自动追加 rel="nofollow noopener noreferrer"
+renderer.link = ({ href, title, text }) => {
+  const cleanHref = (href || '').trim();
+  if (/^(javascript|vbscript|data):/i.test(cleanHref)) {
+    return `<span>${text}</span>`;
+  }
+  const isExternal = cleanHref.startsWith('http://') || cleanHref.startsWith('https://');
+  const relAttr = isExternal ? ' rel="nofollow noopener noreferrer" target="_blank"' : '';
+  const titleAttr = title ? ` title="${title}"` : '';
+  return `<a href="${cleanHref}"${relAttr}${titleAttr}>${text}</a>`;
+};
+
+// 2. 深度清洗嵌入式原始 HTML：物理剔除 script, iframe, object, embed 等危险标签及 on* 事件
+renderer.html = ({ text }) => {
+  let clean = (text || '')
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/<applet\b[^<]*(?:(?!<\/applet>)<[^<]*)*<\/applet>/gi, '')
+    .replace(/<base\b[^>]*>/gi, '')
+    .replace(/on\w+\s*=\s*(['"]).*?\1/gi, '')
+    .replace(/on\w+\s*=\s*[^>\s]+/gi, '')
+    .replace(/href\s*=\s*(['"])\s*(javascript|vbscript|data):.*?\1/gi, 'href="#"');
+  return clean;
+};
+
+// 3. 图片资源安全防护：杜绝伪协议图片，注入懒加载与响应式样式
+renderer.image = ({ href, title, text }) => {
+  const cleanHref = (href || '').trim();
+  if (/^(javascript|vbscript):/i.test(cleanHref)) {
+    return '';
+  }
+  const titleAttr = title ? ` title="${title}"` : '';
+  const altAttr = text ? ` alt="${text}"` : '';
+  return `<img src="${cleanHref}"${altAttr}${titleAttr} loading="lazy" style="max-width: 100%; height: auto; border-radius: 8px; margin: 16px 0;" />`;
+};
+
+marked.use({ renderer });
 const htmlContent = marked.parse(article.content_md);
 
 // Extract headings for Table of Contents
@@ -72,7 +117,7 @@ const toc = headingMatches.map((m) => {
         </details>
       )}
 
-      <!-- Markdown 渲染内容主体 (防表格撑破与等宽代码优化) -->
+      <!-- Markdown 渲染内容主体 (已过 XSS 安全过滤器与 nofollow 保护) -->
       <div class="article-content-body" set:html={htmlContent} />
 
       <!-- 底部关注卡片 -->
@@ -129,7 +174,7 @@ const toc = headingMatches.map((m) => {
 
         <div class="sidebar-action-card">
           <h4>⚡ {isEn ? 'Compute Generator' : '算力调度实验室'}</h4>
-          <p>{isEn ? '10-second drop-in OpenAI compatible configuration code.' : '10 秒生成 40+ 家平台 OpenAI 兼容配置代码。'}</p>
+          <p>{isEn ? '10-second drop-in OpenAI compatible configuration code.' : '10 秒生成 44+ 家平台 OpenAI 兼容配置代码。'}</p>
           <a href={isEn ? "/en/guide/" : "/guide/"} class="btn-sidebar-guide">{isEn ? 'Generate Config ↗' : '立即生成配置 ↗'}</a>
         </div>
       </div>
@@ -225,7 +270,6 @@ const toc = headingMatches.map((m) => {
     opacity: 0.4;
   }
 
-  /* 移动端可折叠 TOC */
   .mobile-toc-drawer {
     display: none;
     background: var(--bg-subtle);
@@ -259,7 +303,6 @@ const toc = headingMatches.map((m) => {
     }
   }
 
-  /* Markdown 正文自适应 */
   .article-content-body {
     font-size: 15.5px;
     line-height: 1.8;
