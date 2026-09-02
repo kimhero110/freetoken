@@ -1,36 +1,31 @@
+slug: nebius-ai
 name: Nebius AI Studio
 name_en: Nebius AI Studio
-website: https://nebius.com/studio
-category: cloud
-free_quota:
-  amount: 5
-  unit: 美元新用户代金券
-  type: 限时
-  conditions:
-  - 新开发者注册 Nebius AI Studio 赠送 \ 免费算力金
-  - 欧洲超算级 H100/H200 GPU 集群驱动，企业级超高稳定性
-  - 支持 Llama 3.3, Qwen 2.5, DeepSeek 等全系热门开源模型
-  details_en: .00 USD free balance upon initial registration for developer testing.
-register_url: https://studio.nebius.com/
-docs_url: https://docs.nebius.com/
-source_urls:
-- https://nebius.com/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 欧洲前沿的 AI 算力与模型推理平台，提供基于顶级硬件的推理服务，新注册开发者可享大额免费体验金。
-tags:
-- 欧洲顶尖
-- H100算力
-- 注册赠送
-- 开源大模型
+category: 海外主流
+intro: 欧洲顶尖 GPU 云基础设施平台，注册即送 5-10 美元体验金，超低延迟部署 DeepSeek R1 与 Llama 3.3！
+intro_en: European AI cloud infrastructure. $5-$10 free credits upon sign-up for DeepSeek
+  R1 and Llama 3.3.
+website: https://nebius.ai/
+doc_url: https://docs.nebius.ai/
 api_base_url: https://api.studio.nebius.ai/v1
 free_models:
+- deepseek-ai/DeepSeek-R1
 - meta-llama/Meta-Llama-3.1-70B-Instruct
-- Qwen/Qwen2.5-Coder-32B-Instruct
-slug: nebius-ai
-last_checked: '2026-09-01'
-intro_en: High-performance AI cloud hosting DeepSeek R1, LLaMA 3.3 70B, and Qwen 2.5
-  on dedicated NVIDIA H100 clusters.
+free_quota:
+  type: 限时赠送
+  amount: 5-10 美元
+  unit: USD Credits (约数千万Tokens)
+  reset_period: 一次性
+  details: 新注册开发者发放 5-10 美元算力金，支持欧洲低延迟高并发大模型推理。
+  details_en: $5-$10 trial credits for new developer accounts.
+verification: 海外手机/绑定卡
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 绑定海外信用卡可解锁更高并发额度。
 gotchas_en:
-- Credit card authorization may be requested for identity verification
-- High throughput on H100 infrastructure
+- Credit card verification unlocks higher concurrency.

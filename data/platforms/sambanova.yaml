@@ -1,38 +1,32 @@
+slug: sambanova
 name: SambaNova Cloud
 name_en: SambaNova Cloud
-website: https://cloud.sambanova.ai
-category: llm-api
-free_quota:
-  amount: 500
-  unit: 次请求/天 (免费开发层)
-  type: 每日
-  conditions:
-  - Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用
-  - 推理速度高达 1000+ tokens/秒
-  - 标准 OpenAI 兼容接口，注册生成 Key 即用
-  details_en: Free developer tier offering up to 500 requests/day on LLaMA 3.3 70B
-    and LLaMA 3.1 405B.
-register_url: https://cloud.sambanova.ai/
-docs_url: https://docs.sambanova.ai/
-source_urls:
-- https://cloud.sambanova.ai/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 全球极速推理云代表之一，基于 Reconfigurable Dataflow 架构，提供顶级超高并发与极速响应的免费开源模型 API。
-tags:
-- 极速推理
-- 每日刷新
-- Llama 3.3
-- 免信用卡
+category: 海外主流
+intro: 基于自研 SN40L 芯片的超低延迟推理云，永久免费提供全尺寸 DeepSeek R1 满血版与 Llama 3.3！
+intro_en: SN40L custom silicon cloud. Permanent free tier for full-parameter DeepSeek
+  R1 671B and Llama 3.3.
+website: https://sambanova.ai/
+doc_url: https://docs.sambanova.ai/
 api_base_url: https://api.sambanova.ai/v1
 free_models:
+- DeepSeek-R1
 - Meta-Llama-3.3-70B-Instruct
-- Qwen2.5-72B-Instruct
-- DeepSeek-R1-Distill-Llama-70B
-slug: sambanova
-last_checked: '2026-09-01'
-intro_en: Enterprise-speed inference platform powered by SN40L Reconfigurable Dataflow
-  Units (RDU), running full 405B models.
+free_quota:
+  type: 永久免费
+  amount: 永久免费层
+  unit: 5-10 RPM
+  reset_period: 每日刷新
+  details: 永久免费提供 DeepSeek R1 满血版极速推理，开箱即用。
+  details_en: Permanent free tier for full DeepSeek R1 with low latency.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 每日
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 免费层限制约 5-10 RPM。
 gotchas_en:
-- Requires developer sign-up
-- Free tier has rate limits designed for evaluation and benchmarking
+- Rate-limited to 5-10 RPM on free tier.

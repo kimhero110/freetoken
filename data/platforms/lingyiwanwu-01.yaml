@@ -1,37 +1,33 @@
-name: 零一万物 (01.AI)
+slug: lingyiwanwu-01
+name: 零一万物 (01.AI 开放平台)
 name_en: 01.AI (Yi Models)
-website: https://platform.lingyiwanwu.com
-category: llm-api
-free_quota:
-  amount: 30
-  unit: 元体验金 (约几百万 Tokens)
-  type: 限时
-  conditions:
-  - 李开复创立的零一万物开放平台，注册赠送 30 元体验金
-  - 支持 Yi-Large, Yi-Medium, Yi-Vision 视觉多模态全系列模型
-  - 在各权威大模型基准评测榜单上名列前茅
-  details_en: 30 free API calls/day or 50,000 token initial credit for new developer
-    accounts.
-register_url: https://platform.lingyiwanwu.com/
-docs_url: https://platform.lingyiwanwu.com/docs
-source_urls:
-- https://platform.lingyiwanwu.com/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 零一万物开放平台，支持 Yi 系列超强开源与商业化大模型，新用户赠送大额代金券体验金。
-tags:
-- 国产大模型
-- Yi系列
-- 多模态
-- 注册赠送
-api_base_url: https://api.lingyiwanwu.com/v1
+category: 国内主流
+intro: 李开复博士创立的零一万物大模型，注册即送千万 Tokens（或 20 元代金券），支持 Yi-Lightning 超强性能！
+intro_en: Founded by Kai-Fu Lee. 20 RMB (~10M tokens) on registration for Yi-Lightning
+  & Yi-Large.
+website: https://platform.01.ai/
+doc_url: https://platform.01.ai/docs
+api_base_url: https://api.01.ai/v1
 free_models:
 - yi-lightning
-- yi-large-turbo
-slug: lingyiwanwu-01
-last_checked: '2026-09-01'
-intro_en: Dr. Kai-Fu Lee AI venture offering bilingual Yi-Lightning, Yi-Large, and
-  multimodal vision models.
+- yi-large
+- yi-medium
+free_quota:
+  type: 限时赠送
+  amount: 1000 万
+  unit: Tokens (或 20 元代金券)
+  reset_period: 一次性
+  details: 新用户注册发放 20 元代金券，支持千亿参数 Yi-Lightning 极速推理。
+  details_en: 20 RMB promotional voucher upon sign-up.
+verification: 手机号注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- 代金券有效期 90 天。
 gotchas_en:
-- Requires mobile verification
-- Check balance periodically in 01.AI open platform console
+- Voucher expires in 90 days.

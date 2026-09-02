@@ -1,36 +1,33 @@
+slug: tencent-hunyuan
 name: 腾讯混元大模型
 name_en: Tencent Hunyuan
-website: https://hunyuan.tencent.com
-category: cloud
-free_quota:
-  amount: 100
-  unit: 万 tokens
-  type: 限时
-  conditions:
-  - 腾讯云开通混元 API 赠送 100 万 Tokens 免费测试额度
-  - 支持混元 Pro, Standard, Lite 全系列模型
-  - 支持超长文本理解与微信生态无缝接入
-  details_en: 100,000 free tokens for Hunyuan-Lite/Standard on registration.
-register_url: https://console.cloud.tencent.com/hunyuan
-docs_url: https://cloud.tencent.com/document/product/1729
-source_urls:
-- https://cloud.tencent.com/document/product/1729/97731
-last_verified: '2026-09-01'
-status: active
-intro: 腾讯自研混元大模型，开通即赠送百万测试 Tokens，具备优秀的中文长文本理解与微信生态集成优势。
-tags:
-- 国产大厂
-- 腾讯云
-- 注册赠送
-- 中文理解
+category: 大厂云服务
+intro: 腾讯官方大模型开放平台，新注册用户赠送 10 万-100 万 Tokens 免费体验金，多模态与企微生态深度整合。
+intro_en: Tencent's foundation model service. Free credits for new accounts with strong
+  multi-turn WeChat reasoning.
+website: https://cloud.tencent.com/product/hunyuan
+doc_url: https://cloud.tencent.com/document/product/1729
 api_base_url: https://api.hunyuan.cloud.tencent.com/v1
 free_models:
 - hunyuan-standard
+- hunyuan-turbo
 - hunyuan-lite
-slug: tencent-hunyuan
-last_checked: '2026-09-01'
-intro_en: Tencent foundation model platform featuring Hunyuan-Large, Hunyuan-Pro,
-  and 3D/Image generative models.
+free_quota:
+  type: 限时赠送
+  amount: 100 万
+  unit: Tokens
+  reset_period: 一次性
+  details: 新用户实名开通即可领取混元模型免费体验资源包。
+  details_en: 1,000,000 free tokens for new verified Tencent Cloud accounts.
+verification: 腾讯云实名
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 大厂基座
+- 国产直连
+- OpenAI兼容
+gotchas:
+- 资源包过期后自动切换为后付费按量计费。
 gotchas_en:
-- Requires Tencent Cloud account with real-name verification
-- Trial tokens valid for limited period
+- Switches to post-paid after promotional package expires.

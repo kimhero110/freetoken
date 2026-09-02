@@ -1,37 +1,32 @@
-name: Jina AI
-name_en: Jina AI (Reader & Embeddings)
-website: https://jina.ai
-category: tools
-free_quota:
-  amount: 1000
-  unit: 万 tokens
-  type: 永久
-  conditions:
-  - 注册即赠送 1000 万 Tokens 免费额度
-  - Jina Reader (r.jina.ai) 免费将任意网页转化为大模型友好的 Clean Markdown
-  - 提供前沿的高质量多语言 Embedding & Reranker 接口
-  details_en: 1,000,000 free tokens granted on registration + 10M free reader requests.
-register_url: https://jina.ai/
-docs_url: https://jina.ai/reader/
-source_urls:
-- https://jina.ai/pricing/
-last_verified: '2026-09-01'
-status: active
-intro: 为 AI Agent 与 LLM 生态而生的数据基础设施，不仅赠送千万额度，其 Reader 网页抽取工具更是开发者神器。
-tags:
-- 网页爬虫清洗
-- Agent必备
-- 向量嵌入
-- 注册赠送
-- 免信用卡
-api_base_url: https://r.jina.ai
-free_models:
-- jina-embeddings-v3
-- jina-reranker-v2-base-multilingual
 slug: jina-ai
-last_checked: '2026-09-01'
-intro_en: Developer APIs for converting URLs into clean LLM markdown (r.jina.ai),
-  multi-lingual embeddings, and rerankers.
+name: Jina AI (Reader & Search)
+name_en: Jina AI
+category: 搜索与工具
+intro: 全球领先的大模型搜索与网页 Markdown 提取服务，免费提供 1000 万 Tokens 提取额度！
+intro_en: Developer toolkit for RAG & LLM web reading. 10,000,000 free tokens for
+  r.jina.ai and s.jina.ai.
+website: https://jina.ai/
+doc_url: https://jina.ai/reader/
+api_base_url: https://r.jina.ai/
+free_models:
+- jina-reader
+- jina-search
+- jina-embeddings-v3
+free_quota:
+  type: 限时赠送
+  amount: 1000 万
+  unit: Tokens (免鉴权可直接用)
+  reset_period: 一次性
+  details: 注册即送 1000 万 Tokens，免 Key 亦可在 URL 前加 r.jina.ai 免费提取网页 Markdown。
+  details_en: 10M free tokens upon registration; works keyless with 20 RPM.
+verification: 免注册 / 注册送Key
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 永久
+- 搜索与工具
+gotchas:
+- 免 Key 基础模式每分钟限 20 次请求。
 gotchas_en:
-- Prepend https://r.jina.ai/ before any URL for instant web scraping into LLM markdown
-- API key optional for Reader, required for Embeddings
+- Keyless access throttled at 20 RPM.

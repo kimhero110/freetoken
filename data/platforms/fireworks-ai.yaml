@@ -1,36 +1,31 @@
+slug: fireworks-ai
 name: Fireworks AI
 name_en: Fireworks AI
-website: https://fireworks.ai
-category: llm-api
-free_quota:
-  amount: 1
-  unit: 美元免费额度 (约上百万 Tokens)
-  type: 限时
-  conditions:
-  - 新注册账号赠送  美元免费调用额度
-  - 拥有业内顶尖的首字延迟 (TTFT) 与生成速度
-  - 支持数十款精选开源大模型与微调服务
-  details_en: .00 USD free credit on account creation for serverless inference testing.
-register_url: https://fireworks.ai/login
-docs_url: https://docs.fireworks.ai/
-source_urls:
-- https://fireworks.ai/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 全球推理速度最快的模型托管平台之一，新注册用户赠送免费体验金，兼具极致性能与超高性价比。
-tags:
-- 极致速度
-- 注册赠送
-- 开源大模型
-- 开发必备
+category: 海外主流
+intro: 全球顶尖高性能开源大模型推理加速云平台，新注册开发者发放 1 美元试用金（约 500 万 Tokens）！
+intro_en: High-performance inference platform. $1 free credit (~5,000,000 tokens)
+  on sign-up with ultra-low latency.
+website: https://fireworks.ai/
+doc_url: https://docs.fireworks.ai/
 api_base_url: https://api.fireworks.ai/inference/v1
 free_models:
+- accounts/fireworks/models/deepseek-r1
 - accounts/fireworks/models/llama-v3p3-70b-instruct
-- accounts/fireworks/models/qwen2p5-72b-instruct
-slug: fireworks-ai
-last_checked: '2026-09-01'
-intro_en: Blazing fast inference platform for open-source foundation models (LLaMA
-  3.1, Qwen 2.5, DeepSeek R1).
+free_quota:
+  type: 限时赠送
+  amount: 1 美元
+  unit: USD Credit (约500万Tokens)
+  reset_period: 一次性
+  details: 注册送 1 美元试用余额，极速推理 DeepSeek R1、Qwen 2.5、Llama 3.3 等前沿大模型。
+  details_en: $1 trial credit upon registration (~5M tokens).
+verification: GitHub / Google
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 支持 Function Calling 与 JSON 结构化输出。
 gotchas_en:
-- Requires email and phone verification for free credit
-- Paid billing required after credit exhaustion
+- Full support for tool calling and JSON mode.

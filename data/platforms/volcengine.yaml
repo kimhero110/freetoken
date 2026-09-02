@@ -1,0 +1,33 @@
+slug: volcengine
+name: 火山引擎 (火山方舟)
+name_en: ByteDance Volcengine Ark
+category: 大厂云服务
+intro: 字节跳动旗下大模型服务平台，推出「千亿协同计划」，每天免费提供 200 万 Tokens（折合 6000 万/月）！
+intro_en: ByteDance cloud platform. 2,000,000 free tokens daily (60M/month) for Doubao
+  and DeepSeek via Ark program.
+website: https://www.volcengine.com/product/ark
+doc_url: https://www.volcengine.com/docs/82379
+api_base_url: https://ark.cn-beijing.volces.com/api/v3
+free_models:
+- doubao-pro-32k
+- doubao-lite-32k
+- deepseek-r1
+free_quota:
+  type: 每日刷新
+  amount: 200 万
+  unit: Tokens / 天 (每月 6000 万)
+  reset_period: 每日刷新
+  details: 「千亿协同计划」每天刷新 200 万 Tokens 免费算力，支持豆包系列与 DeepSeek 满血版。
+  details_en: 2,000,000 free daily tokens for Doubao and DeepSeek models.
+verification: 火山引擎实名
+status: active
+last_verified: '2026-09-02'
+tags:
+- 每日
+- 大厂基座
+- 国产直连
+- OpenAI兼容
+gotchas:
+- 调用时 Model 需填入在火山方舟控制台创建的 Endpoint ID。
+gotchas_en:
+- Requires custom Endpoint ID in model parameter.

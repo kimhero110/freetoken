@@ -1,40 +1,31 @@
-name: GMI Cloud (MiniMax 专场)
-name_en: GMI Cloud (MiniMax Free 2B)
-website: https://www.gmicloud.ai/en
-category: multimodal
-free_quota:
-  amount: 200000
-  unit: 万 tokens (最高20亿Tokens)
-  type: 限时
-  conditions:
-  - GMI Cloud 联合 MiniMax 限时免费活动（2026.08.24 - 2026.09.06）
-  - 免费调用 MiniMax-M3, M2.7, Speech 2.8 语音与 Music 3.0 音乐模型
-  - 支持 GitHub / Google 账号一键快捷登录，直接生成 API Key，免绑卡
-  - '兼容标准 OpenAI / Anthropic 双协议，Base URL: https://api.gmi-serving.com/v1'
-  details_en: 2,000,000,000 free tokens granted upon developer sign-up.
-register_url: https://www.gmicloud.ai/en
-docs_url: https://www.gmicloud.ai/en
-source_urls:
-- https://www.gmicloud.ai/en
-last_verified: '2026-09-01'
-status: active
-intro: GMI Cloud 联合 MiniMax 推出限时免费福利，免费使用 MiniMax-M3、Speech 语音与 Music 音乐大模型，测试可用额度高达
-  20 亿 Tokens！
-tags:
-- 爆款限时
-- 20亿Tokens
-- MiniMax-M3
-- 语音音乐
-- 免信用卡
-- GitHub登录
+slug: gmi-cloud-minimax
+name: GMI Cloud (MiniMax 专属)
+name_en: GMI Cloud x MiniMax
+category: 海外主流
+intro: GMI Cloud 联合 MiniMax 推出限时超级算力补贴，注册即送 20 亿免费 Tokens，支持 245K 超长上下文！
+intro_en: 'Massive compute grant: 2,000,000,000 free tokens for MiniMax-Text-01 with
+  245K context window.'
+website: https://gmicloud.ai/
+doc_url: https://docs.gmicloud.ai/
 api_base_url: https://api.gmicloud.ai/v1
 free_models:
-- minimax-abab6.5s-chat
-- minimax-text-01
-slug: gmi-cloud-minimax
-last_checked: '2026-09-01'
-intro_en: Global GPU cloud offering a massive 2 Billion free tokens for MiniMax-Text-01
-  under developer promotion.
+- MiniMax-Text-01
+- abab6.5s
+free_quota:
+  type: 限时赠送
+  amount: 20 亿
+  unit: Tokens (限时巨量补贴)
+  reset_period: 一次性
+  details: 注册发放高达 20 亿 Tokens 免费体验额度，全网额度天花板。
+  details_en: 2 Billion free tokens for MiniMax-Text-01 upon registration.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 巨量补贴活动名额有限，请尽早注册领用。
 gotchas_en:
-- Promotional quota may adjust based on campaign duration
-- Configure base URL to GMI Cloud custom OpenAI endpoint
+- Limited-time promotional capacity.

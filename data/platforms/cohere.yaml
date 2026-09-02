@@ -1,38 +1,33 @@
-name: Cohere
+slug: cohere
+name: Cohere (Command & Rerank)
 name_en: Cohere
-website: https://cohere.com
-category: tools
-free_quota:
-  amount: 1000
-  unit: 次调用/月 (免费试用 Key)
-  type: 永久
-  conditions:
-  - 免费 Trial API Key 提供 1000 次 API/月与 10 RPM 并发
-  - 全球顶级 Rerank 重排序与 Multilingual Embedding 向量模型
-  - RAG 检索增强系统必备开发组件
-  details_en: Free Trial API Key provides 1,000 free requests per month and 10 RPM
-    for development.
-register_url: https://dashboard.cohere.com/welcome/register
-docs_url: https://docs.cohere.com/
-source_urls:
-- https://cohere.com/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 企业级语义搜索与 RAG 领域的标杆，其 Rerank 与 Embed 接口提供永久免费的 Trial 开发者额度。
-tags:
-- Rerank重排
-- 向量嵌入
-- RAG必备
-- 开发者首选
+category: 海外主流
+intro: 顶尖企业级大模型与 Rerank 重排序引擎，Trial 试用 Key 永久免费提供基础额度，RAG 开发必备。
+intro_en: Top enterprise NLP provider. Trial Key is permanently free for Command R+
+  and world-class Rerank models.
+website: https://cohere.com/
+doc_url: https://docs.cohere.com/
 api_base_url: https://api.cohere.ai/v1
 free_models:
 - command-r-plus
 - command-r
-- embed-multilingual-v3.0
-slug: cohere
-last_checked: '2026-09-01'
-intro_en: Enterprise-grade language models specializing in Command R+, Rerank 3, and
-  high-accuracy Embeddings.
+- rerank-v3.5
+free_quota:
+  type: 永久免费
+  amount: Trial Key
+  unit: 1000次/月 (10-20 RPM)
+  reset_period: 每月刷新
+  details: 开发者可创建永久免费的 Trial API Key，调用 Command R+ 与业界最强 Rerank 模型。
+  details_en: Free trial key allows 10-20 RPM for evaluation and prototyping.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 每月
+- 海外主流
+- OpenAI兼容
+gotchas:
+- Trial Key 严禁用于生产高并发环境。
 gotchas_en:
-- Trial keys include a rate limit of 10 requests/minute
-- Cannot be used for production high-concurrency traffic
+- Trial key is for non-production use.

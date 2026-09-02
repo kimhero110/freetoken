@@ -1,39 +1,33 @@
+slug: aliyun-bailian
 name: 阿里云百炼 (DashScope)
 name_en: Alibaba Cloud Bailian
-website: https://bailian.console.aliyun.com
-category: cloud
-free_quota:
-  amount: 1000
-  unit: 万 tokens
-  type: 限时
-  conditions:
-  - 通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens
-  - 有效期 180 天（半年超长使用周期）
-  - 阿里云账号开通百炼即可领取
-  details_en: 1,000,000 free tokens for Qwen-Turbo and Qwen-Plus valid for 180 days
-    upon account sign-up.
-register_url: https://bailian.console.aliyun.com/
-docs_url: https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio
-source_urls:
-- https://help.aliyun.com/zh/model-studio/billing-for-model-studio/billing-overview
-last_verified: '2026-09-01'
-status: active
-intro: 阿里云官方大模型服务平台，聚合千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。
-tags:
-- 顶级大厂
-- 通义千问
-- 国产云厂商
-- 超长有效期
-- 企业级稳定
+category: 大厂云服务
+intro: 阿里云官方大模型服务平台，聚合通义千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。
+intro_en: Alibaba Cloud enterprise platform offering Qwen 2.5, Qwen-Max, and Wanx
+  multimodal models with free credits.
+website: https://bailian.console.aliyun.com/
+doc_url: https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio
 api_base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
 free_models:
 - qwen-turbo
 - qwen-plus
 - qwen-max
-slug: aliyun-bailian
-last_checked: '2026-09-01'
-intro_en: Alibaba Cloud enterprise model platform offering Qwen 2.5, Qwen-Max, and
-  Wanx multimodal models with free developer credits.
+free_quota:
+  type: 限时赠送
+  amount: 1000 万
+  unit: Tokens (180天超长有效)
+  reset_period: 一次性
+  details: 通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens，半年有效。
+  details_en: 1,000,000 free tokens for Qwen-Turbo and Qwen-Plus valid for 180 days.
+verification: 阿里云实名
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 大厂基座
+- 国产直连
+- OpenAI兼容
+gotchas:
+- 免费额度消耗后自动转为按量扣费，请设置用量预警。
 gotchas_en:
-- Requires Alibaba Cloud account and SMS/enterprise verification
-- Free quota expires after 180 days; paid tier kicks in if balance depleted
+- Automatic pay-as-you-go billing after trial depletion.

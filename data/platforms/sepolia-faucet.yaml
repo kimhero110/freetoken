@@ -1,38 +1,31 @@
-name: Sepolia Testnet 水龙头聚合
-name_en: Sepolia Ethereum Faucet
-website: https://sepoliafaucet.com
-category: web3-faucet
-free_quota:
-  amount: 0.5
-  unit: Sepolia ETH / 每天
-  type: 每日
-  conditions:
-  - Alchemy, Google Cloud Web3, Infura 等水龙头每日免费领 0.1~0.5 ETH
-  - 智能合约开发、DApp 部署必备测试代币
-  - 无需真实资产，测试网永久免费
-  details_en: 0.5 Sepolia ETH daily free drip from Google Cloud, Infura, and Alchemy
-    faucets.
-register_url: https://cloud.google.com/application/web3/faucet/ethereum/sepolia
-docs_url: https://ethereum.org/en/developers/docs/networks/#sepolia
-source_urls:
-- https://sepoliafaucet.com/
-last_verified: '2026-09-01'
-status: active
-intro: 以太坊主网官方推荐的 Sepolia 测试网水龙头聚合，智能合约与 Web3 开发者必备，每日免费领取测试代币。
-tags:
-- Web3水龙头
-- 以太坊
-- 智能合约
-- 每日领取
-- 开发者刚需
+slug: sepolia-faucet
+name: Sepolia ETH 测试网水龙头
+name_en: Sepolia ETH Faucets
+category: 区块链水龙头
+intro: 全球主流以太坊测试网水龙头聚合导航，每天免费领取 0.05-0.5 Sepolia ETH 用于 Web3 与智能合约测试。
+intro_en: Curated Sepolia testnet ETH faucets. Free 0.05-0.5 testnet ETH daily for
+  Web3 developers.
+website: https://sepolia-faucet.pk910.de/
+doc_url: https://ethereum.org/en/developers/docs/networks/#sepolia
 api_base_url: https://rpc.sepolia.org
 free_models:
-- ethereum-sepolia-testnet
-slug: sepolia-faucet
-last_checked: '2026-09-01'
-intro_en: Curated developer faucet aggregator for claiming free Sepolia ETH testnet
-  tokens to test smart contracts and Web3 AI agents.
+- PoW Faucet
+- Google Cloud Web3
+- Alchemy Faucet
+free_quota:
+  type: 每日刷新
+  amount: 0.05-0.5
+  unit: Sepolia ETH / 天
+  reset_period: 每日刷新
+  details: 提供 PoW 算力挖矿水龙头与 Google Cloud / Alchemy 每日水龙头领取入口。
+  details_en: 0.05-0.5 Sepolia ETH daily via PoW and infrastructure faucets.
+verification: 钱包地址
+status: active
+last_verified: '2026-09-02'
+tags:
+- 每日
+- 区块链水龙头
+gotchas:
+- 部分水龙头要求主网钱包持有少量 ETH 防女巫攻击。
 gotchas_en:
-- May require GitHub login or minimal mainnet balance (0.001 ETH) to prevent sybil
-  attacks
-- Testnet coins have no real-world monetary value
+- Some faucets require mainnet balance to prevent sybil attacks.

@@ -1,37 +1,31 @@
-name: Hyperbolic AI
-name_en: Hyperbolic AI
-website: https://hyperbolic.xyz
-category: llm-api
-free_quota:
-  amount: 100
-  unit: 请求/天 (免费开发层)
-  type: 每日
-  conditions:
-  - 提供 DeepSeek-V3, Llama 3.3 70B, Qwen 2.5 等顶级开源模型免费调用
-  - 全球去中心化 GPU 算力加速，推理速度快
-  - 注册生成 API Key 即可使用，免绑信用卡
-  details_en: .00 free compute credits granted upon sign-up and developer verification.
-register_url: https://app.hyperbolic.xyz/
-docs_url: https://docs.hyperbolic.xyz/
-source_urls:
-- https://hyperbolic.xyz/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 去中心化高性能 GPU 推理云，提供包含 DeepSeek-V3、Llama 3.3 在内的超多顶级开源模型免费推理 API。
-tags:
-- 极速推理
-- 每日刷新
-- DeepSeek-V3
-- Llama 3.3
-- 免信用卡
+slug: hyperbolic
+name: Hyperbolic (去中心化算力)
+name_en: Hyperbolic
+category: 海外主流
+intro: 高性能去中心化 GPU 算力网络，注册即送 10 美元体验金，支持 DeepSeek R1 满血版 671B 极速推理！
+intro_en: Decentralized GPU cloud. $10 free developer credits for DeepSeek R1 671B
+  full-parameter inference.
+website: https://hyperbolic.xyz/
+doc_url: https://docs.hyperbolic.xyz/
 api_base_url: https://api.hyperbolic.xyz/v1
 free_models:
-- meta-llama/Llama-3.3-70B-Instruct
+- deepseek-ai/DeepSeek-R1
 - deepseek-ai/DeepSeek-V3
-slug: hyperbolic
-last_checked: '2026-09-01'
-intro_en: Decentralized high-performance GPU compute network serving DeepSeek R1,
-  LLaMA 3.3, and Qwen 2.5.
+free_quota:
+  type: 限时赠送
+  amount: 10 美元
+  unit: USD Credits (约数千万Tokens)
+  reset_period: 一次性
+  details: 新注册开发者发放 10 美元算力额度，支持 DeepSeek R1 671B 满血版推理。
+  details_en: $10 trial credit upon registration for DeepSeek R1 and V3.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 体验金有效期 30 天。
 gotchas_en:
-- Requires GitHub or Google OAuth verification
-- Standard per-token billing deducted from free balance
+- Credits valid for 30 days.

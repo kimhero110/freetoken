@@ -1,39 +1,32 @@
+slug: mistral-ai
 name: Mistral AI (La Plateforme)
-name_en: Mistral AI (La Plateforme)
-website: https://mistral.ai
-category: llm-api
-free_quota:
-  amount: 100
-  unit: 请求/分钟 (免费实验层)
-  type: 永久
-  conditions:
-  - 提供 Codestral, Mistral Small, Mistral NeMo 等免费 Experiment API
-  - 代码生成与推理能力处于全球第一梯队
-  - 支持 Function Calling 与 JSON 结构化输出
-  details_en: Free experimentation tier (La Plateforme Free) providing rate-limited
-    access across all open models.
-register_url: https://console.mistral.ai/
-docs_url: https://docs.mistral.ai/
-source_urls:
-- https://mistral.ai/technology/#pricing
-last_verified: '2026-09-01'
-status: active
-intro: 欧洲最强 AI 独角兽 Mistral 官方平台，提供针对开发者完全免费的 Codestral 代码模型与多款轻量模型实验层。
-tags:
-- 欧洲顶尖
-- 代码神器
-- 永久免费
-- Codestral
-- 免绑卡
+name_en: Mistral AI
+category: 海外主流
+intro: 欧洲顶尖大模型独角兽官方平台，Experimentation 开发者模式永久免费提供基础额度，代码与多语言极强。
+intro_en: Europe's leading AI lab. Permanent free experimentation tier with 1 RPS
+  for Mistral Large and Codestral.
+website: https://console.mistral.ai/
+doc_url: https://docs.mistral.ai/
 api_base_url: https://api.mistral.ai/v1
 free_models:
-- mistral-small-latest
-- pixtral-12b-2409
+- mistral-large-latest
 - codestral-latest
-slug: mistral-ai
-last_checked: '2026-09-01'
-intro_en: Europe leading AI powerhouse behind Mistral Large 2, Codestral (coding champion),
-  and Pixtral (multimodal).
+- mistral-small-latest
+free_quota:
+  type: 永久免费
+  amount: 永久免费层
+  unit: 1 RPS / 500k TPM
+  reset_period: 永久
+  details: 验证手机号后开启永久免费 Experimentation 模式，支持 Codestral 编程模型。
+  details_en: Permanent free tier with 1 RPS and 500k TPM after phone verification.
+verification: 手机号/邮箱验证
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 需要绑定手机号激活 Experimentation 免费层。
 gotchas_en:
-- Free tier requires phone verification
-- Rate limited to 1 request/second and monthly token thresholds
+- Phone verification required to activate free tier.

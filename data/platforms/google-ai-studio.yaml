@@ -1,39 +1,33 @@
-name: Google AI Studio
+slug: google-ai-studio
+name: Google AI Studio (Gemini)
 name_en: Google AI Studio (Gemini)
-website: https://aistudio.google.com
-category: llm-api
-free_quota:
-  amount: 1500
-  unit: 请求/天 (RPD)
-  type: 永久
-  conditions:
-  - Gemini 1.5 Flash / 2.0 Flash 永久免费
-  - 免费层提供最高 15 RPM (每分钟请求数) 和 100万 Tokens 上下文
-  - 只需 Google 账号即可生成 API Key，无需绑定海外信用卡
-  details_en: 1,500 Requests Per Day (RPD) and 15 RPM completely free forever on Gemini
-    1.5 Flash.
-register_url: https://aistudio.google.com/
-docs_url: https://ai.google.dev/pricing
-source_urls:
-- https://ai.google.dev/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 全球最慷慨的大模型免费 API 之一，Gemini 1.5/2.0 Flash 永久免费提供高并发与超长上下文调用。
-tags:
-- 顶级大厂
-- 永久免费
-- Gemini
-- 长上下文
-- 免信用卡
+category: 大厂基座
+intro: Google 官方开发者大模型服务，Gemini 2.5 Flash 每天免费提供高达 1500 次请求，百万超长上下文！
+intro_en: Official Google API. 1,500 free requests per day (~10M tokens) for Gemini
+  2.5 Flash with 1M context.
+website: https://aistudio.google.com/
+doc_url: https://ai.google.dev/docs
 api_base_url: https://generativelanguage.googleapis.com/v1beta/openai/
 free_models:
-- gemini-1.5-flash
-- gemini-2.0-flash-exp
-- gemini-1.5-pro
-slug: google-ai-studio
-last_checked: '2026-09-01'
-intro_en: Official developer gateway to Google Gemini 1.5 Flash and Gemini 1.5 Pro
-  with a massive 1M token context window.
+- gemini-2.5-flash
+- gemini-2.5-pro
+free_quota:
+  type: 每日刷新
+  amount: 1500 次 / 天
+  unit: Requests (约 1000 万 Tokens/天)
+  reset_period: 每日刷新
+  details: 全网最慷慨大厂官方免费层：每天 1500 次请求，15 RPM，支持 100 万 Token 上下文。
+  details_en: 1,500 requests per day at 15 RPM for Gemini 2.5 Flash.
+verification: Google 账号
+status: active
+last_verified: '2026-09-02'
+tags:
+- 每日
+- 大厂基座
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 免费层 Prompt 数据可能会被 Google 用于模型优化。
+- 需要国际网络。
 gotchas_en:
-- Free tier data may be logged by Google for model tuning (use paid tier for privacy)
-- Requires Google account in supported regions
+- Free tier inputs may be logged for quality improvements.

@@ -1,36 +1,31 @@
+slug: cerebras
 name: Cerebras Inference
 name_en: Cerebras Inference
-website: https://cerebras.ai
-category: llm-api
-free_quota:
-  amount: 100
-  unit: 万 tokens / 天
-  type: 每日
-  conditions:
-  - 每天刷新 100 万免费 Tokens
-  - 推理速度高达 1800+ tokens/秒（全球最快之一）
-  - 免费提供 Llama 3.1 8B / 70B 等开源模型
-  details_en: 1,000,000 free daily tokens across LLaMA 3.1 8B and 70B models.
-register_url: https://cloud.cerebras.ai/
-docs_url: https://inference-docs.cerebras.ai/
-source_urls:
-- https://cerebras.ai/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 基于晶圆级超级芯片的极速推理云，推理速度秒杀传统 GPU，每天提供 100 万免费 tokens 额度。
-tags:
-- 极致速度
-- 每日刷新
-- Llama 3.1
-- 免信用卡
+category: 海外主流
+intro: 全球最快 AI 芯片晶圆级推理引擎，生成速度超 1800+ tokens/秒，每天免费提供 100 万 Tokens！
+intro_en: World's fastest wafer-scale inference engine (1800+ tokens/s). 1,000,000
+  free tokens daily.
+website: https://cerebras.ai/
+doc_url: https://inference-docs.cerebras.ai/
 api_base_url: https://api.cerebras.ai/v1
 free_models:
-- llama-3.3-70b
 - llama3.1-8b
-slug: cerebras
-last_checked: '2026-09-01'
-intro_en: Ultra-high-speed LLM inference powered by wafer-scale engine chips (CS-3),
-  generating over 2,000 tokens per second.
+- llama3.1-70b
+free_quota:
+  type: 每日刷新
+  amount: 100 万
+  unit: Tokens / 天
+  reset_period: 每日刷新
+  details: 每日免费刷新 100 万 Tokens，推理速度高达 1800+ tokens/秒，极客体验极佳。
+  details_en: 1,000,000 free daily tokens across LLaMA 3.1 models.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 每日
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 免费层限制 30 RPM，速度极快适合 Agent 工具快速决策。
 gotchas_en:
-- Strict RPM/TPM rate limits on the free tier (up to 30 RPM)
-- Free tier is intended for evaluation and non-commercial development
+- Free tier has 30 RPM limit.

@@ -1,38 +1,34 @@
+slug: baidu-qianfan
 name: 百度千帆大模型平台
-name_en: Baidu Qianfan ModelBuilder
-website: https://cloud.baidu.com/product/wenxinworkshop
-category: cloud
-free_quota:
-  amount: 2000
-  unit: 万 tokens + 部分模型永久免费
-  type: 永久
-  conditions:
-  - ERNIE-Speed, ERNIE-Lite 等主流轻量模型永久免费调用
-  - 新认证企业/个人用户赠送 2000 万 Tokens 算力代金券
-  - 兼容 OpenAI 接口规范，国内访问极速稳定
-  details_en: ERNIE Speed and ERNIE Lite are permanently free; new accounts get 20,000,000
-    free tokens for ERNIE 4.0.
-register_url: https://console.bce.baidu.com/qianfan/ais/console/onlineService
-docs_url: https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html
-source_urls:
-- https://cloud.baidu.com/doc/WENXINWORKSHOP/s/hlrk4akp7
-last_verified: '2026-09-01'
-status: active
-intro: 百度千帆大模型平台，ERNIE-Speed/Lite 系列全面永久免费开放，并提供大额新手代金券。
-tags:
-- 国产大厂
-- 文心一言
-- 永久免费
-- 免信用卡
-- 国内直连
+name_en: Baidu Qianfan Platform
+category: 大厂云服务
+intro: 百度智能云大模型服务平台，ERNIE-Speed 与 ERNIE-Lite 两款主力轻量模型全面永久免费！
+intro_en: Baidu AI Cloud platform. ERNIE-Speed and ERNIE-Lite models are permanently
+  free for all developers.
+website: https://console.bce.baidu.com/qianfan/
+doc_url: https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html
 api_base_url: https://qianfan.baidubce.com/v2
 free_models:
 - ernie-speed-128k
+- ernie-speed-8k
 - ernie-lite-8k
-slug: baidu-qianfan
-last_checked: '2026-09-01'
-intro_en: Baidu foundation model platform featuring ERNIE 4.0, ERNIE Speed, and ERNIE
-  Lite (permanent free tier).
+free_quota:
+  type: 永久免费
+  amount: 永久免费
+  unit: ERNIE-Speed/Lite 系列不限量
+  reset_period: 永久
+  details: ERNIE-Speed 与 ERNIE-Lite 模型全面永久免费调用，新认证用户还送 2000 万旗舰模型额度券。
+  details_en: ERNIE Speed and ERNIE Lite are permanently free; new accounts receive
+    20M tokens.
+verification: 百度账号
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 大厂基座
+- 国产直连
+- OpenAI兼容
+gotchas:
+- 免费模型默认并发限制约为 10 QPS，适合中轻度调用。
 gotchas_en:
-- Requires Baidu Cloud account with real-name verification
-- ERNIE Speed/Lite are free forever, premium models consume trial balances
+- Free models rate-limited to 10 QPS.

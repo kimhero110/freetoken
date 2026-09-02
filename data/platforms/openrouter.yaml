@@ -1,39 +1,33 @@
-name: OpenRouter (Free Tier)
-name_en: OpenRouter (Free Models)
-website: https://openrouter.ai
-category: aggregator
-free_quota:
-  amount: 20
-  unit: 请求/分钟 (包含数十款 :free 模型)
-  type: 永久
-  conditions:
-  - 所有带 :free 后缀的模型（如 deepseek-r1:free, llama-3.3-70b:free）完全免费
-  - 统一 OpenAI 兼容接口，一行代码切换全球模型
-  - 支持免登录试用或注册生成免费 Key
-  details_en: 20+ models (including LLaMA 3.3 70B Free, Gemma 2 9B Free, DeepSeek
-    Free) available forever at 0 cost.
-register_url: https://openrouter.ai/
-docs_url: https://openrouter.ai/docs
-source_urls:
-- https://openrouter.ai/models?q=free
-last_verified: '2026-09-01'
-status: active
-intro: 全球最著名的多模型聚合网关，内置数十款带有 :free 标签的永久免费模型路由，极度方便开发切换。
-tags:
-- 聚合网关
-- 永久免费
-- 统一API
-- 全球节点
-- 免绑卡
+slug: openrouter
+name: OpenRouter (免费模型池)
+name_en: OpenRouter
+category: 聚合路由
+intro: 全球最大大模型聚合路由网关，收录 30+ 款带有 :free 后缀的开源大模型，永久完全免费调用！
+intro_en: Global LLM unified gateway. Permanent free access to 30+ open-source models
+  with ':free' suffix.
+website: https://openrouter.ai/
+doc_url: https://openrouter.ai/docs
 api_base_url: https://openrouter.ai/api/v1
 free_models:
+- deepseek/deepseek-r1:free
 - meta-llama/llama-3.3-70b-instruct:free
 - google/gemini-2.0-flash-exp:free
-- deepseek/deepseek-r1:free
-slug: openrouter
-last_checked: '2026-09-01'
-intro_en: Unified gateway routing to 200+ AI models, featuring a permanent collection
-  of 20+ completely free LLM models (:free).
+free_quota:
+  type: 永久免费
+  amount: 永久免费
+  unit: 20 RPM (30+款免费模型)
+  reset_period: 永久
+  details: 永久免费调用带 :free 后缀的几十款前沿模型，支持智能故障降级。
+  details_en: Permanent 20 RPM free tier across all models with ':free' suffix.
+verification: Google / GitHub / 邮箱
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 聚合路由
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 调用时模型名称必须带 ':free' 后缀。
 gotchas_en:
-- Add :free suffix to model names (e.g. meta-llama/llama-3.3-70b-instruct:free)
-- Free models are supported by community donations and partner compute
+- Model names must include the ':free' suffix.

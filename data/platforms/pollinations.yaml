@@ -1,39 +1,33 @@
-name: Pollinations AI
+slug: pollinations
+name: Pollinations AI (免Key生图与对话)
 name_en: Pollinations AI
-website: https://pollinations.ai
-category: multimodal
-free_quota:
-  amount: 99999
-  unit: 不限量 (文生图 + 文本对话)
-  type: 永久
-  conditions:
-  - 100% 永久免费、开源、免注册、无需 API Key
-  - 支持 FLUX, SDXL, Midjourney 风格等多款顶级画图模型
-  - 直接通过 HTTP GET URL 即可无限制生成图像或文本
-  details_en: Unlimited free requests without any API key or credit card needed.
-register_url: https://pollinations.ai/
-docs_url: https://github.com/pollinations/pollinations
-source_urls:
-- https://pollinations.ai/
-last_verified: '2026-09-01'
-status: active
-intro: 开源社区的超级福利！完全无需注册、无需任何 API Key，直接发 HTTP 请求就能免费生成高清 AI 图像和文本。
-tags:
-- 永久免费
-- 免注册
-- 免APIKey
-- FLUX文生图
-- 开源神器
+category: 多模态生图
+intro: 完全开源、零门槛、免注册、免 API Key 的多模态生图与大模型对话服务，直接 GET/POST 即可调用！
+intro_en: Completely free, open-source, keyless multimodal generation API for images
+  and text.
+website: https://pollinations.ai/
+doc_url: https://pollinations.github.io/docs/
 api_base_url: https://text.pollinations.ai/openai
 free_models:
 - openai
+- qwen
 - mistral
 - flux
-- turbo
-slug: pollinations
-last_checked: '2026-09-01'
-intro_en: 100% free, open-access, zero-authentication API for text generation and
-  image generation. No API key required.
+free_quota:
+  type: 永久免费
+  amount: 完全免费
+  unit: 免注册 / 免 API Key
+  reset_period: 永久
+  details: 无需注册账号或创建 API Key，直接向接口发起请求即可生成文本或 FLUX 图像。
+  details_en: Completely free and keyless access for text and image generation.
+verification: 无需注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 免注册
+- 多模态生图
+gotchas:
+- 社区公用算力池，高并发时请加入重试与限流逻辑。
 gotchas_en:
-- No authentication required — perfect for quick prototypes and educational tools
-- Community-shared servers; rate limits apply during peak hours
+- Public shared infrastructure; add retry logic for stability.

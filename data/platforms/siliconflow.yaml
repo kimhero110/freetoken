@@ -1,39 +1,35 @@
-name: 硅基流动
+slug: siliconflow
+name: 硅基流动 (SiliconFlow)
 name_en: SiliconFlow
-website: https://siliconflow.cn
-category: cloud
-free_quota:
-  amount: 2000
-  unit: 万 tokens
-  type: 永久
-  conditions:
-  - 新用户注册赠送 2000 万 tokens（约 14 元额度）
-  - 部分小参数模型（如 Qwen2.5-7B）长期免费不限量
-  - 通过邀请链接注册双方均可获得额外额度
-  details_en: 20,000,000 free tokens granted upon phone registration + multiple permanently
-    free models.
-register_url: https://cloud.siliconflow.cn/i/jFtM9PqG
-docs_url: https://docs.siliconflow.cn/
-source_urls:
-- https://docs.siliconflow.cn/cn/userguide/introduction
-- https://siliconflow.cn/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 硅基流动提供大模型API服务，部分模型免费，价格透明，支持对话、生图、语音、视频等多种模型。
-tags:
-- 国产平台
-- 开源模型聚合
-- 注册赠送
-- 永久免费模型
-last_checked: '2026-09-01'
+category: 国内主流
+intro: 国内领先大模型加速推理平台，注册送 2000 万 Tokens（14元），并提供 Qwen/DeepSeek/GLM 多款完全永久免费模型！
+intro_en: Leading Chinese inference accelerator. 20,000,000 tokens on sign-up plus
+  permanent free models.
+website: https://cloud.siliconflow.cn/
+doc_url: https://docs.siliconflow.cn/
 api_base_url: https://api.siliconflow.cn/v1
 free_models:
 - Qwen/Qwen2.5-7B-Instruct
 - deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
 - THUDM/glm-4-9b-chat
-slug: siliconflow
-intro_en: Leading high-concurrency model hub in Asia with 20 Million free tokens on
-  sign-up, hosting DeepSeek R1, Qwen 2.5, and SDXL.
+free_quota:
+  type: 永久免费
+  amount: 2000 万 + 永久免费
+  unit: Tokens (7B-9B 模型完全永久免费)
+  reset_period: 永久
+  details: 注册发放 2000 万 Tokens 体验额度，同时 7B/9B 等系列模型完全永久免费调用。
+  details_en: 20,000,000 free tokens for new users, with 7B-9B models permanently
+    free.
+verification: 手机号注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 限时
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- 免费 7B-9B 模型无扣费风险，适合 Agent 自动化日常保底。
 gotchas_en:
-- Requires mobile SMS verification
-- Permanently free models (Qwen/Qwen2.5-7B-Instruct) do not consume trial balance
+- Free 7B-9B models are permanently free with zero billing risk.

@@ -1,37 +1,32 @@
 slug: nvidia-nim
-name: NVIDIA NIM (英伟达开发者)
-name_en: NVIDIA NIM (API Catalog)
+name: NVIDIA NIM (Build)
+name_en: NVIDIA NIM
 category: 大厂基座
-intro: 英伟达官方模型推理微服务平台，注册即送 1000 积分免费额度，畅调 LLaMA 3.3 70B、DeepSeek R1/V3、Nemotron 等顶级开源模型。
-intro_en: NVIDIA official enterprise AI inference microservices. Get 1,000 free API
-  credits on sign-up to run LLaMA 3.3, DeepSeek R1, and Nemotron.
-website: https://build.nvidia.com
-doc_url: https://docs.api.nvidia.com
+intro: 英伟达官方微服务推理平台，注册送 1000 免费 Credits，在英伟达顶级 H100/H200 上极速跑 DeepSeek 与 Llama！
+intro_en: Official NVIDIA enterprise inference platform. 1,000 free API credits (~40M
+  tokens) hosted on H100 clusters.
+website: https://build.nvidia.com/
+doc_url: https://docs.api.nvidia.com/nim/
 api_base_url: https://integrate.api.nvidia.com/v1
 free_models:
-- meta/llama-3.3-70b-instruct
 - deepseek-ai/deepseek-r1
-- nvidia/llama-3.1-nemotron-70b-instruct
+- meta/llama-3.3-70b-instruct
 free_quota:
-  type: 注册赠送
-  amount: 1,000
-  unit: API Credits (约数百万Tokens)
+  type: 限时赠送
+  amount: '1000'
+  unit: Credits (约 4000 万 Tokens)
   reset_period: 一次性
-  details: 注册个人开发者账号即可获得 1,000 API Credits 免费体验额度，消耗完毕后可通过加入 NVIDIA Developer Program
-    获取更多算力。
-  details_en: Register a free developer account to receive 1,000 API credits. Additional
-    quotas available via NVIDIA Developer Program.
-verification: 邮箱注册
+  details: 每个账号提供 1000 API Credits，完全部署在英伟达官方顶级算力集群上。
+  details_en: 1,000 free credits upon account registration for enterprise microservices.
+verification: 邮箱验证
 status: active
 last_verified: '2026-09-02'
 tags:
 - 限时
 - 大厂基座
+- 海外主流
 - OpenAI兼容
-- 高速推理
 gotchas:
-- 国内网络直连可能不稳定，建议配置国际网络或镜像加速。
-- 免费 Credits 消耗完后需要绑定支付方式或申请开发者计划扩容。
+- 需要合规网络环境访问。
 gotchas_en:
-- Requires stable international network access.
-- Credits reset/expand upon approval of NVIDIA Developer Program application.
+- Requires compliant international network.

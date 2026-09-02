@@ -1,35 +1,32 @@
-name: Tavily AI Search
-name_en: Tavily AI Search
-website: https://tavily.com
-category: tools
-free_quota:
-  amount: 1000
-  unit: 次搜索/月
-  type: 每日
-  conditions:
-  - 免费层每月提供 1,000 次无死角实时搜索请求
-  - LangChain / AutoGPT / Dify 等 AI Agent 框架官方默认推荐搜索源
-  - 支持直接返回提炼后的问答与网页摘要
-  details_en: 1,000 free search API calls per month completely free forever.
-register_url: https://app.tavily.com/sign-up
-docs_url: https://docs.tavily.com/
-source_urls:
-- https://tavily.com/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 专门为大模型和自主智能体设计的实时联网搜索 API，每月免费 1000 次，返回结构化、零广告的高精度搜索数据。
-tags:
-- 联网搜索
-- Agent必备
-- 每月刷新
-- 开发者神器
+slug: tavily
+name: Tavily AI (AI 搜索专用引擎)
+name_en: Tavily AI
+category: 搜索与工具
+intro: 专为 AI Agent 与 RAG 设计的实时搜索引擎，每月免费提供 1000 次高质量结构化搜索调用！
+intro_en: Search engine optimized for AI agents & LLMs. 1,000 free search API calls
+  every month.
+website: https://tavily.com/
+doc_url: https://docs.tavily.com/
 api_base_url: https://api.tavily.com
 free_models:
-- tavily-search-api
-slug: tavily
-last_checked: '2026-09-01'
-intro_en: Real-time web search API purpose-built for LLM agents, RAG pipelines, and
-  autonomous research workflows.
+- tavily-search
+- tavily-context
+- tavily-qna
+free_quota:
+  type: 每日刷新
+  amount: 1000 次
+  unit: Search API Calls / 月
+  reset_period: 每月刷新
+  details: 每月免费发放 1000 次搜索配额，专为 LangChain、AutoGPT、OpenClaw 等智能体优化。
+  details_en: 1,000 free monthly search credits with real-time web context.
+verification: GitHub / Google
+status: active
+last_verified: '2026-09-02'
+tags:
+- 每日
+- 每月
+- 搜索与工具
+gotchas:
+- 原生适配 LangChain 与主流 Agent 搜索插件。
 gotchas_en:
-- Free tier resets monthly
-- Natively supported by LangChain, LlamaIndex, Dify, and AutoGen
+- Directly supported in LangChain and OpenClaw search tools.

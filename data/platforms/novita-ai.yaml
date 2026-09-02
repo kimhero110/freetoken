@@ -1,36 +1,31 @@
+slug: novita-ai
 name: Novita AI
 name_en: Novita AI
-website: https://novita.ai
-category: multimodal
-free_quota:
-  amount: 0.5
-  unit: 美元试用金 (可生成数百张图片或调用LLM)
-  type: 限时
-  conditions:
-  - 注册赠送免费 API 试用金
-  - 支持 FLUX.1, SDXL 等上万款热门生图模型与 Llama 3 大模型
-  - 提供极简的 OpenAI 兼容接口与按次计费模式
-  details_en: .50 free trial credits for new accounts to test LLM and SDXL inference.
-register_url: https://novita.ai/
-docs_url: https://novita.ai/docs
-source_urls:
-- https://novita.ai/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 面向生成式 AI 开发者的一站式无服务器 GPU 平台，提供文生图、图像放大及大模型对话的免费试用额度。
-tags:
-- FLUX生图
-- 文生图API
-- 注册赠送
-- 多模态
+category: 海外主流
+intro: 超高性价比 AI 推理平台，新注册开发者发放 0.5-2 美元体验金，支持 DeepSeek R1/V3 与数百款开源模型！
+intro_en: Fast and affordable serverless LLM platform. $0.5-$2 free credits on sign-up
+  with low pricing.
+website: https://novita.ai/
+doc_url: https://novita.ai/docs
 api_base_url: https://api.novita.ai/v3/openai
 free_models:
+- deepseek/deepseek-r1
 - meta-llama/llama-3.3-70b-instruct
-- deepseek/deepseek-r1-distill-qwen-32b
-slug: novita-ai
-last_checked: '2026-09-01'
-intro_en: Serverless API platform offering 100+ LLMs and image models with fast cold
-  starts and competitive pricing.
+free_quota:
+  type: 限时赠送
+  amount: 0.5-2 美元
+  unit: USD Credits (约数百万Tokens)
+  reset_period: 一次性
+  details: 注册送体验余额，完全兼容 OpenAI 协议标准。
+  details_en: $0.5-$2 trial credit on sign-up.
+verification: GitHub / 邮箱
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 支持 Llama 3.3 与生图模型 API。
 gotchas_en:
-- Ideal for prototyping before upgrading to paid prepaid credits
-- OpenAI-compatible endpoints
+- Supports text and image generation endpoints.

@@ -1,36 +1,32 @@
+slug: together-ai
 name: Together AI
 name_en: Together AI
-website: https://together.ai
-category: llm-api
-free_quota:
-  amount: 5
-  unit: 美元免费额度
-  type: 限时
-  conditions:
-  - 新注册开发者绑定手机号赠送  免费调用金
-  - 提供数百款前沿开源大模型、FLUX 生图与微调服务
-  - 支持全球极速推理与标准 OpenAI 接口
-  details_en: .00 USD free credits upon registration to test any model on the platform.
-register_url: https://api.together.ai/signup
-docs_url: https://docs.together.ai/
-source_urls:
-- https://together.ai/pricing
-last_verified: '2026-09-01'
-status: active
-intro: 全球著名的开源 AI 算力与模型推理平台，新用户赠送  额度，支持 Llama 3、FLUX.1 及各类前沿研究模型。
-tags:
-- 全球顶尖
-- 注册赠送
-- 开源聚合
-- FLUX生图
+category: 海外主流
+intro: 全球领先的开源大模型云平台，注册即送 5 美元体验金（约 2500 万 Tokens），支持 100+ 开源前沿模型！
+intro_en: Leading open-source cloud. $5 free trial credits (~25M tokens) for LLaMA,
+  DeepSeek, and FLUX.
+website: https://together.ai/
+doc_url: https://docs.together.ai/
 api_base_url: https://api.together.xyz/v1
 free_models:
-- meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
-- deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
-slug: together-ai
-last_checked: '2026-09-01'
-intro_en: Leading decentralized AI research and inference platform running 100+ open-source
-  models with dedicated endpoints.
+- deepseek-ai/DeepSeek-R1
+- meta-llama/Llama-3.3-70B-Instruct-Turbo
+- black-forest-labs/FLUX.1-schnell
+free_quota:
+  type: 限时赠送
+  amount: 5 美元
+  unit: USD Credits (约 2500 万 Tokens)
+  reset_period: 一次性
+  details: 注册送 5 美元体验金，支持文本推理、微调与生图 API。
+  details_en: $5 trial credits for new accounts (~25M tokens).
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 体验金有效期为 90 天。
 gotchas_en:
-- Requires phone number and email verification
-- Consumes credits based on model parameter size
+- Trial credits expire after 90 days.

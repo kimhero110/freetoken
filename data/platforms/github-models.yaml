@@ -1,39 +1,34 @@
-name: GitHub Models
+slug: github-models
+name: GitHub Models (Azure AI)
 name_en: GitHub Models
+category: 大厂云服务
+intro: 微软与 GitHub 联合推出的开发者原生大模型试验场，每个 GitHub 账号每天免费提供数百次调用！
+intro_en: Official GitHub & Azure playground. Free daily rate limits across GPT-4o,
+  Claude 3.5, and DeepSeek R1.
 website: https://github.com/marketplace/models
-category: llm-api
-free_quota:
-  amount: 50
-  unit: 次请求/天 (各主流顶级模型)
-  type: 每日
-  conditions:
-  - 免费调用 GPT-4o, GPT-4o-mini, Claude 3.5 Sonnet, Llama 3.3 70B 等
-  - 使用 GitHub Personal Access Token (PAT) 即可直接认证
-  - 适合个人开发者日常轻量体验或调试
-  details_en: 50 requests/day for top models (GPT-4o, Claude 3.5), 150 requests/day
-    for low-latency models.
-register_url: https://github.com/marketplace/models
-docs_url: https://docs.github.com/en/github-models
-source_urls:
-- https://docs.github.com/en/github-models/prototyping-with-ai-models
-last_verified: '2026-09-01'
-status: active
-intro: 微软与 GitHub 推出的免费 AI Playground 接口，一个 GitHub Token 即可免费体验全球所有顶级闭源与开源模型。
-tags:
-- 全球顶级
-- 每日免费
-- GPT-4o
-- Claude 3.5
-- 免绑卡
+doc_url: https://docs.github.com/en/github-models
 api_base_url: https://models.inference.ai.azure.com
 free_models:
+- gpt-4o
 - gpt-4o-mini
-- Meta-Llama-3.1-70B-Instruct
+- DeepSeek-R1
 - Phi-3.5-mini-instruct
-slug: github-models
-last_checked: '2026-09-01'
-intro_en: Direct prototyping access to GPT-4o, Claude 3.5 Sonnet, LLaMA 3.3, and DeepSeek
-  via GitHub Personal Access Tokens.
+free_quota:
+  type: 每日刷新
+  amount: 150 次 / 天
+  unit: Requests (高阶模型) + 50次/天 (思考模型)
+  reset_period: 每日刷新
+  details: 只要有 GitHub 个人访问令牌（PAT），即可免费调用 GPT-4o 与 DeepSeek R1。
+  details_en: 150 requests/day for standard models and 50 req/day for reasoning models.
+verification: GitHub 账号
+status: active
+last_verified: '2026-09-02'
+tags:
+- 每日
+- 大厂基座
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 使用 GitHub Personal Access Token 作为 API Key。
 gotchas_en:
-- Requires GitHub account
-- Personal Access Token (classic or fine-grained) needed for authentication
+- Authenticate using standard GitHub PAT.

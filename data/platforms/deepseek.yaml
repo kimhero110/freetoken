@@ -1,36 +1,32 @@
-name: DeepSeek
-name_en: DeepSeek
-website: https://www.deepseek.com
-category: llm-api
-free_quota:
-  amount: 5000000
-  unit: tokens
-  type: 限时
-  conditions:
-  - 新用户注册赠送 500 万 tokens
-  - 赠送额度有效期 30 天
-  - 需绑定手机号
-  details_en: 5,000,000 free tokens granted upon phone registration (valid for 30
-    days).
-register_url: https://platform.deepseek.com/sign_up
-docs_url: https://api-docs.deepseek.com/zh-cn/
-source_urls:
-- https://api-docs.deepseek.com/zh-cn/quick_start/pricing
-last_verified: '2026-09-01'
-status: active
-intro: DeepSeek API提供多种模型，按量计费，价格透明，支持缓存命中优惠，适合各类AI应用开发。
-tags:
-- 国产大模型
-- 注册赠送
-- 限时额度
-last_checked: '2026-09-01'
-api_base_url: https://api.deepseek.com
+slug: deepseek
+name: DeepSeek (深度求索)
+name_en: DeepSeek AI
+category: 国内主流
+intro: 全球大模型性价比天花板，新用户注册即送 500 万 Tokens（或 10 元代金券），支持 V3 与 R1 满血版！
+intro_en: Global efficiency frontier. 5,000,000 free tokens upon registration for
+  DeepSeek V3 and R1 reasoning models.
+website: https://platform.deepseek.com/
+doc_url: https://api-docs.deepseek.com/
+api_base_url: https://api.deepseek.com/v1
 free_models:
 - deepseek-chat
 - deepseek-reasoner
-slug: deepseek
-intro_en: State-of-the-art open reasoning (R1) and general LLM (V3) offering industry-leading
-  cost-performance and 5M free tokens.
+free_quota:
+  type: 限时赠送
+  amount: 500 万
+  unit: Tokens (或 10 元代金券)
+  reset_period: 一次性
+  details: 注册发放 500 万 Tokens 免费体验额度，全面支持 DeepSeek V3 与 R1 深度推理。
+  details_en: 5,000,000 free tokens for new accounts.
+verification: 手机/邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- 额度有效期通常为 30 天。
 gotchas_en:
-- High demand may occasionally result in peak-hour concurrency queueing
-- Trial credits expire after 30 days
+- Trial credits valid for 30 days.
