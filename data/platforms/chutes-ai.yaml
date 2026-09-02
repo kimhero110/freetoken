@@ -1,0 +1,31 @@
+name: Chutes AI
+name_en: Chutes AI
+slug: chutes-ai
+website: https://chutes.ai
+category: 海外主流
+free_quota:
+  amount: 免费试用额度
+  unit: Requests
+  type: 限时/免费层
+  reset_period: 注册赠送
+  conditions:
+  - 注册即享开源模型测试配额
+  - 去中心化无服务器算力
+free_models:
+- deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+- meta-llama/Llama-3.3-70B-Instruct
+api_base_url: https://chutes.ai/v1
+register_url: https://chutes.ai
+docs_url: https://chutes.ai/docs
+source_urls:
+- https://chutes.ai
+last_verified: '2026-09-02'
+status: active
+intro: 去中心化无服务器 AI 算力网络。提供轻量级开源大模型即开即用 API 与免费探索层，无需自建集群。
+intro_en: Decentralized serverless AI compute. Provides instant drop-in open LLM APIs
+  and free exploration tier.
+tags:
+- 限时
+- Serverless
+- OpenAI兼容
+- 开源生态

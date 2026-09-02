@@ -191,6 +191,43 @@
     ]
   },
   {
+    "name": "Chutes AI",
+    "name_en": "Chutes AI",
+    "slug": "chutes-ai",
+    "website": "https://chutes.ai",
+    "category": "海外主流",
+    "free_quota": {
+      "amount": "免费试用额度",
+      "unit": "Requests",
+      "type": "限时/免费层",
+      "reset_period": "注册赠送",
+      "conditions": [
+        "注册即享开源模型测试配额",
+        "去中心化无服务器算力"
+      ]
+    },
+    "free_models": [
+      "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+      "meta-llama/Llama-3.3-70B-Instruct"
+    ],
+    "api_base_url": "https://chutes.ai/v1",
+    "register_url": "https://chutes.ai",
+    "docs_url": "https://chutes.ai/docs",
+    "source_urls": [
+      "https://chutes.ai"
+    ],
+    "last_verified": "2026-09-02",
+    "status": "active",
+    "intro": "去中心化无服务器 AI 算力网络。提供轻量级开源大模型即开即用 API 与免费探索层，无需自建集群。",
+    "intro_en": "Decentralized serverless AI compute. Provides instant drop-in open LLM APIs and free exploration tier.",
+    "tags": [
+      "限时",
+      "Serverless",
+      "OpenAI兼容",
+      "开源生态"
+    ]
+  },
+  {
     "slug": "cloudflare-workers-ai",
     "name": "Cloudflare Workers AI",
     "name_en": "Cloudflare Workers AI",
@@ -268,6 +305,44 @@
     ]
   },
   {
+    "name": "DeepInfra",
+    "name_en": "DeepInfra",
+    "slug": "deepinfra",
+    "website": "https://deepinfra.com",
+    "category": "海外主流",
+    "free_quota": {
+      "amount": "5",
+      "unit": "美元体验金",
+      "type": "限时/体验金",
+      "reset_period": "注册赠送",
+      "conditions": [
+        "新用户注册赠送体验金",
+        "支持 Llama 3、DeepSeek 与 Qwen 满血版"
+      ]
+    },
+    "free_models": [
+      "meta-llama/Meta-Llama-3.1-70B-Instruct",
+      "deepseek-ai/DeepSeek-V3",
+      "Qwen/Qwen2.5-Coder-32B-Instruct"
+    ],
+    "api_base_url": "https://api.deepinfra.com/v1/openai",
+    "register_url": "https://deepinfra.com",
+    "docs_url": "https://deepinfra.com/docs",
+    "source_urls": [
+      "https://deepinfra.com"
+    ],
+    "last_verified": "2026-09-02",
+    "status": "active",
+    "intro": "极速 Serverless AI 模型推理与托管平台。注册即赠送免费体验金，超低延迟支持 Llama 3、DeepSeek-V3 满血调用。",
+    "intro_en": "Ultra-fast serverless AI inference platform. Free trial credits for new accounts with full OpenAI SDK compatibility.",
+    "tags": [
+      "限时",
+      "体验金",
+      "OpenAI兼容",
+      "高并发"
+    ]
+  },
+  {
     "slug": "deepseek",
     "name": "DeepSeek (深度求索)",
     "name_en": "DeepSeek AI",
@@ -303,6 +378,44 @@
     ],
     "gotchas_en": [
       "Trial credits valid for 30 days."
+    ]
+  },
+  {
+    "name": "Featherless AI",
+    "name_en": "Featherless AI",
+    "slug": "featherless-ai",
+    "website": "https://featherless.ai",
+    "category": "海外主流",
+    "free_quota": {
+      "amount": "免费试用配额",
+      "unit": "Tokens",
+      "type": "限时/免费层",
+      "reset_period": "注册赠送",
+      "conditions": [
+        "注册即享免费测试额度",
+        "1000+ 开源模型免部署即用"
+      ]
+    },
+    "free_models": [
+      "meta-llama/Meta-Llama-3.1-8B-Instruct",
+      "mistralai/Mistral-7B-Instruct-v0.3",
+      "Qwen/Qwen2.5-7B-Instruct"
+    ],
+    "api_base_url": "https://api.featherless.ai/v1",
+    "register_url": "https://featherless.ai",
+    "docs_url": "https://featherless.ai/docs",
+    "source_urls": [
+      "https://featherless.ai"
+    ],
+    "last_verified": "2026-09-02",
+    "status": "active",
+    "intro": "提供 1,000+ 款开源大模型 Serverless 推理云。注册即享免费测试配额，完美兼容标准 OpenAI API 格式。",
+    "intro_en": "Serverless inference cloud with 1,000+ open-source LLMs. Free trial credits included with drop-in OpenAI protocol compatibility.",
+    "tags": [
+      "限时",
+      "开源模型",
+      "OpenAI兼容",
+      "多模型聚合"
     ]
   },
   {

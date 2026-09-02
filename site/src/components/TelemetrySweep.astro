@@ -1,9 +1,12 @@
 ---
+import platforms from '../data/platforms.json';
+
 interface Props {
   lang?: 'zh' | 'en';
 }
 const { lang = 'zh' } = Astro.props;
 const isEn = lang === 'en';
+const totalNodes = platforms.length;
 ---
 
 <div class="telemetry-bar">
@@ -11,7 +14,7 @@ const isEn = lang === 'en';
     <div class="telemetry-left">
       <span class="telemetry-pulse"></span>
       <span class="telemetry-label">{isEn ? 'LIVE PROBE:' : '实时雷达:'}</span>
-      <span class="telemetry-status">{isEn ? '40/40 Nodes Operational' : '40/40 全节点探活中'}</span>
+      <span class="telemetry-status">{isEn ? `${totalNodes}/${totalNodes} Nodes Operational` : `${totalNodes}/${totalNodes} 全节点探活中`}</span>
       <span class="telemetry-sep">|</span>
       <span class="telemetry-time" id="telemetry-time">{isEn ? 'Today 12:00' : '今日 12:00'}</span>
     </div>
@@ -87,7 +90,6 @@ const isEn = lang === 'en';
     font-weight: 700;
   }
 
-  /* 移动端适配 */
   @media (max-width: 640px) {
     .telemetry-bar {
       padding: 7px 0;

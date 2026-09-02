@@ -1,9 +1,12 @@
 ---
+import platforms from '../data/platforms.json';
+
 interface Props {
   lang?: 'zh' | 'en';
 }
 const { lang = 'zh' } = Astro.props;
 const isEn = lang === 'en';
+const totalCount = platforms.length;
 ---
 
 <section class="hero-editorial" id="hero-editorial">
@@ -16,7 +19,7 @@ const isEn = lang === 'en';
           type="text"
           id="search-input"
           class="hero-search-input"
-          placeholder={isEn ? "Search 40+ platforms, models (Grok, Gemini, DeepSeek, GLM-4) or features..." : "搜索 40+ 家平台、模型（如 Grok, Gemini, GLM-4, StepFun, DeepSeek）或特性..."}
+          placeholder={isEn ? `Search ${totalCount}+ platforms, models (Grok, Gemini, DeepSeek, GLM-4) or features...` : `搜索 ${totalCount}+ 家平台、模型（如 Grok, Gemini, GLM-4, DeepSeek, DeepInfra）或特性...`}
           autocomplete="off"
         />
       </div>
@@ -48,13 +51,13 @@ const isEn = lang === 'en';
           </h1>
           <p class="hero-lead">
             {isEn
-              ? 'Tracking 40+ global LLM and Cloud API free tiers in real time. Transparent rules, zero gotchas, and 10-second setup code for independent builders.'
-              : '持续追踪全球 40+ 主流大模型与云平台免费 API 配额。剔除噱头与套路，提供透明规则、避坑指南与 10 秒即用代码。'}
+              ? `Tracking ${totalCount}+ global LLM and Cloud API free tiers in real time. Transparent rules, zero gotchas, and 10-second setup code for independent builders.`
+              : `持续追踪全球 ${totalCount}+ 主流大模型与云平台免费 API 配额。剔除噱头与套路，提供透明规则、避坑指南与 10 秒即用代码。`}
           </p>
 
           <div class="hero-actions">
             <a class="btn-hero-primary" href="#products">
-              <span>{isEn ? 'Explore 40+ Platforms ↓' : '浏览 40+ 平台清单 ↓'}</span>
+              <span>{isEn ? `Explore ${totalCount}+ Platforms ↓` : `浏览 ${totalCount}+ 平台清单 ↓`}</span>
             </a>
             <a class="btn-hero-secondary" href={isEn ? "/en/guide/" : "/guide/"}>
               <span>{isEn ? '⚡ 10s Config Generator →' : '⚡ 10秒代码生成器 →'}</span>
@@ -316,7 +319,6 @@ const isEn = lang === 'en';
     font-style: italic;
   }
 
-  /* 移动端全自适应 */
   @media (max-width: 768px) {
     .hero-editorial {
       padding: 24px 0 20px;
