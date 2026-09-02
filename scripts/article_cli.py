@@ -193,6 +193,14 @@ def cmd_list(args):
 
 
 def cmd_publish(args):
+    # Mandatory Pre-Flight Healthcheck Guard
+    healthcheck_script = ROOT / "scripts" / "healthcheck.py"
+    if healthcheck_script.exists():
+        res = subprocess.run([sys.executable, str(healthcheck_script)], cwd=str(ROOT))
+        if res.returncode != 0:
+            print("[GUARD BLOCKED] 关键防御检查未通过，已紧急阻断发布流水线！")
+            sys.exit(1)
+
     print("[PUBLISH] 启动全网发布流水线 (Build -> Commit -> Push -> Deploy -> Cloudflare & Tencent Sync)...")
     articles = cmd_build()
     
