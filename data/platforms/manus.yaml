@@ -1,0 +1,33 @@
+name: Manus
+name_en: Manus AI
+slug: manus
+website: https://manus.im
+category: 海外主流
+free_quota:
+  amount: 1万亿
+  unit: Tokens 开发者总池
+  type: 限时/活动补贴
+  reset_period: 活动期间
+  conditions:
+  - 用于在 Manus 平台构建与部署 Web 应用
+  - 官方免费提供内置多模态与通用 Agent 算力
+  - 零底层 API 成本直接调用
+free_models:
+- manus-agent-general
+- manus-web-builder
+- claude-3-5-sonnet-manus
+api_base_url: https://api.manus.im/v1
+register_url: https://events.manus.im/zh-cn/campaign/free-tokens
+docs_url: https://manus.im/docs
+source_urls:
+- https://events.manus.im/zh-cn/campaign/free-tokens
+last_verified: '2026-09-02'
+status: active
+intro: 全球知名通用 AI Agent 平台。官方推出 1 万亿免费 AI 代币开发者激励计划，助力开发者零成本构建与部署智能 Web 应用程序。
+intro_en: Leading autonomous AI Agent platform. Official 1 Trillion free AI tokens
+  campaign for developers to build and host full-stack intelligent web apps.
+tags:
+- 限时
+- 1万亿
+- Agent
+- Web应用
