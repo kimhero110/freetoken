@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Multi-Key Gateway Pooling &amp; High-Availability API Pipeline with FreeLLMAPI &amp; One API · FreeToken Playbook | FreeToken</title><meta name="description" content="Step-by-step guide to deploying lightweight API proxy gateways, unifying 40+ free keys into a self-healing pipeline with automated fallback chains."><!-- Open Graph / Meta --><meta property="og:type" content="website"><meta property="og:title" content="Multi-Key Gateway Pooling &amp; High-Availability API Pipeline with FreeLLMAPI &amp; One API · FreeToken Playbook | FreeToken"><meta property="og:description" content="Step-by-step guide to deploying lightweight API proxy gateways, unifying 40+ free keys into a self-healing pipeline with automated fallback chains."><meta property="og:image" content="/images/hero-mascot.webp"><!-- Canonical & hreflang SEO --><link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/"><link rel="alternate" hreflang="en" href="https://freetokens.info/en/"><link rel="alternate" hreflang="x-default" href="https://freetokens.info/"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- High Performance Native Typography --><style>:root{--bg:#fbfbfa;--bg-subtle:#f4f3ef;--text:#1a1a19;--text-muted:#57564f;--text-light:#8c8b82;--accent:#2563eb;--card-border:#e7e5e0;--font-serif:-apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;--font-mono:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}*{box-sizing:border-box;margin:0;padding:0}html,body{background:var(--bg);color:var(--text);font-family:var(--font-serif);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;flex-direction:column;min-height:100vh;display:flex}a{color:inherit;text-decoration:none}.container{width:100%;max-width:1140px;margin:0 auto;padding:0 20px}.site-header{border-bottom:1px solid var(--card-border);backdrop-filter:blur(8px);z-index:100;background:#fbfbfaeb;position:sticky;top:0}.header-inner{justify-content:space-between;align-items:center;height:58px;display:flex}.brand-logo{letter-spacing:-.4px;color:var(--text);align-items:baseline;gap:8px;font-size:17px;font-weight:800;display:flex}.brand-badge{color:var(--text-muted);border:1px solid var(--card-border);background:var(--bg-subtle);border-radius:4px;padding:2px 7px;font-size:11px;font-weight:500}.nav-links{align-items:center;gap:14px;display:flex}.nav-item{color:var(--text-muted);font-size:13px;font-weight:500;transition:color .15s}.nav-item:hover{color:var(--text)}.nav-lang-switch{color:var(--text);border:1px solid var(--card-border);background:#fff;border-radius:6px;align-items:center;gap:4px;padding:5px 11px;font-size:12px;font-weight:600;transition:all .15s;display:inline-flex}.nav-lang-switch:hover{border-color:var(--text);background:var(--bg-subtle)}.nav-btn-wechat{border:1px solid var(--card-border);color:var(--text);cursor:pointer;background:0 0;border-radius:6px;align-items:center;gap:6px;padding:6px 12px;font-size:13px;font-weight:500;transition:all .15s;display:inline-flex}.nav-btn-wechat:hover{border-color:var(--text);background:#fff}.nav-github-link{color:var(--text-muted);border:1px solid var(--card-border);border-radius:6px;align-items:center;gap:6px;padding:5px 12px;font-size:13px;font-weight:500;transition:all .15s;display:inline-flex}.nav-github-link:hover{border-color:var(--text);color:var(--text);background:#fff}.site-footer{border-top:1px solid var(--card-border);background:var(--bg-subtle);color:var(--text-muted);margin-top:auto;padding:48px 0 32px;font-size:13px}.footer-inner{flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px;display:flex}.footer-brand h4{color:var(--text);margin-bottom:6px;font-size:15px;font-weight:700}.footer-brand p{max-width:480px;font-size:13px;line-height:1.6}.footer-links{flex-wrap:wrap;gap:20px;display:flex}.footer-ecosystem{border-top:1px solid var(--card-border);color:var(--text-light);flex-wrap:wrap;align-items:center;gap:16px;margin-top:24px;padding-top:16px;font-size:12px;display:flex}.footer-ecosystem a{color:var(--text-muted);transition:color .15s}.footer-ecosystem a:hover{color:var(--text)}.footer-bottom{border-top:1px solid var(--card-border);color:var(--text-light);flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:20px;padding-top:20px;font-size:12px;display:flex}.wechat-modal-backdrop{backdrop-filter:blur(4px);z-index:1000;background:#00000073;justify-content:center;align-items:center;display:none;position:fixed;inset:0}.wechat-modal-backdrop.open{display:flex}.wechat-modal-card{border:1px solid var(--card-border);text-align:center;background:#fff;border-radius:12px;width:90%;max-width:360px;padding:28px 24px;position:relative;box-shadow:0 20px 40px -15px #0000001f}.modal-close-btn{color:var(--text-muted);cursor:pointer;background:0 0;border:none;font-size:20px;line-height:1;position:absolute;top:14px;right:14px}.modal-qrcode-img{object-fit:contain;border:1px solid var(--card-border);border-radius:8px;width:180px;height:180px;margin:16px auto;display:block}.modal-title{color:var(--text);margin-bottom:6px;font-size:17px;font-weight:700}.modal-desc{color:var(--text-muted);font-size:13px;line-height:1.5}
+</style><link rel="stylesheet" href="/_astro/_slug_.B8XCOxcG.css"></head><body><header class="site-header"><div class="container header-inner"><a href="/en/" class="brand-logo"><span>FreeTokens.info</span><span class="brand-badge">Radar</span></a><nav class="nav-links"><a href="/en/" class="nav-item">⚡ Radar</a><a href="/en/articles/" class="nav-item">📚 Articles</a><a href="/en/guide/" class="nav-item">📖 Playbook</a><a href="/en/about/" class="nav-item">🧭 Philosophy</a><!-- 语言切换开关 --><a href="/article/multi-key-gateway-pooling-tutorial/" class="nav-lang-switch" title="Switch to Chinese">🇨🇳 中文</a><a class="nav-github-link" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener"><span>GitHub</span></a></nav></div></header><main><article class="article-detail-page" data-astro-cid-vebettj4><div class="container article-layout" data-astro-cid-vebettj4><!-- Main Content --><main class="article-main" data-astro-cid-vebettj4><nav class="article-breadcrumb" data-astro-cid-vebettj4><a href="/en/" data-astro-cid-vebettj4>Radar</a><span class="bc-sep" data-astro-cid-vebettj4>/</span><a href="/en/articles/" data-astro-cid-vebettj4>Articles</a><span class="bc-sep" data-astro-cid-vebettj4>/</span><span class="bc-current" data-astro-cid-vebettj4>架构设计</span></nav><header class="article-header" data-astro-cid-vebettj4><div class="article-meta-top" data-astro-cid-vebettj4><span class="article-cat-tag" data-astro-cid-vebettj4>架构设计</span><span class="article-read-badge" data-astro-cid-vebettj4>6 分钟</span></div><h1 class="article-main-title" data-astro-cid-vebettj4>Multi-Key Gateway Pooling &amp; High-Availability API Pipeline with FreeLLMAPI &amp; One API</h1><div class="article-author-bar" data-astro-cid-vebettj4><span class="author-name" data-astro-cid-vebettj4>✍️ FreeToken Lab</span><span class="meta-dot" data-astro-cid-vebettj4>·</span><span class="publish-date" data-astro-cid-vebettj4>Published 2026-03-15</span><span class="meta-dot" data-astro-cid-vebettj4>·</span><span class="update-date" data-astro-cid-vebettj4>Updated 2026-09-02</span></div></header><!-- Markdown Body --><div class="article-content-body" data-astro-cid-vebettj4><h1>多 Key 聚合池与高可用网关实操指南：用 FreeLLMAPI 与 One API 打造私有 API</h1>
+<blockquote>
+<p><strong>导读</strong>：单家平台的免费 API 往往有严格的并发和频率限制（如 20 RPM）。通过搭建轻量级网关，你可以把全网 40+ 家平台的免费 Key 汇总为一条高可用、抗并发、自动故障转移的私有接口。</p>
+</blockquote>
+<hr>
+<h2>01 · 为什么需要 API 聚合网关？</h2>
+<ol>
+<li><strong>统一端点</strong>：上层所有应用（OpenClaw、Claude Code、Cursor、移动端）只需要配置一个统一的 Base URL；</li>
+<li><strong>自动故障转移（Fallback Chain）</strong>：当 Groq 触发 429 限流或网络抖动时，网关在毫秒级内自动无缝重试火山引擎或 DeepSeek，用户无感知；</li>
+<li><strong>加权负载均衡</strong>：在多个免费账号之间轮询分发，突破单 Key 并发限制；</li>
+<li><strong>私有鉴权与密钥保护</strong>：真实厂商 Key 只保存在服务端网关中，客户端只持有自定义访问令牌。</li>
+</ol>
+<hr>
+<h2>02 · 两大主流开源网关搭建教程</h2>
+<h3>方案 A：极简零配置网关 —— FreeLLMAPI</h3>
+<p>适用于个人开发者本地或轻量云主机，基于 Node.js 与 SQLite，内置开箱即用的跨厂商 Fallback 逻辑。</p>
+<pre><code class="language-bash"># 1. 克隆代码仓库
+git clone https://github.com/tashfeenahmed/freellmapi.git
+cd freellmapi
+
+# 2. 安装依赖并启动
+npm install
+npm run dev
+
+# 3. 访问本地管理面板与 API 端点
+# 地址: http://localhost:3001/v1/chat/completions
+</code></pre>
+<h3>方案 B：工业级企业网关 —— One API / New API</h3>
+<p>支持多渠道管理、加权轮询、令牌额度监控与多用户分发的全功能反向代理系统。</p>
+<pre><code class="language-bash"># Docker 一键启动 One API
+docker run -d --restart always --name one-api \
+  -p 3000:3000 \
+  -v /var/data/one-api:/data \
+  justsong/one-api
+</code></pre>
+<hr>
+<h2>03 · 智能降级链（Fallback Hierarchy）最佳实践</h2>
+<pre><code>[用户请求到达网关]
+       │
+       ▼
+[Tier 1: 极速推理主通道 (Groq / Cerebras / DeepSeek V3)] ── 成功 ──&gt; 返回响应
+       │
+       ├─ (遇到 429 限流 / 超时)
+       ▼
+[Tier 2: 充裕配额通道 (火山方舟 2M/天 / 硅基流动)] ─────── 成功 ──&gt; 返回响应
+       │
+       ├─ (再次异常)
+       ▼
+[Tier 3: 终极无限兜底 (智谱 GLM-4-Flash / 百度 ERNIE)] ── 保证 100% 成功返回
+</code></pre>
+</div><!-- Related --><div class="related-articles-section" data-astro-cid-vebettj4><h3 class="related-title" data-astro-cid-vebettj4>Recommended Reading</h3><div class="related-grid" data-astro-cid-vebettj4><a href="/en/article/openclaw-token-saving-guide/" class="related-card" data-astro-cid-vebettj4><span class="rel-cat" data-astro-cid-vebettj4>实战指南</span><h4 data-astro-cid-vebettj4>OpenClaw Token Economics: Coding Plans Benchmark &amp; 90% Saving Hacks</h4><span class="rel-time" data-astro-cid-vebettj4>6 分钟</span></a><a href="/en/article/global-free-token-economics-2026/" class="related-card" data-astro-cid-vebettj4><span class="rel-cat" data-astro-cid-vebettj4>算力算账</span><h4 data-astro-cid-vebettj4>2026 Free Token Economics: How 450M Tokens Power a Perpetual Zero-Cost Engine</h4><span class="rel-time" data-astro-cid-vebettj4>6 分钟</span></a></div></div><div class="article-back-nav" data-astro-cid-vebettj4><a href="/en/articles/" class="btn-back" data-astro-cid-vebettj4>← Back to Articles</a><a href="/en/guide/" class="btn-back" data-astro-cid-vebettj4>📖 10s Config Generator →</a></div></main><!-- Sidebar --><aside class="article-sidebar" data-astro-cid-vebettj4><div class="sidebar-sticky-box" data-astro-cid-vebettj4><div class="toc-card" data-astro-cid-vebettj4><div class="toc-header" data-astro-cid-vebettj4><span class="toc-icon" data-astro-cid-vebettj4>📑</span><span class="toc-title" data-astro-cid-vebettj4>Table of Contents</span></div><nav class="toc-list" data-astro-cid-vebettj4><a href="#01-为什么需要-api-聚合网关" class="toc-item toc-level-2" data-astro-cid-vebettj4>01 · 为什么需要 API 聚合网关？</a><a href="#02-两大主流开源网关搭建教程" class="toc-item toc-level-2" data-astro-cid-vebettj4>02 · 两大主流开源网关搭建教程</a><a href="#方案-a-极简零配置网关-freellmapi" class="toc-item toc-level-3" data-astro-cid-vebettj4>方案 A：极简零配置网关 —— FreeLLMAPI</a><a href="#方案-b-工业级企业网关-one-api-new-api" class="toc-item toc-level-3" data-astro-cid-vebettj4>方案 B：工业级企业网关 —— One API / New API</a><a href="#03-智能降级链-fallback-hierarchy-最佳实践" class="toc-item toc-level-2" data-astro-cid-vebettj4>03 · 智能降级链（Fallback Hierarchy）最佳实践</a></nav></div><div class="sidebar-action-card" data-astro-cid-vebettj4><h4 data-astro-cid-vebettj4>⚡ Compute Generator</h4><p data-astro-cid-vebettj4>10-second drop-in OpenAI compatible configuration code.</p><a href="/en/guide/" class="btn-sidebar-guide" data-astro-cid-vebettj4>Generate Config ↗</a></div></div></aside></div></article></main><footer class="site-footer"><div class="container"><div class="footer-inner"><div class="footer-brand"><h4>FreeTokens.info · Free Token Intelligence Bureau</h4><p>Tracking global LLM &amp; Cloud API free tiers, gotchas, and 10-second integration code for indie hackers, developers, and AI researchers.</p></div><div class="footer-links"><a href="/en/">Radar</a><a href="/en/articles/">Articles</a><a href="/en/guide/">Playbook</a><a href="/en/about/">Philosophy</a><a href="/sitemap.xml" target="_blank">Sitemap</a><a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank">Submit Tier</a><a href="https://github.com/kimhero110/freetoken" target="_blank">GitHub</a></div></div><div class="footer-ecosystem"><span>Ecosystem &amp; Infra:</span><a href="https://github.com/withastro/astro" target="_blank" rel="noopener">Astro Engine ↗</a><a href="https://github.com/BerriAI/litellm" target="_blank" rel="noopener">LiteLLM Gateway ↗</a><a href="https://github.com/openai/openai-python" target="_blank" rel="noopener">OpenAI Python SDK ↗</a><a href="https://github.com/langgenius/dify" target="_blank" rel="noopener">Dify Platform ↗</a></div><div class="footer-bottom"><div>© 2026 FreeTokens.info · MIT License · Open Source Intelligence</div><div>Continuous Radar Sweeps across 40+ LLM Providers</div></div></div></footer><!-- 微信关注弹窗 --><div class="wechat-modal-backdrop" id="wechat-modal"><div class="wechat-modal-card"><button class="modal-close-btn" id="btn-close-wechat">&times;</button><h3 class="modal-title">关注【FreeToken 免费情报局】</h3><p class="modal-desc">扫码关注官方公众号，第一时间接收全网大模型免费额度变动、新源上线与 Agent 降本内参。</p><img src="/wechat-qrcode.jpg" alt="FreeToken 官方公众号二维码" class="modal-qrcode-img"><p class="modal-desc" style="font-size: 11.5px; color: var(--text-light);">微信扫一扫 · 极客同行</p></div></div><script>
+    const modal = document.getElementById('wechat-modal');
+    const openBtn = document.getElementById('btn-open-wechat');
+    const closeBtn = document.getElementById('btn-close-wechat');
+
+    openBtn?.addEventListener('click', () => {
+      modal?.classList.add('open');
+    });
+
+    closeBtn?.addEventListener('click', () => {
+      modal?.classList.remove('open');
+    });
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('open');
+      }
+    });
+  </script></body></html>
