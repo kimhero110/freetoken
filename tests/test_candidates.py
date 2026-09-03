@@ -216,6 +216,74 @@ class CandidateWorkflowTests(unittest.TestCase):
             audit = yaml.safe_load((root / "reviews" / "demo-approved.yaml").read_text(encoding="utf-8"))
             self.assertEqual(audit["review"]["decision"], "approved")
 
+    def test_rejected_update_candidate_records_reviewed_source_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            candidates, platforms, cache = root / "candidates", root / "platforms", root / "cache"
+            candidates.mkdir(); platforms.mkdir(); cache.mkdir()
+            platform = self.platform()
+            platform_hash = review_candidates._platform_hash(platform)
+            hashes_path = cache / "hashes.json"
+            candidate = candidates / "update-demo-aaaaaaaaaaaa.yaml"
+            candidate.write_text(yaml.safe_dump({
+                "candidate_type": "platform_update",
+                "platform_slug": "demo",
+                "source_url": "https://example.com/source",
+                "source_hash": "a" * 64,
+                "platform_hash": platform_hash,
+                "current": {"intro": "Old", "free_quota": platform["free_quota"]},
+                "proposed": {"intro": "New", "free_quota": {"amount": 2}},
+            }), encoding="utf-8")
+
+            with patch.object(review_candidates, "CANDIDATES_DIR", candidates), patch.object(
+                review_candidates, "PLATFORMS_DIR", platforms
+            ), patch.object(review_candidates, "HASHES_FILE", hashes_path), patch.object(
+                review_candidates, "LOCK_FILE", cache / "review.lock"
+            ), patch.object(review_candidates, "REVIEWS_DIR", root / "reviews"):
+                self.assertTrue(review_candidates.reject_candidate(candidate.stem))
+
+            hashes = json.loads(hashes_path.read_text(encoding="utf-8"))
+            self.assertEqual(hashes["https://example.com/source"], "a" * 64)
+            self.assertTrue((root / "reviews" / "update-demo-aaaaaaaaaaaa-rejected.yaml").exists())
+            self.assertFalse(candidate.exists())
+
+    def test_approved_update_candidate_persists_source_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            candidates, platforms, cache = root / "candidates", root / "platforms", root / "cache"
+            candidates.mkdir(); platforms.mkdir(); cache.mkdir()
+            platform = self.platform()
+            platform_path = platforms / "demo.yaml"
+            platform_path.write_text(yaml.safe_dump(platform), encoding="utf-8")
+            platform_hash = review_candidates._platform_hash(platform)
+            hashes_path = cache / "hashes.json"
+            hashes_path.write_text(json.dumps({"old": "hash"}), encoding="utf-8")
+            candidate = candidates / "update-demo-aaaaaaaaaaaa.yaml"
+            candidate.write_text(yaml.safe_dump({
+                "candidate_type": "platform_update",
+                "platform_slug": "demo",
+                "source_url": "https://example.com/source",
+                "source_hash": "a" * 64,
+                "platform_hash": platform_hash,
+                "current": {"intro": "Old", "free_quota": platform["free_quota"]},
+                "proposed": {"intro": "New", "free_quota": {"amount": 2}},
+            }), encoding="utf-8")
+
+            with patch.object(review_candidates, "CANDIDATES_DIR", candidates), patch.object(
+                review_candidates, "PLATFORMS_DIR", platforms
+            ), patch.object(review_candidates, "HASHES_FILE", hashes_path), patch.object(
+                review_candidates, "GENERATED_FILES", ()
+            ), patch.object(review_candidates, "LOCK_FILE", cache / "review.lock"), patch.object(
+                review_candidates, "REVIEWS_DIR", root / "reviews"
+            ), patch.object(review_candidates, "_source_hash", return_value="a" * 64), patch.object(
+                review_candidates.subprocess, "run"
+            ):
+                self.assertTrue(review_candidates.approve_candidate(candidate.stem))
+
+            hashes = json.loads(hashes_path.read_text(encoding="utf-8"))
+            self.assertEqual(hashes["https://example.com/source"], "a" * 64)
+            self.assertEqual(hashes["old"], "hash")
+
     def test_stale_update_candidate_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

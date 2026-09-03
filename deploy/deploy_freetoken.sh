@@ -17,6 +17,12 @@ if [[ ! -f "$archive" || -L "$archive" || "$(stat -c %U "$archive")" != "freetok
   echo "deployment archive must be a regular file owned by freetoken-deploy" >&2
   exit 2
 fi
+MAX_ARCHIVE_BYTES=$((256 * 1024 * 1024))
+archive_size=$(stat -c %s "$archive")
+if (( archive_size > MAX_ARCHIVE_BYTES )); then
+  echo "deployment archive exceeds ${MAX_ARCHIVE_BYTES} bytes: ${archive_size}" >&2
+  exit 2
+fi
 
 mkdir -p "$WORK_DIR"
 exec 9>"$WORK_DIR/deploy.lock"
@@ -34,11 +40,25 @@ import sys
 import tarfile
 from pathlib import PurePosixPath
 
+MAX_MEMBERS = 30000
+MAX_TOTAL_BYTES = 1024 ** 3
+MAX_MEMBER_BYTES = 64 * 1024 * 1024
+
 with tarfile.open(sys.argv[1], "r:gz") as archive:
-    for member in archive.getmembers():
+    members = archive.getmembers()
+    if len(members) > MAX_MEMBERS:
+        raise SystemExit(f"archive member count exceeds {MAX_MEMBERS}")
+    total = 0
+    for member in members:
         path = PurePosixPath(member.name)
         if path.is_absolute() or ".." in path.parts or not (member.isfile() or member.isdir()):
             raise SystemExit(f"unsafe archive member: {member.name}")
+        if member.isfile():
+            if member.size > MAX_MEMBER_BYTES:
+                raise SystemExit(f"archive member exceeds size limit: {member.name}")
+            total += member.size
+    if total > MAX_TOTAL_BYTES:
+        raise SystemExit(f"archive expanded size exceeds {MAX_TOTAL_BYTES} bytes")
 PY
 
 mkdir "$next_dir"
@@ -79,5 +99,8 @@ if ! docker exec "$SERVICE" nginx -t \
   exit 1
 fi
 
-rm -rf -- "$previous_dir"
+# 保留最新两个回滚快照，清理更早的历史发布
+ls -1dt "$WORK_DIR"/previous-* 2>/dev/null | tail -n +3 | while IFS= read -r old_release; do
+  rm -rf -- "$old_release"
+done
 echo "deployed release $release_id"

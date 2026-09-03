@@ -187,7 +187,7 @@ def notify_new_candidate(candidate: dict, secret: str = None) -> bool:
 
 
 def notify_approval_success(platform: dict, secret: str = None) -> bool:
-    """Send an announcement card when a candidate is officially approved and published."""
+    """Send a card when a candidate is approved; deployment is announced separately after verification."""
     name = platform.get("name", "新平台")
     slug = platform.get("slug", "")
     free_info = platform.get("free_quota", {}).get("details", "免费 Token 额度已就绪")
@@ -201,7 +201,7 @@ def notify_approval_success(platform: dict, secret: str = None) -> bool:
             "header": {
                 "title": {
                     "tag": "plain_text",
-                    "content": f"🎉 【FreeToken 算力雷达】新源上线：{name}"
+                    "content": f"🎉 【FreeToken 算力雷达】新源审批通过：{name}"
                 },
                 "template": "green"
             },
@@ -210,7 +210,7 @@ def notify_approval_success(platform: dict, secret: str = None) -> bool:
                     "tag": "div",
                     "text": {
                         "tag": "lark_md",
-                        "content": f"**🚀 平台已成功入库并发布！**\n\n- **平台代号**：`{slug}`\n- **免费额度**：{free_info}\n- **同步渠道**：Cloudflare Pages (`freetokens.info`) & 腾讯云 (`witkit.zone`)"
+                        "content": f"**✅ 候选已批准并入档！**\n\n- **平台代号**：`{slug}`\n- **免费额度**：{free_info}\n- **发布状态**：生产发布流水线已自动触发，双节点公网验证通过后将发送上线通知。"
                     }
                 },
                 {
@@ -244,6 +244,45 @@ def notify_approval_success(platform: dict, secret: str = None) -> bool:
                             "url": "https://analytics.witkit.zone"
                         }
                     ]
+                }
+            ]
+        }
+    }
+    return send_feishu_card(card, secret=secret)
+
+
+def notify_deploy_success(release_id: str, run_url: str, secret: str = None) -> bool:
+    """Send a card only after both public nodes serve the verified release."""
+    card = {
+        "msg_type": "interactive",
+        "card": {
+            "config": {
+                "wide_screen_mode": True
+            },
+            "header": {
+                "title": {
+                    "tag": "plain_text",
+                    "content": "🚀 【FreeToken】生产发布已上线"
+                },
+                "template": "green"
+            },
+            "elements": [
+                {
+                    "tag": "div",
+                    "text": {
+                        "tag": "lark_md",
+                        "content": (
+                            "**✅ 双节点发布验证通过！**\n\n"
+                            f"- **发布标识**：`{release_id}`\n"
+                            "- **验证范围**：Cloudflare Pages (`freetokens.info`) 与腾讯云 (`witkit.zone`) 公网 "
+                            "`release-id.txt` 一致性核验\n"
+                            f"- **流水线**：[查看发布记录]({run_url})"
+                        )
+                    }
+                },
+                {
+                    "tag": "action",
+                    "actions": get_standard_action_buttons()
                 }
             ]
         }

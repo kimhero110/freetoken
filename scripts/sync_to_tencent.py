@@ -79,10 +79,18 @@ def sync():
         print(f"[ERROR] known_hosts file not found at {KNOWN_HOSTS}")
         return 1
 
+    env_release_id = os.environ.get('FREETOKEN_RELEASE_ID', '').strip()
+    if env_release_id:
+        if not re.fullmatch(r'[0-9]{14}-[a-f0-9]{12}', env_release_id):
+            print(f"[ERROR] FREETOKEN_RELEASE_ID 格式无效: {env_release_id!r}")
+            return 1
+        release_id = env_release_id
+    else:
+        release_id = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S') + '-' + uuid.uuid4().hex[:12]
+    remote_tar = f'/tmp/freetoken-{release_id}.tar.gz'
+
     temp_deploy_dir = tempfile.mkdtemp()
     temp_tar_path = os.path.join(temp_deploy_dir, 'tencent_site_dist.tar.gz')
-    release_id = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S') + '-' + uuid.uuid4().hex[:12]
-    remote_tar = f'/tmp/freetoken-{release_id}.tar.gz'
 
     try:
         # 1. 复制一份干净的构建产物

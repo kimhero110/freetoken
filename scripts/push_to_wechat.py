@@ -20,6 +20,31 @@ ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = ROOT / "output"
 ARTICLE_FILE = OUTPUT_DIR / "wechat_article.html"
 QR_IMAGE_FILE = ROOT / "site" / "public" / "wechat-qrcode.jpg"
+CACHE_DIR = ROOT / ".cache"
+COVER_MEDIA_CACHE = CACHE_DIR / "wechat_cover_media_id.json"
+
+
+def load_platform_count() -> int:
+    """从正式编译数据读取平台数量，避免文案中的硬编码计数漂移。"""
+    platforms = json.loads((ROOT / "data" / "platforms.json").read_text(encoding="utf-8"))
+    return len(platforms)
+
+
+def load_cached_cover_media_id() -> str:
+    """复用已上传的永久封面素材，避免每次推送都消耗素材额度。"""
+    try:
+        data = json.loads(COVER_MEDIA_CACHE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    media_id = data.get("thumb_media_id", "")
+    return media_id.strip() if isinstance(media_id, str) else ""
+
+
+def save_cover_media_id(media_id: str) -> None:
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    COVER_MEDIA_CACHE.write_text(
+        json.dumps({"thumb_media_id": media_id}, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
 
 def get_wechat_credentials() -> tuple[str, str]:
@@ -167,16 +192,22 @@ def main() -> int:
                 html_content = html_content.replace('src="/wechat-qrcode.jpg"', f'src="{cdn_url}"')
                 print("  ✓ 正文图片已自动替换为微信 CDN 链接！")
 
-        # 5. 上传文章封面头图
-        print("[3/4] 正在上传文章封面头图素材...")
-        thumb_media_id = upload_permanent_image(token, QR_IMAGE_FILE)
-        print(f"  ✓ 封面素材上传成功! Media ID: {thumb_media_id}")
+        # 5. 上传文章封面头图（优先复用已缓存的永久素材）
+        thumb_media_id = load_cached_cover_media_id()
+        if thumb_media_id:
+            print(f"  ✓ 复用已上传封面素材! Media ID: {thumb_media_id}")
+        else:
+            print("[3/4] 正在上传文章封面头图素材...")
+            thumb_media_id = upload_permanent_image(token, QR_IMAGE_FILE)
+            save_cover_media_id(thumb_media_id)
+            print(f"  ✓ 封面素材上传并缓存成功! Media ID: {thumb_media_id}")
 
-        # 6. 推送至草稿箱
+        # 6. 推送至草稿箱（计数从正式数据动态生成）
+        platforms_count = load_platform_count()
         today_str = date.today().strftime("%m月%d日")
-        title = f"零成本玩转大模型！全网 29 家免费 API Token 白嫖清单 ({today_str}更新)"
+        title = f"零成本玩转大模型！全网 {platforms_count} 家免费 API Token 白嫖清单 ({today_str}更新)"
         author = "免费Token情报局"
-        digest = "全网精选 29 家大厂与新兴 GPU 算力云免费额度，含 GMI 20 亿 MiniMax 限时福利，附 10 秒快速接入代码！"
+        digest = f"全网精选 {platforms_count} 家大厂与新兴 GPU 算力云免费额度，附 10 秒快速接入代码！"
 
         print("[4/4] 正在将文章推送到公众号草稿箱 (Drafts)...")
         draft_media_id = push_draft_article(

@@ -55,6 +55,43 @@ jobs:
           npm test
           npm run build
 
+      - name: 写入不可变发布标识
+        run: |
+          RELEASE_ID="$(date -u +%Y%m%d%H%M%S)-$(printf '%s' "$GITHUB_SHA" | cut -c1-12)"
+          printf '%s\n' "$RELEASE_ID" > site/dist/release-id.txt
+          echo "Stamped release ${RELEASE_ID}"
+
+      - name: 冒烟测试已验证构建
+        run: |
+          python -m http.server 8765 --directory site/dist --bind 127.0.0.1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          sleep 2
+          check_route() {
+            local path="$1" marker="$2" body
+            if ! body=$(curl -fsS --max-time 15 "http://127.0.0.1:8765${path}"); then
+              echo "route failed: ${path}" >&2
+              exit 1
+            fi
+            if ! grep -qF "$marker" <<<"$body"; then
+              echo "marker '${marker}' missing on ${path}" >&2
+              exit 1
+            fi
+            echo "verified ${path}"
+          }
+          check_route / "FreeToken"
+          check_route /en/ "FreeToken"
+          check_route /platform/deepseek/ "DeepSeek"
+          check_route /en/platform/deepseek/ "DeepSeek"
+          check_route /articles/ "FreeToken"
+          curl -fsS --max-time 15 http://127.0.0.1:8765/sitemap.xml | grep -q '<urlset'
+          status=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "http://127.0.0.1:8765/definitely-missing-page")
+          if [ "$status" != "404" ]; then
+            echo "missing page returned ${status}, expected 404" >&2
+            exit 1
+          fi
+          echo "smoke test passed"
+
       - name: 保存不可变构建产物
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -82,6 +119,9 @@ jobs:
         with:
           name: site-${{ github.sha }}
           path: site/dist
+
+      - name: 采纳已验证发布标识
+        run: echo "FREETOKEN_RELEASE_ID=$(tr -d '\r\n' < site/dist/release-id.txt)" >> "$GITHUB_ENV"
 
       - name: 发布到 deploy 分支
         env:
@@ -132,3 +172,32 @@ jobs:
           printf '%s\n' "$SSH_PRIVATE_KEY" > "$FREETOKEN_SSH_KEY"
           printf '%s\n' "$SSH_KNOWN_HOSTS" > "$FREETOKEN_KNOWN_HOSTS"
           python scripts/sync_to_tencent.py
+
+      - name: 双节点公网发布验证
+        run: |
+          EXPECTED=$(tr -d '\r\n' < site/dist/release-id.txt)
+          echo "Expected release: ${EXPECTED}"
+          status=0
+          for url in https://freetokens.info/release-id.txt https://witkit.zone/release-id.txt; do
+            observed=""
+            for attempt in $(seq 1 30); do
+              observed=$(curl -fsSL --max-time 20 "$url" 2>/dev/null | tr -d '\r\n' || true)
+              if [ "$observed" = "$EXPECTED" ]; then
+                echo "verified ${url} -> ${EXPECTED}"
+                continue 2
+              fi
+              sleep 15
+            done
+            echo "release verification failed at ${url}: expected ${EXPECTED}, observed ${observed:-<unreachable>}" >&2
+            status=1
+          done
+          exit $status
+
+      - name: 发送已验证发布通知
+        if: success()
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+        run: |
+          RELEASE_ID=$(tr -d '\r\n' < site/dist/release-id.txt)
+          python scripts/notify_deploy.py --release-id "$RELEASE_ID" --run-url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
