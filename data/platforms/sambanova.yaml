@@ -1,3 +1,4 @@
+schema_version: 2
 slug: sambanova
 name: SambaNova Cloud
 name_en: SambaNova Cloud
@@ -40,10 +41,29 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: openai
-  chat_completions_url: https://api.sambanova.ai/v1/chat/completions
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.sambanova.ai/v1/chat/completions
+      models:
+      - DeepSeek-R1
+      - Meta-Llama-3.3-70B-Instruct
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: SAMBANOVA_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://docs.sambanova.ai/
   checked_at: '2026-09-02'

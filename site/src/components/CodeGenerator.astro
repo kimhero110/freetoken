@@ -1,4 +1,6 @@
 ---
+import { getCompatiblePlatforms, getToolState, VERIFICATION_LABELS } from '../lib/operation-generator.mjs';
+
 interface Props {
   platforms: any[];
   lang?: 'zh' | 'en';
@@ -6,372 +8,249 @@ interface Props {
 
 const { platforms = [], lang = 'zh' } = Astro.props;
 const isEn = lang === 'en';
-const compatiblePlatforms = platforms.filter((p) => p.capabilities?.protocol === 'openai');
-const platformJsonStr = JSON.stringify(compatiblePlatforms);
+const compatiblePlatforms = getCompatiblePlatforms(platforms);
+const first = compatiblePlatforms[0];
+const tabs = [
+  { id: 'curl', tool: 'curl', label: 'cURL', file: 'request.sh' },
+  { id: 'python', tool: 'openai_python', label: 'Python SDK', file: 'request.py' },
+  { id: 'node', tool: 'openai_node', label: 'Node.js SDK', file: 'request.mjs' },
+  { id: 'openclaw', tool: 'openclaw', label: 'OpenClaw', file: '' },
+  { id: 'cursor', tool: 'cursor', label: 'Cursor / Cline', file: '' },
+  { id: 'cherry', tool: 'cherry_studio', label: 'Cherry Studio', file: '' },
+  { id: 'freellmapi', tool: 'freellmapi', label: 'FreeLLMAPI', file: 'local-channel.json' },
+];
+const firstEnabledTab = tabs.find((tab) => first && getToolState(first.tools, tab.tool, lang).enabled);
+const serializedPlatforms = JSON.stringify(compatiblePlatforms);
+const labels = {
+  empty: isEn ? 'No executable OpenAI Chat Completions operations are currently available.' : '当前没有可执行的 OpenAI Chat Completions 操作。',
+  select: isEn ? 'Platform and operation' : '平台与操作',
+  model: isEn ? 'Canonical model' : '规范模型',
+  copy: isEn ? 'Copy code' : '复制代码',
+  copied: isEn ? 'Copied' : '已复制',
+  env: isEn ? 'Set the shown environment variable before running. API keys are never entered or rendered on this page.' : '运行前请设置代码中显示的环境变量。本页不输入、不渲染 API Key。',
+  retry: isEn
+    ? 'Examples use one POST attempt with a 30-second timeout. Automatic retries are disabled because they can duplicate billable calls. Output is bounded with max_tokens=64.'
+    : '示例仅发送一次 POST，请求超时为 30 秒。自动重试已禁用，避免重复计费调用。输出通过 max_tokens=64 控制。',
+};
 ---
 
-<div class="config-generator-card" id="code-generator">
-  <div class="generator-header">
-    <div class="gen-title-wrap">
-      <span class="gen-icon">⚡</span>
-      <div>
-        <h2 class="gen-title">{isEn ? '10-Second Drop-in Code Generator' : '10 秒多工具即用配置代码生成器'}</h2>
-        <p class="gen-desc">{isEn ? 'Choose a verified OpenAI-compatible platform and generate configuration for 6 developer tools.' : '选择已核实的 OpenAI 兼容平台，为 6 类开发工具生成配置。'}</p>
+<div class="config-generator-card" id="code-generator" data-lang={lang} data-platforms={serializedPlatforms}>
+  <header class="generator-header">
+    <div>
+      <p class="eyebrow">OPENAI CHAT COMPLETIONS</p>
+      <h2>{isEn ? 'Verified integration generator' : '已核验接入代码生成器'}</h2>
+      <p>{isEn ? 'Only documented or recently live-tested v2 operations produce executable examples.' : '仅为已核查文档或近期真实调用通过的 v2 操作生成可执行示例。'}</p>
+    </div>
+    {first && <span id="operation-badge" class={`verification-badge level-${first.operation.verification.status}`}>
+      {VERIFICATION_LABELS[lang][first.operation.verification.status]}
+    </span>}
+  </header>
+
+  {compatiblePlatforms.length === 0 ? (
+    <p class="empty-state" role="status">{labels.empty}</p>
+  ) : (
+    <>
+      <div class="gen-controls-grid">
+        <div class="control-group">
+          <label for="select-platform">{labels.select}</label>
+          <select id="select-platform">
+            {compatiblePlatforms.map((platform) => (
+              <option value={platform.slug}>
+                {isEn ? platform.name_en || platform.name : platform.name} · {platform.operation.verification.status}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="select-model">{labels.model}</label>
+          <select id="select-model">
+            {first?.operation.models.map((model) => <option value={model}>{model}</option>)}
+          </select>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- 工具切换 Tab (移动端原生滑动手势) -->
-  <div class="gen-tabs-wrap">
-    <div class="code-gen-tabs" id="gen-tabs" role="tablist" aria-label={isEn ? 'Code format' : '代码格式'}>
-      <button id="gen-tab-openclaw" class="code-gen-tab active" data-tab="openclaw" role="tab" aria-selected="true" aria-controls="generated-code">🤖 OpenClaw (智能体)</button>
-      <button id="gen-tab-cursor" class="code-gen-tab" data-tab="cursor" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">🖱️ Cursor / Cline (IDE)</button>
-      <button id="gen-tab-cherry" class="code-gen-tab" data-tab="cherry" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">🍒 Cherry Studio (桌面端)</button>
-      <button id="gen-tab-freellmapi" class="code-gen-tab" data-tab="freellmapi" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">⚙️ FreeLLMAPI (聚合池)</button>
-      <button id="gen-tab-python" class="code-gen-tab" data-tab="python" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">🐍 Python (SDK)</button>
-      <button id="gen-tab-curl" class="code-gen-tab" data-tab="curl" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">🌐 cURL (Shell)</button>
-    </div>
-  </div>
+      <p class="secret-guidance">{labels.env}</p>
 
-  <!-- 参数选择面板 -->
-  <div class="gen-controls-grid">
-    <div class="control-group">
-      <label for="select-platform">{isEn ? 'Select Free Tier Platform:' : '选择免费算力平台：'}</label>
-      <select id="select-platform" class="gen-select">
-        {compatiblePlatforms.map((p) => (
-          <option value={p.slug}>
-            {p.name} ({p.free_quota?.amount ? `${p.free_quota.amount} ${p.free_quota.unit || ''}` : p.category})
-          </option>
-        ))}
-      </select>
-    </div>
+      <div class="gen-tabs-wrap">
+        <div class="code-gen-tabs" id="gen-tabs" role="tablist" aria-label={isEn ? 'Generated format' : '生成格式'}>
+          {tabs.map((tab) => {
+            const state = getToolState(first?.tools, tab.tool, lang);
+            const active = tab.id === firstEnabledTab?.id;
+            return <button
+              id={`gen-tab-${tab.id}`}
+              class:list={['code-gen-tab', { active }]}
+              data-tab={tab.id}
+              data-tool={tab.tool}
+              data-label={tab.label}
+              data-file={tab.file}
+              type="button"
+              role="tab"
+              aria-selected={active ? 'true' : 'false'}
+              aria-controls="generated-code"
+              aria-describedby="tool-support-message"
+              aria-disabled={!state.enabled ? 'true' : 'false'}
+               tabindex={active ? '0' : '-1'}
+              title={state.reason}
+            >{tab.label}{!state.enabled ? ` · ${isEn ? 'unavailable' : '不可用'}` : ''}</button>;
+          })}
+        </div>
+      </div>
 
-    <div class="control-group">
-      <label for="input-api-key">{isEn ? 'Your API Key (never transmitted):' : '输入您的 API Key（不会发送到网络）：'}</label>
-      <input type="password" id="input-api-key" class="gen-input" placeholder="sk-..." autocomplete="off" spellcheck="false" />
-    </div>
+      <p id="tool-support-message" class="support-message" aria-live="polite">
+        {firstEnabledTab ? getToolState(first?.tools, firstEnabledTab.tool, lang).reason : labels.empty}
+      </p>
+      <p id="app-support-message" class="app-support-message" aria-live="polite">
+        {tabs.filter((tab) => !getToolState(first?.tools, tab.tool, lang).enabled).map((tab) => `${tab.label}: ${getToolState(first?.tools, tab.tool, lang).reason}`).join(' · ')}
+      </p>
+      <p class="reliability-note">{labels.retry}</p>
 
-    <div class="control-group">
-      <label for="select-model">{isEn ? 'Recommended Model:' : '推荐调优模型：'}</label>
-      <select id="select-model" class="gen-select">
-        <!-- JS 动态注入 -->
-      </select>
-    </div>
-  </div>
-
-  <!-- 生成的代码显示区 -->
-  <div class="gen-output-container" id="generated-code" role="tabpanel" aria-labelledby="gen-tab-openclaw">
-    <div class="output-topbar">
-      <span class="output-file-tag" id="output-file-name">config.json</span>
-      <button class="btn-copy-code" id="btn-copy-code">
-        <span>📋</span>
-        <span id="copy-btn-text">{isEn ? 'Copy Code' : '一键复制配置'}</span>
-      </button>
-    </div>
-    <pre class="code-output-pre"><code id="code-output-text" class="code-output-code"></code></pre>
-  </div>
+      <div class="gen-output-container" id="generated-code" role="tabpanel" aria-labelledby={`gen-tab-${firstEnabledTab?.id}`}>
+        <div class="output-topbar">
+          <span id="output-file-name">{firstEnabledTab?.file}</span>
+          <button type="button" id="btn-copy-code">{labels.copy}</button>
+        </div>
+        <pre><code id="code-output-text"></code></pre>
+      </div>
+    </>
+  )}
 </div>
 
 <style>
-  .config-generator-card {
-    background: #ffffff;
-    border: 2px solid var(--text);
-    border-radius: 12px;
-    padding: 28px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.06);
-    margin-bottom: 40px;
-  }
-  .generator-header {
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--card-border);
-    padding-bottom: 16px;
-  }
-  .gen-title-wrap {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  .gen-icon {
-    font-size: 26px;
-    line-height: 1;
-  }
-  .gen-title {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text);
-    margin-bottom: 4px;
-    letter-spacing: -0.4px;
-  }
-  .gen-desc {
-    font-size: 13.5px;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-
-  .gen-tabs-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    margin-bottom: 22px;
-    padding-bottom: 4px;
-  }
-  .gen-tabs-wrap::-webkit-scrollbar {
-    display: none;
-  }
-  .code-gen-tabs {
-    display: flex;
-    gap: 8px;
-    white-space: nowrap;
-  }
-  .code-gen-tab {
-    background: var(--bg-subtle);
-    border: 1px solid var(--card-border);
-    color: var(--text-muted);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 7px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .code-gen-tab.active {
-    background: var(--text);
-    color: #ffffff;
-    border-color: var(--text);
-  }
-
-  .gen-controls-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 22px;
-  }
-  @media (max-width: 800px) {
-    .gen-controls-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .control-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .control-group label {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-muted);
-  }
-  .gen-select, .gen-input {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 13.5px;
-    border: 1px solid var(--card-border);
-    border-radius: 6px;
-    background: #ffffff;
-    color: var(--text);
-    outline: none;
-  }
-  .gen-select:focus, .gen-input:focus {
-    border-color: var(--accent);
-  }
-
-  .gen-output-container {
-    background: #18181b;
-    border: 1px solid #27272a;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .output-topbar {
-    background: #27272a;
-    padding: 8px 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .output-file-tag {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 600;
-    color: #a1a1aa;
-  }
-  .btn-copy-code {
-    background: #3f3f46;
-    border: none;
-    color: #f4f4f5;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 5px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: background 0.15s;
-  }
-  .btn-copy-code:hover {
-    background: #52525b;
-  }
-  .code-output-pre {
-    padding: 16px 18px;
-    margin: 0;
-    overflow-x: auto;
-    background: transparent;
-  }
-  .code-output-code {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    line-height: 1.6;
-    color: #38bdf8;
-    white-space: pre;
-    word-break: break-all;
-  }
-
-  @media (max-width: 640px) {
-    .config-generator-card {
-      padding: 18px 14px;
-    }
-    .gen-title {
-      font-size: 17px;
-    }
-  }
+  .config-generator-card { background:#fff; border:2px solid var(--text); border-radius:12px; padding:28px; box-shadow:0 12px 32px rgba(0,0,0,.06); margin-bottom:40px; }
+  .generator-header { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; border-bottom:1px solid var(--card-border); padding-bottom:18px; margin-bottom:20px; }
+  .generator-header h2 { font-size:21px; margin:2px 0 5px; }
+  .generator-header p { color:var(--text-muted); font-size:13.5px; line-height:1.5; }
+  .eyebrow { font-family:var(--font-mono); font-size:10px !important; font-weight:700; letter-spacing:.12em; color:var(--accent) !important; }
+  .verification-badge { flex:0 0 auto; max-width:240px; padding:5px 9px; border-radius:5px; font-size:11px; font-weight:700; background:#fffbeb; border:1px solid #fde68a; color:#92400e; }
+  .level-documented,.level-live { background:#f0fdf4; border-color:#bbf7d0; color:#166534; }
+  .gen-controls-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:14px; }
+  .control-group { display:flex; flex-direction:column; gap:6px; }
+  .control-group label { font-size:12px; font-weight:700; color:var(--text-muted); }
+  select { width:100%; padding:10px 12px; border:1px solid var(--card-border); border-radius:6px; background:#fff; color:var(--text); font-size:13.5px; }
+  select:focus-visible,.code-gen-tab:focus-visible,button:focus-visible { outline:3px solid rgba(37,99,235,.3); outline-offset:2px; }
+  .secret-guidance,.reliability-note,.support-message,.app-support-message { font-size:12.5px; line-height:1.55; }
+  .secret-guidance { padding:10px 12px; margin-bottom:16px; background:#eff6ff; border-left:3px solid #2563eb; color:#1e3a8a; }
+  .gen-tabs-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:thin; padding-bottom:6px; }
+  .code-gen-tabs { display:flex; gap:7px; min-width:max-content; }
+  .code-gen-tab { border:1px solid var(--card-border); border-radius:6px; background:var(--bg-subtle); color:var(--text-muted); padding:7px 12px; font-size:12px; font-weight:650; cursor:pointer; }
+  .code-gen-tab.active { background:var(--text); color:#fff; border-color:var(--text); }
+   .code-gen-tab[aria-disabled="true"] { cursor:not-allowed; opacity:.55; text-decoration:line-through; }
+  .support-message { min-height:20px; margin:6px 0 0; color:var(--text-muted); font-weight:600; }
+  .app-support-message { margin:5px 0 0; color:var(--text-muted); }
+  .reliability-note { margin:7px 0 16px; color:#7c2d12; }
+  .gen-output-container { background:#18181b; border:1px solid #27272a; border-radius:8px; overflow:hidden; }
+  .output-topbar { display:flex; justify-content:space-between; align-items:center; padding:8px 14px; background:#27272a; color:#a1a1aa; font:600 12px var(--font-mono); }
+  #btn-copy-code { border:0; border-radius:4px; background:#3f3f46; color:#f4f4f5; padding:6px 11px; cursor:pointer; }
+  pre { margin:0; padding:17px; overflow:auto; }
+  code { color:#bae6fd; font:12.5px/1.62 var(--font-mono); white-space:pre; }
+  .empty-state { padding:20px; background:var(--bg-subtle); border:1px solid var(--card-border); color:var(--text-muted); }
+  @media (max-width:700px) { .config-generator-card{padding:19px 14px}.generator-header{display:block}.verification-badge{display:inline-block;margin-top:12px}.gen-controls-grid{grid-template-columns:1fr} }
 </style>
 
-<script is:inline define:vars={{ platformJsonStr }}>
-  const platformsData = JSON.parse(platformJsonStr);
-  const platformSelect = document.getElementById('select-platform');
-  const modelSelect = document.getElementById('select-model');
-  const apiKeyInput = document.getElementById('input-api-key');
-  const codeOutputText = document.getElementById('code-output-text');
-  const fileNameTag = document.getElementById('output-file-name');
-  const copyBtn = document.getElementById('btn-copy-code');
-  const copyBtnText = document.getElementById('copy-btn-text');
-  const generatedPanel = document.getElementById('generated-code');
-  const tabButtons = document.querySelectorAll('#gen-tabs .code-gen-tab');
+<script>
+  import { generateSnippet, getToolState, VERIFICATION_LABELS } from '../lib/operation-generator.mjs';
 
-  let activeTab = 'openclaw';
+  const root = document.getElementById('code-generator');
+  if (root instanceof HTMLElement && root.dataset.platforms) {
+    const lang = root.dataset.lang === 'zh' ? 'zh' : 'en';
+    const platforms = JSON.parse(root.dataset.platforms);
+    const platformSelect = root.querySelector<HTMLSelectElement>('#select-platform');
+    const modelSelect = root.querySelector<HTMLSelectElement>('#select-model');
+    const output = root.querySelector('#code-output-text');
+    const panel = root.querySelector('#generated-code');
+    const badge = root.querySelector('#operation-badge');
+    const supportMessage = root.querySelector('#tool-support-message');
+    const appSupportMessage = root.querySelector('#app-support-message');
+    const fileName = root.querySelector('#output-file-name');
+    const copyButton = root.querySelector<HTMLButtonElement>('#btn-copy-code');
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('.code-gen-tab')];
+    const isEnabled = (tab: HTMLButtonElement) => tab.getAttribute('aria-disabled') !== 'true';
+    let activeTab = tabs.find(isEnabled)?.dataset.tab || '';
 
-  function populateModels() {
-    const slug = platformSelect?.value;
-    const p = platformsData.find(x => x.slug === slug) || platformsData[0];
-    if (!modelSelect) return;
-    modelSelect.innerHTML = '';
-    const models = p.free_models && p.free_models.length ? p.free_models : ['default-model'];
-    models.forEach(m => {
-      const opt = document.createElement('option');
-      opt.value = m;
-      opt.textContent = m;
-      modelSelect.appendChild(opt);
-    });
-  }
+    const selectedPlatform = () => platforms.find((item) => item.slug === platformSelect?.value) || platforms[0];
+    const enabledTabs = () => tabs.filter(isEnabled);
 
-  function renderGeneratedCode() {
-    const slug = platformSelect?.value;
-    const p = platformsData.find(x => x.slug === slug) || platformsData[0];
-    const rawKey = apiKeyInput?.value.trim() || '';
-    const key = /^[A-Za-z0-9._:/+=-]{1,512}$/.test(rawKey) ? rawKey : 'sk-your-api-key-here';
-    const model = modelSelect?.value || (p.free_models && p.free_models[0]) || 'default-model';
-    const baseUrl = p.api_base_url || 'https://api.openai.com/v1';
-
-    let code = '';
-    let fileName = '';
-
-    if (activeTab === 'openclaw') {
-      fileName = 'config.json (OpenClaw 模型配置)';
-      code = JSON.stringify({
-        "models": {
-          "primary": {
-            "name": model,
-            "provider": "openai-compatible",
-            "base_url": baseUrl,
-            "api_key": key,
-            "max_tokens": 8192,
-            "temperature": 0.3
-          }
-        },
-        "settings": {
-          "enable_background_title": false,
-          "enable_background_heartbeat": false,
-          "prompt_cache": true
-        }
-      }, null, 2);
-    } else if (activeTab === 'cursor') {
-      fileName = 'Cursor Settings (Settings -> Models -> OpenAI Compatible)';
-      code = `// Cursor IDE 填空指引：\nBase URL:  ${baseUrl}\nAPI Key:   ${key}\nModel Name: ${model}\n\n// 测试 Prompt：\n"Hello, write a quick test script to verify API connectivity."`;
-    } else if (activeTab === 'cherry') {
-      fileName = 'Cherry Studio / NextChat 配置参数';
-      code = `// 客户端图形界面配置：\n提供商类型:  OpenAI 兼容 (OpenAI API)\nAPI 域名:   ${baseUrl}\nAPI Key:    ${key}\n模型名称:    ${model}`;
-    } else if (activeTab === 'freellmapi') {
-      fileName = 'freellmapi/config.json (多 Key 聚合网关)';
-      code = JSON.stringify({
-        "channel_name": p.name,
-        "base_url": baseUrl,
-        "api_key": key,
-        "models": [model],
-        "priority": 1,
-        "weight": 10,
-        "fallback_group": "free-tier"
-      }, null, 2);
-    } else if (activeTab === 'python') {
-      fileName = 'test_api.py (OpenAI Python SDK)';
-      code = `import openai\n\nclient = openai.OpenAI(\n    base_url=${JSON.stringify(baseUrl)},\n    api_key=${JSON.stringify(key)}\n)\n\nresponse = client.chat.completions.create(\n    model=${JSON.stringify(model)},\n    messages=[\n        {"role": "system", "content": "You are a helpful coding assistant."},\n        {"role": "user", "content": "Write a Python function to check prime numbers."}\n    ],\n    temperature=0.3\n)\n\nprint(response.choices[0].message.content)`;
-    } else if (activeTab === 'curl') {
-      fileName = 'curl_request.sh (终端直接运行)';
-      code = `curl -X POST "${baseUrl}/chat/completions" \\\n  -H "Content-Type: application/json" \\\n  -H "Authorization: Bearer ${key}" \\\n  -d '{\n    "model": "${model}",\n    "messages": [\n      {"role": "user", "content": "Ping API connectivity check."}\n    ],\n    "temperature": 0.5\n  }'`;
+    function selectTab(tab) {
+      if (!tab || !isEnabled(tab)) return;
+      tabs.forEach((item) => {
+        const active = item === tab;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-selected', String(active));
+        item.tabIndex = active ? 0 : -1;
+      });
+      activeTab = tab.dataset.tab || '';
+      panel?.setAttribute('aria-labelledby', tab.id);
+      if (fileName) fileName.textContent = tab.dataset.file || '';
+      render();
     }
 
-    if (fileNameTag) fileNameTag.textContent = fileName;
-    if (codeOutputText) codeOutputText.textContent = code.replace(/\\n/g, '\n');
-  }
-
-  platformSelect?.addEventListener('change', () => {
-    populateModels();
-    renderGeneratedCode();
-  });
-  modelSelect?.addEventListener('change', renderGeneratedCode);
-  apiKeyInput?.addEventListener('input', renderGeneratedCode);
-
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabButtons.forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-selected', 'false');
-        b.setAttribute('tabindex', '-1');
-      });
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected', 'true');
-      btn.removeAttribute('tabindex');
-      if (generatedPanel && btn.id) generatedPanel.setAttribute('aria-labelledby', btn.id);
-      activeTab = btn.dataset.tab || 'openclaw';
-      renderGeneratedCode();
-    });
-    btn.addEventListener('keydown', event => {
-      const buttons = [...tabButtons];
-      const index = buttons.indexOf(btn);
-      let next = null;
-      if (event.key === 'ArrowRight') next = buttons[(index + 1) % buttons.length];
-      if (event.key === 'ArrowLeft') next = buttons[(index - 1 + buttons.length) % buttons.length];
-      if (event.key === 'Home') next = buttons[0];
-      if (event.key === 'End') next = buttons[buttons.length - 1];
-      if (next) {
-        event.preventDefault();
-        next.click();
-        next.focus();
+    function updatePlatform() {
+      const platform = selectedPlatform();
+      if (!platform) return;
+      if (modelSelect) {
+        modelSelect.replaceChildren(...platform.operation.models.map((model) => {
+          const option = document.createElement('option');
+          option.value = model;
+          option.textContent = model;
+          return option;
+        }));
       }
-    });
-  });
+      if (badge) {
+        badge.textContent = VERIFICATION_LABELS[lang][platform.operation.verification.status];
+        badge.className = `verification-badge level-${platform.operation.verification.status}`;
+      }
+      tabs.forEach((tab) => {
+        const state = getToolState(platform.tools, tab.dataset.tool, lang);
+        tab.setAttribute('aria-disabled', String(!state.enabled));
+        tab.title = state.reason;
+      });
+      if (appSupportMessage) {
+        appSupportMessage.textContent = tabs
+          .filter((tab) => !getToolState(platform.tools, tab.dataset.tool, lang).enabled)
+          .map((tab) => `${tab.dataset.label}: ${getToolState(platform.tools, tab.dataset.tool, lang).reason}`)
+          .join(' · ');
+      }
+      let active = tabs.find((tab) => tab.dataset.tab === activeTab && isEnabled(tab));
+      if (!active) active = enabledTabs()[0];
+      selectTab(active);
+    }
 
-  copyBtn?.addEventListener('click', () => {
-    const text = codeOutputText?.textContent || '';
-    navigator.clipboard.writeText(text).then(() => {
-      if (copyBtnText) copyBtnText.textContent = '✅ 已成功复制！';
-      setTimeout(() => {
-        if (copyBtnText) copyBtnText.textContent = '一键复制配置';
-      }, 2000);
-    });
-  });
+    function render() {
+      const platform = selectedPlatform();
+      const tab = tabs.find((item) => item.dataset.tab === activeTab);
+      if (!platform || !tab || !output) return;
+      const state = getToolState(platform.tools, tab.dataset.tool, lang);
+      if (supportMessage) supportMessage.textContent = state.reason;
+      output.textContent = generateSnippet(platform.operation, modelSelect?.value, activeTab);
+    }
 
-  // Init
-  populateModels();
-  renderGeneratedCode();
+    platformSelect?.addEventListener('change', updatePlatform);
+    modelSelect?.addEventListener('change', render);
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => selectTab(tab));
+      tab.addEventListener('keydown', (event) => {
+        const available = enabledTabs();
+        const index = available.indexOf(tab);
+        let next;
+        if (event.key === 'ArrowRight') next = available[(index + 1) % available.length];
+        if (event.key === 'ArrowLeft') next = available[(index - 1 + available.length) % available.length];
+        if (event.key === 'Home') next = available[0];
+        if (event.key === 'End') next = available.at(-1);
+        if (next) { event.preventDefault(); selectTab(next); next.focus(); }
+      });
+    });
+    copyButton?.addEventListener('click', async () => {
+      const original = lang === 'zh' ? '复制代码' : 'Copy code';
+      try {
+        if (!navigator.clipboard) throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(output?.textContent || '');
+        copyButton.textContent = lang === 'zh' ? '已复制' : 'Copied';
+      } catch {
+        copyButton.textContent = lang === 'zh' ? '复制失败，请手动选择' : 'Copy failed; select manually';
+        copyButton.setAttribute('aria-live', 'polite');
+      }
+      window.setTimeout(() => { copyButton.textContent = original; }, 1600);
+    });
+    updatePlatform();
+  }
 </script>

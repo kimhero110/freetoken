@@ -1,3 +1,4 @@
+schema_version: 2
 slug: novita-ai
 name: Novita AI
 name_en: Novita AI
@@ -39,10 +40,29 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: openai
-  chat_completions_url: https://api.novita.ai/v3/openai/chat/completions
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.novita.ai/v3/openai/chat/completions
+      models:
+      - deepseek/deepseek-r1
+      - meta-llama/llama-3.3-70b-instruct
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: NOVITA_AI_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://novita.ai/docs
   checked_at: '2026-09-02'

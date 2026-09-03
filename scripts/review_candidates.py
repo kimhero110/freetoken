@@ -34,6 +34,11 @@ GENERATED_FILES = (
     ROOT / "site" / "public" / "sitemap.xml",
 )
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+CAPABILITY_PROBE_KEYS = {
+    "candidate_type", "candidate_version", "platform_slug", "platform_hash", "operation_id",
+    "endpoint_url", "endpoint_hash", "model", "observed_status_code", "latency_ms",
+    "protocol_valid", "decision", "checked_at", "evidence_url", "review",
+}
 
 sys.path.append(str(ROOT / "scripts"))
 try:
@@ -147,7 +152,7 @@ def _safe_slug(value: str) -> str:
 
 
 def _candidate_file(candidate_id: str) -> Path | None:
-    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", candidate_id or ""):
+    if len(candidate_id or "") > 200 or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", candidate_id or ""):
         raise ValueError("候选 ID 只能包含小写字母、数字和连字符")
     for suffix in (".yaml", ".json"):
         path = (CANDIDATES_DIR / f"{candidate_id}{suffix}").resolve()
@@ -224,6 +229,81 @@ def _apply_update_candidate(data: dict) -> tuple[Path, str]:
     return dest_yaml, final_slug
 
 
+def _validate_capability_probe(data: dict) -> tuple[Path, dict, dict]:
+    unknown = set(data) - CAPABILITY_PROBE_KEYS
+    missing = CAPABILITY_PROBE_KEYS - {"review"} - set(data)
+    if unknown or missing:
+        raise ValueError("能力探测候选字段无效")
+    if data.get("candidate_version") != 1 or isinstance(data.get("candidate_version"), bool):
+        raise ValueError("能力探测候选版本无效")
+    slug = _safe_slug(data.get("platform_slug", ""))
+    if data.get("operation_id") != "chat_completions":
+        raise ValueError("能力探测操作无效")
+    for field in ("platform_hash", "endpoint_hash"):
+        if not isinstance(data.get(field), str) or not re.fullmatch(r"[a-f0-9]{64}", data[field]):
+            raise ValueError("能力探测哈希无效")
+    status_code = data.get("observed_status_code")
+    if status_code is not None and (isinstance(status_code, bool) or not isinstance(status_code, int) or not 100 <= status_code <= 599):
+        raise ValueError("能力探测状态码无效")
+    latency = data.get("latency_ms")
+    if isinstance(latency, bool) or not isinstance(latency, int) or not 0 <= latency <= 120000:
+        raise ValueError("能力探测延迟无效")
+    if not isinstance(data.get("protocol_valid"), bool) or data.get("decision") not in {"live", "failed"}:
+        raise ValueError("能力探测结果无效")
+    try:
+        checked_at = datetime.fromisoformat(data.get("checked_at", ""))
+    except (TypeError, ValueError) as exc:
+        raise ValueError("能力探测时间无效") from exc
+    if checked_at.tzinfo is None or checked_at.utcoffset().total_seconds() != 0:
+        raise ValueError("能力探测时间必须为 UTC")
+    age = datetime.now(timezone.utc) - checked_at
+    if age.total_seconds() < -300 or age.days > 7:
+        raise ValueError("能力探测已过期，请重新探测")
+    evidence_url = data.get("evidence_url")
+    if not isinstance(evidence_url, str) or not re.fullmatch(
+        r"https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/actions/runs/[0-9]+", evidence_url
+    ):
+        raise ValueError("能力探测证据 URL 无效")
+
+    path = PLATFORMS_DIR / f"{slug}.yaml"
+    if not path.exists():
+        raise ValueError(f"正式平台不存在: {slug}")
+    platform = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    if _platform_hash(platform) != data["platform_hash"]:
+        raise ValueError("正式数据已在能力探测后变更，请重新探测")
+    operations = [item for item in platform.get("capabilities", {}).get("operations", []) if item.get("id") == data["operation_id"]]
+    if len(operations) != 1:
+        raise ValueError("正式操作已变更，请重新探测")
+    operation = operations[0]
+    endpoint = operation.get("endpoint_url")
+    if endpoint != data.get("endpoint_url") or hashlib.sha256(endpoint.encode("utf-8")).hexdigest() != data["endpoint_hash"]:
+        raise ValueError("正式端点已变更，请重新探测")
+    if data.get("model") not in operation.get("models", []):
+        raise ValueError("正式模型已变更，请重新探测")
+    if operation.get("protocol") != "openai":
+        raise ValueError("正式协议已变更，请重新探测")
+    return path, platform, operation
+
+
+def _apply_capability_probe(data: dict) -> tuple[Path, str]:
+    path, platform, operation = _validate_capability_probe(data)
+    if data["decision"] != "live" or not data["protocol_valid"] or not 200 <= (data["observed_status_code"] or 0) < 300:
+        raise ValueError("失败的能力探测只能拒绝并归档，不能应用到正式数据")
+    operation["verification"] = {
+        "status": "live",
+        "checked_at": data["checked_at"][:10],
+        "evidence_url": data["evidence_url"],
+    }
+    tools = platform["capabilities"]["tools"]
+    # This probe exercises the raw HTTP contract, not either SDK runtime.
+    tools["curl"] = "live"
+    errors = validate_platform(platform, data["platform_slug"])
+    if errors:
+        raise ValueError("; ".join(errors))
+    path.write_text(yaml.safe_dump(platform, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    return path, data["platform_slug"]
+
+
 def approve_candidate(candidate_id: str):
     with _approval_lock():
         return _approve_candidate_locked(candidate_id)
@@ -241,7 +321,7 @@ def _approve_candidate_locked(candidate_id: str):
     else:
         data = json.loads(target_file.read_text(encoding="utf-8"))
 
-    if data.get("candidate_type") == "platform_update":
+    if data.get("candidate_type") in {"platform_update", "capability_probe"}:
         final_slug = _safe_slug(data.get("platform_slug", ""))
     else:
         proposed = data.get("proposed")
@@ -258,6 +338,8 @@ def _approve_candidate_locked(candidate_id: str):
         _mark_candidate_reviewed(target_file, data, "approved")
         if data.get("candidate_type") == "platform_update":
             _apply_update_candidate(data)
+        elif data.get("candidate_type") == "capability_probe":
+            _apply_capability_probe(data)
         else:
             if dest_backup is not None:
                 raise ValueError(f"正式平台已存在，拒绝覆盖: {final_slug}")
@@ -326,18 +408,20 @@ def main():
 
     if args.list:
         list_candidates()
+        return 0
     elif args.approve:
-        approve_candidate(args.approve)
+        return 0 if approve_candidate(args.approve) else 1
     elif args.reject:
-        reject_candidate(args.reject)
+        return 0 if reject_candidate(args.reject) else 1
     else:
         candidates = list_candidates()
         if not candidates:
             return
         choice = input("请输入要批准的平台代号 (输入 q 退出): ").strip()
         if choice and choice.lower() != "q":
-            approve_candidate(choice)
+            return 0 if approve_candidate(choice) else 1
+        return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

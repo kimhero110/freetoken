@@ -35,11 +35,11 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertIn('python scripts/extract.py "${ARGS[@]}"', run_blocks)
 
     def test_repository_writers_serialize_duplicate_runs_and_rebase_before_push(self):
-        for name in ("update.yml", "discover.yml"):
+        for name in ("update.yml", "discover.yml", "probe-capabilities.yml", "review-candidate.yml"):
             workflow = (ROOT / ".github" / "workflows" / name).read_text(
                 encoding="utf-8"
             )
-            self.assertRegex(workflow, r"group: freetoken-(?:quota-extraction|platform-discovery)")
+            self.assertIn("group: freetoken-main-writer", workflow)
             self.assertIn("cancel-in-progress: false", workflow)
             self.assertIn("git pull --rebase origin main", workflow)
 
@@ -49,7 +49,7 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertIn("environment: production", workflow)
 
     def test_secret_bearing_manual_workflows_only_run_main(self):
-        for name in ("update.yml", "discover.yml", "push_wechat.yml", "feishu-test.yml"):
+        for name in ("update.yml", "discover.yml", "push_wechat.yml", "feishu-test.yml", "probe-capabilities.yml"):
             workflow = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
             self.assertIn("if: github.ref == 'refs/heads/main'", workflow, name)
 
@@ -94,6 +94,39 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertNotIn("npm run build", workflow)
         self.assertNotIn("HEAD:deploy", workflow)
 
+    def test_capability_probe_is_weekly_allowlisted_and_commits_only_candidates(self):
+        workflow = (ROOT / ".github" / "workflows" / "probe-capabilities.yml").read_text(encoding="utf-8")
+        self.assertIn('cron: "17 3 * * 2"', workflow)
+        self.assertIn("type: choice", workflow)
+        for provider in (
+            "deepseek", "siliconflow", "aliyun-bailian", "moonshot-kimi", "google-ai-studio",
+            "groq", "volcengine", "zhipu-ai", "openrouter", "gmi-cloud-minimax",
+        ):
+            self.assertIn(f"- {provider}", workflow)
+        self.assertIn("--operation chat_completions", workflow)
+        self.assertIn("--all-configured", workflow)
+        self.assertIn("git add --all -- data/candidates/", workflow)
+        self.assertNotIn("git add data/platforms/", workflow)
+        self.assertIn("continue-on-error: true", workflow)
+        self.assertIn("if: steps.probe.outcome == 'failure'", workflow)
+
+    def test_review_workflow_is_main_only_and_passes_inputs_via_environment(self):
+        workflow = (ROOT / ".github" / "workflows" / "review-candidate.yml").read_text(encoding="utf-8")
+        run_blocks = "\n".join(
+            match.group(1)
+            for match in re.finditer(r"^\s+run:\s*\|\s*\n((?:\s{10,}.*\n?)*)", workflow, re.MULTILINE)
+        )
+        self.assertIn("if: github.ref == 'refs/heads/main'", workflow)
+        self.assertNotIn("${{ inputs.", run_blocks)
+        self.assertNotIn("${{ github.actor }}", run_blocks)
+        self.assertIn("GITHUB_ACTOR=\"$REVIEWER\"", run_blocks)
+        self.assertIn("environment: production", workflow)
+        self.assertIn('^[a-z0-9]+(-[a-z0-9]+)*$', run_blocks)
+        self.assertIn('${#CANDIDATE_ID}', run_blocks)
+        self.assertIn('--approve "$CANDIDATE_ID"', run_blocks)
+        self.assertIn('--reject "$CANDIDATE_ID"', run_blocks)
+        self.assertNotIn("secrets.", workflow)
+
     def test_candidate_ids_and_platform_slugs_reject_path_traversal(self):
         from scripts.review_candidates import _candidate_file, _safe_slug
 
@@ -103,6 +136,8 @@ class SecurityInvariantTests(unittest.TestCase):
                     _safe_slug(invalid)
                 with self.assertRaises(ValueError):
                     _candidate_file(invalid)
+        with self.assertRaises(ValueError):
+            _candidate_file("a" * 201)
 
 
 if __name__ == "__main__":

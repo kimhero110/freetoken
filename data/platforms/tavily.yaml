@@ -1,3 +1,4 @@
+schema_version: 2
 slug: tavily
 name: Tavily AI (AI 搜索专用引擎)
 name_en: Tavily AI
@@ -40,10 +41,27 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: search
-  chat_completions_url: null
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: search
+      protocol: rest
+      endpoint_url: https://api.tavily.com/search
+      models: []
+      auth:
+        type: api_key_header
+        header: X-API-Key
+        query_param: null
+        env_var: TAVILY_API_KEY
+      verification:
+        status: documented
+        checked_at: '2026-09-03'
+        evidence_url: https://docs.tavily.com/documentation/api-reference/endpoint/search
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://docs.tavily.com/
   checked_at: '2026-09-02'

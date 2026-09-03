@@ -1,3 +1,4 @@
+schema_version: 2
 slug: siliconflow
 name: 硅基流动 (SiliconFlow)
 name_en: SiliconFlow
@@ -43,10 +44,30 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: openai
-  chat_completions_url: https://api.siliconflow.cn/v1/chat/completions
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.siliconflow.cn/v1/chat/completions
+      models:
+      - Qwen/Qwen2.5-7B-Instruct
+      - deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
+      - THUDM/glm-4-9b-chat
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: SILICONFLOW_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://docs.siliconflow.cn/
   checked_at: '2026-09-02'

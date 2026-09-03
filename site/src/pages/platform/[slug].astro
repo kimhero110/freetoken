@@ -2,6 +2,7 @@
 // FreeTokens.info 平台详情页 - 极简主义技术文档风格
 import Base from '../../layouts/Base.astro';
 import platforms from '../../data/platforms.json';
+import { generateSnippet, getToolState, selectChatOperation, VERIFICATION_LABELS } from '../../lib/operation-generator.mjs';
 
 export async function getStaticPaths() {
   return platforms.map((p: any) => ({
@@ -20,12 +21,15 @@ const statusMap: Record<string, string> = {
   unverified: '待核实',
 };
 
-const apiBaseUrl = p.api_base_url || 'https://api.openai.com/v1';
-const chatCompletionsUrl = p.capabilities?.chat_completions_url;
-const isOpenAI = p.capabilities?.protocol === 'openai' && chatCompletionsUrl;
 const requirements = p.requirements ?? {};
-const primaryModel = p.free_models?.[0] || 'default-model';
-const shellQuote = (value: string) => `'${value.replaceAll("'", `'"'"'`)}'`;
+const operations = p.capabilities?.operations ?? [];
+const chatOperation = selectChatOperation(p);
+const primaryModel = chatOperation?.models[0];
+const snippets = chatOperation && primaryModel ? {
+  curl: getToolState(p.capabilities?.tools, 'curl', 'zh').enabled ? generateSnippet(chatOperation, primaryModel, 'curl') : null,
+  python: getToolState(p.capabilities?.tools, 'openai_python', 'zh').enabled ? generateSnippet(chatOperation, primaryModel, 'python') : null,
+  node: getToolState(p.capabilities?.tools, 'openai_node', 'zh').enabled ? generateSnippet(chatOperation, primaryModel, 'node') : null,
+} : null;
 
 function formatVerified(dateStr: any): string {
   return dateStr || '未核实';
@@ -94,79 +98,42 @@ const requirementLabel = (value: string) => value === 'required' ? '需要' : va
         </div>
       </section>
 
-      <!-- 支持模型 -->
-      {p.free_models && p.free_models.length > 0 && (
-        <section class="detail-section">
-          <h2 class="section-heading">免费可用模型</h2>
-          <div class="models-pill-wrap">
-            {p.free_models.map((m: string) => (
-              <span class="model-pill">{m}</span>
-            ))}
-          </div>
-        </section>
-      )}
+      {operations.length > 0 && <section class="detail-section">
+        <h2 class="section-heading">操作能力与证据</h2>
+        <div class="operations-list">
+          {operations.map((operation: any) => <article class="operation-card">
+            <div class="operation-title">
+              <code>{operation.id}</code>
+              <span class={`operation-level level-${operation.verification.status}`}>{VERIFICATION_LABELS.zh[operation.verification.status]}</span>
+            </div>
+            <dl>
+              <div><dt>协议</dt><dd>{operation.protocol}</dd></div>
+              <div><dt>核查日期</dt><dd>{operation.verification.checked_at || '未核查'}</dd></div>
+              <div><dt>端点</dt><dd><code>{operation.endpoint_url || '请查阅官方文档'}</code></dd></div>
+              <div><dt>证据</dt><dd>{operation.verification.evidence_url ? <a href={operation.verification.evidence_url} target="_blank" rel="noopener noreferrer">核验记录 ↗</a> : '未提供'}</dd></div>
+            </dl>
+            {operation.models?.length > 0 && <div class="models-pill-wrap">{operation.models.map((model: string) => <span class="model-pill">{model}</span>)}</div>}
+          </article>)}
+        </div>
+      </section>}
 
-      <!-- 10 秒接入代码 (精准平台接口地址与模型) -->
-      {isOpenAI ? (<section class="detail-section">
-        <h2 class="section-heading">10 秒快速接入代码</h2>
+      {snippets && (snippets.curl || snippets.python || snippets.node) ? <section class="detail-section">
+        <h2 class="section-heading">OpenAI Chat Completions 安全示例</h2>
+        <p class="code-guidance">代码使用已核验的操作端点与模型，并从 <code>{chatOperation.auth.env_var}</code> 环境变量读取密钥。所有示例仅发送一次 POST，不自动重试，以免重复产生计费调用。输出限制为 64 tokens。</p>
         <div class="code-box-container">
           <div class="code-tabs" id="code-tabs" role="tablist" aria-label="接入代码语言">
-            <button id="code-tab-python" class="code-tab active" data-lang="python" role="tab" aria-selected="true" aria-controls="code-python">Python</button>
-            <button id="code-tab-curl" class="code-tab" data-lang="curl" role="tab" aria-selected="false" aria-controls="code-curl" tabindex="-1">cURL</button>
-            <button id="code-tab-js" class="code-tab" data-lang="js" role="tab" aria-selected="false" aria-controls="code-js" tabindex="-1">JavaScript</button>
+            {snippets.curl && <button id="code-tab-curl" class="code-tab active" data-lang="curl" role="tab" aria-selected="true" aria-controls="code-curl">cURL</button>}
+            {snippets.python && <button id="code-tab-python" class:list={['code-tab', { active: !snippets.curl }]} data-lang="python" role="tab" aria-selected={!snippets.curl ? 'true' : 'false'} aria-controls="code-python" tabindex={snippets.curl ? '-1' : '0'}>Python SDK</button>}
+            {snippets.node && <button id="code-tab-node" class:list={['code-tab', { active: !snippets.curl && !snippets.python }]} data-lang="node" role="tab" aria-selected={!snippets.curl && !snippets.python ? 'true' : 'false'} aria-controls="code-node" tabindex={snippets.curl || snippets.python ? '-1' : '0'}>Node.js SDK</button>}
           </div>
-
-          <div class="code-block active" id="code-python" role="tabpanel" aria-labelledby="code-tab-python">
-            <pre><code>{`from openai import OpenAI
-
-# 1. 初始化客户端（使用 ${p.name} 专属 API 接口地址）
-client = OpenAI(
-    api_key="YOUR_API_KEY",  # 填入申请到的 ${p.name} API Key
-    base_url="${apiBaseUrl}"
-)
-
-# 2. 发起对话请求（使用官方免费支持的模型）
-response = client.chat.completions.create(
-    model="${primaryModel}",
-    messages=[
-        {"role": "user", "content": "你好！请用一句话介绍你自己。"}
-    ]
-)
-
-print(response.choices[0].message.content)`}</code></pre>
-          </div>
-
-          <div class="code-block" id="code-curl" role="tabpanel" aria-labelledby="code-tab-curl" hidden>
-            <pre><code>{`curl ${shellQuote(chatCompletionsUrl)}   -H "Content-Type: application/json"   -H "Authorization: Bearer YOUR_API_KEY"   -d '{
-    "model": "${primaryModel}",
-    "messages": [{"role": "user", "content": "你好！"}]
-  }'`}</code></pre>
-          </div>
-
-          <div class="code-block" id="code-js" role="tabpanel" aria-labelledby="code-tab-js" hidden>
-            <pre><code>{`import OpenAI from "openai";
-
-// 1. 初始化客户端
-const openai = new OpenAI({
-  apiKey: "YOUR_API_KEY",
-  baseURL: "${apiBaseUrl}",
-});
-
-// 2. 发起请求
-const response = await openai.chat.completions.create({
-  model: "${primaryModel}",
-  messages: [{ role: "user", content: "你好！" }],
-});
-
-console.log(response.choices[0].message.content);`}</code></pre>
-          </div>
+          {snippets.curl && <div class="code-block active" id="code-curl" role="tabpanel" aria-labelledby="code-tab-curl"><pre><code>{snippets.curl}</code></pre></div>}
+          {snippets.python && <div class:list={['code-block', { active: !snippets.curl }]} id="code-python" role="tabpanel" aria-labelledby="code-tab-python" hidden={!!snippets.curl}><pre><code>{snippets.python}</code></pre></div>}
+          {snippets.node && <div class:list={['code-block', { active: !snippets.curl && !snippets.python }]} id="code-node" role="tabpanel" aria-labelledby="code-tab-node" hidden={!!(snippets.curl || snippets.python)}><pre><code>{snippets.node}</code></pre></div>}
         </div>
-      </section>) : (
-        <section class="detail-section">
-          <h2 class="section-heading">接入方式</h2>
-          <p>该平台不是已核实的 OpenAI Chat Completions 服务，请以官方文档中的专用协议为准。</p>
-        </section>
-      )}
+      </section> : <section class="detail-section">
+        <h2 class="section-heading">接入方式</h2>
+        <p>当前没有可安全生成的 OpenAI Chat Completions 示例。通用或非对话操作请遵循<a href={p.doc_url} target="_blank" rel="noopener noreferrer">官方文档 ↗</a>，不要套用对话端点。</p>
+      </section>}
 
       <!-- 避坑与注意事项 -->
       {p.gotchas && p.gotchas.length > 0 && (
@@ -183,7 +150,7 @@ console.log(response.choices[0].message.content);`}</code></pre>
       <!-- 底部操作栏 -->
       <footer class="detail-footer-bar">
         <div class="footer-meta">
-          <span>最近核验：{formatVerified(p.last_verified)} · {statusMap[p.status] ?? '状态未知'}</span>
+          <span>目录数据检查：{formatVerified(p.last_verified)} · {statusMap[p.status] ?? '状态未知'}（操作核查等级见上方）</span>
         </div>
         <div class="footer-buttons">
           <a class="btn-register" href={p.registration.url} target="_blank" rel="noopener noreferrer">
@@ -357,6 +324,16 @@ console.log(response.choices[0].message.content);`}</code></pre>
       flex-wrap: wrap;
       gap: 8px;
     }
+    .operations-list { display: grid; gap: 12px; }
+    .operation-card { padding: 14px; border: 1px solid var(--card-border); border-radius: 8px; background: var(--bg-subtle); }
+    .operation-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .operation-level { font-size: 11px; font-weight: 700; color: #92400e; }
+    .operation-level.level-documented,.operation-level.level-live { color: #166534; }
+    .operation-card dl { display: grid; gap: 6px; margin: 0 0 12px; font-size: 12px; }
+    .operation-card dl div { display: grid; grid-template-columns: 74px minmax(0,1fr); gap: 8px; }
+    .operation-card dt { color: var(--text-light); }
+    .operation-card dd { margin: 0; overflow-wrap: anywhere; }
+    .code-guidance { margin: -4px 0 12px; color: var(--text-muted); font-size: 12.5px; line-height: 1.6; }
     .model-pill {
       font-size: 12px;
       font-weight: 500;
@@ -377,6 +354,8 @@ console.log(response.choices[0].message.content);`}</code></pre>
       display: flex;
       background: #09090b;
       border-bottom: 1px solid #27272a;
+      overflow-x: auto;
+      min-width: max-content;
     }
     .code-tab {
       background: none;

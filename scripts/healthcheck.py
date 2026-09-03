@@ -4,7 +4,7 @@ FreeToken Automated Pre-Flight Healthcheck & Regression Guard
 ------------------------------------------------------------
 Runs before any build/deploy to ensure zero-regression on critical features:
 1. Platform count >= 40 in data/platforms.json
-2. Code Generator (6 verified-compatible tools) is present in CodeGenerator.astro
+2. Code Generator uses the tested v2 operation contract
 3. Article system is present (>= 4 articles) in data/articles.json
 4. Key routes return 200 OK and navigation is intact
 """
@@ -30,7 +30,7 @@ def run_checks():
         if len(platforms) < 40:
             errors.append(f"Platform count is less than 40! Found {len(platforms)}.")
         else:
-            print(f"  [PASS] 1/4 Platforms DB: {len(platforms)}/40 platforms verified.")
+            print(f"  [PASS] 1/4 Platforms DB: {len(platforms)}/40 platform records loaded.")
 
     # 2. Check Code Generator Component
     gen_file = ROOT / "site" / "src" / "components" / "CodeGenerator.astro"
@@ -38,12 +38,23 @@ def run_checks():
         errors.append("site/src/components/CodeGenerator.astro missing!")
     else:
         content = gen_file.read_text(encoding="utf-8")
-        tools = ['openclaw', 'cursor', 'cherry', 'freellmapi', 'python', 'curl']
-        missing_tools = [t for t in tools if t not in content]
-        if missing_tools:
-            errors.append(f"Code generator missing tools: {missing_tools}")
+        helper_file = ROOT / "site" / "src" / "lib" / "operation-generator.mjs"
+        test_file = ROOT / "site" / "tests" / "operation-generator.test.mjs"
+        helper = helper_file.read_text(encoding="utf-8") if helper_file.exists() else ""
+        required_contract = [
+            "getCompatiblePlatforms(platforms)",
+            "generateSnippet(rawOperation, model, format)",
+            "endpointUrl.slice(0, -CHAT_SUFFIX.length)",
+            "curl --fail --silent --show-error",
+            "max_retries=0",
+            "maxRetries: 0",
+            "process.exitCode = 1",
+        ]
+        missing_contract = [item for item in required_contract if item not in helper]
+        if missing_contract or "getCompatiblePlatforms(platforms)" not in content or not test_file.exists():
+            errors.append(f"Code generator v2 contract is incomplete: {missing_contract}")
         else:
-            print("  [PASS] 2/4 Code Generator Component: All 6 supported tools present.")
+            print("  [PASS] 2/4 Code Generator: tested canonical operation contract present.")
 
     # 3. Check Articles System
     articles_file = ROOT / "data" / "articles.json"

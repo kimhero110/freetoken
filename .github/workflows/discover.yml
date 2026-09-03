@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: freetoken-platform-discovery
+  group: freetoken-main-writer
   cancel-in-progress: false
 
 jobs:

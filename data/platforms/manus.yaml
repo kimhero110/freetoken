@@ -1,3 +1,4 @@
+schema_version: 2
 name: Manus
 name_en: Manus AI
 slug: manus
@@ -41,10 +42,27 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: custom
-  chat_completions_url: null
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: agent
+      protocol: custom
+      endpoint_url: null
+      models: []
+      auth:
+        type: unknown
+        header: null
+        query_param: null
+        env_var: null
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://events.manus.im/zh-cn/campaign/free-tokens
   checked_at: '2026-09-02'

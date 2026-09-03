@@ -158,6 +158,7 @@ def run_discovery():
             cand_yaml = candidates_dir / f"{slug_base}.yaml"
             if not cand_yaml.exists():
                 platform = {
+                    "schema_version": 2,
                     "slug": slug_base,
                     "name": data["title"] or slug_base,
                     "name_en": slug_base.title(),
@@ -187,8 +188,12 @@ def run_discovery():
                         "regions": [], "rpm": None, "tpm": None,
                     },
                     "capabilities": {
-                        "protocol": "custom", "supports_claude_code": False,
-                        "api_key_required": True,
+                        "operations": [],
+                        "tools": {
+                            "curl": "unknown", "openai_python": "unknown",
+                            "openai_node": "unknown", "cursor": "unknown",
+                            "openclaw": "unknown", "cherry_studio": "unknown",
+                        },
                     },
                     "evidence": [{"url": url, "checked_at": str(date.today())}],
                 }

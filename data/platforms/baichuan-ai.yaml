@@ -1,3 +1,4 @@
+schema_version: 2
 slug: baichuan-ai
 name: 百川智能开放平台
 name_en: Baichuan AI
@@ -41,10 +42,30 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: openai
-  chat_completions_url: https://api.baichuan-ai.com/v1/chat/completions
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.baichuan-ai.com/v1/chat/completions
+      models:
+      - Baichuan4
+      - Baichuan3-Turbo
+      - Baichuan2-Turbo
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: BAICHUAN_AI_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://platform.baichuan-ai.com/docs/api
   checked_at: '2026-09-02'
