@@ -31,3 +31,20 @@ gotchas:
 - 代金券用尽后需按量充值。
 gotchas_en:
 - Pay-as-you-go applies after voucher depletion.
+registration:
+  url: https://platform.moonshot.cn/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.moonshot.cn/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://platform.moonshot.cn/docs/intro
+  checked_at: '2026-09-02'

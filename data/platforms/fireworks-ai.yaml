@@ -29,3 +29,20 @@ gotchas:
 - 支持 Function Calling 与 JSON 结构化输出。
 gotchas_en:
 - Full support for tool calling and JSON mode.
+registration:
+  url: https://fireworks.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.fireworks.ai/inference/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://docs.fireworks.ai/
+  checked_at: '2026-09-02'

@@ -30,3 +30,20 @@ tags:
 - 开源模型
 - OpenAI兼容
 - 多模型聚合
+registration:
+  url: https://featherless.ai
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.featherless.ai/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://featherless.ai
+  checked_at: '2026-09-02'

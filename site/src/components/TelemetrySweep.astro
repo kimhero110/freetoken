@@ -7,27 +7,20 @@ interface Props {
 const { lang = 'zh' } = Astro.props;
 const isEn = lang === 'en';
 const totalNodes = platforms.length;
+const verifiedDates = platforms.map((p) => p.last_verified).filter(Boolean).sort();
+const latestVerified = verifiedDates.at(-1) || (isEn ? 'Not verified' : '未核实');
 ---
 
 <div class="telemetry-bar">
   <div class="container telemetry-inner">
     <div class="telemetry-left">
-      <span class="telemetry-pulse"></span>
-      <span class="telemetry-label">{isEn ? 'LIVE PROBE:' : '实时雷达:'}</span>
-      <span class="telemetry-status">{isEn ? `${totalNodes}/${totalNodes} Nodes Operational` : `${totalNodes}/${totalNodes} 全节点探活中`}</span>
+      <span class="telemetry-label">{isEn ? 'DATABASE:' : '数据目录:'}</span>
+      <span class="telemetry-status">{isEn ? `${totalNodes} tracked platforms` : `已收录 ${totalNodes} 个平台`}</span>
       <span class="telemetry-sep">|</span>
-      <span class="telemetry-time" id="telemetry-time">{isEn ? 'Today 12:00' : '今日 12:00'}</span>
+      <span class="telemetry-time">{isEn ? `Latest verification: ${latestVerified}` : `最近核验：${latestVerified}`}</span>
     </div>
     <div class="telemetry-right">
-      <span class="telemetry-item">
-        <span class="telemetry-dim">{isEn ? 'Quota Sync:' : '配额巡检:'}</span>
-        <strong id="quota-countdown">45s</strong>
-      </span>
-      <span class="telemetry-sep">·</span>
-      <span class="telemetry-item">
-        <span class="telemetry-dim">{isEn ? 'New Source Scan:' : '新源发现:'}</span>
-        <strong id="source-countdown">180s</strong>
-      </span>
+      <span class="telemetry-item">{isEn ? 'Changes require human approval' : '数据变更需人工审核'}</span>
     </div>
   </div>
 </div>
@@ -112,28 +105,3 @@ const totalNodes = platforms.length;
     }
   }
 </style>
-
-<script is:inline>
-  function updateTelemetry() {
-    const now = new Date();
-    const mins = now.getMinutes();
-    const roundedMins = Math.floor(mins / 5) * 5;
-    const pastSlot = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), roundedMins);
-    const hh = String(pastSlot.getHours()).padStart(2, '0');
-    const mm = String(pastSlot.getMinutes()).padStart(2, '0');
-    const isEn = document.documentElement.lang === 'en';
-    const timeEl = document.getElementById('telemetry-time');
-    if (timeEl) {
-      timeEl.textContent = isEn ? `Today ${hh}:${mm}` : `今日 ${hh}:${mm}`;
-    }
-
-    let qSec = 60 - (Math.floor(Date.now() / 1000) % 60);
-    let sSec = 300 - (Math.floor(Date.now() / 1000) % 300);
-    const qEl = document.getElementById('quota-countdown');
-    const sEl = document.getElementById('source-countdown');
-    if (qEl) qEl.textContent = qSec === 0 ? '⚡ 巡检中' : `${qSec}s`;
-    if (sEl) sEl.textContent = sSec === 0 ? '🔍 探测中' : `${sSec}s`;
-  }
-  setInterval(updateTelemetry, 1000);
-  updateTelemetry();
-</script>

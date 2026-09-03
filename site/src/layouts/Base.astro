@@ -4,6 +4,8 @@ interface Props {
   description?: string;
   lang?: 'zh' | 'en';
   currentSlug?: string;
+  analytics?: boolean;
+  localized?: boolean;
 }
 
 const {
@@ -11,6 +13,8 @@ const {
   description,
   lang = 'zh',
   currentSlug,
+  analytics = true,
+  localized = true,
 } = Astro.props;
 
 const isEn = lang === 'en';
@@ -25,11 +29,14 @@ const defaultDesc = isEn
 
 const pageTitle = title ? `${title} | FreeToken` : defaultTitle;
 const pageDesc = description || defaultDesc;
+const canonicalUrl = new URL(Astro.url.pathname, 'https://freetokens.info').toString();
 
 // Alternate switch link
 let switchUrl = '/';
 const currentPath = Astro.url.pathname;
-if (isEn) {
+if (!localized) {
+  switchUrl = isEn ? '/articles/' : '/en/articles/';
+} else if (isEn) {
   if (currentSlug) {
     switchUrl = `/platform/${currentSlug}/`;
   } else if (currentPath.includes('/article/')) {
@@ -65,7 +72,7 @@ if (isEn) {
 <html lang={isEn ? 'en' : 'zh-CN'}>
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{pageTitle}</title>
   <meta name="description" content={pageDesc} />
 
@@ -74,17 +81,19 @@ if (isEn) {
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={pageDesc} />
   <meta property="og:image" content="/images/hero-mascot.webp" />
+  <meta property="og:url" content={canonicalUrl} />
 
   <!-- Canonical & hreflang SEO -->
-  <link rel="alternate" hreflang="zh-CN" href={currentSlug ? `https://freetokens.info/platform/${currentSlug}/` : 'https://freetokens.info/'} />
-  <link rel="alternate" hreflang="en" href={currentSlug ? `https://freetokens.info/en/platform/${currentSlug}/` : 'https://freetokens.info/en/'} />
-  <link rel="alternate" hreflang="x-default" href={currentSlug ? `https://freetokens.info/platform/${currentSlug}/` : 'https://freetokens.info/'} />
+  <link rel="canonical" href={canonicalUrl} />
+  {localized && <link rel="alternate" hreflang="zh-CN" href={new URL(isEn ? switchUrl : currentPath, 'https://freetokens.info').toString()} />}
+  {localized && <link rel="alternate" hreflang="en" href={new URL(isEn ? currentPath : switchUrl, 'https://freetokens.info').toString()} />}
+  {localized && <link rel="alternate" hreflang="x-default" href={new URL(isEn ? switchUrl : currentPath, 'https://freetokens.info').toString()} />}
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
   <!-- Umami Private Analytics (Dynamic routing for freetokens.info & witkit.zone) -->
-  <script is:inline>
+  {analytics && <script is:inline>
     (function() {
       try {
         var h = window.location.hostname || '';
@@ -98,7 +107,7 @@ if (isEn) {
         document.head.appendChild(s);
       } catch (e) {}
     })();
-  </script>
+  </script>}
 
   <style is:global>
     :root {

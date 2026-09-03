@@ -16,6 +16,11 @@ import requests
 import yaml
 from bs4 import BeautifulSoup
 
+try:
+    from .safe_http import get_public_text
+except ImportError:
+    from safe_http import get_public_text
+
 ROOT = Path(__file__).resolve().parent.parent
 PLATFORMS_DIR = ROOT / "data" / "platforms"
 CACHE_DIR = ROOT / ".cache"
@@ -38,12 +43,11 @@ def load_hashes() -> dict:
 def fetch_text(url: str) -> str | None:
     """抓取 URL 并提取纯文本；失败返回 None。"""
     try:
-        resp = requests.get(url, headers={"User-Agent": UA}, timeout=TIMEOUT)
-        resp.raise_for_status()
-    except requests.RequestException as exc:
+        body = get_public_text(url, headers={"User-Agent": UA}, timeout=TIMEOUT)
+    except (requests.RequestException, ValueError) as exc:
         print(f"  [失败] {url}: {exc}")
         return None
-    soup = BeautifulSoup(resp.text, "html.parser")
+    soup = BeautifulSoup(body, "html.parser")
     # 去掉脚本与样式，减少噪音
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
@@ -54,6 +58,8 @@ def main() -> int:
     CACHE_DIR.mkdir(exist_ok=True)
     hashes = load_hashes()
     changed: list[dict] = []
+    attempted = 0
+    succeeded = 0
 
     yaml_files = sorted(PLATFORMS_DIR.glob("*.yaml"))
     print(f"共发现 {len(yaml_files)} 个平台条目")
@@ -62,9 +68,11 @@ def main() -> int:
         entry = yaml.safe_load(yf.read_text(encoding="utf-8"))
         name = entry.get("name", yf.stem)
         for url in entry.get("source_urls", []):
+            attempted += 1
             text = fetch_text(url)
             if text is None:
                 continue  # 抓取失败时保留旧哈希，下一轮重试
+            succeeded += 1
             digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
             if hashes.get(url) != digest:
                 hashes[url] = digest
@@ -79,6 +87,9 @@ def main() -> int:
         json.dumps(changed, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     print(f"\n本轮共 {len(changed)} 个来源发生变更，已写入 {CHANGED_FILE}")
+    if attempted and succeeded == 0:
+        print("全部来源抓取失败，拒绝将监控失效报告为无变化")
+        return 1
     return 0
 
 

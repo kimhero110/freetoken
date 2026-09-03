@@ -31,3 +31,20 @@ tags:
 - 1万亿
 - Agent
 - Web应用
+registration:
+  url: https://events.manus.im/zh-cn/campaign/free-tokens
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: custom
+  chat_completions_url: null
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://events.manus.im/zh-cn/campaign/free-tokens
+  checked_at: '2026-09-02'

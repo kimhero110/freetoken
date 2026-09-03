@@ -31,3 +31,20 @@ gotchas:
 - 社区公用算力池，高并发时请加入重试与限流逻辑。
 gotchas_en:
 - Public shared infrastructure; add retry logic for stability.
+registration:
+  url: https://pollinations.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: custom
+  chat_completions_url: null
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://pollinations.github.io/docs/
+  checked_at: '2026-09-02'

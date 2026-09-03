@@ -1,9 +1,7 @@
 ---
-import Base from '../../../layouts/Base.astro';
-import ArticleReader from '../../../components/ArticleReader.astro';
 import articles from '../../../data/articles.json';
 
-export async function getStaticPaths() {
+export function getStaticPaths() {
   return articles.map((article) => ({
     params: { slug: article.slug },
     props: { article },
@@ -11,13 +9,20 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props;
-const relatedArticles = articles.filter((a) => a.slug !== article.slug).slice(0, 2);
+const destination = `/article/${article.slug}/`;
+const canonical = new URL(destination, 'https://freetokens.info').toString();
 ---
-
-<Base
-  title={`${article.title_en || article.title} · FreeToken Playbook`}
-  description={article.summary_en || article.summary}
-  lang="en"
->
-  <ArticleReader article={article} relatedArticles={relatedArticles} lang="en" />
-</Base>
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content={`0; url=${destination}`} />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={canonical} />
+    <title>{article.title} | FreeToken</title>
+  </head>
+  <body>
+    <p>This article is currently available in Chinese. <a href={destination}>Continue to the article</a>.</p>
+  </body>
+</html>

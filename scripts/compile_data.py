@@ -4,6 +4,8 @@ import re
 from pathlib import Path
 import yaml
 
+from platform_schema import validate_platform
+
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 CONTENT_DIR = ROOT / "content" / "articles"
@@ -58,12 +60,11 @@ def compile_platforms():
     platforms = []
     if platforms_dir.exists():
         for yf in sorted(platforms_dir.glob("*.yaml")):
-            try:
-                data = yaml.safe_load(yf.read_text(encoding="utf-8"))
-                if data and "slug" in data:
-                    platforms.append(data)
-            except Exception as e:
-                print(f"[WARN] Failed to parse {yf.name}: {e}")
+            data = yaml.safe_load(yf.read_text(encoding="utf-8"))
+            errors = validate_platform(data, yf.stem)
+            if errors:
+                raise ValueError(f"{yf.name}: {'; '.join(errors)}")
+            platforms.append(data)
                 
     p_json = json.dumps(platforms, ensure_ascii=False, indent=2)
     (DATA_DIR / "platforms.json").write_text(p_json, encoding="utf-8")
@@ -124,7 +125,6 @@ def generate_sitemap(platforms, articles):
 
     for a in articles:
         lines.append(f'  <url><loc>https://freetokens.info/article/{a["slug"]}/</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>')
-        lines.append(f'  <url><loc>https://freetokens.info/en/article/{a["slug"]}/</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>')
 
     for p in platforms:
         lines.append(f'  <url><loc>https://freetokens.info/platform/{p["slug"]}/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>')

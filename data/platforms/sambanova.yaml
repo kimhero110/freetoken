@@ -30,3 +30,20 @@ gotchas:
 - 免费层限制约 5-10 RPM。
 gotchas_en:
 - Rate-limited to 5-10 RPM on free tier.
+registration:
+  url: https://sambanova.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.sambanova.ai/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://docs.sambanova.ai/
+  checked_at: '2026-09-02'

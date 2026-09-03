@@ -17,7 +17,7 @@ const isEn = lang === 'en';
       </div>
 
       <h2 class="art-card-title">
-        <a href={isEn ? `/en/article/${art.slug}/` : `/article/${art.slug}/`}>
+        <a href={`/article/${art.slug}/`}>
           {isEn ? (art.title_en || art.title) : art.title}
         </a>
       </h2>
@@ -37,8 +37,8 @@ const isEn = lang === 'en';
           <span class="art-author">{art.author}</span>
           <span class="art-date">{isEn ? `Published ${art.date}` : `发布于 ${art.date}`}</span>
         </div>
-        <a href={isEn ? `/en/article/${art.slug}/` : `/article/${art.slug}/`} class="art-read-btn">
-          {isEn ? 'Read Article →' : '阅读全文 →'}
+        <a href={`/article/${art.slug}/`} class="art-read-btn">
+          {isEn ? 'Read in Chinese →' : '阅读全文 →'}
         </a>
       </div>
     </article>

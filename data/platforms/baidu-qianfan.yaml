@@ -32,3 +32,20 @@ gotchas:
 - 免费模型默认并发限制约为 10 QPS，适合中轻度调用。
 gotchas_en:
 - Free models rate-limited to 10 QPS.
+registration:
+  url: https://console.bce.baidu.com/qianfan/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://qianfan.baidubce.com/v2/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html
+  checked_at: '2026-09-02'

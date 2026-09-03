@@ -33,3 +33,20 @@ gotchas:
 - 免费 7B-9B 模型无扣费风险，适合 Agent 自动化日常保底。
 gotchas_en:
 - Free 7B-9B models are permanently free with zero billing risk.
+registration:
+  url: https://cloud.siliconflow.cn/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.siliconflow.cn/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://docs.siliconflow.cn/
+  checked_at: '2026-09-02'

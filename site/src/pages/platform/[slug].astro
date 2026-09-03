@@ -14,16 +14,24 @@ const { platform: p } = Astro.props;
 const q = p.free_quota ?? {};
 const statusMap: Record<string, string> = {
   active: '正常可用',
+  degraded: '服务降级',
   expired: '已失效',
+  unknown: '状态未知',
   unverified: '待核实',
 };
 
 const apiBaseUrl = p.api_base_url || 'https://api.openai.com/v1';
+const chatCompletionsUrl = p.capabilities?.chat_completions_url;
+const isOpenAI = p.capabilities?.protocol === 'openai' && chatCompletionsUrl;
+const requirements = p.requirements ?? {};
 const primaryModel = p.free_models?.[0] || 'default-model';
+const shellQuote = (value: string) => `'${value.replaceAll("'", `'"'"'`)}'`;
 
 function formatVerified(dateStr: any): string {
-  return dateStr || '2026-09-02';
+  return dateStr || '未核实';
 }
+
+const requirementLabel = (value: string) => value === 'required' ? '需要' : value === 'not_required' ? '不需要' : '未核实';
 ---
 <Base currentSlug={p.slug} title={`${p.name} 免费API额度与接入指南`} description={`${p.name} 免费API额度：${q.amount} ${q.unit ?? ''}。${p.intro}`}>
   <div class="container detail-container">
@@ -41,8 +49,8 @@ function formatVerified(dateStr: any): string {
       <header class="detail-header">
         <div class="detail-meta">
           <span class="category-badge">{p.category}</span>
-          <span class="status-pill status-active">
-            {statusMap[p.status] ?? '正常可用'}
+          <span class={`status-pill status-${p.status}`}>
+            {statusMap[p.status] ?? '状态未知'}
           </span>
         </div>
         <h1 class="detail-title">
@@ -69,19 +77,19 @@ function formatVerified(dateStr: any): string {
         <div class="conditions-grid">
           <div class="condition-item">
             <span class="cond-label">手机验证</span>
-            <span class="cond-value">{p.conditions?.phone_required ? '需要' : '免绑手机'}</span>
+            <span class="cond-value">{requirementLabel(requirements.phone)}</span>
           </div>
           <div class="condition-item">
             <span class="cond-label">信用卡绑定</span>
-            <span class="cond-value">{p.conditions?.credit_card_required ? '需要' : '免绑信用卡'}</span>
+            <span class="cond-value">{requirementLabel(requirements.card)}</span>
           </div>
           <div class="condition-item">
             <span class="cond-label">网络环境</span>
-            <span class="cond-value">{p.conditions?.region_restrictions?.join(', ') || '全球直连'}</span>
+            <span class="cond-value">{requirements.region === 'unknown' ? '未核实' : requirements.regions?.join(', ') || '无限制'}</span>
           </div>
           <div class="condition-item">
             <span class="cond-label">并发限制</span>
-            <span class="cond-value">RPM {p.limits?.rpm ?? '无特殊限制'} · TPM {p.limits?.tpm ?? '无限制'}</span>
+            <span class="cond-value">RPM {requirements.rpm ?? '未核实'} · TPM {requirements.tpm ?? '未核实'}</span>
           </div>
         </div>
       </section>
@@ -99,16 +107,16 @@ function formatVerified(dateStr: any): string {
       )}
 
       <!-- 10 秒接入代码 (精准平台接口地址与模型) -->
-      <section class="detail-section">
+      {isOpenAI ? (<section class="detail-section">
         <h2 class="section-heading">10 秒快速接入代码</h2>
         <div class="code-box-container">
-          <div class="code-tabs" id="code-tabs">
-            <button class="code-tab active" data-lang="python">Python</button>
-            <button class="code-tab" data-lang="curl">cURL</button>
-            <button class="code-tab" data-lang="js">JavaScript</button>
+          <div class="code-tabs" id="code-tabs" role="tablist" aria-label="接入代码语言">
+            <button id="code-tab-python" class="code-tab active" data-lang="python" role="tab" aria-selected="true" aria-controls="code-python">Python</button>
+            <button id="code-tab-curl" class="code-tab" data-lang="curl" role="tab" aria-selected="false" aria-controls="code-curl" tabindex="-1">cURL</button>
+            <button id="code-tab-js" class="code-tab" data-lang="js" role="tab" aria-selected="false" aria-controls="code-js" tabindex="-1">JavaScript</button>
           </div>
 
-          <div class="code-block active" id="code-python">
+          <div class="code-block active" id="code-python" role="tabpanel" aria-labelledby="code-tab-python">
             <pre><code>{`from openai import OpenAI
 
 # 1. 初始化客户端（使用 ${p.name} 专属 API 接口地址）
@@ -128,14 +136,14 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)`}</code></pre>
           </div>
 
-          <div class="code-block" id="code-curl">
-            <pre><code>{`curl ${apiBaseUrl}/chat/completions   -H "Content-Type: application/json"   -H "Authorization: Bearer YOUR_API_KEY"   -d '{
+          <div class="code-block" id="code-curl" role="tabpanel" aria-labelledby="code-tab-curl" hidden>
+            <pre><code>{`curl ${shellQuote(chatCompletionsUrl)}   -H "Content-Type: application/json"   -H "Authorization: Bearer YOUR_API_KEY"   -d '{
     "model": "${primaryModel}",
     "messages": [{"role": "user", "content": "你好！"}]
   }'`}</code></pre>
           </div>
 
-          <div class="code-block" id="code-js">
+          <div class="code-block" id="code-js" role="tabpanel" aria-labelledby="code-tab-js" hidden>
             <pre><code>{`import OpenAI from "openai";
 
 // 1. 初始化客户端
@@ -153,7 +161,12 @@ const response = await openai.chat.completions.create({
 console.log(response.choices[0].message.content);`}</code></pre>
           </div>
         </div>
-      </section>
+      </section>) : (
+        <section class="detail-section">
+          <h2 class="section-heading">接入方式</h2>
+          <p>该平台不是已核实的 OpenAI Chat Completions 服务，请以官方文档中的专用协议为准。</p>
+        </section>
+      )}
 
       <!-- 避坑与注意事项 -->
       {p.gotchas && p.gotchas.length > 0 && (
@@ -170,10 +183,10 @@ console.log(response.choices[0].message.content);`}</code></pre>
       <!-- 底部操作栏 -->
       <footer class="detail-footer-bar">
         <div class="footer-meta">
-          <span>最近核验：{formatVerified(p.last_verified)} (可用)</span>
+          <span>最近核验：{formatVerified(p.last_verified)} · {statusMap[p.status] ?? '状态未知'}</span>
         </div>
         <div class="footer-buttons">
-          <a class="btn-register" href={p.register_url} target="_blank" rel="noopener">
+          <a class="btn-register" href={p.registration.url} target="_blank" rel="noopener noreferrer">
             直达官网领取额度 ↗
           </a>
         </div>
@@ -232,6 +245,16 @@ console.log(response.choices[0].message.content);`}</code></pre>
       border: 1px solid #bbf7d0;
       padding: 2px 7px;
       border-radius: 4px;
+    }
+    .status-degraded, .status-unverified, .status-unknown {
+      color: #92400e;
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+    .status-expired {
+      color: #991b1b;
+      background: #fef2f2;
+      border-color: #fecaca;
     }
     .detail-title {
       font-size: 28px;
@@ -426,13 +449,37 @@ console.log(response.choices[0].message.content);`}</code></pre>
 
     codeTabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        codeTabs.forEach(t => t.classList.remove('active'));
-        codeBlocks.forEach(b => b.classList.remove('active'));
+        codeTabs.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+          t.setAttribute('tabindex', '-1');
+        });
+        codeBlocks.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('hidden', '');
+        });
 
         tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        tab.removeAttribute('tabindex');
         const lang = tab.getAttribute('data-lang');
         const activeBlock = document.getElementById(`code-${lang}`);
         activeBlock?.classList.add('active');
+        activeBlock?.removeAttribute('hidden');
+      });
+      tab.addEventListener('keydown', event => {
+        const tabs = [...codeTabs];
+        const index = tabs.indexOf(tab);
+        let next = null;
+        if (event.key === 'ArrowRight') next = tabs[(index + 1) % tabs.length];
+        if (event.key === 'ArrowLeft') next = tabs[(index - 1 + tabs.length) % tabs.length];
+        if (event.key === 'Home') next = tabs[0];
+        if (event.key === 'End') next = tabs[tabs.length - 1];
+        if (next) {
+          event.preventDefault();
+          next.click();
+          next.focus();
+        }
       });
     });
   </script>

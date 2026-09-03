@@ -8,6 +8,7 @@
 """
 
 import json
+import html as html_lib
 import os
 import sys
 from datetime import date
@@ -1899,16 +1900,6 @@ console.log(response.choices[0].message.content);`}</code></pre>
 </Base>"""
 
 
-def update_frontend_files():
-    import subprocess
-    script_path = ROOT / "scripts" / "generate_i18n.py"
-    if not script_path.exists():
-        script_path = ROOT.parent / ".gemini" / "antigravity" / "brain" / "bf3efad4-9f27-4be8-aa5a-bb85d75a1b06" / "scratch" / "generate_i18n.py"
-    if script_path.exists():
-        subprocess.run([sys.executable, str(script_path)], check=True)
-    print("✅ [极简主义双语 UI 模板] 成功更新 Base.astro, 中英文主页与全量详情页！")
-
-
 # ==========================================
 # 1. 微信公众号富文本排版引擎 (WeChat HTML Engine)
 # ==========================================
@@ -1951,18 +1942,25 @@ def generate_wechat_article(platforms: list[dict]) -> str:
 
     for p in limited_list:
         q = p.get("free_quota", {})
+        name = html_lib.escape(str(p.get("name", "")))
+        amount = html_lib.escape(str(q.get("amount", "")))
+        unit = html_lib.escape(str(q.get("unit", "")))
+        intro = html_lib.escape(str(p.get("intro", "")))
+        conditions = "；".join(
+            html_lib.escape(str(value)) for value in q.get("conditions", [])[:2]
+        )
         html += f"""
     <div style="border: 1px solid #fed7aa; background: #fffaf5; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; box-shadow: 0 2px 4px rgba(249,115,22,0.05);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-        <span style="font-size: 16px; font-weight: 700; color: #9a3412;">{p['name']}</span>
+        <span style="font-size: 16px; font-weight: 700; color: #9a3412;">{name}</span>
         <span style="background: #ea580c; color: #ffffff; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px;">🔥 限时活动</span>
       </div>
       <div style="color: #c2410c; font-size: 14px; font-weight: 700; margin-bottom: 6px;">
-        🎁 核心额度：{q.get('amount', '')} {q.get('unit', '')}
+        🎁 核心额度：{amount} {unit}
       </div>
-      <p style="color: #475569; font-size: 13px; margin: 0 0 8px;">{p.get('intro', '')}</p>
+      <p style="color: #475569; font-size: 13px; margin: 0 0 8px;">{intro}</p>
       <div style="background: #ffffff; border: 1px dashed #fdba74; padding: 8px 12px; border-radius: 6px; font-size: 12px; color: #64748b;">
-        📌 <strong>使用条件</strong>：{'；'.join(q.get('conditions', [])[:2])}
+        📌 <strong>使用条件</strong>：{conditions}
       </div>
     </div>
 """
@@ -1980,17 +1978,22 @@ def generate_wechat_article(platforms: list[dict]) -> str:
 
     for p in (permanent_list + daily_list)[:8]:
         q = p.get("free_quota", {})
-        tag_badge = '<span style="background:#e0f2fe;color:#0369a1;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;">' + (q.get('type') or '免费') + '</span>'
+        name = html_lib.escape(str(p.get("name", "")))
+        amount = html_lib.escape(str(q.get("amount", "")))
+        unit = html_lib.escape(str(q.get("unit", "")))
+        intro = html_lib.escape(str(p.get("intro", "")))
+        quota_type = html_lib.escape(str(q.get("type") or "免费"))
+        tag_badge = '<span style="background:#e0f2fe;color:#0369a1;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;">' + quota_type + '</span>'
         html += f"""
     <div style="border: 1px solid #e2e8f0; background: #ffffff; border-radius: 10px; padding: 14px 16px; margin-bottom: 12px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-        <span style="font-size: 15px; font-weight: 700; color: #1e293b;">{p['name']}</span>
+        <span style="font-size: 15px; font-weight: 700; color: #1e293b;">{name}</span>
         {tag_badge}
       </div>
       <div style="color: #0284c7; font-size: 13px; font-weight: 600; margin-bottom: 4px;">
-        🎁 免费额度：{q.get('amount', '')} {q.get('unit', '')}
+        🎁 免费额度：{amount} {unit}
       </div>
-      <p style="color: #64748b; font-size: 13px; margin: 0;">{p.get('intro', '')}</p>
+      <p style="color: #64748b; font-size: 13px; margin: 0;">{intro}</p>
     </div>
 """
 
@@ -2238,74 +2241,6 @@ def generate_svg_architecture() -> str:
     return svg
 
 
-# ==========================================
-# 4. 全自动化搜索引擎 SEO 引擎 (Sitemap & Robots)
-# ==========================================
-def generate_seo_assets(platforms: list[dict]):
-    """自动生成完全符合 Google/Baidu/Bing 标准的 sitemap.xml 与 robots.txt 以及 Cloudflare _headers"""
-    public_dir = ROOT / "site" / "public"
-    public_dir.mkdir(parents=True, exist_ok=True)
-
-    # 1. robots.txt
-    robots_content = "User-agent: *\nAllow: /\n\nSitemap: https://freetokens.info/sitemap.xml\n"
-    (public_dir / "robots.txt").write_text(robots_content, encoding="utf-8")
-
-    # 2. _headers for Cloudflare Pages (Ensure Googlebot allowed)
-    headers_content = "/*\n  X-Robots-Tag: all\n  Access-Control-Allow-Origin: *\n\n/sitemap.xml\n  Content-Type: application/xml; charset=utf-8\n  X-Robots-Tag: all\n\n/robots.txt\n  Content-Type: text/plain; charset=utf-8\n  X-Robots-Tag: all\n"
-    (public_dir / "_headers").write_text(headers_content, encoding="utf-8")
-
-    # 3. Bilingual sitemap.xml with hreflang
-    today = date.today().isoformat()
-    lines = [
-        '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
-        '  <!-- Chinese & English Homepages -->',
-        '  <url>',
-        '    <loc>https://freetokens.info/</loc>',
-        f'    <lastmod>{today}</lastmod>',
-        '    <changefreq>daily</changefreq>',
-        '    <priority>1.0</priority>',
-        '    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/"/>',
-        '    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/"/>',
-        '  </url>',
-        '  <url>',
-        '    <loc>https://freetokens.info/en/</loc>',
-        f'    <lastmod>{today}</lastmod>',
-        '    <changefreq>daily</changefreq>',
-        '    <priority>1.0</priority>',
-        '    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/"/>',
-        '    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/"/>',
-        '  </url>',
-    ]
-
-    for p in platforms:
-        slug = p.get('slug')
-        if slug:
-            lines.extend([
-                '  <url>',
-                f'    <loc>https://freetokens.info/platform/{slug}/</loc>',
-                f'    <lastmod>{today}</lastmod>',
-                '    <changefreq>weekly</changefreq>',
-                '    <priority>0.8</priority>',
-                f'    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/{slug}/"/>',
-                f'    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/{slug}/"/>',
-                '  </url>',
-                '  <url>',
-                f'    <loc>https://freetokens.info/en/platform/{slug}/</loc>',
-                f'    <lastmod>{today}</lastmod>',
-                '    <changefreq>weekly</changefreq>',
-                '    <priority>0.8</priority>',
-                f'    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://freetokens.info/platform/{slug}/"/>',
-                f'    <xhtml:link rel="alternate" hreflang="en" href="https://freetokens.info/en/platform/{slug}/"/>',
-                '  </url>',
-            ])
-
-    lines.append('</urlset>\n')
-    sitemap_content = "\n".join(lines)
-    (public_dir / "sitemap.xml").write_text(sitemap_content, encoding="utf-8")
-    (OUTPUT_DIR / "sitemap.xml").write_text(sitemap_content, encoding="utf-8")
-
-
 def main():
     if sys.stdout.encoding and sys.stdout.encoding.lower() != 'utf-8':
         sys.stdout.reconfigure(encoding='utf-8')
@@ -2337,14 +2272,7 @@ def main():
     (ROOT / "site" / "public" / "architecture.svg").write_text(svg_content, encoding="utf-8")
     print(f"✅ [Adaptive Vector SVG Diagram] -> {svg_path}")
 
-    # 4. 导出 SEO Sitemap 与 Robots.txt
-    generate_seo_assets(platforms)
-    print(f"✅ [SEO Sitemap.xml & Robots.txt] -> site/public/sitemap.xml")
-
-    # 5. 更新前端页面为 magazine.net 暖色高质感风格
-    update_frontend_files()
-
-    print("\n🎉 All content and SEO assets generated successfully!")
+    print("\n🎉 All content assets generated successfully!")
     return 0
 
 

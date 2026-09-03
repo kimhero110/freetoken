@@ -31,3 +31,20 @@ gotchas:
 - 免费额度消耗后自动转为按量扣费，请设置用量预警。
 gotchas_en:
 - Automatic pay-as-you-go billing after trial depletion.
+registration:
+  url: https://bailian.console.aliyun.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio
+  checked_at: '2026-09-02'

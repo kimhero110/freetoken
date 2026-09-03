@@ -32,3 +32,20 @@ gotchas:
 - 使用 GitHub Personal Access Token 作为 API Key。
 gotchas_en:
 - Authenticate using standard GitHub PAT.
+registration:
+  url: https://github.com/marketplace/models
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://models.inference.ai.azure.com/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://docs.github.com/en/github-models
+  checked_at: '2026-09-02'

@@ -31,3 +31,20 @@ gotchas:
 - 免费层受限于严格的 TPM 限制，适合单轮高频交互。
 gotchas_en:
 - Strict TPM limit applies on free tier.
+registration:
+  url: https://groq.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.groq.com/openai/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://console.groq.com/docs/quickstart
+  checked_at: '2026-09-02'

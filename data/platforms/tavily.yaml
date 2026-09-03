@@ -30,3 +30,20 @@ gotchas:
 - 原生适配 LangChain 与主流 Agent 搜索插件。
 gotchas_en:
 - Directly supported in LangChain and OpenClaw search tools.
+registration:
+  url: https://tavily.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: search
+  chat_completions_url: null
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://docs.tavily.com/
+  checked_at: '2026-09-02'

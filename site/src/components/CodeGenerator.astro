@@ -6,7 +6,8 @@ interface Props {
 
 const { platforms = [], lang = 'zh' } = Astro.props;
 const isEn = lang === 'en';
-const platformJsonStr = JSON.stringify(platforms);
+const compatiblePlatforms = platforms.filter((p) => p.capabilities?.protocol === 'openai');
+const platformJsonStr = JSON.stringify(compatiblePlatforms);
 ---
 
 <div class="config-generator-card" id="code-generator">
@@ -15,21 +16,20 @@ const platformJsonStr = JSON.stringify(platforms);
       <span class="gen-icon">⚡</span>
       <div>
         <h2 class="gen-title">{isEn ? '10-Second Drop-in Code Generator' : '10 秒多工具即用配置代码生成器'}</h2>
-        <p class="gen-desc">{isEn ? 'Zero mental overhead: Select your platform and generate exact configuration code for 7 mainstream developer tools.' : '消除参数心智负担：一键切换 7 大主流工具，自动合成标准配置代码。'}</p>
+        <p class="gen-desc">{isEn ? 'Choose a verified OpenAI-compatible platform and generate configuration for 6 developer tools.' : '选择已核实的 OpenAI 兼容平台，为 6 类开发工具生成配置。'}</p>
       </div>
     </div>
   </div>
 
   <!-- 工具切换 Tab (移动端原生滑动手势) -->
   <div class="gen-tabs-wrap">
-    <div class="code-gen-tabs" id="gen-tabs">
-      <button class="code-gen-tab active" data-tab="openclaw">🤖 OpenClaw (智能体)</button>
-      <button class="code-gen-tab" data-tab="claude-code">💻 Claude Code (CLI)</button>
-      <button class="code-gen-tab" data-tab="cursor">🖱️ Cursor / Cline (IDE)</button>
-      <button class="code-gen-tab" data-tab="cherry">🍒 Cherry Studio (桌面端)</button>
-      <button class="code-gen-tab" data-tab="freellmapi">⚙️ FreeLLMAPI (聚合池)</button>
-      <button class="code-gen-tab" data-tab="python">🐍 Python (SDK)</button>
-      <button class="code-gen-tab" data-tab="curl">🌐 cURL (Shell)</button>
+    <div class="code-gen-tabs" id="gen-tabs" role="tablist" aria-label={isEn ? 'Code format' : '代码格式'}>
+      <button id="gen-tab-openclaw" class="code-gen-tab active" data-tab="openclaw" role="tab" aria-selected="true" aria-controls="generated-code">🤖 OpenClaw (智能体)</button>
+      <button id="gen-tab-cursor" class="code-gen-tab" data-tab="cursor" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">🖱️ Cursor / Cline (IDE)</button>
+      <button id="gen-tab-cherry" class="code-gen-tab" data-tab="cherry" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">🍒 Cherry Studio (桌面端)</button>
+      <button id="gen-tab-freellmapi" class="code-gen-tab" data-tab="freellmapi" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">⚙️ FreeLLMAPI (聚合池)</button>
+      <button id="gen-tab-python" class="code-gen-tab" data-tab="python" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">🐍 Python (SDK)</button>
+      <button id="gen-tab-curl" class="code-gen-tab" data-tab="curl" role="tab" aria-selected="false" aria-controls="generated-code" tabindex="-1">🌐 cURL (Shell)</button>
     </div>
   </div>
 
@@ -38,7 +38,7 @@ const platformJsonStr = JSON.stringify(platforms);
     <div class="control-group">
       <label for="select-platform">{isEn ? 'Select Free Tier Platform:' : '选择免费算力平台：'}</label>
       <select id="select-platform" class="gen-select">
-        {platforms.map((p) => (
+        {compatiblePlatforms.map((p) => (
           <option value={p.slug}>
             {p.name} ({p.free_quota?.amount ? `${p.free_quota.amount} ${p.free_quota.unit || ''}` : p.category})
           </option>
@@ -47,8 +47,8 @@ const platformJsonStr = JSON.stringify(platforms);
     </div>
 
     <div class="control-group">
-      <label for="input-api-key">{isEn ? 'Your API Key (Local only):' : '输入您的 API Key（仅浏览器本地运算）：'}</label>
-      <input type="text" id="input-api-key" class="gen-input" placeholder="sk-..." value="sk-your-api-key-here" />
+      <label for="input-api-key">{isEn ? 'Your API Key (never transmitted):' : '输入您的 API Key（不会发送到网络）：'}</label>
+      <input type="password" id="input-api-key" class="gen-input" placeholder="sk-..." autocomplete="off" spellcheck="false" />
     </div>
 
     <div class="control-group">
@@ -60,7 +60,7 @@ const platformJsonStr = JSON.stringify(platforms);
   </div>
 
   <!-- 生成的代码显示区 -->
-  <div class="gen-output-container">
+  <div class="gen-output-container" id="generated-code" role="tabpanel" aria-labelledby="gen-tab-openclaw">
     <div class="output-topbar">
       <span class="output-file-tag" id="output-file-name">config.json</span>
       <button class="btn-copy-code" id="btn-copy-code">
@@ -246,6 +246,7 @@ const platformJsonStr = JSON.stringify(platforms);
   const fileNameTag = document.getElementById('output-file-name');
   const copyBtn = document.getElementById('btn-copy-code');
   const copyBtnText = document.getElementById('copy-btn-text');
+  const generatedPanel = document.getElementById('generated-code');
   const tabButtons = document.querySelectorAll('#gen-tabs .code-gen-tab');
 
   let activeTab = 'openclaw';
@@ -267,7 +268,8 @@ const platformJsonStr = JSON.stringify(platforms);
   function renderGeneratedCode() {
     const slug = platformSelect?.value;
     const p = platformsData.find(x => x.slug === slug) || platformsData[0];
-    const key = apiKeyInput?.value.trim() || 'sk-your-api-key-here';
+    const rawKey = apiKeyInput?.value.trim() || '';
+    const key = /^[A-Za-z0-9._:/+=-]{1,512}$/.test(rawKey) ? rawKey : 'sk-your-api-key-here';
     const model = modelSelect?.value || (p.free_models && p.free_models[0]) || 'default-model';
     const baseUrl = p.api_base_url || 'https://api.openai.com/v1';
 
@@ -293,9 +295,6 @@ const platformJsonStr = JSON.stringify(platforms);
           "prompt_cache": true
         }
       }, null, 2);
-    } else if (activeTab === 'claude-code') {
-      fileName = '终端命令 (Claude Code 环境变量)';
-      code = `# 1. 终端注入 OpenAI 兼容 Base URL 与 API 密钥\nexport ANTHROPIC_BASE_URL="${baseUrl}"\nexport ANTHROPIC_AUTH_TOKEN="${key}"\n\n# 2. 启动 Claude Code 编码\nclaude --model "${model}"`;
     } else if (activeTab === 'cursor') {
       fileName = 'Cursor Settings (Settings -> Models -> OpenAI Compatible)';
       code = `// Cursor IDE 填空指引：\nBase URL:  ${baseUrl}\nAPI Key:   ${key}\nModel Name: ${model}\n\n// 测试 Prompt：\n"Hello, write a quick test script to verify API connectivity."`;
@@ -315,7 +314,7 @@ const platformJsonStr = JSON.stringify(platforms);
       }, null, 2);
     } else if (activeTab === 'python') {
       fileName = 'test_api.py (OpenAI Python SDK)';
-      code = `import openai\n\nclient = openai.OpenAI(\n    base_url="${baseUrl}",\n    api_key="${key}"\n)\n\nresponse = client.chat.completions.create(\n    model="${model}",\n    messages=[\n        {"role": "system", "content": "You are a helpful coding assistant."},\n        {"role": "user", "content": "Write a Python function to check prime numbers."}\n    ],\n    temperature=0.3\n)\n\nprint(response.choices[0].message.content)`;
+      code = `import openai\n\nclient = openai.OpenAI(\n    base_url=${JSON.stringify(baseUrl)},\n    api_key=${JSON.stringify(key)}\n)\n\nresponse = client.chat.completions.create(\n    model=${JSON.stringify(model)},\n    messages=[\n        {"role": "system", "content": "You are a helpful coding assistant."},\n        {"role": "user", "content": "Write a Python function to check prime numbers."}\n    ],\n    temperature=0.3\n)\n\nprint(response.choices[0].message.content)`;
     } else if (activeTab === 'curl') {
       fileName = 'curl_request.sh (终端直接运行)';
       code = `curl -X POST "${baseUrl}/chat/completions" \\\n  -H "Content-Type: application/json" \\\n  -H "Authorization: Bearer ${key}" \\\n  -d '{\n    "model": "${model}",\n    "messages": [\n      {"role": "user", "content": "Ping API connectivity check."}\n    ],\n    "temperature": 0.5\n  }'`;
@@ -334,10 +333,31 @@ const platformJsonStr = JSON.stringify(platforms);
 
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      tabButtons.forEach(b => b.classList.remove('active'));
+      tabButtons.forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+        b.setAttribute('tabindex', '-1');
+      });
       btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      btn.removeAttribute('tabindex');
+      if (generatedPanel && btn.id) generatedPanel.setAttribute('aria-labelledby', btn.id);
       activeTab = btn.dataset.tab || 'openclaw';
       renderGeneratedCode();
+    });
+    btn.addEventListener('keydown', event => {
+      const buttons = [...tabButtons];
+      const index = buttons.indexOf(btn);
+      let next = null;
+      if (event.key === 'ArrowRight') next = buttons[(index + 1) % buttons.length];
+      if (event.key === 'ArrowLeft') next = buttons[(index - 1 + buttons.length) % buttons.length];
+      if (event.key === 'Home') next = buttons[0];
+      if (event.key === 'End') next = buttons[buttons.length - 1];
+      if (next) {
+        event.preventDefault();
+        next.click();
+        next.focus();
+      }
     });
   });
 

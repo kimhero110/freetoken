@@ -18,6 +18,7 @@ const relatedArticles = articles.filter((a) => a.slug !== article.slug).slice(0,
   title={`${article.title} · FreeToken 深度文章`}
   description={article.summary}
   lang="zh"
+  localized={false}
 >
   <ArticleReader article={article} relatedArticles={relatedArticles} lang="zh" />
 </Base>
