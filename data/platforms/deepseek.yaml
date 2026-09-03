@@ -1,3 +1,4 @@
+schema_version: 2
 slug: deepseek
 name: DeepSeek (深度求索)
 name_en: DeepSeek AI
@@ -7,10 +8,10 @@ intro_en: Global efficiency frontier. 5,000,000 free tokens upon registration fo
   DeepSeek V3 and R1 reasoning models.
 website: https://platform.deepseek.com/
 doc_url: https://api-docs.deepseek.com/
-api_base_url: https://api.deepseek.com/v1
+api_base_url: https://api.deepseek.com
 free_models:
-- deepseek-chat
-- deepseek-reasoner
+- deepseek-v4-flash
+- deepseek-v4-pro
 free_quota:
   type: 限时赠送
   amount: 500 万
@@ -40,10 +41,29 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: openai
-  chat_completions_url: https://api.deepseek.com/v1/chat/completions
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.deepseek.com/chat/completions
+      models:
+      - deepseek-v4-flash
+      - deepseek-v4-pro
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: DEEPSEEK_API_KEY
+      verification:
+        status: documented
+        checked_at: '2026-09-03'
+        evidence_url: https://api-docs.deepseek.com/
+  tools:
+    curl: documented
+    openai_python: documented
+    openai_node: documented
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://api-docs.deepseek.com/
-  checked_at: '2026-09-02'
+  checked_at: '2026-09-03'

@@ -1,3 +1,4 @@
+schema_version: 2
 slug: gmi-cloud-minimax
 name: GMI Cloud (MiniMax 专属)
 name_en: GMI Cloud x MiniMax
@@ -39,10 +40,29 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: openai
-  chat_completions_url: https://api.gmicloud.ai/v1/chat/completions
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.gmicloud.ai/v1/chat/completions
+      models:
+      - MiniMax-Text-01
+      - abab6.5s
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: GMI_CLOUD_MINIMAX_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://docs.gmicloud.ai/
   checked_at: '2026-09-02'

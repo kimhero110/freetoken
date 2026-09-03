@@ -80,6 +80,14 @@ Windows PowerShell 激活虚拟环境时使用：
 python scripts/review_candidates.py --reject <candidate-id>
 ```
 
+### 能力探测与审核
+
+仓库管理员可在 GitHub Actions 的 **Capability probe candidates** 工作流中手动选择一个固定提供商。工作流也会在每周二 `03:17 UTC` 自动运行，但只探测固定十项允许列表中已配置仓库 Secret 的提供商；缺少凭据的项会跳过，不生成失败候选。每个已配置提供商只发送一次可能计费的 API POST，不重试，请在启用 Secret 前确认额度和成本。
+
+探测只写入 `data/candidates/`，不会直接修改正式平台数据。人工核对候选后，在 `main` 分支运行 **Review candidate**，填写候选文件名（不含扩展名）并选择 `approve` 或 `reject`。批准成功的 live 探测会更新正式 YAML、重新编译并构建；拒绝或已批准的候选都会带上 `github.actor` 审核记录并移入 `data/reviews/`。
+
+能力状态含义：`claimed` 表示平台声称支持但尚无已核验证据；`documented` 表示官方文档已核验；`live` 表示一次真实 API 请求成功且协议响应有效。定时探测结果在人工批准前始终只是候选，不改变这些正式状态。
+
 ## 配置与密钥
 
 密钥只能通过环境变量或 GitHub Secrets 提供。仓库不包含 Webhook、API Key 或 SSH 私钥的默认值。
@@ -88,8 +96,8 @@ python scripts/review_candidates.py --reject <candidate-id>
 
 - `DEEPSEEK_API_KEY`
 - `SILICONFLOW_API_KEY`
-- `MOONSHOT_API_KEY`
-- `DASHSCOPE_API_KEY`
+- `MOONSHOT_KIMI_API_KEY`（能力探测；额度提取仍使用 `MOONSHOT_API_KEY`）
+- `ALIYUN_BAILIAN_API_KEY`（能力探测；额度提取仍使用 `DASHSCOPE_API_KEY`）
 - `FEISHU_WEBHOOK_URL`
 - `FEISHU_SECRET`
 

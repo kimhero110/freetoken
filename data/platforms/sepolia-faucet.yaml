@@ -1,3 +1,4 @@
+schema_version: 2
 slug: sepolia-faucet
 name: Sepolia ETH 测试网水龙头
 name_en: Sepolia ETH Faucets
@@ -39,10 +40,27 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: rpc
-  chat_completions_url: null
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: rpc
+      protocol: rpc
+      endpoint_url: null
+      models: []
+      auth:
+        type: unknown
+        header: null
+        query_param: null
+        env_var: null
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://ethereum.org/en/developers/docs/networks/#sepolia
   checked_at: '2026-09-02'

@@ -58,15 +58,22 @@ def estimate_reading_time(text: str) -> str:
 def compile_platforms():
     platforms_dir = DATA_DIR / "platforms"
     platforms = []
+    seen_slugs = set()
     if platforms_dir.exists():
         for yf in sorted(platforms_dir.glob("*.yaml")):
             data = yaml.safe_load(yf.read_text(encoding="utf-8"))
+            if not isinstance(data, dict) or data.get("schema_version") != 2:
+                raise ValueError(f"{yf.name}: schema_version must be 2")
+            slug = data.get("slug")
+            if slug in seen_slugs:
+                raise ValueError(f"{yf.name}: duplicate slug {slug!r}")
             errors = validate_platform(data, yf.stem)
             if errors:
                 raise ValueError(f"{yf.name}: {'; '.join(errors)}")
+            seen_slugs.add(slug)
             platforms.append(data)
                 
-    p_json = json.dumps(platforms, ensure_ascii=False, indent=2)
+    p_json = json.dumps(platforms, ensure_ascii=False, indent=2) + "\n"
     (DATA_DIR / "platforms.json").write_text(p_json, encoding="utf-8")
     (SITE_DATA_DIR / "platforms.json").write_text(p_json, encoding="utf-8")
     print(f"[DATA] Platforms compiled: {len(platforms)} platforms -> platforms.json")

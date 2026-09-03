@@ -44,7 +44,7 @@ permissions:
   contents: write  # 仅回写待人工审核的候选提案
 
 concurrency:
-  group: freetoken-quota-extraction
+  group: freetoken-main-writer
   cancel-in-progress: false
 
 jobs:

@@ -1,3 +1,4 @@
+schema_version: 2
 slug: tokenpony
 name: 小马算力 (TokenPony)
 name_en: TokenPony Cloud
@@ -42,10 +43,30 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: openai
-  chat_completions_url: https://api.tokenpony.cn/v1/chat/completions
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.tokenpony.cn/v1/chat/completions
+      models:
+      - deepseek-r1
+      - deepseek-v3
+      - qwen2.5-72b-1024k
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: TOKENPONY_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://www.tokenpony.cn/docs
   checked_at: '2026-09-02'

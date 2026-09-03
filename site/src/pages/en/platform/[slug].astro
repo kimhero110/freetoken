@@ -2,6 +2,7 @@
 // FreeTokens.info English Platform Detail Page
 import Base from '../../../layouts/Base.astro';
 import platforms from '../../../data/platforms.json';
+import { generateSnippet, getToolState, selectChatOperation, VERIFICATION_LABELS } from '../../../lib/operation-generator.mjs';
 
 export function getStaticPaths() {
   return platforms.map((p: any) => ({
@@ -20,12 +21,15 @@ const statusMap: Record<string, string> = {
   unverified: 'Pending Verification',
 };
 
-const apiBaseUrl = p.api_base_url || 'https://api.openai.com/v1';
-const chatCompletionsUrl = p.capabilities?.chat_completions_url;
-const isOpenAI = p.capabilities?.protocol === 'openai' && chatCompletionsUrl;
 const requirements = p.requirements ?? {};
-const primaryModel = p.free_models?.[0] || 'default-model';
-const shellQuote = (value: string) => `'${value.replaceAll("'", `'"'"'`)}'`;
+const operations = p.capabilities?.operations ?? [];
+const chatOperation = selectChatOperation(p);
+const primaryModel = chatOperation?.models[0];
+const snippets = chatOperation && primaryModel ? {
+  curl: getToolState(p.capabilities?.tools, 'curl', 'en').enabled ? generateSnippet(chatOperation, primaryModel, 'curl') : null,
+  python: getToolState(p.capabilities?.tools, 'openai_python', 'en').enabled ? generateSnippet(chatOperation, primaryModel, 'python') : null,
+  node: getToolState(p.capabilities?.tools, 'openai_node', 'en').enabled ? generateSnippet(chatOperation, primaryModel, 'node') : null,
+} : null;
 
 function formatVerified(dateStr: any): string {
   return dateStr || 'Not verified';
@@ -99,69 +103,42 @@ const requirementLabel = (value: string) => value === 'required' ? 'Required' : 
         </div>
       </section>
 
-      <!-- 10-Second Drop-in Code Block -->
-      {isOpenAI ? (<section class="detail-section">
-        <h2 class="section-heading">10-Second Drop-in Integration Code (OpenAI Compatible)</h2>
+      {operations.length > 0 && <section class="detail-section">
+        <h2 class="section-heading">Operation status and evidence</h2>
+        <div class="operations-list">
+          {operations.map((operation: any) => <article class="operation-card">
+            <div class="operation-title">
+              <code>{operation.id}</code>
+              <span class={`operation-level level-${operation.verification.status}`}>{VERIFICATION_LABELS.en[operation.verification.status]}</span>
+            </div>
+            <dl>
+              <div><dt>Protocol</dt><dd>{operation.protocol}</dd></div>
+              <div><dt>Checked</dt><dd>{operation.verification.checked_at || 'Not checked'}</dd></div>
+              <div><dt>Endpoint</dt><dd><code>{operation.endpoint_url || 'See official documentation'}</code></dd></div>
+              <div><dt>Evidence</dt><dd>{operation.verification.evidence_url ? <a href={operation.verification.evidence_url} target="_blank" rel="noopener noreferrer">Verification record ↗</a> : 'Not provided'}</dd></div>
+            </dl>
+            {operation.models?.length > 0 && <div class="model-list">{operation.models.map((model: string) => <code>{model}</code>)}</div>}
+          </article>)}
+        </div>
+      </section>}
+
+      {snippets && (snippets.curl || snippets.python || snippets.node) ? (<section class="detail-section">
+        <h2 class="section-heading">Safe OpenAI Chat Completions examples</h2>
+        <p class="code-guidance">These examples use the verified operation endpoint and model, reading the key from <code>{chatOperation.auth.env_var}</code>. Every example sends one POST attempt with automatic retries disabled to avoid duplicate billable calls. Output is bounded to 64 tokens.</p>
         <div class="code-tabs">
           <div class="tabs-nav" role="tablist" aria-label="Integration code language">
-            <button id="tab-button-curl" class="tab-btn active" data-tab="tab-curl" role="tab" aria-selected="true" aria-controls="tab-curl">cURL</button>
-            <button id="tab-button-python" class="tab-btn" data-tab="tab-python" role="tab" aria-selected="false" aria-controls="tab-python" tabindex="-1">Python</button>
-            <button id="tab-button-js" class="tab-btn" data-tab="tab-js" role="tab" aria-selected="false" aria-controls="tab-js" tabindex="-1">JavaScript</button>
+            {snippets.curl && <button id="tab-button-curl" class="tab-btn active" data-tab="tab-curl" role="tab" aria-selected="true" aria-controls="tab-curl">cURL</button>}
+            {snippets.python && <button id="tab-button-python" class:list={['tab-btn', { active: !snippets.curl }]} data-tab="tab-python" role="tab" aria-selected={!snippets.curl ? 'true' : 'false'} aria-controls="tab-python" tabindex={snippets.curl ? '-1' : '0'}>Python SDK</button>}
+            {snippets.node && <button id="tab-button-node" class:list={['tab-btn', { active: !snippets.curl && !snippets.python }]} data-tab="tab-node" role="tab" aria-selected={!snippets.curl && !snippets.python ? 'true' : 'false'} aria-controls="tab-node" tabindex={snippets.curl || snippets.python ? '-1' : '0'}>Node.js SDK</button>}
           </div>
-
-          <!-- cURL Tab -->
-          <div id="tab-curl" class="tab-pane active" role="tabpanel" aria-labelledby="tab-button-curl">
-            <pre><code>{`curl ${shellQuote(chatCompletionsUrl)} \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "${primaryModel}",
-    "messages": [
-      {"role": "user", "content": "Hello!"}
-    ]
-  }'`}</code></pre>
-          </div>
-
-          <!-- Python Tab -->
-          <div id="tab-python" class="tab-pane" role="tabpanel" aria-labelledby="tab-button-python" hidden>
-            <pre><code>{`from openai import OpenAI
-
-client = OpenAI(
-    base_url="${apiBaseUrl}",
-    api_key="YOUR_API_KEY",
-)
-
-response = client.chat.completions.create(
-    model="${primaryModel}",
-    messages=[
-        {"role": "user", "content": "Hello!"}
-    ],
-)
-
-print(response.choices[0].message.content)`}</code></pre>
-          </div>
-
-          <!-- JS Tab -->
-          <div id="tab-js" class="tab-pane" role="tabpanel" aria-labelledby="tab-button-js" hidden>
-            <pre><code>{`import OpenAI from "openai";
-
-const client = new OpenAI({
-  baseURL: "${apiBaseUrl}",
-  apiKey: "YOUR_API_KEY",
-});
-
-const response = await client.chat.completions.create({
-  model: "${primaryModel}",
-  messages: [{ role: "user", content: "Hello!" }],
-});
-
-console.log(response.choices[0].message.content);`}</code></pre>
-          </div>
+          {snippets.curl && <div id="tab-curl" class="tab-pane active" role="tabpanel" aria-labelledby="tab-button-curl"><pre><code>{snippets.curl}</code></pre></div>}
+          {snippets.python && <div id="tab-python" class:list={['tab-pane', { active: !snippets.curl }]} role="tabpanel" aria-labelledby="tab-button-python" hidden={!!snippets.curl}><pre><code>{snippets.python}</code></pre></div>}
+          {snippets.node && <div id="tab-node" class:list={['tab-pane', { active: !snippets.curl && !snippets.python }]} role="tabpanel" aria-labelledby="tab-button-node" hidden={!!(snippets.curl || snippets.python)}><pre><code>{snippets.node}</code></pre></div>}
         </div>
       </section>) : (
         <section class="detail-section">
           <h2 class="section-heading">Integration</h2>
-          <p>This platform is not a verified OpenAI Chat Completions service. Follow its official protocol documentation.</p>
+          <p>No OpenAI Chat Completions example can currently be generated safely. For generic or non-chat operations, follow the <a href={p.doc_url} target="_blank" rel="noopener noreferrer">official documentation ↗</a> rather than adapting a chat endpoint.</p>
         </section>
       )}
 
@@ -180,7 +157,7 @@ console.log(response.choices[0].message.content);`}</code></pre>
       <!-- Footer Action Bar -->
       <footer class="detail-footer-bar">
         <div class="footer-meta">
-          <span>Verified: {formatVerified(p.last_verified)} · {statusMap[p.status] ?? 'Unknown'}</span>
+          <span>Directory data checked: {formatVerified(p.last_verified)} · {statusMap[p.status] ?? 'Unknown'} (see operation evidence above)</span>
         </div>
         <div class="footer-buttons">
           <a class="btn-register" href={p.registration.url} target="_blank" rel="noopener noreferrer">
@@ -325,6 +302,18 @@ console.log(response.choices[0].message.content);`}</code></pre>
     .detail-section {
       margin-bottom: 32px;
     }
+    .operations-list { display:grid; gap:12px; }
+    .operation-card { padding:14px; border:1px solid var(--card-border); border-radius:7px; background:var(--bg-subtle); }
+    .operation-title { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+    .operation-level { color:#92400e; font-size:11px; font-weight:700; }
+    .operation-level.level-documented,.operation-level.level-live { color:#166534; }
+    .operation-card dl { display:grid; gap:6px; margin:0 0 10px; font-size:12px; }
+    .operation-card dl div { display:grid; grid-template-columns:74px minmax(0,1fr); gap:8px; }
+    .operation-card dt { color:var(--text-light); }
+    .operation-card dd { margin:0; overflow-wrap:anywhere; }
+    .model-list { display:flex; flex-wrap:wrap; gap:7px; }
+    .model-list code { padding:3px 7px; border:1px solid var(--card-border); border-radius:4px; background:#fff; font-size:11px; }
+    .code-guidance { margin:-4px 0 12px; color:var(--text-muted); font-size:12.5px; line-height:1.6; }
     .section-heading {
       font-size: 15px;
       font-weight: 700;
@@ -370,6 +359,8 @@ console.log(response.choices[0].message.content);`}</code></pre>
       background: #09090b;
       border-bottom: 1px solid #27272a;
       padding: 0 8px;
+      overflow-x: auto;
+      min-width: max-content;
     }
     .tab-btn {
       background: transparent;

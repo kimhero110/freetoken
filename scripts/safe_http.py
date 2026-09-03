@@ -2,14 +2,25 @@ import http.client
 import ipaddress
 import socket
 import ssl
+from dataclasses import dataclass
+from numbers import Real
 from urllib.parse import urljoin, urlparse
 
 import requests
 
 
 MAX_RESPONSE_BYTES = 2 * 1024 * 1024
+MAX_REQUEST_BYTES = 16 * 1024
 ALLOWED_CONTENT_TYPES = ("text/html", "application/xhtml+xml", "text/plain")
 REDIRECT_STATUSES = {301, 302, 303, 307, 308}
+SENSITIVE_HEADERS = {"authorization", "proxy-authorization", "x-api-key", "api-key"}
+
+
+@dataclass(frozen=True)
+class PinnedResponse:
+    status: int
+    headers: dict
+    body: bytes
 
 
 def resolve_public_https_url(url):
@@ -59,17 +70,36 @@ class _PinnedHTTPSConnection(http.client.HTTPSConnection):
             raise
 
 
-def _open_pinned(parsed, endpoints, headers, timeout):
-    request_headers = {key: value for key, value in (headers or {}).items() if key.lower() != "host"}
+def _request_headers(headers):
+    request_headers = {}
+    for key, value in (headers or {}).items():
+        if not isinstance(key, str) or not isinstance(value, str) or any(ord(char) < 32 for char in key + value):
+            raise ValueError("request headers must be safe strings")
+        if key.lower() == "host":
+            raise ValueError("Host header cannot be overridden")
+        request_headers[key] = value
     request_headers["Accept-Encoding"] = "identity"
+    return request_headers
+
+
+def _open_pinned(parsed, endpoints, method, headers, body, connect_timeout, read_timeout):
+    request_headers = _request_headers(headers)
     target = parsed.path or "/"
     if parsed.query:
         target += f"?{parsed.query}"
     last_error = None
-    for endpoint in endpoints:
-        connection = _PinnedHTTPSConnection(parsed.hostname, parsed.port or 443, endpoint, timeout)
+    # A POST may have reached the provider before a socket/read failure. Never
+    # fail over to another address and risk duplicating a billable request.
+    request_endpoints = endpoints[:1] if method == "POST" else endpoints
+    for endpoint in request_endpoints:
+        connection = _PinnedHTTPSConnection(parsed.hostname, parsed.port or 443, endpoint, connect_timeout)
         try:
-            connection.request("GET", target, headers=request_headers)
+            if body is None:
+                connection.request(method, target, headers=request_headers)
+            else:
+                connection.request(method, target, body=body, headers=request_headers)
+            if getattr(connection, "sock", None) is not None:
+                connection.sock.settimeout(read_timeout)
             return connection, connection.getresponse()
         except (OSError, ssl.SSLError, http.client.HTTPException) as exc:
             connection.close()
@@ -77,17 +107,87 @@ def _open_pinned(parsed, endpoints, headers, timeout):
     raise requests.ConnectionError(f"unable to connect to validated source host: {last_error}")
 
 
+def pinned_public_https_request(
+    url,
+    *,
+    method="GET",
+    headers=None,
+    body=None,
+    connect_timeout=10,
+    read_timeout=20,
+    max_response_bytes=MAX_RESPONSE_BYTES,
+    allowed_content_types=(),
+    authenticated=False,
+):
+    """Make one bounded request to a validated, DNS-pinned public HTTPS endpoint."""
+    method = method.upper()
+    if method not in {"GET", "POST"}:
+        raise ValueError("only GET and POST requests are supported")
+    if body is not None and not isinstance(body, bytes):
+        raise TypeError("request body must be bytes or null")
+    if body is not None and len(body) > MAX_REQUEST_BYTES:
+        raise ValueError("request body exceeds 16 KiB")
+    for name, value in (("connect", connect_timeout), ("read", read_timeout)):
+        if isinstance(value, bool) or not isinstance(value, Real) or not 0 < value <= 120:
+            raise ValueError(f"{name} timeout must be between 0 and 120 seconds")
+    if (
+        isinstance(max_response_bytes, bool)
+        or not isinstance(max_response_bytes, int)
+        or not 0 < max_response_bytes <= MAX_RESPONSE_BYTES
+    ):
+        raise ValueError("response limit must be between 1 byte and 2 MiB")
+    if not isinstance(allowed_content_types, (tuple, list)) or not allowed_content_types:
+        raise ValueError("an explicit content type allowlist is required")
+    normalized_types = tuple(value.lower() for value in allowed_content_types if isinstance(value, str) and value)
+    if len(normalized_types) != len(allowed_content_types):
+        raise ValueError("content type allowlist is invalid")
+    request_headers = _request_headers(headers)
+    has_credentials = any(key.lower() in SENSITIVE_HEADERS for key in request_headers)
+    if has_credentials and not authenticated:
+        raise ValueError("credential headers require authenticated=True")
+
+    parsed, endpoints = resolve_public_https_url(url)
+    connection, response = _open_pinned(
+        parsed, endpoints, method, request_headers, body, connect_timeout, read_timeout
+    )
+    try:
+        if response.status in REDIRECT_STATUSES:
+            if authenticated or has_credentials:
+                raise requests.TooManyRedirects("authenticated requests cannot redirect")
+            raise requests.TooManyRedirects("pinned request does not follow redirects")
+        content_type = response.headers.get("content-type", "").split(";", 1)[0].strip().lower()
+        if content_type not in normalized_types:
+            raise requests.RequestException(f"unsupported content type: {content_type or 'missing'}")
+        content_encoding = response.headers.get("content-encoding", "identity").lower()
+        if content_encoding not in ("", "identity"):
+            raise requests.RequestException(f"unsupported content encoding: {content_encoding}")
+        response_body = response.read(max_response_bytes + 1)
+        if len(response_body) > max_response_bytes:
+            raise requests.RequestException("response exceeds configured limit")
+        return PinnedResponse(
+            status=response.status,
+            headers={key.lower(): value for key, value in response.headers.items()},
+            body=response_body,
+        )
+    finally:
+        connection.close()
+
+
 def get_public_text(url, headers=None, timeout=20, max_redirects=3):
     current = url
+    current_headers = {key: value for key, value in (headers or {}).items() if key.lower() != "host"}
     for _ in range(max_redirects + 1):
         parsed, endpoints = resolve_public_https_url(current)
-        connection, response = _open_pinned(parsed, endpoints, headers, timeout)
+        connection, response = _open_pinned(parsed, endpoints, "GET", current_headers, None, timeout, timeout)
         try:
             if response.status in REDIRECT_STATUSES:
                 location = response.headers.get("location")
                 if not location:
                     raise requests.RequestException("redirect response has no location")
                 current = urljoin(current, location)
+                current_headers = {
+                    key: value for key, value in current_headers.items() if key.lower() not in SENSITIVE_HEADERS
+                }
                 continue
             if response.status >= 400:
                 raise requests.HTTPError(f"source returned HTTP {response.status}")

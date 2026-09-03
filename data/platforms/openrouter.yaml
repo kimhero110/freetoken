@@ -1,3 +1,4 @@
+schema_version: 2
 slug: openrouter
 name: OpenRouter (免费模型池)
 name_en: OpenRouter
@@ -41,10 +42,30 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: openai
-  chat_completions_url: https://openrouter.ai/api/v1/chat/completions
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://openrouter.ai/api/v1/chat/completions
+      models:
+      - deepseek/deepseek-r1:free
+      - meta-llama/llama-3.3-70b-instruct:free
+      - google/gemini-2.0-flash-exp:free
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: OPENROUTER_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://openrouter.ai/docs
   checked_at: '2026-09-02'

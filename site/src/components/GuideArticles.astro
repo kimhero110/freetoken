@@ -14,7 +14,7 @@ const isEn = lang === 'en';
       <h2 class="guide-area-title">{isEn ? 'Mastering AI Compute & Autonomous Agents' : '大模型算力调度与自主智能体（Agent）实战深度篇'}</h2>
       <p class="guide-area-desc">
         {isEn
-          ? 'From OpenAI standard protocols to 90% cost-saving hacks, gateway clustering, and 5-hour rolling windows: 6 battle-tested technical playbooks.'
+          ? 'Six practical playbooks covering OpenAI-compatible protocols, gateway clustering, and rolling windows. Claims require the evidence level shown in platform data.'
           : '从底层协议到 90% 极客降本、网关集群搭建与滑动窗口避坑：6 大重磅实战篇章带你掌握工业级算力调度。'}
       </p>
     </div>
@@ -34,11 +34,11 @@ const isEn = lang === 'en';
           </div>
         </div>
         <div class="art-body">
-          <p>全球 99% 的大模型与云平台均已收敛并支持标准 <strong>OpenAI 兼容协议</strong>。接入任何大模型平台只需准确填入 3 个核心参数：</p>
+          <p>目录中只有标记为 <strong>claimed、documented 或 live</strong> 的 OpenAI Chat Completions 操作才会生成示例；三者分别表示平台声称、已核查官方文档、真实调用通过。接入时使用操作记录中的 3 个核心参数：</p>
           <div class="proto-grid">
             <div class="proto-card">
               <h4>1. API Base URL (端点)</h4>
-              <p>服务提供商的基础 API 路径，结尾必须以 <code>/v1</code> 结尾。</p>
+              <p>从规范 <code>/chat/completions</code> 端点精确移除该后缀获得；不能假定以 <code>/v1</code> 结尾。</p>
             </div>
             <div class="proto-card">
               <h4>2. API Key (密钥凭证)</h4>

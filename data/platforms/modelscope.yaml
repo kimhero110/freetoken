@@ -1,3 +1,4 @@
+schema_version: 2
 slug: modelscope
 name: 魔搭社区 (ModelScope)
 name_en: ModelScope (Alibaba)
@@ -41,10 +42,30 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: openai
-  chat_completions_url: https://api-inference.modelscope.cn/v1/chat/completions
-  supports_claude_code: false
-  api_key_required: true
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api-inference.modelscope.cn/v1/chat/completions
+      models:
+      - Qwen/Qwen2.5-72B-Instruct
+      - deepseek-ai/DeepSeek-R1
+      - meta-llama/Llama-3.3-70B-Instruct
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: MODELSCOPE_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://modelscope.cn/docs/InferenceAPI
   checked_at: '2026-09-02'

@@ -1,5 +1,6 @@
 [
   {
+    "schema_version": 2,
     "slug": "ai21-labs",
     "name": "AI21 Labs (Jamba)",
     "name_en": "AI21 Labs (Jamba)",
@@ -47,10 +48,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.ai21.com/studio/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.ai21.com/studio/v1/chat/completions",
+          "models": [
+            "jamba-1.5-mini",
+            "jamba-1.5-large"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "AI21_LABS_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -60,6 +87,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "aliyun-bailian",
     "name": "阿里云百炼 (DashScope)",
     "name_en": "Alibaba Cloud Bailian",
@@ -109,10 +137,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "models": [
+            "qwen-turbo",
+            "qwen-plus",
+            "qwen-max"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "ALIYUN_BAILIAN_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -122,6 +177,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "baichuan-ai",
     "name": "百川智能开放平台",
     "name_en": "Baichuan AI",
@@ -171,10 +227,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.baichuan-ai.com/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.baichuan-ai.com/v1/chat/completions",
+          "models": [
+            "Baichuan4",
+            "Baichuan3-Turbo",
+            "Baichuan2-Turbo"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "BAICHUAN_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -184,6 +267,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "baidu-qianfan",
     "name": "百度千帆大模型平台",
     "name_en": "Baidu Qianfan Platform",
@@ -233,10 +317,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://qianfan.baidubce.com/v2/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://qianfan.baidubce.com/v2/chat/completions",
+          "models": [
+            "ernie-speed-128k",
+            "ernie-speed-8k",
+            "ernie-lite-8k"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "BAIDU_QIANFAN_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -246,6 +357,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "cerebras",
     "name": "Cerebras Inference",
     "name_en": "Cerebras Inference",
@@ -293,10 +405,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.cerebras.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.cerebras.ai/v1/chat/completions",
+          "models": [
+            "llama3.1-8b",
+            "llama3.1-70b"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "CEREBRAS_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -306,6 +444,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "name": "Chutes AI",
     "name_en": "Chutes AI",
     "slug": "chutes-ai",
@@ -353,10 +492,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://chutes.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://chutes.ai/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+            "meta-llama/Llama-3.3-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "CHUTES_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -366,6 +531,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "cloudflare-workers-ai",
     "name": "Cloudflare Workers AI",
     "name_en": "Cloudflare Workers AI",
@@ -414,10 +580,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions",
+          "models": [
+            "@cf/meta/llama-3.3-70b-instruct",
+            "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "CLOUDFLARE_WORKERS_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -427,6 +619,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "cohere",
     "name": "Cohere (Command & Rerank)",
     "name_en": "Cohere",
@@ -476,10 +669,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.cohere.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.cohere.ai/v1/chat/completions",
+          "models": [
+            "command-r-plus",
+            "command-r",
+            "rerank-v3.5"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "COHERE_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -489,6 +709,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "name": "DeepInfra",
     "name_en": "DeepInfra",
     "slug": "deepinfra",
@@ -537,10 +758,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.deepinfra.com/v1/openai/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "models": [
+            "meta-llama/Meta-Llama-3.1-70B-Instruct",
+            "deepseek-ai/DeepSeek-V3",
+            "Qwen/Qwen2.5-Coder-32B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "DEEPINFRA_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -550,6 +798,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "deepseek",
     "name": "DeepSeek (深度求索)",
     "name_en": "DeepSeek AI",
@@ -558,10 +807,10 @@
     "intro_en": "Global efficiency frontier. 5,000,000 free tokens upon registration for DeepSeek V3 and R1 reasoning models.",
     "website": "https://platform.deepseek.com/",
     "doc_url": "https://api-docs.deepseek.com/",
-    "api_base_url": "https://api.deepseek.com/v1",
+    "api_base_url": "https://api.deepseek.com",
     "free_models": [
-      "deepseek-chat",
-      "deepseek-reasoner"
+      "deepseek-v4-flash",
+      "deepseek-v4-pro"
     ],
     "free_quota": {
       "type": "限时赠送",
@@ -598,19 +847,46 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.deepseek.com/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.deepseek.com/chat/completions",
+          "models": [
+            "deepseek-v4-flash",
+            "deepseek-v4-pro"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "DEEPSEEK_API_KEY"
+          },
+          "verification": {
+            "status": "documented",
+            "checked_at": "2026-09-03",
+            "evidence_url": "https://api-docs.deepseek.com/"
+          }
+        }
+      ],
+      "tools": {
+        "curl": "documented",
+        "openai_python": "documented",
+        "openai_node": "documented",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
         "url": "https://api-docs.deepseek.com/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-09-03"
       }
     ]
   },
   {
+    "schema_version": 2,
     "name": "Featherless AI",
     "name_en": "Featherless AI",
     "slug": "featherless-ai",
@@ -659,10 +935,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.featherless.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.featherless.ai/v1/chat/completions",
+          "models": [
+            "meta-llama/Meta-Llama-3.1-8B-Instruct",
+            "mistralai/Mistral-7B-Instruct-v0.3",
+            "Qwen/Qwen2.5-7B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "FEATHERLESS_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -672,6 +975,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "fireworks-ai",
     "name": "Fireworks AI",
     "name_en": "Fireworks AI",
@@ -719,10 +1023,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.fireworks.ai/inference/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.fireworks.ai/inference/v1/chat/completions",
+          "models": [
+            "accounts/fireworks/models/deepseek-r1",
+            "accounts/fireworks/models/llama-v3p3-70b-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "FIREWORKS_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -732,6 +1062,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "github-models",
     "name": "GitHub Models (Azure AI)",
     "name_en": "GitHub Models",
@@ -782,10 +1113,38 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://models.inference.ai.azure.com/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://models.inference.ai.azure.com/chat/completions",
+          "models": [
+            "gpt-4o",
+            "gpt-4o-mini",
+            "DeepSeek-R1",
+            "Phi-3.5-mini-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "GITHUB_MODELS_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -795,6 +1154,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "gmi-cloud-minimax",
     "name": "GMI Cloud (MiniMax 专属)",
     "name_en": "GMI Cloud x MiniMax",
@@ -842,10 +1202,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.gmicloud.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.gmicloud.ai/v1/chat/completions",
+          "models": [
+            "MiniMax-Text-01",
+            "abab6.5s"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "GMI_CLOUD_MINIMAX_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -855,6 +1241,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "google-ai-studio",
     "name": "Google AI Studio (Gemini)",
     "name_en": "Google AI Studio (Gemini)",
@@ -904,10 +1291,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+          "models": [
+            "gemini-2.5-flash",
+            "gemini-2.5-pro"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "GOOGLE_AI_STUDIO_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -917,6 +1330,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "groq",
     "name": "Groq LPU 极速推理",
     "name_en": "Groq LPU Acceleration",
@@ -966,10 +1380,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.groq.com/openai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.groq.com/openai/v1/chat/completions",
+          "models": [
+            "llama-3.3-70b-versatile",
+            "llama-3.1-8b-instant",
+            "deepseek-r1-distill-llama-70b"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "GROQ_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -979,6 +1420,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "huggingface-inference",
     "name": "Hugging Face (Serverless API)",
     "name_en": "Hugging Face Serverless Inference",
@@ -1030,10 +1472,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api-inference.huggingface.co/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api-inference.huggingface.co/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1",
+            "Qwen/Qwen2.5-72B-Instruct",
+            "meta-llama/Llama-3.3-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "HUGGINGFACE_INFERENCE_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1043,6 +1512,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "hyperbolic",
     "name": "Hyperbolic (去中心化算力)",
     "name_en": "Hyperbolic",
@@ -1090,10 +1560,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.hyperbolic.xyz/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.hyperbolic.xyz/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1",
+            "deepseek-ai/DeepSeek-V3"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "HYPERBOLIC_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1103,6 +1599,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "infini-ai",
     "name": "无问芯穹 (Infini-AI)",
     "name_en": "Infini-AI (Infinence)",
@@ -1152,10 +1649,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://cloud.infini-ai.com/maas/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://cloud.infini-ai.com/maas/v1/chat/completions",
+          "models": [
+            "deepseek-r1",
+            "deepseek-v3",
+            "qwen2.5-72b-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "INFINI_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1165,6 +1689,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "jina-ai",
     "name": "Jina AI (Reader & Search)",
     "name_en": "Jina AI",
@@ -1213,10 +1738,50 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "search",
-      "chat_completions_url": null,
-      "supports_claude_code": false,
-      "api_key_required": false
+      "operations": [
+        {
+          "id": "search",
+          "protocol": "rest",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "none",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        },
+        {
+          "id": "text_extraction",
+          "protocol": "rest",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "none",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1226,6 +1791,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "lingyiwanwu-01",
     "name": "零一万物 (01.AI 开放平台)",
     "name_en": "01.AI (Yi Models)",
@@ -1275,10 +1841,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.01.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.01.ai/v1/chat/completions",
+          "models": [
+            "yi-lightning",
+            "yi-large",
+            "yi-medium"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "LINGYIWANWU_01_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1288,6 +1881,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "name": "Manus",
     "name_en": "Manus AI",
     "slug": "manus",
@@ -1337,10 +1931,33 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "custom",
-      "chat_completions_url": null,
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "agent",
+          "protocol": "custom",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "unknown",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1350,6 +1967,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "minimax",
     "name": "MiniMax 开放平台",
     "name_en": "MiniMax AI",
@@ -1398,10 +2016,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.minimax.chat/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.minimax.chat/v1/chat/completions",
+          "models": [
+            "MiniMax-Text-01",
+            "abab6.5s-chat"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "MINIMAX_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1411,6 +2055,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "mistral-ai",
     "name": "Mistral AI (La Plateforme)",
     "name_en": "Mistral AI",
@@ -1459,10 +2104,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.mistral.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.mistral.ai/v1/chat/completions",
+          "models": [
+            "mistral-large-latest",
+            "codestral-latest",
+            "mistral-small-latest"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "MISTRAL_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1472,6 +2144,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "modelscope",
     "name": "魔搭社区 (ModelScope)",
     "name_en": "ModelScope (Alibaba)",
@@ -1521,10 +2194,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api-inference.modelscope.cn/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api-inference.modelscope.cn/v1/chat/completions",
+          "models": [
+            "Qwen/Qwen2.5-72B-Instruct",
+            "deepseek-ai/DeepSeek-R1",
+            "meta-llama/Llama-3.3-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "MODELSCOPE_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1534,6 +2234,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "moonshot-kimi",
     "name": "月之暗面 (Kimi 开放平台)",
     "name_en": "Moonshot AI (Kimi)",
@@ -1583,10 +2284,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.moonshot.cn/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.moonshot.cn/v1/chat/completions",
+          "models": [
+            "moonshot-v1-8k",
+            "moonshot-v1-32k",
+            "moonshot-v1-128k"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "MOONSHOT_KIMI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1596,6 +2324,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "nebius-ai",
     "name": "Nebius AI Studio",
     "name_en": "Nebius AI Studio",
@@ -1643,10 +2372,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.studio.nebius.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.studio.nebius.ai/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1",
+            "meta-llama/Meta-Llama-3.1-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "NEBIUS_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1656,6 +2411,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "novita-ai",
     "name": "Novita AI",
     "name_en": "Novita AI",
@@ -1703,10 +2459,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.novita.ai/v3/openai/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.novita.ai/v3/openai/chat/completions",
+          "models": [
+            "deepseek/deepseek-r1",
+            "meta-llama/llama-3.3-70b-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "NOVITA_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1716,6 +2498,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "nvidia-nim",
     "name": "NVIDIA NIM (Build)",
     "name_en": "NVIDIA NIM",
@@ -1764,10 +2547,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://integrate.api.nvidia.com/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://integrate.api.nvidia.com/v1/chat/completions",
+          "models": [
+            "deepseek-ai/deepseek-r1",
+            "meta/llama-3.3-70b-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "NVIDIA_NIM_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1777,6 +2586,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "openrouter",
     "name": "OpenRouter (免费模型池)",
     "name_en": "OpenRouter",
@@ -1826,10 +2636,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://openrouter.ai/api/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://openrouter.ai/api/v1/chat/completions",
+          "models": [
+            "deepseek/deepseek-r1:free",
+            "meta-llama/llama-3.3-70b-instruct:free",
+            "google/gemini-2.0-flash-exp:free"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "OPENROUTER_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1839,6 +2676,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "pollinations",
     "name": "Pollinations AI (免Key生图与对话)",
     "name_en": "Pollinations AI",
@@ -1888,10 +2726,33 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "custom",
-      "chat_completions_url": null,
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "image_generation",
+          "protocol": "rest",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "none",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1901,6 +2762,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "sambanova",
     "name": "SambaNova Cloud",
     "name_en": "SambaNova Cloud",
@@ -1949,10 +2811,36 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.sambanova.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.sambanova.ai/v1/chat/completions",
+          "models": [
+            "DeepSeek-R1",
+            "Meta-Llama-3.3-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "SAMBANOVA_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -1962,6 +2850,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "scnet",
     "name": "国家超算互联网 (SCNet)",
     "name_en": "China National Supercomputer SCNet",
@@ -2011,10 +2900,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.scnet.cn/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.scnet.cn/v1/chat/completions",
+          "models": [
+            "deepseek-r1",
+            "deepseek-v3",
+            "qwen2.5-72b"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "SCNET_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2024,6 +2940,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "sepolia-faucet",
     "name": "Sepolia ETH 测试网水龙头",
     "name_en": "Sepolia ETH Faucets",
@@ -2071,10 +2988,33 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "rpc",
-      "chat_completions_url": null,
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "rpc",
+          "protocol": "rpc",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "unknown",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2084,6 +3024,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "siliconflow",
     "name": "硅基流动 (SiliconFlow)",
     "name_en": "SiliconFlow",
@@ -2134,10 +3075,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.siliconflow.cn/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.siliconflow.cn/v1/chat/completions",
+          "models": [
+            "Qwen/Qwen2.5-7B-Instruct",
+            "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+            "THUDM/glm-4-9b-chat"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "SILICONFLOW_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2147,6 +3115,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "stepfun",
     "name": "阶跃星辰 (StepFun 开放平台)",
     "name_en": "StepFun AI",
@@ -2197,10 +3166,38 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.stepfun.com/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.stepfun.com/v1/chat/completions",
+          "models": [
+            "step-2-16k",
+            "step-1-8k",
+            "step-1-32k",
+            "step-1-128k"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "STEPFUN_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2210,6 +3207,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "tavily",
     "name": "Tavily AI (AI 搜索专用引擎)",
     "name_en": "Tavily AI",
@@ -2258,10 +3256,33 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "search",
-      "chat_completions_url": null,
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "search",
+          "protocol": "rest",
+          "endpoint_url": "https://api.tavily.com/search",
+          "models": [],
+          "auth": {
+            "type": "api_key_header",
+            "header": "X-API-Key",
+            "query_param": null,
+            "env_var": "TAVILY_API_KEY"
+          },
+          "verification": {
+            "status": "documented",
+            "checked_at": "2026-09-03",
+            "evidence_url": "https://docs.tavily.com/documentation/api-reference/endpoint/search"
+          }
+        }
+      ],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2271,6 +3292,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "tencent-hunyuan",
     "name": "腾讯混元大模型",
     "name_en": "Tencent Hunyuan",
@@ -2320,10 +3342,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.hunyuan.cloud.tencent.com/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.hunyuan.cloud.tencent.com/v1/chat/completions",
+          "models": [
+            "hunyuan-standard",
+            "hunyuan-turbo",
+            "hunyuan-lite"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "TENCENT_HUNYUAN_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2333,6 +3382,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "together-ai",
     "name": "Together AI",
     "name_en": "Together AI",
@@ -2381,10 +3431,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.together.xyz/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.together.xyz/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1",
+            "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+            "black-forest-labs/FLUX.1-schnell"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "TOGETHER_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2394,6 +3471,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "tokenpony",
     "name": "小马算力 (TokenPony)",
     "name_en": "TokenPony Cloud",
@@ -2444,10 +3522,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.tokenpony.cn/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.tokenpony.cn/v1/chat/completions",
+          "models": [
+            "deepseek-r1",
+            "deepseek-v3",
+            "qwen2.5-72b-1024k"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "TOKENPONY_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2457,6 +3562,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "volcengine",
     "name": "火山引擎 (火山方舟)",
     "name_en": "ByteDance Volcengine Ark",
@@ -2506,10 +3612,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
+          "models": [
+            "doubao-pro-32k",
+            "doubao-lite-32k",
+            "deepseek-r1"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "VOLCENGINE_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2519,6 +3652,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "xai-grok",
     "name": "xAI (Grok 开放平台)",
     "name_en": "xAI (Grok API)",
@@ -2570,10 +3704,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://api.x.ai/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.x.ai/v1/chat/completions",
+          "models": [
+            "grok-4.1-fast",
+            "grok-4",
+            "grok-3"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "XAI_GROK_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2583,6 +3744,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "xfyun-spark",
     "name": "讯飞星火认知大模型",
     "name_en": "iFLYTEK Spark",
@@ -2632,10 +3794,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://spark-api-open.xf-yun.com/v1/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://spark-api-open.xf-yun.com/v1/chat/completions",
+          "models": [
+            "general",
+            "generalv3.5",
+            "generalv3"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "XFYUN_SPARK_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {
@@ -2645,6 +3834,7 @@
     ]
   },
   {
+    "schema_version": 2,
     "slug": "zhipu-ai",
     "name": "智谱 AI (BigModel 开放平台)",
     "name_en": "Zhipu AI BigModel",
@@ -2695,10 +3885,37 @@
       "tpm": null
     },
     "capabilities": {
-      "protocol": "openai",
-      "chat_completions_url": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
-      "supports_claude_code": false,
-      "api_key_required": true
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "models": [
+            "glm-4-flash",
+            "glm-4v-flash",
+            "glm-4-plus"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "ZHIPU_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
     },
     "evidence": [
       {

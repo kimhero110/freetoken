@@ -1,3 +1,4 @@
+schema_version: 2
 slug: jina-ai
 name: Jina AI (Reader & Search)
 name_en: Jina AI
@@ -40,10 +41,40 @@ requirements:
   rpm: null
   tpm: null
 capabilities:
-  protocol: search
-  chat_completions_url: null
-  supports_claude_code: false
-  api_key_required: false
+  operations:
+    - id: search
+      protocol: rest
+      endpoint_url: null
+      models: []
+      auth:
+        type: none
+        header: null
+        query_param: null
+        env_var: null
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+    - id: text_extraction
+      protocol: rest
+      endpoint_url: null
+      models: []
+      auth:
+        type: none
+        header: null
+        query_param: null
+        env_var: null
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
 evidence:
 - url: https://jina.ai/reader/
   checked_at: '2026-09-02'

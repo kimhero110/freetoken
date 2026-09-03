@@ -1,0 +1,83 @@
+name: Review candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_id:
+        description: Candidate filename without .yaml or .json
+        required: true
+        type: string
+      decision:
+        description: Human review decision
+        required: true
+        type: choice
+        options:
+          - approve
+          - reject
+
+permissions:
+  contents: write
+
+concurrency:
+  group: freetoken-main-writer
+  cancel-in-progress: false
+
+jobs:
+  review:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: scripts/requirements.lock
+
+      - name: Install hash-locked Python dependencies
+        run: pip install --require-hashes -r scripts/requirements.lock
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install locked Node dependencies
+        run: npm ci --prefix site
+
+      - name: Apply and preserve the human decision
+        env:
+          CANDIDATE_ID: ${{ inputs.candidate_id }}
+          DECISION: ${{ inputs.decision }}
+          REVIEWER: ${{ github.actor }}
+        run: |
+          if [ "${#CANDIDATE_ID}" -gt 200 ] || [[ ! "$CANDIDATE_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+            echo "Invalid candidate ID" >&2
+            exit 2
+          fi
+
+          if [ "$DECISION" = "approve" ]; then
+            GITHUB_ACTOR="$REVIEWER" python scripts/review_candidates.py --approve "$CANDIDATE_ID"
+          elif [ "$DECISION" = "reject" ]; then
+            GITHUB_ACTOR="$REVIEWER" python scripts/review_candidates.py --reject "$CANDIDATE_ID"
+          else
+            echo "Invalid review decision" >&2
+            exit 2
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add --all -- data/platforms data/platforms.json site/src/data/platforms.json data/reviews data/candidates site/public/sitemap.xml
+          if git diff --cached --quiet; then
+            echo "Review produced no repository changes" >&2
+            exit 1
+          fi
+          git commit -m "chore(data): record candidate review [skip ci]"
+          git pull --rebase origin main
+          git push origin main
