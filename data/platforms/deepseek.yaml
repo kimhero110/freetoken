@@ -56,7 +56,7 @@ capabilities:
     verification:
       status: live
       checked_at: '2026-09-03'
-      evidence_url: https://github.com/kimhero110/freetoken/actions/runs/33758053463
+      evidence_url: https://github.com/kimhero110/freetoken/actions/runs/33766507785
   tools:
     curl: live
     openai_python: live
