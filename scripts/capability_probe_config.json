@@ -1,0 +1,19 @@
+{
+  "providers": {
+    "deepseek": {"api_key_env": "DEEPSEEK_API_KEY", "endpoint_url": "https://api.deepseek.com/chat/completions", "model": "deepseek-v4-flash"},
+    "siliconflow": {"api_key_env": "SILICONFLOW_API_KEY", "endpoint_url": "https://api.siliconflow.cn/v1/chat/completions", "model": "Qwen/Qwen2.5-7B-Instruct"},
+    "aliyun-bailian": {"api_key_env": "ALIYUN_BAILIAN_API_KEY", "endpoint_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", "model": "qwen-turbo"},
+    "moonshot-kimi": {"api_key_env": "MOONSHOT_KIMI_API_KEY", "endpoint_url": "https://api.moonshot.cn/v1/chat/completions", "model": "moonshot-v1-8k"},
+    "google-ai-studio": {"api_key_env": "GOOGLE_AI_STUDIO_API_KEY", "endpoint_url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions", "model": "gemini-2.5-flash"},
+    "groq": {"api_key_env": "GROQ_API_KEY", "endpoint_url": "https://api.groq.com/openai/v1/chat/completions", "model": "llama-3.3-70b-versatile"},
+    "volcengine": {"api_key_env": "VOLCENGINE_API_KEY", "endpoint_url": "https://ark.cn-beijing.volces.com/api/v3/chat/completions", "model": "doubao-pro-32k"},
+    "zhipu-ai": {"api_key_env": "ZHIPU_AI_API_KEY", "endpoint_url": "https://open.bigmodel.cn/api/paas/v4/chat/completions", "model": "glm-4-flash"},
+    "openrouter": {"api_key_env": "OPENROUTER_API_KEY", "endpoint_url": "https://openrouter.ai/api/v1/chat/completions", "model": "deepseek/deepseek-r1:free"},
+    "gmi-cloud-minimax": {"api_key_env": "GMI_CLOUD_MINIMAX_API_KEY", "endpoint_url": "https://api.gmicloud.ai/v1/chat/completions", "model": "MiniMax-Text-01"}
+  },
+  "tools": {
+    "raw_http": {"promotion_target": "curl", "client": "freetoken-safe-http", "client_version": "1"},
+    "openai_python": {"promotion_target": "openai_python", "client": "openai", "client_version": "1.109.1"},
+    "openai_node": {"promotion_target": "openai_node", "client": "openai", "client_version": "7.9.0"}
+  }
+}
