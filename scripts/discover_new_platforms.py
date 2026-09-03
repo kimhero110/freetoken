@@ -139,14 +139,64 @@ def run_discovery():
 
         if data["score"] >= 3:
             print(f"FOUND! Match Score: {data['score']}/11 | Title: {data['title'][:25]}")
-            discovered_new.append({
+            cand_info = {
                 "url": url,
                 "host": host,
                 "slug": slug_base,
                 "title": data["title"],
                 "score": data["score"]
-            })
+            }
+            discovered_new.append(cand_info)
             existing.add(host)
+
+            # Persist candidate draft in data/candidates/
+            candidates_dir = ROOT / "data" / "candidates"
+            candidates_dir.mkdir(parents=True, exist_ok=True)
+            cand_yaml = candidates_dir / f"{slug_base}.yaml"
+            if not cand_yaml.exists():
+                draft_content = {
+                    "slug": slug_base,
+                    "name": data["title"] or slug_base,
+                    "name_en": slug_base.title(),
+                    "category": "海外探索" if not any(c in data["text"] for c in ["免费", "元", "人民币"]) else "国内主流",
+                    "intro": f"{data['title']} 提供免费体验额度与开发者 API 接口。",
+                    "intro_en": f"{slug_base.title()} offers free tier API access for developers.",
+                    "website": url,
+                    "doc_url": f"{url.rstrip('/')}/docs",
+                    "api_base_url": f"{url.rstrip('/')}/v1",
+                    "free_models": ["default-free-tier"],
+                    "free_quota": {
+                        "type": "体验金 / 免费层",
+                        "amount": "探测到免费额度",
+                        "unit": "Tokens",
+                        "reset_period": "每月/一次性",
+                        "details": f"检测到开发者免费层/体验额度，雷达匹配得分 {data['score']}/11。"
+                    },
+                    "verification": "邮箱/GitHub",
+                    "status": "pending_review",
+                    "last_verified": str(date.today()),
+                    "tags": ["雷达新源", "待人工复核", "OpenAI兼容"],
+                    "gotchas": ["由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。"],
+                    "gotchas_en": ["Discovered by radar. Manual verification recommended."]
+                }
+                with open(cand_yaml, "w", encoding="utf-8") as f:
+                    yaml.dump(draft_content, f, allow_unicode=True, sort_keys=False)
+                print(f"    -> [DRAFT] Saved candidate YAML: data/candidates/{slug_base}.yaml")
+
+            # Push Feishu interactive notification
+            try:
+                from feishu_notifier import notify_new_candidate
+                notify_new_candidate({
+                    "slug": slug_base,
+                    "name": data["title"],
+                    "url": url,
+                    "score": data["score"],
+                    "free_quota": "包含开发者免费层 / 体验额度",
+                    "tags": ["雷达新源", "待决策"],
+                    "gotchas": "已在 data/candidates 生成草稿。在终端运行 `python scripts/review_candidates.py --approve " + slug_base + "` 即可一键批准上线！"
+                })
+            except Exception as fe:
+                print(f"    -> [FEISHU WARN] Notification skipped: {fe}")
         else:
             print(f"Low relevance ({data['score']}/11)")
 
@@ -164,9 +214,11 @@ def run_discovery():
         for d in discovered_new:
             print(f"{d['slug']:<16} | {d['score']:<6} | {d['url'][:30]:<30} | {d['title'][:20]}")
         print("-" * 75)
+        print("\n💡 提示：运行 `python scripts/review_candidates.py` 即可在终端交互式决策并一键上线！")
     else:
         print("[REPORT] All probed platforms are already 100% indexed in the database.")
 
 
 if __name__ == "__main__":
     run_discovery()
+
