@@ -78,13 +78,13 @@
     "first_failed_time": 1788408247.9743109
   },
   "node_peer_DESKTOP-TNV10N7_100.64.0.10": {
-    "fail_count": 3,
+    "fail_count": 4,
     "is_alerted": true,
     "last_healthy": false,
     "first_failed_time": 1788408247.9743109
   },
   "node_peer_FnNAS_100.64.0.6": {
-    "fail_count": 3,
+    "fail_count": 4,
     "is_alerted": true,
     "last_healthy": false,
     "first_failed_time": 1788408249.9745355

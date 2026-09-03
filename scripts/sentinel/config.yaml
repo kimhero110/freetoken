@@ -52,6 +52,6 @@ services:
     timeout_seconds: 3
 
 feishu:
-  webhook_url: "<REMOVED_FEISHU_WEBHOOK>"
-  secret: "<REMOVED_FEISHU_SECRET>"
-  keyword: "FreeToken"
+  webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/2afb63b5-96ca-4baf-a58a-b784bec4c757"
+  secret: "oHJblwbtYLUCDgBWJGyfdf"
+  keyword: "WitKit运维小助手"

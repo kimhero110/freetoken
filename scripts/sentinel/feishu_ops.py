@@ -2,8 +2,8 @@
 """
 WitKit Sentinel: Feishu Ops Notification Dispatcher
 ---------------------------------------------------
-- Dispatches formatted alert (Red 🚨), recovery (Green 🟢), and summary (Blue 📊) cards
-- Full HMAC-SHA256 signature verification & custom keyword compliance
+- Dedicated Ops Bot with HMAC-SHA256 signature verification
+- Custom keyword: WitKit运维小助手
 """
 
 import os
@@ -14,6 +14,8 @@ import hashlib
 import base64
 import urllib.request
 import urllib.error
+
+DEFAULT_KEYWORD = "WitKit运维小助手"
 
 
 def generate_signature(secret: str, timestamp: int) -> str:
@@ -97,7 +99,7 @@ def send_ops_alert(webhook_url: str, secret: str, target_name: str, target_type:
             "header": {
                 "title": {
                     "tag": "plain_text",
-                    "content": f"🚨 【FreeToken 运维告警】{target_name}{os_badge} 异常离线！"
+                    "content": f"🚨 【WitKit运维小助手】{target_name}{os_badge} 异常离线！"
                 },
                 "template": "red"
             },
@@ -139,7 +141,7 @@ def send_ops_alert(webhook_url: str, secret: str, target_name: str, target_type:
                     "tag": "div",
                     "text": {
                         "tag": "lark_md",
-                        "content": f"**⚠️ 故障诊断详情**\n<font color='red'>{error_msg}</font>\n\n*请及时检查该主机电源、网络连通性或服务进程。*"
+                        "content": f"**⚠️ 故障诊断详情**\n<font color='red'>{error_msg}</font>\n\n*WitKit运维小助手正在持续轮询，请及时检查主机或服务进程。*"
                     }
                 },
                 {
@@ -167,7 +169,7 @@ def send_ops_recovery(webhook_url: str, secret: str, target_name: str, target_ty
             "header": {
                 "title": {
                     "tag": "plain_text",
-                    "content": f"🟢 【FreeToken 故障自愈】{target_name}{os_badge} 已恢复正常"
+                    "content": f"🟢 【WitKit运维小助手】{target_name}{os_badge} 故障已自愈"
                 },
                 "template": "green"
             },
@@ -209,7 +211,7 @@ def send_ops_recovery(webhook_url: str, secret: str, target_name: str, target_ty
                     "tag": "div",
                     "text": {
                         "tag": "lark_md",
-                        "content": f"**✅ 自愈状态确认**\n{recovery_msg}\n\n*节点与网络服务均已重新上线，数据链路恢复通畅。*"
+                        "content": f"**✅ 自愈状态确认**\n{recovery_msg}\n\n*WitKit运维小助手已确认：节点与网络服务均已重新上线，链路恢复通畅。*"
                     }
                 },
                 {
@@ -247,7 +249,7 @@ def send_ops_summary(webhook_url: str, secret: str, total_nodes: int, online_nod
             "header": {
                 "title": {
                     "tag": "plain_text",
-                    "content": f"📊 【FreeToken 运维巡检】主机资源池健康报告"
+                    "content": f"📊 【WitKit运维小助手】主机资源池巡检健康报告"
                 },
                 "template": "turquoise"
             },
@@ -257,6 +259,51 @@ def send_ops_summary(webhook_url: str, secret: str, total_nodes: int, online_nod
                     "text": {
                         "tag": "lark_md",
                         "content": f"**📈 资源池概览**：在线 **{online_nodes}** / 共 **{total_nodes}** 台主机\n\n**🖥️ Tailscale 主机池状态**：\n" + "\n".join(node_lines) + "\n\n**📦 关键业务服务状态**：\n" + "\n".join(svc_lines)
+                    }
+                },
+                {
+                    "tag": "note",
+                    "elements": [
+                        {
+                            "tag": "plain_text",
+                            "content": "WitKit运维小助手全天候守卫您的私有化主机与关键业务"
+                        }
+                    ]
+                },
+                {
+                    "tag": "hr"
+                },
+                {
+                    "tag": "action",
+                    "actions": get_nav_buttons()
+                }
+            ]
+        }
+    }
+    return send_card(webhook_url, secret, card)
+
+
+def send_handshake(webhook_url: str, secret: str) -> bool:
+    """Send initial connection card."""
+    card = {
+        "msg_type": "interactive",
+        "card": {
+            "config": {
+                "wide_screen_mode": True
+            },
+            "header": {
+                "title": {
+                    "tag": "plain_text",
+                    "content": "🛡️ 【WitKit运维小助手】专属运维告警机器人已连接"
+                },
+                "template": "blue"
+            },
+            "elements": [
+                {
+                    "tag": "div",
+                    "text": {
+                        "tag": "lark_md",
+                        "content": "**🎉 运维告警中心已成功上线！**\n\n- **身份**：WitKit运维小助手（专注于基础设施、服务器与服务状态）\n- **安全**：HMAC-SHA256 签名校验通过，自定义关键词绑定成功\n- **监控范围**：Tailscale 动态主机池（Windows / Linux）及核心站点与微服务"
                     }
                 },
                 {
