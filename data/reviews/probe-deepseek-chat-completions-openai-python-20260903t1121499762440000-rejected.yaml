@@ -17,3 +17,7 @@ protocol_valid: true
 decision: live
 checked_at: '2026-09-03T11:21:49.976244+00:00'
 evidence_url: https://github.com/kimhero110/freetoken/actions/runs/33749215372
+review:
+  decision: rejected
+  reviewed_at: '2026-09-03T12:03:54.566298+00:00'
+  reviewer: kimhero110
