@@ -83,8 +83,22 @@ if (isEn) {
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- Umami Private Analytics -->
-  <script defer src="https://analytics.witkit.zone/script.js" data-website-id="cd161655-a597-4450-acb9-30397e390c54"></script>
+  <!-- Umami Private Analytics (Dynamic routing for freetokens.info & witkit.zone) -->
+  <script is:inline>
+    (function() {
+      try {
+        var h = window.location.hostname || '';
+        var wid = (h.indexOf('witkit.zone') !== -1)
+          ? '0a887fe2-61cb-4bc6-8480-e8de3e4be328'
+          : 'cd161655-a597-4450-acb9-30397e390c54';
+        var s = document.createElement('script');
+        s.defer = true;
+        s.src = 'https://analytics.witkit.zone/script.js';
+        s.setAttribute('data-website-id', wid);
+        document.head.appendChild(s);
+      } catch (e) {}
+    })();
+  </script>
 
   <style is:global>
     :root {
