@@ -77,7 +77,7 @@ class ProbeCapabilityTests(unittest.TestCase):
             self.assertTrue(candidate["protocol_valid"])
             self.assertEqual(candidate["observed_status_code"], 200)
             self.assertEqual(candidate["evidence_url"], "https://github.com/example/repository/actions/runs/123456")
-            self.assertEqual(json.loads(captured["body"])["max_tokens"], 1)
+            self.assertEqual(json.loads(captured["body"])["max_tokens"], 16)
             self.assertFalse(json.loads(captured["body"])["stream"])
             self.assertEqual(captured["calls"], 1)
             self.assertNotIn(secret, candidate_text + output.getvalue())

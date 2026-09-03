@@ -144,7 +144,7 @@ def probe(platform_slug, operation_id):
             {
                 "model": model,
                 "messages": [{"role": "user", "content": FIXED_MESSAGE}],
-                "max_tokens": 1,
+                "max_tokens": 16,
                 "stream": False,
             },
             separators=(",", ":"),
