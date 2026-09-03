@@ -72,7 +72,7 @@ Windows PowerShell 激活虚拟环境时使用：
 6. 审批命令会更新正式数据并执行数据编译与站点构建；失败时回滚修改并保留候选。
 7. 将审核后的改动通过 PR 合并到 `main`，发布工作流会测试并部署同一个构建产物。
 
-首次启用发布前，仓库管理员必须在 GitHub 的 `production` Environment 中配置 required reviewers，并将允许部署的分支限制为 `main`。工作流本身也拒绝从 PR、标签或其他分支部署，并会等待 Cloudflare Pages 检查成功后才报告发布完成。`main` 分支由 repository ruleset 保护：要求 PR 与 `build` 状态检查、禁止 force push 与删除；`github-actions` bot 在 bypass 名单中，以便审批与探针工作流提交自动化数据变更。
+首次启用发布前，仓库管理员必须在 GitHub 的 `production` Environment 中配置 required reviewers，并将允许部署的分支限制为 `main`。工作流本身也拒绝从 PR、标签或其他分支部署，并会等待 Cloudflare Pages 检查成功后才报告发布完成。`main` 分支由 repository ruleset 保护：禁止 force push 与分支删除。更强的「必须 PR + build 检查门禁」需要一个专用机器账号（PAT 或 GitHub App）提交自动化数据变更——GITHUB_TOKEN 创建的 PR 不会触发 CI，且状态检查会拦截 bot 直推；该升级列为后续运维决策。
 
 拒绝候选：
 
