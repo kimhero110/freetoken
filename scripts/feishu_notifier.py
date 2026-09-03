@@ -1,32 +1,58 @@
 # -*- coding: utf-8 -*-
 """
-FreeToken Feishu Robot Notification & Interactive Card Engine
-------------------------------------------------------------
-- Pushes rich interactive message cards for new candidate platforms
-- Sends real-time approval & deployment announcements
+FreeToken Feishu Robot Notification Engine (Security & Multi-Link v3.0)
+------------------------------------------------------------------------
+- Security: Supports HMAC-SHA256 signature verification (timestamp + sign)
+- Security: Hardens custom keyword 'FreeToken' across all cards
+- Actions: Multi-domain quick navigation (FreeTokens.info + witkit.zone + Umami analytics)
 """
 
 import os
+import time
 import json
+import hmac
+import hashlib
+import base64
 import urllib.request
 import urllib.error
 
 DEFAULT_WEBHOOK = "<REMOVED_FEISHU_WEBHOOK>"
+DEFAULT_KEYWORD = "FreeToken"
 
 
 def get_feishu_webhook() -> str:
     return os.environ.get("FEISHU_WEBHOOK_URL", DEFAULT_WEBHOOK)
 
 
-def send_feishu_card(card_payload: dict) -> bool:
+def get_feishu_secret() -> str:
+    return os.environ.get("FEISHU_SECRET", "").strip()
+
+
+def generate_signature(secret: str, timestamp: int) -> str:
+    """Feishu HMAC-SHA256 signature algorithm."""
+    string_to_sign = f"{timestamp}\n{secret}"
+    hmac_code = hmac.new(string_to_sign.encode("utf-8"), digestmod=hashlib.sha256).digest()
+    return base64.b64encode(hmac_code).decode("utf-8")
+
+
+def send_feishu_card(card_payload: dict, secret: str = None) -> bool:
     webhook = get_feishu_webhook()
     if not webhook:
         print("[FEISHU] No webhook configured, skipping notification.")
         return False
 
+    secret_to_use = secret or get_feishu_secret()
+
+    payload = dict(card_payload)
+    if secret_to_use:
+        ts = int(time.time())
+        sign = generate_signature(secret_to_use, ts)
+        payload["timestamp"] = str(ts)
+        payload["sign"] = sign
+
     req = urllib.request.Request(
         webhook,
-        data=json.dumps(card_payload).encode("utf-8"),
+        data=json.dumps(payload).encode("utf-8"),
         headers={"Content-Type": "application/json; charset=utf-8"}
     )
     try:
@@ -36,14 +62,60 @@ def send_feishu_card(card_payload: dict) -> bool:
                 print("[FEISHU] Message card delivered successfully.")
                 return True
             else:
-                print(f"[FEISHU] API warning: {data}")
+                print(f"[FEISHU] API error/warning: {data}")
                 return False
     except Exception as e:
         print(f"[FEISHU] Delivery failed: {e}")
         return False
 
 
-def notify_new_candidate(candidate: dict) -> bool:
+def get_standard_action_buttons(candidate_url: str = None, candidate_slug: str = None) -> list:
+    """Generate the standardized 3-site navigation button group + candidate action."""
+    buttons = []
+    if candidate_url:
+        buttons.append({
+            "tag": "button",
+            "text": {
+                "tag": "plain_text",
+                "content": "🌐 访问官网核实"
+            },
+            "type": "primary",
+            "url": candidate_url
+        })
+
+    buttons.extend([
+        {
+            "tag": "button",
+            "text": {
+                "tag": "plain_text",
+                "content": "⚡ witkit.zone (国内直连)"
+            },
+            "type": "default",
+            "url": "https://witkit.zone"
+        },
+        {
+            "tag": "button",
+            "text": {
+                "tag": "plain_text",
+                "content": "🌍 FreeTokens.info (全球CDN)"
+            },
+            "type": "default",
+            "url": "https://freetokens.info"
+        },
+        {
+            "tag": "button",
+            "text": {
+                "tag": "plain_text",
+                "content": "📊 实时监控大盘"
+            },
+            "type": "default",
+            "url": "https://analytics.witkit.zone"
+        }
+    ])
+    return buttons
+
+
+def notify_new_candidate(candidate: dict, secret: str = None) -> bool:
     """Send an interactive card when radar discovers a high-scoring free API platform."""
     slug = candidate.get("slug", "unknown")
     name = candidate.get("name") or candidate.get("title") or slug
@@ -62,7 +134,7 @@ def notify_new_candidate(candidate: dict) -> bool:
             "header": {
                 "title": {
                     "tag": "plain_text",
-                    "content": f"⚡ 算力雷达新发现：{name}"
+                    "content": f"⚡ 【FreeToken 算力雷达】新源发现：{name}"
                 },
                 "template": "blue"
             },
@@ -101,40 +173,21 @@ def notify_new_candidate(candidate: dict) -> bool:
                     "elements": [
                         {
                             "tag": "plain_text",
-                            "content": f"💡 人工决策指引：可在终端运行 `python scripts/review_candidates.py --approve {slug}` 一键通过并全网发布。"
+                            "content": f"💡 FreeToken 人工决策指引：可在终端运行 `python scripts/review_candidates.py --approve {slug}` 或在对话框输入“通过 {slug}”一键发布上线。"
                         }
                     ]
                 },
                 {
                     "tag": "action",
-                    "actions": [
-                        {
-                            "tag": "button",
-                            "text": {
-                                "tag": "plain_text",
-                                "content": "🌐 访问官网核对"
-                            },
-                            "type": "primary",
-                            "url": url
-                        },
-                        {
-                            "tag": "button",
-                            "text": {
-                                "tag": "plain_text",
-                                "content": "📂 在 GitHub 审阅草稿"
-                            },
-                            "type": "default",
-                            "url": f"https://github.com/kimhero110/freetoken/tree/main/data/candidates"
-                        }
-                    ]
+                    "actions": get_standard_action_buttons(candidate_url=url, candidate_slug=slug)
                 }
             ]
         }
     }
-    return send_feishu_card(card)
+    return send_feishu_card(card, secret=secret)
 
 
-def notify_approval_success(platform: dict) -> bool:
+def notify_approval_success(platform: dict, secret: str = None) -> bool:
     """Send an announcement card when a candidate is officially approved and published."""
     name = platform.get("name", "新平台")
     slug = platform.get("slug", "")
@@ -149,7 +202,7 @@ def notify_approval_success(platform: dict) -> bool:
             "header": {
                 "title": {
                     "tag": "plain_text",
-                    "content": f"🎉 新源审核通过：{name} 已全网上线"
+                    "content": f"🎉 【FreeToken 算力雷达】新源上线：{name}"
                 },
                 "template": "green"
             },
@@ -158,7 +211,7 @@ def notify_approval_success(platform: dict) -> bool:
                     "tag": "div",
                     "text": {
                         "tag": "lark_md",
-                        "content": f"**🚀 平台已成功入库并发布！**\n\n- **平台代号**：`{slug}`\n- **免费额度**：{free_info}\n- **发布渠道**：Cloudflare Pages (`freetokens.info`) & 腾讯云 (`witkit.zone`)"
+                        "content": f"**🚀 平台已成功入库并发布！**\n\n- **平台代号**：`{slug}`\n- **免费额度**：{free_info}\n- **同步渠道**：Cloudflare Pages (`freetokens.info`) & 腾讯云 (`witkit.zone`)"
                     }
                 },
                 {
@@ -168,16 +221,25 @@ def notify_approval_success(platform: dict) -> bool:
                             "tag": "button",
                             "text": {
                                 "tag": "plain_text",
-                                "content": "⚡ 立即查看上线页面"
+                                "content": "⚡ 查看 witkit.zone 详情"
                             },
                             "type": "primary",
+                            "url": f"https://witkit.zone/platform/{slug}/"
+                        },
+                        {
+                            "tag": "button",
+                            "text": {
+                                "tag": "plain_text",
+                                "content": "🌍 查看 FreeTokens.info"
+                            },
+                            "type": "default",
                             "url": f"https://freetokens.info/platform/{slug}/"
                         },
                         {
                             "tag": "button",
                             "text": {
                                 "tag": "plain_text",
-                                "content": "📊 查看 Umami 监控"
+                                "content": "📊 Umami 监控大盘"
                             },
                             "type": "default",
                             "url": "https://analytics.witkit.zone"
@@ -187,4 +249,41 @@ def notify_approval_success(platform: dict) -> bool:
             ]
         }
     }
-    return send_feishu_card(card)
+    return send_feishu_card(card, secret=secret)
+
+
+def send_ping(secret: str = None) -> bool:
+    """Send a connection confirmation card."""
+    card = {
+        "msg_type": "interactive",
+        "card": {
+            "config": {
+                "wide_screen_mode": True
+            },
+            "header": {
+                "title": {
+                    "tag": "plain_text",
+                    "content": "⚡ 【FreeToken 算力雷达】安全配置已升级"
+                },
+                "template": "turquoise"
+            },
+            "elements": [
+                {
+                    "tag": "div",
+                    "text": {
+                        "tag": "lark_md",
+                        "content": "**🛡️ 安全配置与三站直达链接已就绪！**\n\n- **自定义关键词约定**：`FreeToken`（所有卡片标题均已锁定此关键词）\n- **签名校验支持**：已内置 HMAC-SHA256 算法，支持 `FEISHU_SECRET` 密钥校验\n- **导航矩阵**：下方已集成国内 `witkit.zone`、海外 `FreeTokens.info` 与 `Umami` 监控大盘。"
+                    }
+                },
+                {
+                    "tag": "action",
+                    "actions": get_standard_action_buttons()
+                }
+            ]
+        }
+    }
+    return send_feishu_card(card, secret=secret)
+
+
+if __name__ == "__main__":
+    send_ping()

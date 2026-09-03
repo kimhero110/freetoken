@@ -32,6 +32,7 @@ jobs:
           SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
           MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL || '<REMOVED_FEISHU_WEBHOOK>' }}
+          FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
         run: python scripts/discover_new_platforms.py
 
       - name: 提交待审候选源至 GitHub
