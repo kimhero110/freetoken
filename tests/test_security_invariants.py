@@ -49,7 +49,7 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertIn("environment: production", workflow)
 
     def test_secret_bearing_manual_workflows_only_run_main(self):
-        for name in ("update.yml", "discover.yml", "push_wechat.yml"):
+        for name in ("update.yml", "discover.yml", "push_wechat.yml", "feishu-test.yml"):
             workflow = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
             self.assertIn("if: github.ref == 'refs/heads/main'", workflow, name)
 
