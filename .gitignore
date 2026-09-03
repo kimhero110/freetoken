@@ -5,6 +5,7 @@ __pycache__/
 
 # Node
 site/node_modules/
+scripts/node/node_modules/
 site/dist/
 site/.astro/
 

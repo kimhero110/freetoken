@@ -14,7 +14,8 @@ VERIFICATION_VALUES = {"claimed", "documented", "live", "failed", "unknown"}
 TOOL_VALUES = VERIFICATION_VALUES | {"unsupported"}
 TOOL_KEYS = {"curl", "openai_python", "openai_node", "cursor", "openclaw", "cherry_studio"}
 CAPABILITY_KEYS = {"operations", "tools"}
-OPERATION_KEYS = {"id", "protocol", "endpoint_url", "models", "auth", "verification"}
+OPERATION_KEYS = {"id", "protocol", "endpoint_url", "method", "request_body", "models", "auth", "verification"}
+OPERATION_REQUIRED_KEYS = OPERATION_KEYS - {"method", "request_body"}
 AUTH_KEYS = {"type", "header", "query_param", "env_var"}
 VERIFICATION_KEYS = {"status", "checked_at", "evidence_url"}
 MODEL_RE = re.compile(r"^[A-Za-z0-9@._:/+-]{1,160}$")
@@ -143,6 +144,26 @@ def _validate_verification(verification, prefix):
     return errors
 
 
+def _safe_json_template(value, depth=0):
+    if depth > 4:
+        return False
+    if value is None or isinstance(value, bool):
+        return True
+    if isinstance(value, (int, float)):
+        return not isinstance(value, float) or math.isfinite(value)
+    if isinstance(value, str):
+        return len(value) <= 1000 and all(ord(char) >= 32 for char in value)
+    if isinstance(value, list):
+        return len(value) <= 20 and all(_safe_json_template(item, depth + 1) for item in value)
+    if isinstance(value, dict):
+        return len(value) <= 30 and all(
+            isinstance(key, str) and re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", key)
+            and _safe_json_template(item, depth + 1)
+            for key, item in value.items()
+        )
+    return False
+
+
 def _validate_capabilities(capabilities):
     if not isinstance(capabilities, dict):
         return ["capabilities must be an object"]
@@ -159,7 +180,7 @@ def _validate_capabilities(capabilities):
                 errors.append(f"{prefix} must be an object")
                 continue
             errors.extend(_unknown_fields(operation, OPERATION_KEYS, prefix))
-            errors.extend(_missing_fields(operation, OPERATION_KEYS, prefix))
+            errors.extend(_missing_fields(operation, OPERATION_REQUIRED_KEYS, prefix))
             operation_id = operation.get("id")
             if operation_id not in OPERATION_IDS:
                 errors.append(f"{prefix}.id is invalid")
@@ -184,6 +205,20 @@ def _validate_capabilities(capabilities):
                     errors.append(f"{prefix} chat_completions requires models")
                 if protocol == "openai" and (not isinstance(endpoint_url, str) or not endpoint_url.endswith("/chat/completions")):
                     errors.append(f"{prefix} OpenAI endpoint must end with /chat/completions")
+            method = operation.get("method")
+            request_body = operation.get("request_body")
+            executable_rest_search = (
+                protocol == "rest" and operation_id == "search"
+                and isinstance(operation.get("verification"), dict)
+                and operation["verification"].get("status") in {"documented", "live"}
+            )
+            if executable_rest_search:
+                if method != "POST" or not _https_url(endpoint_url):
+                    errors.append(f"{prefix} REST search requires an HTTPS endpoint and POST method")
+                if not isinstance(request_body, dict) or not request_body or not _safe_json_template(request_body):
+                    errors.append(f"{prefix} REST search requires a bounded JSON request_body")
+            elif method is not None or request_body is not None:
+                errors.append(f"{prefix} method/request_body are only supported for REST search")
             errors.extend(_validate_auth(operation.get("auth"), f"{prefix}.auth"))
             errors.extend(_validate_verification(operation.get("verification"), f"{prefix}.verification"))
 

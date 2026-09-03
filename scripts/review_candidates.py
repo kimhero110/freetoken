@@ -36,20 +36,19 @@ GENERATED_FILES = (
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 CAPABILITY_PROBE_KEYS = {
     "candidate_type", "candidate_version", "platform_slug", "platform_hash", "operation_id",
+    "tool", "promotion_target", "client", "client_version", "probe_config_hash",
     "endpoint_url", "endpoint_hash", "model", "observed_status_code", "latency_ms",
     "protocol_valid", "decision", "checked_at", "evidence_url", "review",
 }
 
 sys.path.append(str(ROOT / "scripts"))
 try:
-    from feishu_notifier import notify_approval_success
-except ImportError:
-    notify_approval_success = lambda x: False
-try:
     from platform_schema import validate_platform, validate_quota
+    from probe_config import load_probe_config, probe_config_hash
     from safe_http import get_public_text
 except ImportError:
     from scripts.platform_schema import validate_platform, validate_quota
+    from scripts.probe_config import load_probe_config, probe_config_hash
     from scripts.safe_http import get_public_text
 
 
@@ -234,12 +233,19 @@ def _validate_capability_probe(data: dict) -> tuple[Path, dict, dict]:
     missing = CAPABILITY_PROBE_KEYS - {"review"} - set(data)
     if unknown or missing:
         raise ValueError("能力探测候选字段无效")
-    if data.get("candidate_version") != 1 or isinstance(data.get("candidate_version"), bool):
+    if data.get("candidate_version") != 2 or isinstance(data.get("candidate_version"), bool):
         raise ValueError("能力探测候选版本无效")
     slug = _safe_slug(data.get("platform_slug", ""))
     if data.get("operation_id") != "chat_completions":
         raise ValueError("能力探测操作无效")
-    for field in ("platform_hash", "endpoint_hash"):
+    config = load_probe_config()
+    tool = data.get("tool")
+    tool_config = config["tools"].get(tool)
+    if not tool_config or data.get("promotion_target") != tool_config["promotion_target"]:
+        raise ValueError("能力探测工具无效")
+    if data.get("client") != tool_config["client"] or data.get("client_version") != tool_config["client_version"]:
+        raise ValueError("能力探测客户端版本无效")
+    for field in ("platform_hash", "endpoint_hash", "probe_config_hash"):
         if not isinstance(data.get(field), str) or not re.fullmatch(r"[a-f0-9]{64}", data[field]):
             raise ValueError("能力探测哈希无效")
     status_code = data.get("observed_status_code")
@@ -282,6 +288,15 @@ def _validate_capability_probe(data: dict) -> tuple[Path, dict, dict]:
         raise ValueError("正式模型已变更，请重新探测")
     if operation.get("protocol") != "openai":
         raise ValueError("正式协议已变更，请重新探测")
+    provider_config = config["providers"].get(slug)
+    if not provider_config or (
+        provider_config.get("endpoint_url") != endpoint
+        or provider_config.get("model") != data["model"]
+        or provider_config.get("api_key_env") != operation.get("auth", {}).get("env_var")
+    ):
+        raise ValueError("能力探测不在固定提供商配置中")
+    if data["probe_config_hash"] != probe_config_hash(slug, operation, data["model"]):
+        raise ValueError("能力探测配置已变更，请重新探测")
     return path, platform, operation
 
 
@@ -295,8 +310,7 @@ def _apply_capability_probe(data: dict) -> tuple[Path, str]:
         "evidence_url": data["evidence_url"],
     }
     tools = platform["capabilities"]["tools"]
-    # This probe exercises the raw HTTP contract, not either SDK runtime.
-    tools["curl"] = "live"
+    tools[data["promotion_target"]] = "live"
     errors = validate_platform(platform, data["platform_slug"])
     if errors:
         raise ValueError("; ".join(errors))
@@ -376,9 +390,6 @@ def _approve_candidate_locked(candidate_id: str):
 
     print(f"[OK] 审核通过并完成构建: data/platforms/{final_slug}.yaml")
 
-    # Notify Feishu
-    print("[FEISHU] 发送审核通过上线卡片...")
-    notify_approval_success(data)
     print(f"\n平台【{data.get('name', final_slug)}】已批准并通过本地构建，等待发布。\n")
     return True
 

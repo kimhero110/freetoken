@@ -24,9 +24,7 @@ export const VERIFICATION_LABELS = Object.freeze({
 });
 
 function assertSafeUrl(value) {
-  if (typeof value !== 'string' || !value.endsWith(CHAT_SUFFIX)) {
-    throw new TypeError('OpenAI Chat Completions endpoint must end with /chat/completions');
-  }
+  if (typeof value !== 'string') throw new TypeError('Operation endpoint must be a URL');
   let parsed;
   try {
     parsed = new URL(value);
@@ -42,6 +40,38 @@ function assertSafeUrl(value) {
   return value;
 }
 
+function normalizeRestSearchOperation(operation) {
+  if (!operation || operation.id !== 'search' || operation.protocol !== 'rest' || operation.method !== 'POST') {
+    throw new TypeError('Only documented REST POST search operations are supported');
+  }
+  const endpointUrl = assertSafeUrl(operation.endpoint_url);
+  const auth = operation.auth;
+  if (!auth || auth.type !== 'api_key_header' || auth.query_param !== null ||
+      typeof auth.header !== 'string' || !/^[A-Za-z][A-Za-z0-9-]{0,63}$/.test(auth.header) ||
+      !ENV_VAR_RE.test(auth.env_var || '')) {
+    throw new TypeError('REST search requires safe API-key header authentication');
+  }
+  const body = operation.request_body;
+  if (!body || Object.getPrototypeOf(body) !== Object.prototype || JSON.stringify(body).length > 8192) {
+    throw new TypeError('REST search requires a bounded JSON request body');
+  }
+  const verification = operation.verification;
+  if (!verification || !EXECUTABLE_LEVELS.has(verification.status)) {
+    throw new TypeError('Operation verification does not permit generated requests');
+  }
+  if (verification.status === 'live') {
+    const checkedAt = Date.parse(`${verification.checked_at || ''}T00:00:00Z`);
+    if (!Number.isFinite(checkedAt) || Date.now() - checkedAt > LIVE_MAX_AGE_MS) {
+      throw new TypeError('Live operation verification is stale');
+    }
+  }
+  return Object.freeze({
+    id: operation.id, protocol: operation.protocol, endpoint_url: endpointUrl, method: operation.method,
+    request_body: structuredClone(body), models: Object.freeze(['default request']),
+    auth: Object.freeze({ ...auth }), verification: Object.freeze({ ...verification }),
+  });
+}
+
 function assertSafeModel(model) {
   if (typeof model !== 'string' || !MODEL_RE.test(model)) {
     throw new TypeError('Model is unsupported or unsafe');
@@ -54,6 +84,9 @@ export function normalizeChatOperation(operation) {
     throw new TypeError('Only OpenAI Chat Completions operations are supported');
   }
   const endpointUrl = assertSafeUrl(operation.endpoint_url);
+  if (!endpointUrl.endsWith(CHAT_SUFFIX)) {
+    throw new TypeError('OpenAI Chat Completions endpoint must end with /chat/completions');
+  }
   if (!Array.isArray(operation.models) || operation.models.length === 0) {
     throw new TypeError('Chat Completions operation requires at least one model');
   }
@@ -101,7 +134,11 @@ export function selectChatOperation(platform) {
     try {
       return normalizeChatOperation(operation);
     } catch {
-      // A platform may expose unrelated or non-executable operations first.
+      try {
+        return normalizeRestSearchOperation(operation);
+      } catch {
+        // A platform may expose unrelated or non-executable operations first.
+      }
     }
   }
   return null;
@@ -132,7 +169,8 @@ export function getCompatiblePlatforms(platforms) {
     const operation = selectChatOperation(platform);
     if (!operation) return [];
     const tools = platform.capabilities?.tools || {};
-    if (!['curl', 'openai_python', 'openai_node'].some((tool) => getToolState(tools, tool).enabled)) return [];
+    const applicableTools = operation.protocol === 'rest' ? ['curl'] : ['curl', 'openai_python', 'openai_node'];
+    if (!applicableTools.some((tool) => getToolState(tools, tool).enabled)) return [];
     return [{
       slug: platform.slug,
       name: platform.name,
@@ -168,6 +206,29 @@ curl --fail --silent --show-error \\
   --request POST ${shellQuote(operation.endpoint_url)} \\
   --header 'Content-Type: application/json' \\
   --header "Authorization: Bearer \${${operation.auth.env_var}}" \\
+  --data ${shellQuote(body)}`;
+}
+
+export function getOperationToolState(tools, tool, protocol, lang = 'en') {
+  if (protocol === 'rest' && tool !== 'curl') {
+    const locale = lang === 'zh' ? 'zh' : 'en';
+    return {
+      enabled: false,
+      status: 'unsupported',
+      reason: locale === 'zh' ? '此 REST 操作目前仅生成 cURL' : 'This REST operation currently generates cURL only',
+    };
+  }
+  return getToolState(tools, tool, lang);
+}
+
+function restCurlSnippet(operation) {
+  const body = JSON.stringify(operation.request_body);
+  return `: "\${${operation.auth.env_var}:?Set ${operation.auth.env_var} in your environment}"
+curl --fail --silent --show-error \\
+  --connect-timeout 10 --max-time 30 \\
+  --request ${operation.method} ${shellQuote(operation.endpoint_url)} \\
+  --header 'Content-Type: application/json' \\
+  --header "${operation.auth.header}: \${${operation.auth.env_var}}" \\
   --data ${shellQuote(body)}`;
 }
 
@@ -239,6 +300,11 @@ function localAggregatorSnippet(operation, model) {
 }
 
 export function generateSnippet(rawOperation, model, format) {
+  if (rawOperation?.protocol === 'rest') {
+    const operation = normalizeRestSearchOperation(rawOperation);
+    if (format === 'curl') return restCurlSnippet(operation);
+    throw new TypeError('REST search currently supports cURL only');
+  }
   const operation = normalizeChatOperation(rawOperation);
   const safeModel = requireModel(operation, model);
   if (format === 'curl') return curlSnippet(operation, safeModel);

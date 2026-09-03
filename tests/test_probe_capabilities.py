@@ -68,12 +68,14 @@ class ProbeCapabilityTests(unittest.TestCase):
                  "GITHUB_REPOSITORY": "example/repository",
                  "GITHUB_RUN_ID": "123456",
             }, clear=True), contextlib.redirect_stdout(output):
-                success, candidate_path = probe_capabilities.probe("deepseek", "chat_completions")
+                success, candidate_path = probe_capabilities.probe("deepseek", "chat_completions", "raw_http")
 
             self.assertTrue(success)
             candidate_text = candidate_path.read_text(encoding="utf-8")
             candidate = yaml.safe_load(candidate_text)
             self.assertEqual(candidate["decision"], "live")
+            self.assertEqual(candidate["tool"], "raw_http")
+            self.assertEqual(candidate["promotion_target"], "curl")
             self.assertTrue(candidate["protocol_valid"])
             self.assertEqual(candidate["observed_status_code"], 200)
             self.assertEqual(candidate["evidence_url"], "https://github.com/example/repository/actions/runs/123456")
@@ -96,7 +98,7 @@ class ProbeCapabilityTests(unittest.TestCase):
             ), patch.object(probe_capabilities, "pinned_public_https_request") as request, patch.dict(
                 os.environ, {}, clear=True
             ):
-                success, path = probe_capabilities.probe("deepseek", "chat_completions")
+                success, path = probe_capabilities.probe("deepseek", "chat_completions", "raw_http")
             self.assertFalse(success)
             request.assert_not_called()
             candidate = yaml.safe_load(path.read_text(encoding="utf-8"))
@@ -104,26 +106,26 @@ class ProbeCapabilityTests(unittest.TestCase):
             self.assertIsNone(candidate["observed_status_code"])
 
     def test_protocol_response_requires_non_empty_assistant_content(self):
-        self.assertFalse(probe_capabilities._protocol_valid(b'{"choices":[{"message":{}}]}'))
-        self.assertFalse(probe_capabilities._protocol_valid(b'{"choices":[{"message":{"role":"assistant","content":""}}]}'))
+        self.assertFalse(probe_capabilities._protocol_valid({"choices": [{"message": {}}]}))
+        self.assertFalse(probe_capabilities._protocol_valid({"choices": [{"message": {"role": "assistant", "content": ""}}]}))
 
     def test_all_configured_skips_missing_credentials_and_probes_each_configured_once(self):
         with patch.dict(os.environ, {
             "DEEPSEEK_API_KEY": "one",
             "GROQ_API_KEY": "two",
         }, clear=True), patch.object(probe_capabilities, "probe", return_value=(True, Path("candidate.yaml"))) as probe:
-            result = probe_capabilities.probe_all_configured("chat_completions")
+            result = probe_capabilities.probe_all_configured("chat_completions", ("raw_http",))
 
         self.assertEqual(result, 0)
         self.assertEqual(
             [call.args for call in probe.call_args_list],
-            [("deepseek", "chat_completions"), ("groq", "chat_completions")],
+            [("deepseek", "chat_completions", "raw_http"), ("groq", "chat_completions", "raw_http")],
         )
 
     def test_all_configured_errors_without_naming_secrets_when_none_are_configured(self):
         stderr = io.StringIO()
         with patch.dict(os.environ, {}, clear=True), contextlib.redirect_stderr(stderr):
-            result = probe_capabilities.probe_all_configured("chat_completions")
+            result = probe_capabilities.probe_all_configured("chat_completions", ("raw_http",))
         self.assertEqual(result, 2)
         self.assertNotIn("API_KEY", stderr.getvalue())
 
@@ -133,7 +135,7 @@ class ProbeCapabilityTests(unittest.TestCase):
             "DEEPSEEK_API_KEY": "one",
             "GROQ_API_KEY": "two",
         }, clear=True), patch.object(probe_capabilities, "probe", side_effect=results) as probe:
-            result = probe_capabilities.probe_all_configured("chat_completions")
+            result = probe_capabilities.probe_all_configured("chat_completions", ("raw_http",))
         self.assertEqual(result, 1)
         self.assertEqual(probe.call_count, 2)
 
@@ -163,6 +165,7 @@ class ProbeCapabilityTests(unittest.TestCase):
             "checked_at": "2026-09-03T12:00:00+00:00",
             "operation_id": "chat_completions",
             "platform_slug": "deepseek",
+            "tool": "raw_http",
         }
         with tempfile.TemporaryDirectory() as directory, patch.object(
             probe_capabilities, "CANDIDATES_DIR", Path(directory)

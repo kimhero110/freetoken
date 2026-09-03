@@ -4,6 +4,7 @@ import test from 'node:test';
 import {
   generateSnippet,
   getCompatiblePlatforms,
+  getOperationToolState,
   getToolState,
   normalizeChatOperation,
   VERIFICATION_LABELS,
@@ -20,6 +21,15 @@ function operation(status = 'documented') {
 }
 
 const tools = { curl: 'claimed', openai_python: 'documented', openai_node: 'live', cursor: 'unknown' };
+
+function restOperation() {
+  return {
+    id: 'search', protocol: 'rest', endpoint_url: 'https://api.tavily.com/search', method: 'POST',
+    request_body: { query: 'What is new?', search_depth: 'basic', max_results: 5 }, models: [],
+    auth: { type: 'api_key_header', header: 'X-API-Key', query_param: null, env_var: 'TAVILY_API_KEY' },
+    verification: { status: 'documented', checked_at: '2026-09-03', evidence_url: 'https://docs.tavily.com' },
+  };
+}
 
 test('preserves the exact canonical endpoint and removes only the exact chat suffix', () => {
   const normalized = normalizeChatOperation(operation());
@@ -103,4 +113,15 @@ test('cURL has explicit timeouts and fail handling but never retries a POST', ()
   assert.match(curl, /"\$\{EXAMPLE_API_KEY:\?Set EXAMPLE_API_KEY/);
   assert.match(curl, /"max_tokens":64/);
   assert.doesNotMatch(curl, /--retry/);
+});
+
+test('documented REST search generates only a bounded authenticated cURL request', () => {
+  const curl = generateSnippet(restOperation(), undefined, 'curl');
+  assert.match(curl, /--request POST 'https:\/\/api\.tavily\.com\/search'/);
+  assert.match(curl, /X-API-Key: \$\{TAVILY_API_KEY\}/);
+  assert.match(curl, /"search_depth":"basic"/);
+  assert.doesNotMatch(curl, /--retry|actual-secret/);
+  assert.throws(() => generateSnippet(restOperation(), undefined, 'python'), /cURL only/);
+  assert.equal(getOperationToolState({ curl: 'documented' }, 'curl', 'rest').enabled, true);
+  assert.equal(getOperationToolState({}, 'freellmapi', 'rest').enabled, false);
 });

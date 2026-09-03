@@ -1,5 +1,5 @@
 ---
-import { getCompatiblePlatforms, getToolState, VERIFICATION_LABELS } from '../lib/operation-generator.mjs';
+import { getCompatiblePlatforms, getOperationToolState, VERIFICATION_LABELS } from '../lib/operation-generator.mjs';
 
 interface Props {
   platforms: any[];
@@ -19,10 +19,10 @@ const tabs = [
   { id: 'cherry', tool: 'cherry_studio', label: 'Cherry Studio', file: '' },
   { id: 'freellmapi', tool: 'freellmapi', label: 'FreeLLMAPI', file: 'local-channel.json' },
 ];
-const firstEnabledTab = tabs.find((tab) => first && getToolState(first.tools, tab.tool, lang).enabled);
+const firstEnabledTab = tabs.find((tab) => first && getOperationToolState(first.tools, tab.tool, first.operation.protocol, lang).enabled);
 const serializedPlatforms = JSON.stringify(compatiblePlatforms);
 const labels = {
-  empty: isEn ? 'No executable OpenAI Chat Completions operations are currently available.' : '当前没有可执行的 OpenAI Chat Completions 操作。',
+  empty: isEn ? 'No executable verified operations are currently available.' : '当前没有可执行的已核验操作。',
   select: isEn ? 'Platform and operation' : '平台与操作',
   model: isEn ? 'Canonical model' : '规范模型',
   copy: isEn ? 'Copy code' : '复制代码',
@@ -37,7 +37,7 @@ const labels = {
 <div class="config-generator-card" id="code-generator" data-lang={lang} data-platforms={serializedPlatforms}>
   <header class="generator-header">
     <div>
-      <p class="eyebrow">OPENAI CHAT COMPLETIONS</p>
+      <p class="eyebrow">VERIFIED API OPERATIONS</p>
       <h2>{isEn ? 'Verified integration generator' : '已核验接入代码生成器'}</h2>
       <p>{isEn ? 'Only documented or recently live-tested v2 operations produce executable examples.' : '仅为已核查文档或近期真实调用通过的 v2 操作生成可执行示例。'}</p>
     </div>
@@ -74,7 +74,7 @@ const labels = {
       <div class="gen-tabs-wrap">
         <div class="code-gen-tabs" id="gen-tabs" role="tablist" aria-label={isEn ? 'Generated format' : '生成格式'}>
           {tabs.map((tab) => {
-            const state = getToolState(first?.tools, tab.tool, lang);
+            const state = getOperationToolState(first?.tools, tab.tool, first?.operation.protocol, lang);
             const active = tab.id === firstEnabledTab?.id;
             return <button
               id={`gen-tab-${tab.id}`}
@@ -97,10 +97,10 @@ const labels = {
       </div>
 
       <p id="tool-support-message" class="support-message" aria-live="polite">
-        {firstEnabledTab ? getToolState(first?.tools, firstEnabledTab.tool, lang).reason : labels.empty}
+        {firstEnabledTab ? getOperationToolState(first?.tools, firstEnabledTab.tool, first?.operation.protocol, lang).reason : labels.empty}
       </p>
       <p id="app-support-message" class="app-support-message" aria-live="polite">
-        {tabs.filter((tab) => !getToolState(first?.tools, tab.tool, lang).enabled).map((tab) => `${tab.label}: ${getToolState(first?.tools, tab.tool, lang).reason}`).join(' · ')}
+        {tabs.filter((tab) => !getOperationToolState(first?.tools, tab.tool, first?.operation.protocol, lang).enabled).map((tab) => `${tab.label}: ${getOperationToolState(first?.tools, tab.tool, first?.operation.protocol, lang).reason}`).join(' · ')}
       </p>
       <p class="reliability-note">{labels.retry}</p>
 
@@ -148,7 +148,7 @@ const labels = {
 </style>
 
 <script>
-  import { generateSnippet, getToolState, VERIFICATION_LABELS } from '../lib/operation-generator.mjs';
+  import { generateSnippet, getOperationToolState, VERIFICATION_LABELS } from '../lib/operation-generator.mjs';
 
   const root = document.getElementById('code-generator');
   if (root instanceof HTMLElement && root.dataset.platforms) {
@@ -200,14 +200,14 @@ const labels = {
         badge.className = `verification-badge level-${platform.operation.verification.status}`;
       }
       tabs.forEach((tab) => {
-        const state = getToolState(platform.tools, tab.dataset.tool, lang);
+        const state = getOperationToolState(platform.tools, tab.dataset.tool, platform.operation.protocol, lang);
         tab.setAttribute('aria-disabled', String(!state.enabled));
         tab.title = state.reason;
       });
       if (appSupportMessage) {
         appSupportMessage.textContent = tabs
-          .filter((tab) => !getToolState(platform.tools, tab.dataset.tool, lang).enabled)
-          .map((tab) => `${tab.dataset.label}: ${getToolState(platform.tools, tab.dataset.tool, lang).reason}`)
+          .filter((tab) => !getOperationToolState(platform.tools, tab.dataset.tool, platform.operation.protocol, lang).enabled)
+          .map((tab) => `${tab.dataset.label}: ${getOperationToolState(platform.tools, tab.dataset.tool, platform.operation.protocol, lang).reason}`)
           .join(' · ');
       }
       let active = tabs.find((tab) => tab.dataset.tab === activeTab && isEnabled(tab));
@@ -219,7 +219,7 @@ const labels = {
       const platform = selectedPlatform();
       const tab = tabs.find((item) => item.dataset.tab === activeTab);
       if (!platform || !tab || !output) return;
-      const state = getToolState(platform.tools, tab.dataset.tool, lang);
+      const state = getOperationToolState(platform.tools, tab.dataset.tool, platform.operation.protocol, lang);
       if (supportMessage) supportMessage.textContent = state.reason;
       output.textContent = generateSnippet(platform.operation, modelSelect?.value, activeTab);
     }

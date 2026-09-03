@@ -3261,6 +3261,12 @@
           "id": "search",
           "protocol": "rest",
           "endpoint_url": "https://api.tavily.com/search",
+          "method": "POST",
+          "request_body": {
+            "query": "What are the latest developments in artificial intelligence?",
+            "search_depth": "basic",
+            "max_results": 5
+          },
           "models": [],
           "auth": {
             "type": "api_key_header",
@@ -3276,7 +3282,7 @@
         }
       ],
       "tools": {
-        "curl": "unknown",
+        "curl": "documented",
         "openai_python": "unknown",
         "openai_node": "unknown",
         "cursor": "unknown",

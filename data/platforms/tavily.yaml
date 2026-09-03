@@ -45,6 +45,11 @@ capabilities:
     - id: search
       protocol: rest
       endpoint_url: https://api.tavily.com/search
+      method: POST
+      request_body:
+        query: What are the latest developments in artificial intelligence?
+        search_depth: basic
+        max_results: 5
       models: []
       auth:
         type: api_key_header
@@ -56,7 +61,7 @@ capabilities:
         checked_at: '2026-09-03'
         evidence_url: https://docs.tavily.com/documentation/api-reference/endpoint/search
   tools:
-    curl: unknown
+    curl: documented
     openai_python: unknown
     openai_node: unknown
     cursor: unknown

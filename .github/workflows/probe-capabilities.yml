@@ -20,6 +20,16 @@ on:
           - zhipu-ai
           - openrouter
           - gmi-cloud-minimax
+      tool:
+        description: Client contract to probe
+        required: true
+        default: raw_http
+        type: choice
+        options:
+          - raw_http
+          - openai_python
+          - openai_node
+          - all
 
 permissions:
   contents: write
@@ -34,10 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: Set up Python 3.11
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.11'
           cache: pip
@@ -46,12 +56,23 @@ jobs:
       - name: Install hash-locked dependencies
         run: pip install --require-hashes -r scripts/requirements.lock
 
+      - name: Set up Node.js 22
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: scripts/node/package-lock.json
+
+      - name: Install locked Node probe dependencies
+        run: npm ci --prefix scripts/node
+
       - name: Probe capability
         id: probe
         continue-on-error: true
         env:
           EVENT_NAME: ${{ github.event_name }}
           PROVIDER: ${{ inputs.provider }}
+          TOOL: ${{ inputs.tool }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
           ALIYUN_BAILIAN_API_KEY: ${{ secrets.ALIYUN_BAILIAN_API_KEY }}
@@ -63,10 +84,14 @@ jobs:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GMI_CLOUD_MINIMAX_API_KEY: ${{ secrets.GMI_CLOUD_MINIMAX_API_KEY }}
         run: |
+          python scripts/probe_secret_coverage.py
+          TOOLS=(--tool raw_http --tool openai_python --tool openai_node)
           if [ "$EVENT_NAME" = "schedule" ]; then
-            python scripts/probe_capabilities.py --all-configured --operation chat_completions
+            python scripts/probe_capabilities.py --all-configured --operation chat_completions "${TOOLS[@]}"
+          elif [ "$TOOL" = "all" ]; then
+            python scripts/probe_capabilities.py --provider "$PROVIDER" --operation chat_completions "${TOOLS[@]}"
           else
-            python scripts/probe_capabilities.py --provider "$PROVIDER" --operation chat_completions
+            python scripts/probe_capabilities.py --provider "$PROVIDER" --operation chat_completions --tool "$TOOL"
           fi
 
       - name: Preserve the observation

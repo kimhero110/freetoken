@@ -9,9 +9,23 @@ from unittest.mock import patch
 import yaml
 
 from scripts import extract, review_candidates
+from scripts.probe_config import probe_config_hash
 
 
 class CandidateWorkflowTests(unittest.TestCase):
+    def setUp(self):
+        self.probe_config_patch = patch.object(review_candidates, "load_probe_config", return_value={
+            "providers": {"demo": {
+                "api_key_env": "DEMO_API_KEY", "endpoint_url": "https://api.example.com/v1/chat/completions",
+                "model": "demo-model",
+            }},
+            "tools": {"raw_http": {"promotion_target": "curl", "client": "freetoken-safe-http", "client_version": "1"}},
+        })
+        self.probe_config_patch.start()
+
+    def tearDown(self):
+        self.probe_config_patch.stop()
+
     @staticmethod
     def platform(slug="demo", intro="Old", amount=1):
         return {
@@ -56,10 +70,15 @@ class CandidateWorkflowTests(unittest.TestCase):
         import hashlib
         return {
             "candidate_type": "capability_probe",
-            "candidate_version": 1,
+            "candidate_version": 2,
             "platform_slug": "demo",
             "platform_hash": platform_hash or review_candidates._platform_hash(platform),
             "operation_id": "chat_completions",
+            "tool": "raw_http",
+            "promotion_target": "curl",
+            "client": "freetoken-safe-http",
+            "client_version": "1",
+            "probe_config_hash": probe_config_hash("demo", platform["capabilities"]["operations"][0], "demo-model"),
             "endpoint_url": endpoint,
             "endpoint_hash": hashlib.sha256(endpoint.encode("utf-8")).hexdigest(),
             "model": "demo-model",

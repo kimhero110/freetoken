@@ -105,6 +105,9 @@ class SecurityInvariantTests(unittest.TestCase):
             self.assertIn(f"- {provider}", workflow)
         self.assertIn("--operation chat_completions", workflow)
         self.assertIn("--all-configured", workflow)
+        self.assertIn("probe_secret_coverage.py", workflow)
+        self.assertIn("--tool openai_python", workflow)
+        self.assertIn("--tool openai_node", workflow)
         self.assertIn("git add --all -- data/candidates/", workflow)
         self.assertNotIn("git add data/platforms/", workflow)
         self.assertIn("continue-on-error: true", workflow)
@@ -125,7 +128,13 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertIn('${#CANDIDATE_ID}', run_blocks)
         self.assertIn('--approve "$CANDIDATE_ID"', run_blocks)
         self.assertIn('--reject "$CANDIDATE_ID"', run_blocks)
-        self.assertNotIn("secrets.", workflow)
+        secret_lines = [line for line in workflow.splitlines() if "secrets." in line]
+        self.assertEqual(len(secret_lines), 2)
+        self.assertTrue(all("FEISHU_" in line for line in secret_lines))
+        self.assertIn("Send isolated approval notification", workflow)
+        decision_step, notification_step = workflow.split("- name: Send isolated approval notification", 1)
+        self.assertNotIn("secrets.", decision_step)
+        self.assertNotIn("git ", notification_step)
 
     def test_candidate_ids_and_platform_slugs_reject_path_traversal(self):
         from scripts.review_candidates import _candidate_file, _safe_slug
