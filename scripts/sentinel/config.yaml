@@ -1,0 +1,57 @@
+# WitKit Sentinel 运维监控配置
+sentinel:
+  interval_seconds: 60  # 轮询探测周期（秒）
+  consecutive_failures_to_alert: 2  # 连续失败多少次触发报警（防抖）
+  recovery_confirmations: 1         # 恢复确认次数
+
+tailscale:
+  auto_discover: true
+  ignore_os:
+    - android
+    - ios
+  # 忽略便携式笔记本/休眠虚拟机，避免合盖休眠时误报警
+  ignore_name_patterns:
+    - "*Laptop*"
+    - "*MacBook*"
+    - "*vm*"
+  default_ports:
+    windows:
+      - 3389  # Windows 远程桌面端口
+    linux:
+      - 22    # Linux SSH 端口
+
+services:
+  - name: "witkit.zone 门户 (国内生产)"
+    url: "https://witkit.zone"
+    type: "http"
+    expected_status: 200
+    timeout_seconds: 5
+
+  - name: "analytics.witkit.zone (Umami 统计公网)"
+    url: "https://analytics.witkit.zone"
+    type: "http"
+    expected_status: 200
+    timeout_seconds: 5
+
+  - name: "FreeTokens.info (全球 CDN 镜像)"
+    url: "https://freetokens.info"
+    type: "http"
+    expected_status: 200
+    timeout_seconds: 5
+
+  - name: "Umami 分析引擎 (wuhao-server 内网)"
+    target: "100.64.0.17"
+    port: 3000
+    type: "tcp"
+    timeout_seconds: 3
+
+  - name: "NPM 反代面板 (wuhao-server 内网)"
+    target: "100.64.0.17"
+    port: 81
+    type: "tcp"
+    timeout_seconds: 3
+
+feishu:
+  webhook_url: "<REMOVED_FEISHU_WEBHOOK>"
+  secret: "<REMOVED_FEISHU_SECRET>"
+  keyword: "FreeToken"
