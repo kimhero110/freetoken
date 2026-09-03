@@ -1,4 +1,4 @@
-# FreeToken · 免费 Token 情报局
+﻿# FreeToken · 免费 Token 情报局
 
 > 用免费 Token 做工具，也提醒自己保持思考。
 
@@ -143,7 +143,7 @@ GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TE
 
 1. [开放平台](https://open.feishu.cn/) 创建**企业自建应用**：添加"机器人"能力；权限勾选 `im:message`（获取与发送单聊消息）；事件订阅选择**长连接**模式，订阅 `im.message.receive_v1`；发布版本并可用范围=自己。
 2. 创建 fine-grained PAT：GitHub → Settings → Developer settings → Fine-grained tokens → 仅 `kimhero110/freetoken`，权限仅 `Actions: Read and write`，有效期 90 天。
-3. 服务器：`git clone` 本仓库到 `/opt/freetoken-intake`；`cp daemon/.env.example /opt/freetoken-intake/.env` 并填入 `FEISHU_APP_ID/FEISHU_APP_SECRET/GITHUB_PAT/GITHUB_REPO`，`BOOTSTRAP=1` 保持开启，`chmod 600 .env`。
+3. 服务器：`git clone` 本仓库到 `/opt/freetoken-intake`；`cp daemon/env.example /opt/freetoken-intake/.env` 并填入 `FEISHU_APP_ID/FEISHU_APP_SECRET/GITHUB_PAT/GITHUB_REPO`，`BOOTSTRAP=1` 保持开启，`chmod 600 .env`。
 4. 启动：`cd /opt/freetoken-intake && GIT_COMMIT=$(git rev-parse --short HEAD) docker compose -f deploy/docker-compose.feishu-intake.yml up -d --build`。
 5. 引导：飞书私聊发 `谁我` → 机器人回你的 open_id → 填入 `.env` 的 `OWNER_OPEN_ID`，去掉 `BOOTSTRAP=1` → `docker compose -f deploy/docker-compose.feishu-intake.yml restart`。
 6. 验证：发 `状态`，应在 10 秒内收到卡片（无响应=长连接未建立，查容器日志与事件订阅配置）。
