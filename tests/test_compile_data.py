@@ -84,6 +84,25 @@ class CompileArticlesTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "tags"):
             compile_data.compile_articles()
 
+    def test_source_url_validated_and_propagated(self):
+        (self.content / "a.md").write_text(
+            article_md(extra="source_url: \"https://blog.example.com/post/1\"\n"), encoding="utf-8"
+        )
+        articles = compile_data.compile_articles()
+        self.assertEqual(articles[0]["source_url"], "https://blog.example.com/post/1")
+
+    def test_source_url_must_be_https(self):
+        (self.content / "a.md").write_text(
+            article_md(extra="source_url: \"http://blog.example.com/1\"\n"), encoding="utf-8"
+        )
+        with self.assertRaisesRegex(ValueError, "source_url"):
+            compile_data.compile_articles()
+
+    def test_source_url_absent_is_allowed_for_legacy_articles(self):
+        (self.content / "a.md").write_text(article_md(), encoding="utf-8")
+        articles = compile_data.compile_articles()
+        self.assertIsNone(articles[0]["source_url"])
+
     def test_sitemap_is_well_formed_xml(self):
         (self.content / "a.md").write_text(article_md(), encoding="utf-8")
         articles = compile_data.compile_articles()

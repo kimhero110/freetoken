@@ -106,11 +106,19 @@ def _archive_candidate(target_file: Path, decision: str) -> None:
 
 
 def _mark_candidate_reviewed(target_file: Path, data: dict, decision: str) -> None:
-    data["review"] = {
+    review = {
         "decision": decision,
         "reviewed_at": datetime.now(timezone.utc).isoformat(),
         "reviewer": os.environ.get("GITHUB_ACTOR") or os.environ.get("USER") or os.environ.get("USERNAME") or "local-user",
     }
+    # feishu 注解只是标注：权威身份永远是 github.actor（不可经 dispatch 输入伪造）
+    approver_via = os.environ.get("FEISHU_APPROVER_VIA", "").strip()
+    approver_id = os.environ.get("FEISHU_APPROVER_ID", "").strip()
+    if approver_via and re.fullmatch(r"[\w-]{1,32}", approver_via):
+        review["annotation_via"] = approver_via
+        if approver_id and re.fullmatch(r"[\w-]{1,64}", approver_id):
+            review["annotation_id"] = approver_id
+    data["review"] = review
     temporary = target_file.with_suffix(target_file.suffix + ".tmp")
     temporary.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
     temporary.replace(target_file)

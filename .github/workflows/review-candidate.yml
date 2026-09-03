@@ -14,6 +14,16 @@ on:
         options:
           - approve
           - reject
+      approver_via:
+        description: Approval channel annotation (authoritative identity is always github.actor)
+        required: false
+        default: ""
+        type: string
+      approver_id:
+        description: Redacted approver identity annotation (e.g. feishu open_id prefix)
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -65,12 +75,13 @@ jobs:
           CANDIDATE_ID: ${{ inputs.candidate_id }}
           DECISION: ${{ inputs.decision }}
           REVIEWER: ${{ github.actor }}
+          FEISHU_APPROVER_VIA: ${{ inputs.approver_via }}
+          FEISHU_APPROVER_ID: ${{ inputs.approver_id }}
         run: |
           if [ "${#CANDIDATE_ID}" -gt 200 ] || [[ ! "$CANDIDATE_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
             echo "Invalid candidate ID" >&2
             exit 2
           fi
-
           if [ "$DECISION" = "approve" ]; then
             GITHUB_ACTOR="$REVIEWER" python scripts/review_candidates.py --approve "$CANDIDATE_ID"
           elif [ "$DECISION" = "reject" ]; then

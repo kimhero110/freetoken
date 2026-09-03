@@ -114,6 +114,12 @@ def validate_article_meta(slug: str, meta: dict, source: str) -> list[str]:
             continue
         if not isinstance(value, str) or len(value) > limit:
             errors.append(f"{source}: {key} 必须为字符串且不超过 {limit} 字符")
+    source_url = meta.get("source_url")
+    if source_url is not None and (
+        not isinstance(source_url, str)
+        or not re.fullmatch(r"https://\S{3,200}", source_url)
+    ):
+        errors.append(f"{source}: source_url 必须为 HTTPS 链接（<=200 字符）")
     tags = meta.get("tags")
     if tags is not None and (
         not isinstance(tags, list)
@@ -155,6 +161,7 @@ def compile_articles():
                 "summary_en": meta.get("summary_en", ""),
                 "reading_time": reading_time,
                 "featured": meta.get("featured", False),
+                "source_url": meta.get("source_url"),
                 "content_md": body
             }
             articles.append(item)
