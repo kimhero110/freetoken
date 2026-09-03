@@ -32,3 +32,20 @@ gotchas:
 - 支持超长文本与高并发集群加速。
 gotchas_en:
 - Supports ultra-long context and high concurrency.
+registration:
+  url: https://www.tokenpony.cn/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.tokenpony.cn/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://www.tokenpony.cn/docs
+  checked_at: '2026-09-02'

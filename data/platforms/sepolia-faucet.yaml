@@ -29,3 +29,20 @@ gotchas:
 - 部分水龙头要求主网钱包持有少量 ETH 防女巫攻击。
 gotchas_en:
 - Some faucets require mainnet balance to prevent sybil attacks.
+registration:
+  url: https://sepolia-faucet.pk910.de/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: rpc
+  chat_completions_url: null
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://ethereum.org/en/developers/docs/networks/#sepolia
+  checked_at: '2026-09-02'

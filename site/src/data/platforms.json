@@ -34,6 +34,29 @@
     ],
     "gotchas_en": [
       "Trial credits expire after 90 days."
+    ],
+    "registration": {
+      "url": "https://www.ai21.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.ai21.com/studio/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.ai21.com/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -73,6 +96,29 @@
     ],
     "gotchas_en": [
       "Automatic pay-as-you-go billing after trial depletion."
+    ],
+    "registration": {
+      "url": "https://bailian.console.aliyun.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -112,6 +158,29 @@
     ],
     "gotchas_en": [
       "Promotional voucher valid for 90 days."
+    ],
+    "registration": {
+      "url": "https://platform.baichuan-ai.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.baichuan-ai.com/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://platform.baichuan-ai.com/docs/api",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -151,6 +220,29 @@
     ],
     "gotchas_en": [
       "Free models rate-limited to 10 QPS."
+    ],
+    "registration": {
+      "url": "https://console.bce.baidu.com/qianfan/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://qianfan.baidubce.com/v2/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -188,6 +280,29 @@
     ],
     "gotchas_en": [
       "Free tier has 30 RPM limit."
+    ],
+    "registration": {
+      "url": "https://cerebras.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.cerebras.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://inference-docs.cerebras.ai/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -225,6 +340,29 @@
       "Serverless",
       "OpenAI兼容",
       "开源生态"
+    ],
+    "registration": {
+      "url": "https://chutes.ai"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://chutes.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://chutes.ai",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -263,6 +401,29 @@
     ],
     "gotchas_en": [
       "Requires Cloudflare Account ID in Base URL."
+    ],
+    "registration": {
+      "url": "https://ai.cloudflare.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://developers.cloudflare.com/workers-ai/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -302,6 +463,29 @@
     ],
     "gotchas_en": [
       "Trial key is for non-production use."
+    ],
+    "registration": {
+      "url": "https://cohere.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.cohere.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.cohere.com/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -340,6 +524,29 @@
       "体验金",
       "OpenAI兼容",
       "高并发"
+    ],
+    "registration": {
+      "url": "https://deepinfra.com"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.deepinfra.com/v1/openai/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://deepinfra.com",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -378,6 +585,29 @@
     ],
     "gotchas_en": [
       "Trial credits valid for 30 days."
+    ],
+    "registration": {
+      "url": "https://platform.deepseek.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.deepseek.com/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://api-docs.deepseek.com/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -416,6 +646,29 @@
       "开源模型",
       "OpenAI兼容",
       "多模型聚合"
+    ],
+    "registration": {
+      "url": "https://featherless.ai"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.featherless.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://featherless.ai",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -453,6 +706,29 @@
     ],
     "gotchas_en": [
       "Full support for tool calling and JSON mode."
+    ],
+    "registration": {
+      "url": "https://fireworks.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.fireworks.ai/inference/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.fireworks.ai/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -493,6 +769,29 @@
     ],
     "gotchas_en": [
       "Authenticate using standard GitHub PAT."
+    ],
+    "registration": {
+      "url": "https://github.com/marketplace/models"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://models.inference.ai.azure.com/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.github.com/en/github-models",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -530,6 +829,29 @@
     ],
     "gotchas_en": [
       "Limited-time promotional capacity."
+    ],
+    "registration": {
+      "url": "https://gmicloud.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.gmicloud.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.gmicloud.ai/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -569,6 +891,29 @@
     ],
     "gotchas_en": [
       "Free tier inputs may be logged for quality improvements."
+    ],
+    "registration": {
+      "url": "https://aistudio.google.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://ai.google.dev/docs",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -608,6 +953,29 @@
     ],
     "gotchas_en": [
       "Strict TPM limit applies on free tier."
+    ],
+    "registration": {
+      "url": "https://groq.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.groq.com/openai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://console.groq.com/docs/quickstart",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -649,6 +1017,29 @@
     "gotchas_en": [
       "Cold start latency may apply to less frequent models.",
       "Include retry logic for rate limit spikes."
+    ],
+    "registration": {
+      "url": "https://huggingface.co/docs/api-inference/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api-inference.huggingface.co/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://huggingface.co/docs/api-inference/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -686,6 +1077,29 @@
     ],
     "gotchas_en": [
       "Credits valid for 30 days."
+    ],
+    "registration": {
+      "url": "https://hyperbolic.xyz/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.hyperbolic.xyz/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.hyperbolic.xyz/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -725,6 +1139,29 @@
     ],
     "gotchas_en": [
       "Seamless support for domestic GPU accelerators."
+    ],
+    "registration": {
+      "url": "https://cloud.infini-ai.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://cloud.infini-ai.com/maas/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.infini-ai.com/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -763,6 +1200,29 @@
     ],
     "gotchas_en": [
       "Keyless access throttled at 20 RPM."
+    ],
+    "registration": {
+      "url": "https://jina.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "search",
+      "chat_completions_url": null,
+      "supports_claude_code": false,
+      "api_key_required": false
+    },
+    "evidence": [
+      {
+        "url": "https://jina.ai/reader/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -802,6 +1262,29 @@
     ],
     "gotchas_en": [
       "Voucher expires in 90 days."
+    ],
+    "registration": {
+      "url": "https://platform.01.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.01.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://platform.01.ai/docs",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -841,6 +1324,29 @@
       "1万亿",
       "Agent",
       "Web应用"
+    ],
+    "registration": {
+      "url": "https://events.manus.im/zh-cn/campaign/free-tokens"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "custom",
+      "chat_completions_url": null,
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://events.manus.im/zh-cn/campaign/free-tokens",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -879,6 +1385,29 @@
     ],
     "gotchas_en": [
       "Trial voucher expires in 30 days."
+    ],
+    "registration": {
+      "url": "https://platform.minimaxi.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.minimax.chat/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://platform.minimaxi.com/document/guides",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -917,6 +1446,29 @@
     ],
     "gotchas_en": [
       "Phone verification required to activate free tier."
+    ],
+    "registration": {
+      "url": "https://console.mistral.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.mistral.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.mistral.ai/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -956,6 +1508,29 @@
     ],
     "gotchas_en": [
       "Shared compute may experience queuing during peak hours."
+    ],
+    "registration": {
+      "url": "https://modelscope.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api-inference.modelscope.cn/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://modelscope.cn/docs/InferenceAPI",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -995,6 +1570,29 @@
     ],
     "gotchas_en": [
       "Pay-as-you-go applies after voucher depletion."
+    ],
+    "registration": {
+      "url": "https://platform.moonshot.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.moonshot.cn/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://platform.moonshot.cn/docs/intro",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1032,6 +1630,29 @@
     ],
     "gotchas_en": [
       "Credit card verification unlocks higher concurrency."
+    ],
+    "registration": {
+      "url": "https://nebius.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.studio.nebius.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.nebius.ai/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1069,6 +1690,29 @@
     ],
     "gotchas_en": [
       "Supports text and image generation endpoints."
+    ],
+    "registration": {
+      "url": "https://novita.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.novita.ai/v3/openai/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://novita.ai/docs",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1107,6 +1751,29 @@
     ],
     "gotchas_en": [
       "Requires compliant international network."
+    ],
+    "registration": {
+      "url": "https://build.nvidia.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://integrate.api.nvidia.com/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.api.nvidia.com/nim/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1146,6 +1813,29 @@
     ],
     "gotchas_en": [
       "Model names must include the ':free' suffix."
+    ],
+    "registration": {
+      "url": "https://openrouter.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://openrouter.ai/api/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://openrouter.ai/docs",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1185,6 +1875,29 @@
     ],
     "gotchas_en": [
       "Public shared infrastructure; add retry logic for stability."
+    ],
+    "registration": {
+      "url": "https://pollinations.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "custom",
+      "chat_completions_url": null,
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://pollinations.github.io/docs/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1223,6 +1936,29 @@
     ],
     "gotchas_en": [
       "Rate-limited to 5-10 RPM on free tier."
+    ],
+    "registration": {
+      "url": "https://sambanova.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.sambanova.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.sambanova.ai/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1262,6 +1998,29 @@
     ],
     "gotchas_en": [
       "Voucher valid for 30-90 days."
+    ],
+    "registration": {
+      "url": "https://www.scnet.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.scnet.cn/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://www.scnet.cn/ui/mall/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1299,6 +2058,29 @@
     ],
     "gotchas_en": [
       "Some faucets require mainnet balance to prevent sybil attacks."
+    ],
+    "registration": {
+      "url": "https://sepolia-faucet.pk910.de/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "rpc",
+      "chat_completions_url": null,
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://ethereum.org/en/developers/docs/networks/#sepolia",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1339,6 +2121,29 @@
     ],
     "gotchas_en": [
       "Free 7B-9B models are permanently free with zero billing risk."
+    ],
+    "registration": {
+      "url": "https://cloud.siliconflow.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.siliconflow.cn/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.siliconflow.cn/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1379,6 +2184,29 @@
     ],
     "gotchas_en": [
       "Standard billing applies after trial voucher is fully consumed."
+    ],
+    "registration": {
+      "url": "https://platform.stepfun.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.stepfun.com/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://platform.stepfun.com/docs/llm/text",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1417,6 +2245,29 @@
     ],
     "gotchas_en": [
       "Directly supported in LangChain and OpenClaw search tools."
+    ],
+    "registration": {
+      "url": "https://tavily.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "search",
+      "chat_completions_url": null,
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.tavily.com/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1456,6 +2307,29 @@
     ],
     "gotchas_en": [
       "Switches to post-paid after promotional package expires."
+    ],
+    "registration": {
+      "url": "https://cloud.tencent.com/product/hunyuan"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.hunyuan.cloud.tencent.com/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://cloud.tencent.com/document/product/1729",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1494,6 +2368,29 @@
     ],
     "gotchas_en": [
       "Trial credits expire after 90 days."
+    ],
+    "registration": {
+      "url": "https://together.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.together.xyz/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.together.ai/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1534,6 +2431,29 @@
     ],
     "gotchas_en": [
       "Supports ultra-long context and high concurrency."
+    ],
+    "registration": {
+      "url": "https://www.tokenpony.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.tokenpony.cn/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://www.tokenpony.cn/docs",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1573,6 +2493,29 @@
     ],
     "gotchas_en": [
       "Requires custom Endpoint ID in model parameter."
+    ],
+    "registration": {
+      "url": "https://www.volcengine.com/product/ark"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://www.volcengine.com/docs/82379",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1614,6 +2557,29 @@
     "gotchas_en": [
       "Data sharing agreement is irrevocable once enabled.",
       "Requires compliant international network."
+    ],
+    "registration": {
+      "url": "https://x.ai/api"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://api.x.ai/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://docs.x.ai/",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1653,6 +2619,29 @@
     ],
     "gotchas_en": [
       "Fully compatible with standard OpenAI REST protocol."
+    ],
+    "registration": {
+      "url": "https://xinghuo.xfyun.cn/sparkapi"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://spark-api-open.xf-yun.com/v1/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://www.xfyun.cn/doc/spark/Web.html",
+        "checked_at": "2026-09-02"
+      }
     ]
   },
   {
@@ -1693,6 +2682,29 @@
     ],
     "gotchas_en": [
       "GLM-4-Flash is permanently free, ideal for daily zero-cost pipelines."
+    ],
+    "registration": {
+      "url": "https://bigmodel.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "protocol": "openai",
+      "chat_completions_url": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+      "supports_claude_code": false,
+      "api_key_required": true
+    },
+    "evidence": [
+      {
+        "url": "https://bigmodel.cn/dev/api/normal-model/glm-4",
+        "checked_at": "2026-09-02"
+      }
     ]
   }
 ]

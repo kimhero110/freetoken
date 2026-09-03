@@ -18,6 +18,11 @@ import requests
 from bs4 import BeautifulSoup
 import yaml
 
+try:
+    from .safe_http import get_public_text
+except ImportError:
+    from safe_http import get_public_text
+
 ROOT = Path(__file__).resolve().parent.parent
 PLATFORMS_DIR = ROOT / "data" / "platforms"
 PLATFORMS_DIR.mkdir(parents=True, exist_ok=True)
@@ -79,10 +84,8 @@ def get_existing_domains() -> set[str]:
 
 def extract_page_data(url: str) -> dict | None:
     try:
-        resp = requests.get(url, headers={"User-Agent": UA}, timeout=5)
-        if resp.status_code != 200:
-            return None
-        soup = BeautifulSoup(resp.text, "html.parser")
+        body = get_public_text(url, headers={"User-Agent": UA}, timeout=5)
+        soup = BeautifulSoup(body, "html.parser")
         title = (soup.title.string if soup.title else "").strip()
         for tag in soup(["script", "style", "noscript", "nav", "footer"]):
             tag.decompose()
@@ -154,7 +157,7 @@ def run_discovery():
             candidates_dir.mkdir(parents=True, exist_ok=True)
             cand_yaml = candidates_dir / f"{slug_base}.yaml"
             if not cand_yaml.exists():
-                draft_content = {
+                platform = {
                     "slug": slug_base,
                     "name": data["title"] or slug_base,
                     "name_en": slug_base.title(),
@@ -164,7 +167,7 @@ def run_discovery():
                     "website": url,
                     "doc_url": f"{url.rstrip('/')}/docs",
                     "api_base_url": f"{url.rstrip('/')}/v1",
-                    "free_models": ["default-free-tier"],
+                    "free_models": [],
                     "free_quota": {
                         "type": "体验金 / 免费层",
                         "amount": "探测到免费额度",
@@ -173,11 +176,28 @@ def run_discovery():
                         "details": f"检测到开发者免费层/体验额度，雷达匹配得分 {data['score']}/11。"
                     },
                     "verification": "邮箱/GitHub",
-                    "status": "pending_review",
+                    "status": "unverified",
                     "last_verified": str(date.today()),
-                    "tags": ["雷达新源", "待人工复核", "OpenAI兼容"],
+                    "tags": ["雷达新源", "待人工复核"],
                     "gotchas": ["由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。"],
-                    "gotchas_en": ["Discovered by radar. Manual verification recommended."]
+                    "gotchas_en": ["Discovered by radar. Manual verification required."],
+                    "registration": {"url": url},
+                    "requirements": {
+                        "phone": "unknown", "card": "unknown", "region": "unknown",
+                        "regions": [], "rpm": None, "tpm": None,
+                    },
+                    "capabilities": {
+                        "protocol": "custom", "supports_claude_code": False,
+                        "api_key_required": True,
+                    },
+                    "evidence": [{"url": url, "checked_at": str(date.today())}],
+                }
+                draft_content = {
+                    "candidate_type": "new_platform",
+                    "status": "pending_review",
+                    "platform_slug": slug_base,
+                    "score": data["score"],
+                    "proposed": platform,
                 }
                 with open(cand_yaml, "w", encoding="utf-8") as f:
                     yaml.dump(draft_content, f, allow_unicode=True, sort_keys=False)

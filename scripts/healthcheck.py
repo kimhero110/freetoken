@@ -4,7 +4,7 @@ FreeToken Automated Pre-Flight Healthcheck & Regression Guard
 ------------------------------------------------------------
 Runs before any build/deploy to ensure zero-regression on critical features:
 1. Platform count >= 40 in data/platforms.json
-2. Code Generator (7 tools) is present and functional in CodeGenerator.astro
+2. Code Generator (6 verified-compatible tools) is present in CodeGenerator.astro
 3. Article system is present (>= 4 articles) in data/articles.json
 4. Key routes return 200 OK and navigation is intact
 """
@@ -38,12 +38,12 @@ def run_checks():
         errors.append("site/src/components/CodeGenerator.astro missing!")
     else:
         content = gen_file.read_text(encoding="utf-8")
-        tools = ['openclaw', 'claude-code', 'cursor', 'cherry', 'freellmapi', 'python', 'curl']
+        tools = ['openclaw', 'cursor', 'cherry', 'freellmapi', 'python', 'curl']
         missing_tools = [t for t in tools if t not in content]
         if missing_tools:
             errors.append(f"Code generator missing tools: {missing_tools}")
         else:
-            print("  [PASS] 2/4 Code Generator Component: All 7 developer tools verified.")
+            print("  [PASS] 2/4 Code Generator Component: All 6 supported tools present.")
 
     # 3. Check Articles System
     articles_file = ROOT / "data" / "articles.json"

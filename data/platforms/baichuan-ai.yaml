@@ -31,3 +31,20 @@ gotchas:
 - 代金券有效期通常为 1-3 个月。
 gotchas_en:
 - Promotional voucher valid for 90 days.
+registration:
+  url: https://platform.baichuan-ai.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.baichuan-ai.com/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://platform.baichuan-ai.com/docs/api
+  checked_at: '2026-09-02'

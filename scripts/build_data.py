@@ -11,6 +11,8 @@ from pathlib import Path
 
 import yaml
 
+from platform_schema import validate_platform
+
 ROOT = Path(__file__).resolve().parent.parent
 PLATFORMS_DIR = ROOT / "data" / "platforms"
 OUT_FILE = ROOT / "site" / "src" / "data" / "platforms.json"
@@ -24,7 +26,10 @@ def main() -> int:
     entries = []
     for yf in sorted(PLATFORMS_DIR.glob("*.yaml")):
         entry = yaml.safe_load(yf.read_text(encoding="utf-8"))
-        entry["slug"] = yf.stem
+        errors = validate_platform(entry, yf.stem)
+        if errors:
+            print(f"数据校验失败 {yf.name}: {'; '.join(errors)}")
+            return 1
         entries.append(entry)
 
     OUT_FILE.parent.mkdir(parents=True, exist_ok=True)

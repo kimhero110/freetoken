@@ -31,3 +31,20 @@ gotchas:
 - 需要获取 Account ID 拼入 Base URL。
 gotchas_en:
 - Requires Cloudflare Account ID in Base URL.
+registration:
+  url: https://ai.cloudflare.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://developers.cloudflare.com/workers-ai/
+  checked_at: '2026-09-02'

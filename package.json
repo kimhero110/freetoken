@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "cd site && npm run build"
+    "build": "npm --prefix site run build",
+    "test": "python -m unittest discover -s tests -v && npm --prefix site test"
   }
 }

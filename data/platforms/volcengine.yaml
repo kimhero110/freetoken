@@ -31,3 +31,20 @@ gotchas:
 - 调用时 Model 需填入在火山方舟控制台创建的 Endpoint ID。
 gotchas_en:
 - Requires custom Endpoint ID in model parameter.
+registration:
+  url: https://www.volcengine.com/product/ark
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://www.volcengine.com/docs/82379
+  checked_at: '2026-09-02'

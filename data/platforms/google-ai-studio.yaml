@@ -31,3 +31,20 @@ gotchas:
 - 需要国际网络。
 gotchas_en:
 - Free tier inputs may be logged for quality improvements.
+registration:
+  url: https://aistudio.google.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://generativelanguage.googleapis.com/v1beta/openai/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://ai.google.dev/docs
+  checked_at: '2026-09-02'

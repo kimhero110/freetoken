@@ -29,3 +29,20 @@ gotchas:
 - 巨量补贴活动名额有限，请尽早注册领用。
 gotchas_en:
 - Limited-time promotional capacity.
+registration:
+  url: https://gmicloud.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.gmicloud.ai/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://docs.gmicloud.ai/
+  checked_at: '2026-09-02'

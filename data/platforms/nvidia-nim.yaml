@@ -30,3 +30,20 @@ gotchas:
 - 需要合规网络环境访问。
 gotchas_en:
 - Requires compliant international network.
+registration:
+  url: https://build.nvidia.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://integrate.api.nvidia.com/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://docs.api.nvidia.com/nim/
+  checked_at: '2026-09-02'

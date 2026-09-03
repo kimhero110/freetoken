@@ -14,14 +14,16 @@ import tarfile
 import tempfile
 import subprocess
 import shutil
+import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST_DIR = ROOT / 'site' / 'dist'
-SSH_KEY = Path.home() / '.ssh' / 'freetokenlab'
-SERVER_IP = '124.221.254.56'
-SERVER_USER = 'root'
-REMOTE_DIR = '/var/www/freetoken-public'
+SSH_KEY = Path(os.environ.get('FREETOKEN_SSH_KEY', Path.home() / '.ssh' / 'freetokenlab'))
+KNOWN_HOSTS = Path(os.environ.get('FREETOKEN_KNOWN_HOSTS', Path.home() / '.ssh' / 'known_hosts'))
+SERVER_IP = os.environ.get('FREETOKEN_DEPLOY_HOST', '124.221.254.56')
+SERVER_USER = os.environ.get('FREETOKEN_DEPLOY_USER', 'freetoken-deploy')
 
 # 工信部 ICP 备案号及跳转官网标准配置
 ICP_NUMBER = "苏ICP备2026003689号-2"
@@ -73,9 +75,14 @@ def sync():
     if not SSH_KEY.exists():
         print(f"[ERROR] SSH key not found at {SSH_KEY}")
         return 1
+    if not KNOWN_HOSTS.exists():
+        print(f"[ERROR] known_hosts file not found at {KNOWN_HOSTS}")
+        return 1
 
     temp_deploy_dir = tempfile.mkdtemp()
-    temp_tar_path = os.path.join(tempfile.gettempdir(), 'tencent_site_dist.tar.gz')
+    temp_tar_path = os.path.join(temp_deploy_dir, 'tencent_site_dist.tar.gz')
+    release_id = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S') + '-' + uuid.uuid4().hex[:12]
+    remote_tar = f'/tmp/freetoken-{release_id}.tar.gz'
 
     try:
         # 1. 复制一份干净的构建产物
@@ -84,6 +91,7 @@ def sync():
 
         # 2. 注入腾讯云专属 ICP 备案信息
         count = inject_icp_into_dist(tencent_dist)
+        (tencent_dist / 'release-id.txt').write_bytes((release_id + '\n').encode('ascii'))
         print(f"[ICP PIPELINE] Successfully injected & displayed '{ICP_NUMBER}' across {count} HTML pages.")
 
         # 3. 打包压缩
@@ -93,20 +101,17 @@ def sync():
 
         # 4. 上传至临时目录
         subprocess.run([
-            'scp', '-i', str(SSH_KEY), '-o', 'StrictHostKeyChecking=no',
-            temp_tar_path, f'{SERVER_USER}@{SERVER_IP}:/tmp/site_dist.tar.gz'
+            'scp', '-i', str(SSH_KEY), '-o', 'StrictHostKeyChecking=yes',
+            '-o', f'UserKnownHostsFile={KNOWN_HOSTS}',
+            temp_tar_path, f'{SERVER_USER}@{SERVER_IP}:{remote_tar}'
         ], check=True)
 
         # 5. 解压并重启 Nginx
-        remote_cmds = (
-            f'mkdir -p {REMOTE_DIR} && '
-            f'tar -xzf /tmp/site_dist.tar.gz -C {REMOTE_DIR} && '
-            f'rm -f /tmp/site_dist.tar.gz && '
-            f'docker restart freetoken-nginx'
-        )
         subprocess.run([
-            'ssh', '-i', str(SSH_KEY), '-o', 'StrictHostKeyChecking=no',
-            f'{SERVER_USER}@{SERVER_IP}', remote_cmds
+            'ssh', '-i', str(SSH_KEY), '-o', 'StrictHostKeyChecking=yes',
+            '-o', f'UserKnownHostsFile={KNOWN_HOSTS}',
+            f'{SERVER_USER}@{SERVER_IP}', 'sudo', '/usr/local/sbin/deploy-freetoken',
+            remote_tar, release_id
         ], check=True)
         print(f"[SUCCESS] Tencent Cloud ({SERVER_IP} / witkit.zone) 100% synchronized with ICP: {ICP_NUMBER}!")
         return 0

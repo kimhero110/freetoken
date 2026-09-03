@@ -30,3 +30,20 @@ gotchas:
 - 免 Key 基础模式每分钟限 20 次请求。
 gotchas_en:
 - Keyless access throttled at 20 RPM.
+registration:
+  url: https://jina.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: search
+  chat_completions_url: null
+  supports_claude_code: false
+  api_key_required: false
+evidence:
+- url: https://jina.ai/reader/
+  checked_at: '2026-09-02'

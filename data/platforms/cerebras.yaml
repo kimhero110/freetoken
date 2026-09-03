@@ -29,3 +29,20 @@ gotchas:
 - 免费层限制 30 RPM，速度极快适合 Agent 工具快速决策。
 gotchas_en:
 - Free tier has 30 RPM limit.
+registration:
+  url: https://cerebras.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  protocol: openai
+  chat_completions_url: https://api.cerebras.ai/v1/chat/completions
+  supports_claude_code: false
+  api_key_required: true
+evidence:
+- url: https://inference-docs.cerebras.ai/
+  checked_at: '2026-09-02'
