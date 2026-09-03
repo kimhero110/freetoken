@@ -7,7 +7,7 @@ on:
   workflow_dispatch: # 支持随时手动一键探测
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: freetoken-main-writer
@@ -18,8 +18,17 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - name: Mint GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: 检出代码
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: 安装 Python 3.11
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
@@ -41,15 +50,22 @@ jobs:
         run: python scripts/discover_new_platforms.py
 
       - name: 提交待审候选源至 GitHub
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.name 'freetoken-bot[bot]'
+          git config user.email '4818224+freetoken-bot[bot]@users.noreply.github.com'
           git add data/candidates/
           if git diff --cached --quiet; then
             echo '无新候选平台，跳过提交'
           else
-           git commit -m 'feat(radar): 发现新候选平台草稿，已推送飞书并等待人工决策 [skip ci]'
+            git commit -m 'feat(radar): 发现新候选平台草稿，已推送飞书并等待人工决策'
             git pull --rebase origin main
-            git push origin main
+            BRANCH="auto/radar-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            git push origin HEAD:refs/heads/"$BRANCH"
+            gh pr create --base main --head "$BRANCH" \
+              --title 'feat(radar): 发现新候选平台草稿' \
+              --body '雷达发现的新候选平台，仅写入 data/candidates/，正式收录仍需人工审批。'
+            gh pr merge --auto --merge --delete-branch "$BRANCH"
           fi
 

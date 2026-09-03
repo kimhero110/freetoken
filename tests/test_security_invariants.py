@@ -114,7 +114,9 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertIn("if: steps.probe.outcome == 'failure'", workflow)
 
     def test_review_workflow_is_main_only_and_passes_inputs_via_environment(self):
-        workflow = (ROOT / ".github" / "workflows" / "review-candidate.yml").read_text(encoding="utf-8")
+        workflow = (ROOT / ".github" / "workflows" / "review-candidate.yml").read_text(
+            encoding="utf-8"
+        )
         run_blocks = "\n".join(
             match.group(1)
             for match in re.finditer(r"^\s+run:\s*\|\s*\n((?:\s{10,}.*\n?)*)", workflow, re.MULTILINE)
@@ -128,13 +130,38 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertIn('${#CANDIDATE_ID}', run_blocks)
         self.assertIn('--approve "$CANDIDATE_ID"', run_blocks)
         self.assertIn('--reject "$CANDIDATE_ID"', run_blocks)
-        secret_lines = [line for line in workflow.splitlines() if "secrets." in line]
-        self.assertEqual(len(secret_lines), 2)
-        self.assertTrue(all("FEISHU_" in line for line in secret_lines))
         self.assertIn("Send isolated approval notification", workflow)
-        decision_step, notification_step = workflow.split("- name: Send isolated approval notification", 1)
-        self.assertNotIn("secrets.", decision_step)
+        notification_step = workflow.split("- name: Send isolated approval notification", 1)[1]
         self.assertNotIn("git ", notification_step)
+        notification_secret_lines = [line for line in notification_step.splitlines() if "secrets." in line]
+        self.assertEqual(len(notification_secret_lines), 2)
+        self.assertTrue(all("FEISHU_" in line for line in notification_secret_lines))
+        decision_step = workflow.split("- name: Apply and preserve the human decision", 1)[1].split("- name:", 1)[0]
+        self.assertNotIn("secrets.", decision_step)
+
+    def test_review_workflow_mints_app_token_before_authenticated_writes(self):
+        workflow = (ROOT / ".github" / "workflows" / "review-candidate.yml").read_text(
+            encoding="utf-8"
+        )
+        mint_step = workflow.split("- name: Mint GitHub App token", 1)[1].split("- name:", 1)[0]
+        self.assertIn("actions/create-github-app-token@", mint_step)
+        self.assertEqual(mint_step.count("secrets."), 2)
+        self.assertIn("APP_ID", mint_step)
+        self.assertIn("APP_PRIVATE_KEY", mint_step)
+        checkout_step = workflow.split("- name: Check out repository", 1)[1].split("- name:", 1)[0]
+        self.assertIn("token: ${{ steps.app-token.outputs.token }}", checkout_step)
+        self.assertIn('gh pr checks "$BRANCH" --watch', workflow)
+        self.assertIn('gh pr merge "$BRANCH" --merge --delete-branch', workflow)
+
+    def test_data_writer_workflows_use_gated_pull_requests(self):
+        for name in ("update.yml", "discover.yml", "probe-capabilities.yml"):
+            workflow = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
+            self.assertIn("actions/create-github-app-token@", workflow, name)
+            self.assertIn("token: ${{ steps.app-token.outputs.token }}", workflow, name)
+            self.assertIn("gh pr create --base main", workflow, name)
+            self.assertIn("gh pr merge", workflow, name)
+            self.assertNotIn("git push origin main", workflow, name)
+            self.assertNotIn("[skip ci]", workflow, name)
 
     def test_candidate_ids_and_platform_slugs_reject_path_traversal(self):
         from scripts.review_candidates import _candidate_file, _safe_slug

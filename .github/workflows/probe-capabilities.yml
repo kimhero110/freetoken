@@ -32,7 +32,7 @@ on:
           - all
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: freetoken-main-writer
@@ -43,8 +43,17 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - name: Mint GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Set up Python 3.11
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
@@ -95,15 +104,23 @@ jobs:
           fi
 
       - name: Preserve the observation
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "freetoken-bot[bot]"
+          git config user.email "4818224+freetoken-bot[bot]@users.noreply.github.com"
           git add --all -- data/candidates/
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(data): record capability probe candidate [skip ci]"
-            git pull --rebase origin main
-            git push origin main
+          if git diff --cached --quiet; then
+            exit 0
           fi
+          git commit -m "chore(data): record capability probe candidate"
+          git pull --rebase origin main
+          BRANCH="auto/probe-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git push origin HEAD:refs/heads/"$BRANCH"
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore(data): record capability probe candidate" \
+            --body "Automated capability probe observation from run ${GITHUB_RUN_ID}. Candidate data only; canonical platform data changes still require a gated Review candidate run."
+          gh pr merge --auto --merge --delete-branch "$BRANCH"
 
       - name: Report probe failure after preserving evidence
         if: steps.probe.outcome == 'failure'
