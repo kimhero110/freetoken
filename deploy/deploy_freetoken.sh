@@ -44,6 +44,10 @@ PY
 mkdir "$next_dir"
 tar --extract --gzip --file "$incoming" --directory "$next_dir" --no-same-owner --no-same-permissions
 [[ -f "$next_dir/index.html" ]]
+# Artifact downloads can preserve a private 0700 root directory. Normalize the
+# static tree before nginx reads it through the bind mount.
+find "$next_dir" -type d -exec chmod 755 {} +
+find "$next_dir" -type f -exec chmod 644 {} +
 actual_release=$(cat "$next_dir/release-id.txt" 2>/dev/null || true)
 if [[ "$actual_release" != "$release_id" ]]; then
   printf 'release marker mismatch: expected %q, got %q\n' "$release_id" "$actual_release" >&2

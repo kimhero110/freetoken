@@ -73,6 +73,11 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertIn("StrictHostKeyChecking=yes", source)
         self.assertNotIn("SERVER_USER = 'root'", source)
 
+    def test_server_deploy_normalizes_artifact_permissions_for_nginx(self):
+        source = (ROOT / "deploy" / "deploy_freetoken.sh").read_text(encoding="utf-8")
+        self.assertIn('find "$next_dir" -type d -exec chmod 755 {} +', source)
+        self.assertIn('find "$next_dir" -type f -exec chmod 644 {} +', source)
+
     def test_deploy_does_not_use_unconditional_force_push(self):
         workflow = (ROOT / ".github" / "workflows" / "update.yml").read_text(
             encoding="utf-8"
