@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(ci)"
+
+  - package-ecosystem: npm
+    directory: /site
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(site)"
+
+  - package-ecosystem: npm
+    directory: /scripts/node
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "chore(probe)"

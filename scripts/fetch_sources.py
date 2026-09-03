@@ -54,6 +54,11 @@ def fetch_text(url: str) -> str | None:
     return soup.get_text(separator="\n", strip=True)
 
 
+def coverage_degraded(attempted: int, succeeded: int) -> bool:
+    """来源成功率不足一半时视为监控降级，运行应报告失败以便告警。"""
+    return attempted > 0 and succeeded * 2 < attempted
+
+
 def main() -> int:
     CACHE_DIR.mkdir(exist_ok=True)
     hashes = load_hashes()
@@ -86,9 +91,12 @@ def main() -> int:
     CHANGED_FILE.write_text(
         json.dumps(changed, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    print(f"\n本轮共 {len(changed)} 个来源发生变更，已写入 {CHANGED_FILE}")
+    print(f"\n本轮来源覆盖率：{succeeded}/{attempted} 成功；{len(changed)} 个来源变更，已写入 {CHANGED_FILE}")
     if attempted and succeeded == 0:
         print("全部来源抓取失败，拒绝将监控失效报告为无变化")
+        return 1
+    if coverage_degraded(attempted, succeeded):
+        print(f"来源成功率低于 50%（{succeeded}/{attempted}），监控已降级，拒绝静默报告成功")
         return 1
     return 0
 

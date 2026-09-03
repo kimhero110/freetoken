@@ -72,7 +72,7 @@ Windows PowerShell 激活虚拟环境时使用：
 6. 审批命令会更新正式数据并执行数据编译与站点构建；失败时回滚修改并保留候选。
 7. 将审核后的改动通过 PR 合并到 `main`，发布工作流会测试并部署同一个构建产物。
 
-首次启用发布前，仓库管理员必须在 GitHub 的 `production` Environment 中配置 required reviewers，并将允许部署的分支限制为 `main`。工作流本身也拒绝从 PR、标签或其他分支部署，并会等待 Cloudflare Pages 检查成功后才报告发布完成。
+首次启用发布前，仓库管理员必须在 GitHub 的 `production` Environment 中配置 required reviewers，并将允许部署的分支限制为 `main`。工作流本身也拒绝从 PR、标签或其他分支部署，并会等待 Cloudflare Pages 检查成功后才报告发布完成。`main` 分支由 repository ruleset 保护：要求 PR 与 `build` 状态检查、禁止 force push 与删除；`github-actions` bot 在 bypass 名单中，以便审批与探针工作流提交自动化数据变更。
 
 拒绝候选：
 
@@ -84,7 +84,7 @@ python scripts/review_candidates.py --reject <candidate-id>
 
 仓库管理员可在 GitHub Actions 的 **Capability probe candidates** 工作流中手动选择一个固定提供商和 `raw_http`、`openai_python`、`openai_node` 客户端，也可选择 `all`。工作流每周二 `03:17 UTC` 自动运行，并在 Job Summary 报告固定十项允许列表的 Secret 覆盖率；缺少凭据的项会明确列为跳过且不生成失败候选。每个 provider/tool 组合只发送一次可能计费的 API POST，SDK 自动重试被禁用，请在启用 Secret 前确认额度和成本。
 
-探测只写入 `data/candidates/`，不会直接修改正式平台数据。每个候选只证明并提升一个工具，不能用 HTTP 探测替代 SDK 证明。人工核对候选后，在 `main` 分支运行 **Review candidate**，填写候选文件名（不含扩展名）并选择 `approve` 或 `reject`。批准成功的 live 探测会更新正式 YAML、重新编译并构建；Git 推送成功后，工作流才在单独的 Secret-bearing 步骤发送飞书通知。拒绝或已批准的候选都会带上 `github.actor` 审核记录并移入 `data/reviews/`。
+探测只写入 `data/candidates/`，不会直接修改正式平台数据。每个候选只证明并提升一个工具，不能用 HTTP 探测替代 SDK 证明。人工核对候选后，在 `main` 分支运行 **Review candidate**，填写候选文件名（不含扩展名）并选择 `approve` 或 `reject`。批准成功的 live 探测会更新正式 YAML、连同已审核来源哈希（`.cache/hashes.json`）一并重新编译并提交；推送成功后工作流自动触发 `publish.yml` 生产发布，只有双节点公网 `release-id.txt` 核验通过后才会发送飞书上线通知（审批阶段的通知只声明“发布已触发”）。拒绝候选同样会归档审核记录，并记录该来源版本已审，避免同一来源反复入队；已批准与已拒绝的候选都会带上 `github.actor` 审核记录并移入 `data/reviews/`。
 
 能力状态含义：`claimed` 表示平台声称支持但尚无已核验证据；`documented` 表示官方文档已核验；`live` 表示一次真实 API 请求成功且协议响应有效。定时探测结果在人工批准前始终只是候选，不改变这些正式状态。
 
@@ -113,9 +113,11 @@ python scripts/review_candidates.py --reject <candidate-id>
 - `FREETOKEN_KNOWN_HOSTS`
 - `FREETOKEN_DEPLOY_HOST`
 - `FREETOKEN_DEPLOY_USER`
-部署账号应为受限的非 root 用户，并仅获得发布目录和受控容器重建权限。容器必须通过 Compose 重建，而不是仅重启；Docker 的目录绑定不会在普通重启时切换到新目录 inode。每次发布会读取 `release-id.txt`，确认容器实际提供的是本次构建后才删除回滚副本。
+部署账号应为受限的非 root 用户，并仅获得发布目录和受控容器重建权限。容器必须通过 Compose 重建，而不是仅重启；Docker 的目录绑定不会在普通重启时切换到新目录 inode。部署归档在 root 解压前强制限制：压缩包 ≤256MB、成员数 ≤30000、单文件 ≤64MB、解压总量 ≤1GB。每次发布通过公网核验 `release-id.txt` 与本次构建一致后才宣告成功；服务器保留最新两个回滚快照，更早的历史发布自动清理。
 
-GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TENCENT_KNOWN_HOSTS` 和 `TENCENT_DEPLOY_HOST`。服务器仅允许部署账号免密执行 root 拥有的 `/usr/local/sbin/deploy-freetoken`，该脚本会校验归档成员、串行化发布并在健康检查失败时回滚。
+GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TENCENT_KNOWN_HOSTS` 和 `TENCENT_DEPLOY_HOST`。服务器仅允许部署账号免密执行 root 拥有的 `/usr/local/sbin/deploy-freetoken`，该脚本会校验归档成员与资源上限、串行化发布并在健康检查失败时回滚。
+
+依赖供应链由 Dependabot 每周跟踪 GitHub Actions 与 npm 依赖（`/site` 与 `/scripts/node`）；Python 依赖保持 hash 锁定并人工审核升级。
 
 ## 贡献新平台
 

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-FreeToken Candidate Platform Review & One-Click Publisher
+FreeToken Candidate Platform Review & Decision Terminal
 ---------------------------------------------------------
 - Review pending radar discoveries in data/candidates/
-- One-click approve -> move to data/platforms -> recompile -> build & push
-- Sends Feishu celebration card upon successful publication
+- One-click approve -> move to data/platforms -> recompile -> build
+- Approval pushes to main; CI then triggers the verified production publish
+  workflow, which announces the release after dual-node verification
+- Rejections archive the candidate and record the reviewed source version
 """
 
 import sys
@@ -394,6 +396,24 @@ def _approve_candidate_locked(candidate_id: str):
     return True
 
 
+def _record_reviewed_source_hash(data: dict) -> None:
+    """记录已人工审核过的来源版本，避免同一来源反复进入候选队列。"""
+    if data.get("candidate_type") != "platform_update":
+        return
+    source_url = data.get("source_url")
+    source_hash = data.get("source_hash")
+    if not isinstance(source_url, str) or not source_url.startswith("https://"):
+        return
+    if not isinstance(source_hash, str) or not re.fullmatch(r"[a-f0-9]{64}", source_hash):
+        return
+    HASHES_FILE.parent.mkdir(parents=True, exist_ok=True)
+    hashes = json.loads(HASHES_FILE.read_text(encoding="utf-8")) if HASHES_FILE.exists() else {}
+    hashes[source_url] = source_hash
+    HASHES_FILE.write_text(
+        json.dumps(hashes, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+
 def reject_candidate(candidate_id: str):
     with _approval_lock():
         target_file = _candidate_file(candidate_id)
@@ -405,6 +425,7 @@ def reject_candidate(candidate_id: str):
         else:
             data = json.loads(target_file.read_text(encoding="utf-8"))
         _mark_candidate_reviewed(target_file, data, "rejected")
+        _record_reviewed_source_hash(data)
         _archive_candidate(target_file, "rejected")
         print(f"[OK] 已拒绝并归档候选源: {target_file.name}")
         return True

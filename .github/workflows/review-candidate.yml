@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: freetoken-main-writer
@@ -73,7 +74,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add --all -- data/platforms data/platforms.json site/src/data/platforms.json data/reviews data/candidates site/public/sitemap.xml
+          git add --all -- data/platforms data/platforms.json site/src/data/platforms.json data/reviews data/candidates .cache/hashes.json site/public/sitemap.xml
           if git diff --cached --quiet; then
             echo "Review produced no repository changes" >&2
             exit 1
@@ -81,6 +82,12 @@ jobs:
           git commit -m "chore(data): record candidate review [skip ci]"
           git pull --rebase origin main
           git push origin main
+
+      - name: Trigger verified production publish
+        if: inputs.decision == 'approve'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run publish.yml --ref main
 
       - name: Send isolated approval notification
         if: inputs.decision == 'approve'

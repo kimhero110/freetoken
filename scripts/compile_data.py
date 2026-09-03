@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
 import re
+from datetime import datetime
 from pathlib import Path
+from xml.sax.saxutils import escape
+
 import yaml
 
 from platform_schema import validate_platform
@@ -15,6 +18,9 @@ PUBLIC_DIR = ROOT / "site" / "public"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 SITE_DATA_DIR.mkdir(parents=True, exist_ok=True)
 PUBLIC_DIR.mkdir(parents=True, exist_ok=True)
+
+ARTICLE_SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def parse_frontmatter(content: str):
@@ -80,8 +86,48 @@ def compile_platforms():
     return platforms
 
 
+def validate_article_meta(slug: str, meta: dict, source: str) -> list[str]:
+    """文章元数据严格校验：slug、日期、字段类型与长度。"""
+    errors = []
+    if not isinstance(slug, str) or not ARTICLE_SLUG_RE.fullmatch(slug) or not 1 <= len(slug) <= 100:
+        errors.append(f"{source}: slug 只能包含小写字母、数字与连字符，且不超过 100 字符: {slug!r}")
+    title = meta.get("title")
+    if not isinstance(title, str) or not title.strip() or len(title) > 200:
+        errors.append(f"{source}: title 必须为非空字符串且不超过 200 字符")
+    date_value = str(meta.get("date") or "2026-09-02")
+    updated_value = str(meta.get("updated") or date_value)
+    for key, value in (("date", date_value), ("updated", updated_value)):
+        if not DATE_RE.fullmatch(value):
+            errors.append(f"{source}: {key} 必须为 YYYY-MM-DD 格式: {value!r}")
+        else:
+            try:
+                datetime.strptime(value, "%Y-%m-%d")
+            except ValueError:
+                errors.append(f"{source}: {key} 不是有效日期: {value!r}")
+    for key, limit in (
+        ("title_en", 200), ("author", 100), ("category", 50),
+        ("cover", 200), ("summary", 600), ("summary_en", 600),
+        ("reading_time", 30),
+    ):
+        value = meta.get(key)
+        if value is None:
+            continue
+        if not isinstance(value, str) or len(value) > limit:
+            errors.append(f"{source}: {key} 必须为字符串且不超过 {limit} 字符")
+    tags = meta.get("tags")
+    if tags is not None and (
+        not isinstance(tags, list)
+        or len(tags) > 12
+        or any(not isinstance(tag, str) or not tag.strip() or len(tag) > 40 for tag in tags)
+    ):
+        errors.append(f"{source}: tags 必须为字符串列表，最多 12 项，每项不超过 40 字符")
+    return errors
+
+
 def compile_articles():
     articles = []
+    errors = []
+    seen_slugs = {}
     if CONTENT_DIR.exists():
         for af in sorted(CONTENT_DIR.glob("*.md")):
             content = af.read_text(encoding="utf-8")
@@ -90,6 +136,11 @@ def compile_articles():
             title = meta.get("title", af.stem)
             date_str = str(meta.get("date", "2026-09-02"))
             reading_time = meta.get("reading_time") or estimate_reading_time(body)
+            errors.extend(validate_article_meta(slug, meta, af.name))
+            if isinstance(slug, str) and slug in seen_slugs:
+                errors.append(f"{af.name}: slug 重复 {slug!r}（已见于 {seen_slugs[slug]}）")
+            else:
+                seen_slugs[slug] = af.name
             item = {
                 "slug": slug,
                 "title": title,
@@ -107,7 +158,10 @@ def compile_articles():
                 "content_md": body
             }
             articles.append(item)
-            
+
+    if errors:
+        raise ValueError("文章元数据校验失败:\n- " + "\n- ".join(errors))
+
     articles.sort(key=lambda x: x["date"], reverse=True)
     a_json = json.dumps(articles, ensure_ascii=False, indent=2)
     (DATA_DIR / "articles.json").write_text(a_json, encoding="utf-8")
@@ -131,11 +185,14 @@ def generate_sitemap(platforms, articles):
     ]
 
     for a in articles:
-        lines.append(f'  <url><loc>https://freetokens.info/article/{a["slug"]}/</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>')
+        loc = escape(f"https://freetokens.info/article/{a['slug']}/")
+        lines.append(f'  <url><loc>{loc}</loc><changefreq>weekly</changefreq><priority>0.85</priority></url>')
 
     for p in platforms:
-        lines.append(f'  <url><loc>https://freetokens.info/platform/{p["slug"]}/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>')
-        lines.append(f'  <url><loc>https://freetokens.info/en/platform/{p["slug"]}/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>')
+        loc_cn = escape(f"https://freetokens.info/platform/{p['slug']}/")
+        loc_en = escape(f"https://freetokens.info/en/platform/{p['slug']}/")
+        lines.append(f'  <url><loc>{loc_cn}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>')
+        lines.append(f'  <url><loc>{loc_en}</loc><changefreq>daily</changefreq><priority>0.8</priority></url>')
 
     lines.append('</urlset>')
     xml_content = '\n'.join(lines) + '\n'
