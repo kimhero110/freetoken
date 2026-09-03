@@ -18,6 +18,7 @@ import urllib.error
 
 DEFAULT_WEBHOOK = "<REMOVED_FEISHU_WEBHOOK>"
 DEFAULT_KEYWORD = "FreeToken"
+DEFAULT_SECRET = "<REMOVED_FEISHU_SECRET>"
 
 
 def get_feishu_webhook() -> str:
@@ -25,7 +26,7 @@ def get_feishu_webhook() -> str:
 
 
 def get_feishu_secret() -> str:
-    return os.environ.get("FEISHU_SECRET", "").strip()
+    return os.environ.get("FEISHU_SECRET", DEFAULT_SECRET).strip()
 
 
 def generate_signature(secret: str, timestamp: int) -> str:
