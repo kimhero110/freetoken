@@ -1,0 +1,14 @@
+services:
+  feishu-intake:
+    build:
+      context: ../daemon
+      args:
+        GIT_COMMIT: ${GIT_COMMIT:-dev}
+    container_name: freetoken-feishu-intake
+    restart: always
+    env_file: /opt/freetoken-intake/.env
+    volumes:
+      - intake-data:/data
+
+volumes:
+  intake-data:

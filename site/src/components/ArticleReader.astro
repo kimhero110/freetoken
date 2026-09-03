@@ -67,6 +67,17 @@ const { html: htmlContent, toc } = renderSafeMarkdown(article.content_md);
       <!-- Markdown output escapes raw HTML and allowlists link protocols. -->
       <div class="article-content-body" set:html={htmlContent} />
 
+      <!-- 原文来源标注（仅改写文章渲染） -->
+      {article.source_url && (
+        <div class="article-source-note">
+          <span class="source-label">{isEn ? 'Source' : '原文来源'}</span>
+          <a href={article.source_url} target="_blank" rel="noopener nofollow">
+            {isEn ? 'This article is a rewrite based on the original.' : '本文基于原文改写。'}
+            {article.source_url.replace(/^https?:\/\//, '').split('/')[0]}
+          </a>
+        </div>
+      )}
+
       <!-- 底部关注卡片 -->
       <div class="article-footer-card">
         <div class="footer-card-copy">
@@ -332,6 +343,29 @@ const { html: htmlContent, toc } = renderSafeMarkdown(article.content_md);
   .article-content-body :global(th) {
     background: var(--bg-subtle);
     font-weight: 700;
+  }
+
+  .article-source-note {
+    margin: 18px 0;
+    padding: 12px 16px;
+    border: 1px solid rgba(120, 113, 108, 0.24);
+    border-radius: 12px;
+    background: rgba(120, 113, 108, 0.06);
+    font-size: 13px;
+    line-height: 1.7;
+    color: inherit;
+    opacity: 0.9;
+  }
+  .article-source-note .source-label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .article-source-note a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    word-break: break-all;
   }
 
   .article-footer-card {

@@ -119,6 +119,51 @@ GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TE
 
 依赖供应链由 Dependabot 每周跟踪 GitHub Actions 与 npm 依赖（`/site` 与 `/scripts/node`）；Python 依赖保持 hash 锁定并人工审核升级。
 
+## 飞书智能入口机器人（Intake Bot）
+
+私聊飞书自建应用即可完成线索入库、文章改写与候选审批。守护进程只做"入口路由"（身份白名单 + 命令解析 + 状态票据），重逻辑全部在 GitHub Actions 内执行，正式数据仍走 候选 → 门禁 PR → 人工决策 → 验证发布 的既有链路。
+
+### 命令手册
+
+| 命令 | 作用 |
+|---|---|
+| `平台 <url> [备注]` | 安全抓取 → LLM 提取 → Schema 校验 → 查重 → 新候选 PR（门禁自动合并）；平台已存在时生成更新候选或备注候选 |
+| `文章 <url> [备注]` | 改写为本站文章**草稿 PR（永不自动合并）**，强制 `source_url` 来源标注；加 `参数:提纲` 仅生成提纲；输出截断自动降级提纲 |
+| `通过 / 拒绝 <#p短号 或 完整ID>` | 触发 Review candidate 审批（先回 6 位确认码防误触；票据绑定 run，门禁由 PAT 代批并全程审计） |
+| `确认 <6位码>` | 完成审批确认（5 分钟有效，错 3 次锁 30 分钟） |
+| `待审` | 列出全部候选（短号 + 平台名） |
+| `状态` | 运行中管线、PAT 自检、版本 commit 与运行时长 |
+| `撤销` | 说明最新票据与"拒绝后重发"路径 |
+| `帮助` / `谁我` | 手册卡片 / 返回自己的 open_id |
+| （裸 HTTPS 链接） | 歧义卡：回复 `平台` 或 `文章` |
+
+审批安全模型（A+）：daemon 持**仅限本仓库、仅 Actions 读写**的 fine-grained PAT（90 天过期、每周自检、提前 30 天告警）；代码内只批准"本票据自己 dispatch 的 run"；确认码防误触（不防会话劫持——由仅偏差触发的异常卡与日报"昨日自动批准"计数兜底）；权威审计身份永远是 `github.actor`，飞书身份只作标注。已声明的残余风险：服务器完全沦陷可绕过（单操作者接受）。
+
+### 快速开始（部署后 30 分钟内完成首条命令）
+
+1. [开放平台](https://open.feishu.cn/) 创建**企业自建应用**：添加"机器人"能力；权限勾选 `im:message`（获取与发送单聊消息）；事件订阅选择**长连接**模式，订阅 `im.message.receive_v1`；发布版本并可用范围=自己。
+2. 创建 fine-grained PAT：GitHub → Settings → Developer settings → Fine-grained tokens → 仅 `kimhero110/freetoken`，权限仅 `Actions: Read and write`，有效期 90 天。
+3. 服务器：`git clone` 本仓库到 `/opt/freetoken-intake`；`cp daemon/.env.example /opt/freetoken-intake/.env` 并填入 `FEISHU_APP_ID/FEISHU_APP_SECRET/GITHUB_PAT/GITHUB_REPO`，`BOOTSTRAP=1` 保持开启，`chmod 600 .env`。
+4. 启动：`cd /opt/freetoken-intake && GIT_COMMIT=$(git rev-parse --short HEAD) docker compose -f deploy/docker-compose.feishu-intake.yml up -d --build`。
+5. 引导：飞书私聊发 `谁我` → 机器人回你的 open_id → 填入 `.env` 的 `OWNER_OPEN_ID`，去掉 `BOOTSTRAP=1` → `docker compose -f deploy/docker-compose.feishu-intake.yml restart`。
+6. 验证：发 `状态`，应在 10 秒内收到卡片（无响应=长连接未建立，查容器日志与事件订阅配置）。
+7. 首条真实命令：发 `待审`（空列表卡片）→ 再发 `平台 <任一已收录平台URL>` 应返回"已在库"。
+8. 记录实际 TTHW 到本节（boomerang：上线后跑 /devex-review 复测）。
+
+### 运维手册
+
+- **PAT 轮换**（每 90 天，状态卡会提前 30 天告警）：建新 PAT → 更新 `/opt/freetoken-intake/.env` → `docker compose -f deploy/docker-compose.feishu-intake.yml restart` → 发 `状态` 验证。
+- **升级 daemon**：`cd /opt/freetoken-intake && git pull && GIT_COMMIT=$(git rev-parse --short HEAD) docker compose -f deploy/docker-compose.feishu-intake.yml up -d --build`；`状态` 卡显示新 commit 即生效。
+- **日志**：`docker logs -f freetoken-feishu-intake`；票据全生命周期在容器卷 `/data/journal.jsonl`。
+- **宕机语义**：断线期间的命令不会补跑（重连卡有提示）；外部看门狗 = GitHub Actions 定时探测健康端点并发告警卡。
+- **看门狗**：dispatch 后 30 分钟未获批准的 run 自动取消并告警（防止并发组被毒化）。
+- **回滚**：`docker compose -f deploy/docker-compose.feishu-intake.yml down` 即完全回到无机器人现状；GitHub 侧审批流始终可独立使用（并行通道）。
+
+### 相关密钥
+
+- GitHub Actions Secrets：`APP_ID`/`APP_PRIVATE_KEY`（既有）、`DEEPSEEK_API_KEY`（提取/改写）
+- 服务器 `/opt/freetoken-intake/.env`（0600）：`FEISHU_APP_ID`、`FEISHU_APP_SECRET`、`OWNER_OPEN_ID`、`GITHUB_PAT`、`GITHUB_REPO`
+
 ## 贡献新平台
 
 1. 使用[新平台 Issue 模板](https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml)提交官方来源。

@@ -284,6 +284,35 @@ class CandidateWorkflowTests(unittest.TestCase):
             self.assertEqual(hashes["https://example.com/source"], "a" * 64)
             self.assertEqual(hashes["old"], "hash")
 
+    def test_rejection_records_feishu_annotation_with_actor_authoritative(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            candidates, platforms, cache = root / "candidates", root / "platforms", root / "cache"
+            candidates.mkdir(); platforms.mkdir(); cache.mkdir()
+            platform = self.platform()
+            (platforms / "demo.yaml").write_text(yaml.safe_dump(platform), encoding="utf-8")
+            candidate = candidates / "update-demo-aaaaaaaaaaaa.yaml"
+            candidate.write_text(yaml.safe_dump({
+                "candidate_type": "platform_update",
+                "platform_slug": "demo",
+                "source_url": "https://example.com/source",
+                "source_hash": "a" * 64,
+                "platform_hash": review_candidates._platform_hash(platform),
+                "current": {"intro": "Old"},
+                "proposed": {"intro": "New"},
+            }), encoding="utf-8")
+            env = {"GITHUB_ACTOR": "kimhero110", "FEISHU_APPROVER_VIA": "feishu", "FEISHU_APPROVER_ID": "ou_abc12345"}
+            with patch.dict("os.environ", env), patch.object(
+                review_candidates, "CANDIDATES_DIR", candidates
+            ), patch.object(review_candidates, "REVIEWS_DIR", root / "reviews"), patch.object(
+                review_candidates, "LOCK_FILE", cache / "review.lock"
+            ), patch.object(review_candidates, "HASHES_FILE", cache / "hashes.json"):
+                self.assertTrue(review_candidates.reject_candidate(candidate.stem))
+            audit = yaml.safe_load((root / "reviews" / "update-demo-aaaaaaaaaaaa-rejected.yaml").read_text(encoding="utf-8"))
+            self.assertEqual(audit["review"]["reviewer"], "kimhero110")
+            self.assertEqual(audit["review"]["annotation_via"], "feishu")
+            self.assertEqual(audit["review"]["annotation_id"], "ou_abc12345")
+
     def test_stale_update_candidate_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
