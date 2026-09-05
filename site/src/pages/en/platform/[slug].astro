@@ -1,6 +1,7 @@
 ---
 // FreeTokens.info English Platform Detail Page
 import Base from '../../../layouts/Base.astro';
+import CostLink from '../../../components/CostLink.astro';
 import platforms from '../../../data/platforms.json';
 import { generateSnippet, getToolState, selectChatOperation, VERIFICATION_LABELS } from '../../../lib/operation-generator.mjs';
 
@@ -79,6 +80,7 @@ const requirementLabel = (value: string) => value === 'required' ? 'Required' : 
         {(q.details_en || q.details) && <p class="quota-details-text">{q.details_en || q.details}</p>}
         {q.reset_period && <p class="quota-reset-hint">Reset Cycle: {q.reset_period}</p>}
       </div>
+      <CostLink platform={p} lang="en" />
 
       <!-- Eligibility & Verification Requirements -->
       <section class="detail-section">

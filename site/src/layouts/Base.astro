@@ -44,6 +44,8 @@ if (!localized) {
     switchUrl = `/article/${slug}/`;
   } else if (currentPath.includes('/articles')) {
     switchUrl = '/articles/';
+  } else if (currentPath.includes('/cost')) {
+    switchUrl = isEn ? '/cost/' : '/en/cost/';
   } else if (currentPath.includes('/guide')) {
     switchUrl = '/guide/';
   } else if (currentPath.includes('/about')) {
@@ -59,6 +61,8 @@ if (!localized) {
     switchUrl = `/en/article/${slug}/`;
   } else if (currentPath.includes('/articles')) {
     switchUrl = '/en/articles/';
+  } else if (currentPath.includes('/cost')) {
+    switchUrl = isEn ? '/cost/' : '/en/cost/';
   } else if (currentPath.includes('/guide')) {
     switchUrl = '/en/guide/';
   } else if (currentPath.includes('/about')) {
@@ -537,10 +541,12 @@ if (!localized) {
 
       <!-- 桌面端横排导航 (>=768px) -->
       <nav class="nav-desktop-links">
-        <a href={isEn ? '/en/' : '/'} class="nav-item">{isEn ? '⚡ Radar' : '⚡ 算力雷达'}</a>
+        <a href={isEn ? '/en/' : '/'} class="nav-item">{isEn ? 'Free quotas' : '免费额度'}</a>
+        <a href={isEn ? '/en/cost/' : '/cost/'} class="nav-item">{isEn ? 'Cost' : '成本计算'}</a>
+        <a href="https://test.witkit.zone/" class="nav-item">{isEn ? 'API evaluation ↗' : '接口评测 ↗'}</a>
         <a href={isEn ? '/en/articles/' : '/articles/'} class="nav-item">{isEn ? '📚 Articles' : '📚 深度文章'}</a>
         <a href={isEn ? '/en/guide/' : '/guide/'} class="nav-item">{isEn ? '📖 Playbook' : '📖 接入指南'}</a>
-        <a href={isEn ? '/en/about/' : '/about/'} class="nav-item">{isEn ? '🧭 Philosophy' : '🧭 长期主义'}</a>
+
         
         <a href={switchUrl} class="nav-lang-switch" title={isEn ? 'Switch to Chinese' : '切换至英文版'}>
           {isEn ? '🇨🇳 中文' : '🌐 English'}
@@ -578,6 +584,8 @@ if (!localized) {
     </div>
 
     <nav class="drawer-nav-list">
+      <a href={isEn ? '/en/cost/' : '/cost/'} class="drawer-nav-item">{isEn ? 'Cost calculator' : '成本计算器'}</a>
+      <a href="https://test.witkit.zone/" class="drawer-nav-item">{isEn ? 'API evaluation ↗' : '接口评测 ↗'}</a>
       <a href={isEn ? '/en/' : '/'} class="drawer-nav-item">
         <span>⚡</span>
         <span>{isEn ? 'Radar (Home)' : '算力雷达 (首页)'}</span>
@@ -624,6 +632,8 @@ if (!localized) {
           </p>
         </div>
         <div class="footer-links">
+          <a href={isEn ? '/en/cost/' : '/cost/'}>{isEn ? 'Cost calculator' : '成本计算器'}</a>
+          <a href="https://test.witkit.zone/">{isEn ? 'API evaluation ↗' : '接口评测 ↗'}</a>
           <a href={isEn ? '/en/' : '/'}>{isEn ? 'Radar' : '算力雷达'}</a>
           <a href={isEn ? '/en/articles/' : '/articles/'}>{isEn ? 'Articles' : '深度文章'}</a>
           <a href={isEn ? '/en/guide/' : '/guide/'}>{isEn ? 'Playbook' : '接入指南'}</a>

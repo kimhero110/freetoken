@@ -248,6 +248,27 @@ def candidate_path(slug: str, source_hash: str) -> Path:
     return CANDIDATES_DIR / f"update-{slug}-{source_hash[:12]}.yaml"
 
 
+def build_update_candidate(entry: dict, slug: str, source_url: str, source_hash: str,
+                           source_text: str, extracted: dict, extractor: dict) -> dict:
+    """Shared update contract for scheduled extraction and the intake bot."""
+    return {
+        "candidate_type": "platform_update",
+        "status": "pending_review",
+        "platform_slug": slug,
+        "name": entry.get("name", slug),
+        "source_url": source_url,
+        "source_hash": source_hash,
+        "platform_hash": hashlib.sha256(
+            json.dumps(entry, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+        ).hexdigest(),
+        "captured_at": datetime.now(timezone.utc).isoformat(),
+        "extractor": extractor,
+        "evidence_excerpt": source_text[:1000],
+        "current": {"free_quota": entry.get("free_quota"), "intro": entry.get("intro")},
+        "proposed": extracted,
+    }
+
+
 def write_update_candidate(
     slug: str,
     source_url: str,
@@ -259,25 +280,8 @@ def write_update_candidate(
     """Persist an auditable proposal without changing production data."""
     yf = PLATFORMS_DIR / f"{slug}.yaml"
     entry = yaml.safe_load(yf.read_text(encoding="utf-8"))
-    proposal = {
-        "candidate_type": "platform_update",
-        "status": "pending_review",
-        "platform_slug": slug,
-        "name": entry.get("name", slug),
-        "source_url": source_url,
-        "source_hash": source_hash,
-        "platform_hash": hashlib.sha256(
-            json.dumps(entry, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
-        ).hexdigest(),
-        "captured_at": datetime.now(timezone.utc).isoformat(),
-        "extractor": {"provider": provider.id, "model": provider.model},
-        "evidence_excerpt": source_text[:1000],
-        "current": {
-            "free_quota": entry.get("free_quota"),
-            "intro": entry.get("intro"),
-        },
-        "proposed": extracted,
-    }
+    proposal = build_update_candidate(entry, slug, source_url, source_hash, source_text,
+                                      extracted, {"provider": provider.id, "model": provider.model})
     CANDIDATES_DIR.mkdir(parents=True, exist_ok=True)
     output = candidate_path(slug, source_hash)
     output.write_text(

@@ -30,7 +30,6 @@ log = logging.getLogger("intake")
 REVIEW_WORKFLOW = "review-candidate.yml"
 PLATFORM_WORKFLOW = "feishu-platform-tip.yml"
 ARTICLE_WORKFLOW = "feishu-article-rewrite.yml"
-PRODUCTION_ENV_ID = 21148927850
 FRESHNESS_KEYS = ("checked_at", "captured_at")
 
 
@@ -54,9 +53,42 @@ class Bot:
     # ------------------------------------------------------------------ util
     def card(self, chat_id: str, card: dict, reply_to: str = "", patch_id: str = "") -> str:
         if patch_id:
-            self.feishu.patch_card(patch_id, card)
-            return patch_id
+            if self.feishu.patch_card(patch_id, card):
+                return patch_id
         return self.feishu.send_card(chat_id, card, message_id=reply_to)
+
+    def _dispatch_ticket(self, ticket, workflow: str, inputs: dict):
+        ticket.dispatch_actor, ticket.dispatch_sha = self.gh.dispatch_identity()
+        if not ticket.dispatch_actor or not re.fullmatch(r"[a-f0-9]{40}", ticket.dispatch_sha or ""):
+            raise GhError("CONTRACT", "cannot bind dispatch identity")
+        self.journal.append(ticket.to_event())
+        self.gh.dispatch_workflow(workflow, inputs=inputs)
+
+    def _matches_run(self, ticket, run: dict, workflow: str) -> bool:
+        if (run.get("path") != f".github/workflows/{workflow}"
+                or run.get("head_branch") != "main"
+                or run.get("repository", {}).get("full_name") != self.config["github_repo"]):
+            return False
+        if workflow == "publish.yml":
+            return bool(ticket.publish_sha and ticket.publish_actor
+                        and run.get("event") == "push"
+                        and run.get("head_sha") == ticket.publish_sha
+                        and run.get("actor", {}).get("login") == ticket.publish_actor)
+        title = f"intake:{ticket.ticket_id}"
+        if workflow == REVIEW_WORKFLOW:
+            title += f":{ticket.kind}:{ticket.arg}"
+        return bool(ticket.dispatch_actor and ticket.dispatch_sha
+                    and run.get("event") == "workflow_dispatch"
+                    and run.get("display_title") == title
+                    and run.get("actor", {}).get("login") == ticket.dispatch_actor
+                    and run.get("head_sha") == ticket.dispatch_sha)
+
+    def _unique_run(self, ticket, workflow: str) -> dict | None:
+        matches = [r for r in self.gh.list_runs(workflow=workflow, limit=100)
+                   if self._matches_run(ticket, r, workflow)]
+        if len(matches) > 1:
+            raise GhError("CONTRACT", "multiple runs match this ticket; manual review required")
+        return matches[0] if matches else None
 
     def tracked(self, ticket, phase: str, card: dict, chat_id: str):
         ticket.phase = phase
@@ -183,9 +215,10 @@ class Bot:
         ticket.card_message_id = self.card(chat_id, cards.ack_card(kind, ticket.ticket_id, url), reply_to=message_id)
         self.journal.append(ticket.to_event())
         try:
-            self.gh.dispatch_workflow(workflow, inputs={
-                "url": url[:300], "note": note[:200], "ticket_id": ticket.ticket_id, "mode": mode,
-            })
+            inputs = {"url": url[:300], "note": note[:200], "ticket_id": ticket.ticket_id}
+            if kind == "article":
+                inputs["mode"] = mode
+            self._dispatch_ticket(ticket, workflow, inputs)
             ticket.phase = "dispatched"
             ticket.updated_at = time.time()
             self.journal.append(ticket.to_event())
@@ -200,12 +233,9 @@ class Bot:
         while time.time() < deadline:
             time.sleep(15)
             try:
-                runs = self.gh.list_runs(workflow=PLATFORM_WORKFLOW if kind == "platform" else ARTICLE_WORKFLOW, limit=5)
-                mine = [r for r in runs if ticket.ticket_id in str(r.get("display_title", "")) or True]
-                # identify by creation time window and recency
-                recent = [r for r in runs if r.get("status") in ("queued", "in_progress")]
-                if not run_id and recent:
-                    run_id = recent[0]["id"]
+                mine = self._unique_run(ticket, PLATFORM_WORKFLOW if kind == "platform" else ARTICLE_WORKFLOW)
+                if not run_id and mine:
+                    run_id = mine["id"]
                     ticket.run_ids = [run_id]
                     self.journal.append(ticket.to_event())
                 if run_id:
@@ -316,7 +346,8 @@ class Bot:
         ticket.updated_at = time.time()
         self.journal.append(ticket.to_event())
         try:
-            self.gh.dispatch_workflow(REVIEW_WORKFLOW, inputs={
+            self._dispatch_ticket(ticket, REVIEW_WORKFLOW, {
+                "ticket_id": ticket.ticket_id,
                 "candidate_id": ticket.arg,
                 "decision": decision,
                 "approver_via": "feishu",
@@ -343,10 +374,25 @@ class Bot:
         if ticket.kind != "approve":
             self.tracked(ticket, "done", cards.progress_card(ticket.kind, ticket.ticket_id, "done", f"已拒绝并归档 {ticket.arg}"), chat_id)
             return
-        # find the publish run the merge push triggered
+        # Bind publication to the exact PR merged by this run and attempt.
+        try:
+            review_run = self.gh.get_run(run_id)
+            merge = self.gh.reviewed_merge(review_run) if self._matches_run(ticket, review_run, REVIEW_WORKFLOW) else None
+        except GhError as exc:
+            self.tracked(ticket, "failed", cards.error_card("无法关联发布", str(exc), "请人工检查本次审核 PR"), chat_id)
+            return
+        if not self._matches_run(ticket, review_run, REVIEW_WORKFLOW):
+            self.tracked(ticket, "failed", cards.error_card("审批关联失效", "run 身份不匹配", "请人工检查 Actions"), chat_id)
+            return
+        if not merge or not re.fullmatch(r"[a-f0-9]{40}", merge.get("sha") or "") or not merge.get("actor"):
+            self.tracked(ticket, "failed", cards.error_card("无法关联发布", "未找到本审批的唯一合并 PR", "请人工检查 Actions"), chat_id)
+            return
+        ticket.publish_sha, ticket.publish_actor = merge["sha"], merge["actor"]
+        ticket.updated_at = time.time()
+        self.journal.append(ticket.to_event())
         publish_run = self._find_publish_run(ticket)
         if not publish_run:
-            self.tracked(ticket, "done", cards.progress_card(ticket.kind, ticket.ticket_id, "done", "审批合并完成；publish 未触发（路径过滤）或已由外部处理"), chat_id)
+            self.tracked(ticket, "failed", cards.error_card("未找到关联发布", "等待本次合并的 publish 超时", "请人工检查 Actions；未自动批准其他发布"), chat_id)
             return
         ticket.run_ids.append(publish_run["id"])
         ticket.updated_at = time.time()
@@ -365,15 +411,18 @@ class Bot:
         while time.time() < deadline:
             time.sleep(15)
             try:
-                runs = self.gh.list_runs(workflow=workflow, limit=5)
-                for run in runs:
-                    if run.get("status") in ("queued", "in_progress") and run.get("run_started_at", "") > datetime.fromtimestamp(ticket.created_at - 60, timezone.utc).isoformat().replace("+00:00", "Z"):
-                        if run["id"] not in ticket.run_ids:
-                            ticket.run_ids.append(run["id"])
-                            ticket.updated_at = time.time()
-                            self.journal.append(ticket.to_event())
-                        return run["id"]
+                run = self._unique_run(ticket, workflow)
+                if run:
+                    # Identity is independent of status: waiting and fast completed runs count.
+                    if run["id"] not in ticket.run_ids:
+                        ticket.run_ids.append(run["id"])
+                        ticket.updated_at = time.time()
+                        self.journal.append(ticket.to_event())
+                    return run["id"]
             except GhError as exc:
+                if exc.kind == "CONTRACT":
+                    self.tracked(ticket, "failed", cards.error_card("审批关联失败", str(exc), "请人工检查 Actions"), chat_id)
+                    return None
                 log.warning("await_gate poll %s", exc)
         self.tracked(ticket, "failed", cards.error_card("未观察到审批 run", "10 分钟超时", "查 Actions 是否排队/并发组占用"), chat_id)
         return None
@@ -383,14 +432,23 @@ class Bot:
         while time.time() < deadline:
             time.sleep(20)
             try:
+                run = self.gh.get_run(run_id)
+                workflow = "publish.yml" if ticket.publish_sha else REVIEW_WORKFLOW
+                if run_id not in ticket.run_ids or not self._matches_run(ticket, run, workflow):
+                    self.tracked(ticket, "failed", cards.error_card("拒绝自动批准", "run 与票据不匹配", "请人工检查 Actions"), chat_id)
+                    return False
                 pendings = self.gh.pending_deployments(run_id)
                 if pendings:
+                    if len(pendings) != 1 or pendings[0].get("environment", {}).get("name") != "production":
+                        self.tracked(ticket, "failed", cards.error_card("拒绝自动批准", "非预期的 Environment", "请人工检查 Actions"), chat_id)
+                        return False
                     self.tracked(ticket, "awaiting_gate", cards.progress_card(ticket.kind, ticket.ticket_id, "awaiting_gate", f"run {run_id}"), chat_id)
                     environment = pendings[0]["environment"]
                     self.gh.approve_deployment(run_id, environment["id"], comment)
+                    self.journal.append({"type": "gate_approved", "ticket_id": ticket.ticket_id,
+                                         "run_id": run_id, "environment_id": environment["id"], "ts": now_iso()})
                     log.info("approved gate run=%s env=%s ticket=%s", run_id, environment.get("name"), ticket.ticket_id)
                     return True
-                run = self.gh.get_run(run_id)
                 if run.get("status") == "completed":
                     return True  # gate passed some other way (no env wait)
             except GhError as exc:
@@ -414,13 +472,17 @@ class Bot:
         return "timeout"
 
     def _find_publish_run(self, ticket) -> dict | None:
-        try:
-            runs = self.gh.list_runs(workflow="publish.yml", limit=5)
-            for run in runs:
-                if run.get("event") == "push" and run.get("run_started_at", "") > datetime.fromtimestamp(ticket.created_at, timezone.utc).isoformat().replace("+00:00", "Z"):
+        deadline = time.time() + 10 * 60
+        while time.time() < deadline:
+            try:
+                run = self._unique_run(ticket, "publish.yml")
+                if run:
                     return run
-        except GhError:
-            pass
+            except GhError as exc:
+                if exc.kind == "CONTRACT":
+                    return None
+                log.warning("find publish %s", exc)
+            time.sleep(15)
         return None
 
     def cmd_undo(self, chat_id: str, message_id: str, sender: str):
@@ -439,7 +501,7 @@ class Bot:
         if not extracted:
             return
         sender, chat_id, message_id, text = extracted
-        event_id = getattr(getattr(data, "event", None), "header", None)
+        event_id = getattr(data, "header", None)
         event_key = getattr(event_id, "event_id", "") if event_id else ""
         if event_key and self.journal.seen_event(event_key):
             return  # Feishu redelivery dedupe
@@ -462,17 +524,22 @@ class Bot:
                 target += timedelta(days=1)
             time.sleep(max(1, (target - now).total_seconds()))
             try:
-                pending = sorted(self.gh.list_candidates())
-                runs = self.gh.list_runs(workflow="publish.yml", limit=5)
-                releases = [f"{r['id']} {r.get('conclusion', r.get('status'))}" for r in runs[:3]]
-                approvals = sum(
-                    1 for event in self.journal.load_events()
-                    if event.get("type") == "gate_approved"
-                    and event.get("ts", "") > (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
-                )
-                self.card("oc_owner", cards.daily_card(pending, "详见 Actions 探针 Job Summary", releases, approvals))
+                self.send_daily_digest()
             except Exception:
                 log.exception("daily digest failed")
+
+    def send_daily_digest(self):
+        pending = sorted(self.gh.list_candidates())
+        runs = self.gh.list_runs(workflow="publish.yml", limit=5)
+        releases = [f"{r['id']} {r.get('conclusion', r.get('status'))}" for r in runs[:3]]
+        approvals = sum(
+            1 for event in self.journal.load_events()
+            if event.get("type") == "gate_approved"
+            and event.get("ts", "") > (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
+        )
+        return self.feishu.send_card(self.config["owner_open_id"],
+                                    cards.daily_card(pending, "详见 Actions 探针 Job Summary", releases, approvals),
+                                    receive_id_type="open_id")
 
     def run(self):
         self.watchdog.start()

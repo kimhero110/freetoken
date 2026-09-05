@@ -7,6 +7,7 @@ Review candidate workflow. Exits non-zero on failure (daemon reports via run sta
 """
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -20,7 +21,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT / "scripts"))
-from extract import parse_json_safely  # noqa: E402
+from extract import parse_json_safely, build_update_candidate  # noqa: E402
+from platform_schema import validate_quota  # noqa: E402
 from safe_http import get_public_text  # noqa: E402
 
 PLATFORMS_DIR = ROOT / "data" / "platforms"
@@ -163,13 +165,28 @@ def main() -> int:
             isinstance(e, dict) and e.get("url") == args.url for e in platform.get("evidence", [])
         )
         candidate = {
-            "candidate_type": "source_note" if not authorized else "platform_update",
+            "candidate_type": "source_note",
             "platform_slug": slug,
             "ticket_id": args.ticket_id,
             "source_url": args.url,
             "note": args.note[:200],
             "captured_at": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),
         }
+        if authorized:
+            extracted = call_deepseek(text, args.url)
+            if not isinstance(extracted, dict) or validate_quota(extracted.get("free_quota")):
+                print("[ERROR] update extraction has invalid quota")
+                return 4
+            intro = extracted.get("intro")
+            if not isinstance(intro, str) or not intro.strip() or len(intro) > 200:
+                print("[ERROR] update extraction has invalid intro")
+                return 4
+            candidate = build_update_candidate(
+                platform, slug, args.url, hashlib.sha256(text.encode("utf-8")).hexdigest(), text,
+                {"free_quota": extracted["free_quota"], "intro": intro.strip()},
+                {"provider": "deepseek", "model": "deepseek-chat"},
+            )
+            candidate.update({"ticket_id": args.ticket_id, "note": args.note[:200]})
         name = "note-" if not authorized else "update-"
         CANDIDATES_DIR.mkdir(parents=True, exist_ok=True)
         (CANDIDATES_DIR / f"{name}{slug}-{args.ticket_id}.yaml").write_text(

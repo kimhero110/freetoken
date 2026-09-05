@@ -1,0 +1,20 @@
+---
+const { lang = 'zh' } = Astro.props;
+const en = lang === 'en';
+const prefix = en ? '/en' : '';
+const paths = [
+  [prefix + '/#products', en ? '01 / Find free quotas' : '01 / 找免费额度', en ? 'Explore providers, eligibility and API setup.' : '查平台额度、申领条件与接入方式。'],
+  [prefix + '/cost/', en ? '02 / Plan API costs' : '02 / 算 API 成本', en ? 'Estimate a monthly budget using documented or custom rates.' : '按实际输入、输出和缓存用量估算月预算。'],
+  ['https://test.witkit.zone/', en ? '03 / Evaluate an API ↗' : '03 / 测接口质量 ↗', en ? 'Open WitKit Studio for quick or deep quality checks.' : '进入 WitKit Studio，选择快速或深度质量评测。'],
+];
+---
+<nav class="container tool-paths" aria-label={en ? 'Choose a tool' : '选择工具'}>
+  {paths.map(([href, title, body]) => <a href={href}><strong>{title}</strong><span>{body}</span></a>)}
+</nav>
+<style>
+  .tool-paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 24px auto 40px; }
+  a { padding: 24px; border: 1px solid var(--border-color, #ddd); border-radius: 14px; background: var(--bg-card, white); color: inherit; text-decoration: none; }
+  a:hover { border-color: #16a36c; }
+  strong, span { display: block; } strong { margin-bottom: 10px; font-size: 18px; } span { font-size: 14px; line-height: 1.7; opacity: .75; }
+  @media (max-width: 760px) { .tool-paths { grid-template-columns: 1fr; } }
+</style>
