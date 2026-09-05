@@ -138,8 +138,19 @@ class GitHubClient:
 
     # -- contents (read-only is allowed for any token with repo access) ------
     def list_candidates(self) -> list:
-        data = self._request("GET", f"/repos/{self.repo}/contents/data/candidates")
-        return [item["name"].rsplit(".", 1)[0] for item in data if item["type"] == "file"]
+        try:
+            data = self._request("GET", f"/repos/{self.repo}/contents/data/candidates")
+        except GhError as exc:
+            if exc.status != 404:
+                raise
+            # An empty Git directory does not exist. Verify the readable parent
+            # before treating 404 as empty, so broken credentials stay visible.
+            parent = self._request("GET", f"/repos/{self.repo}/contents/data")
+            if any(item.get("name") == "candidates" for item in parent):
+                raise exc
+            return []
+        return [item["name"].rsplit(".", 1)[0] for item in data
+                if item["type"] == "file" and item["name"].endswith((".yaml", ".json"))]
 
     def run_url(self, run_id: int) -> str:
         return f"https://github.com/{self.repo}/actions/runs/{run_id}"

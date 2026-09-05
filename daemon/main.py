@@ -30,6 +30,7 @@ log = logging.getLogger("intake")
 REVIEW_WORKFLOW = "review-candidate.yml"
 PLATFORM_WORKFLOW = "feishu-platform-tip.yml"
 ARTICLE_WORKFLOW = "feishu-article-rewrite.yml"
+SELFTEST_WORKFLOW = "feishu-self-test.yml"
 FRESHNESS_KEYS = ("checked_at", "captured_at")
 
 
@@ -161,6 +162,13 @@ class Bot:
             self.cmd_pending(chat_id, message_id)
         elif verb == "status":
             self.cmd_status(chat_id, message_id)
+        elif verb == "selftest":
+            ticket = self.store.new_ticket("selftest", "no-content-change", owner=sender)
+            code = self.store.issue_confirm(ticket)
+            self.journal.append(ticket.to_event())
+            ticket.card_message_id = self.card(chat_id, cards.confirm_card(
+                "联调测试：仅验证 GitHub production 审批门禁，不修改或发布网站内容", code), reply_to=message_id)
+            self.journal.append(ticket.to_event())
         elif verb == "bare_url":
             ticket = self.store.new_ticket("disambig", arg, owner=sender)
             self.journal.append(ticket.to_event())
@@ -341,6 +349,14 @@ class Bot:
             messages = {"LOCKED": "错误次数过多，该候选锁定 30 分钟", "EXPIRED": "确认码已过期（5 分钟），重新发 通过/拒绝", "WRONG": "确认码不正确"}
             self.card(chat_id, cards.error_card("确认失败", messages.get(why, why), "重新发起审批"), reply_to=message_id)
             return
+        if ticket.kind == "selftest":
+            try:
+                self._dispatch_ticket(ticket, SELFTEST_WORKFLOW, {"ticket_id": ticket.ticket_id})
+                self.tracked(ticket, "dispatched", cards.progress_card("联调", ticket.ticket_id, "dispatched", "无内容变更，验证实际审批门禁"), chat_id)
+                threading.Thread(target=self.track_selftest, args=(ticket, chat_id), daemon=True).start()
+            except GhError as exc:
+                self.tracked(ticket, "failed", cards.error_card("联调触发失败", str(exc), "检查 Actions 权限及工作流版本"), chat_id)
+            return
         decision = "approve" if ticket.kind == "approve" else "reject"
         ticket.phase = "awaiting_confirm"
         ticket.updated_at = time.time()
@@ -358,6 +374,16 @@ class Bot:
             return
         self.tracked(ticket, "dispatched", cards.progress_card(ticket.kind, ticket.ticket_id, "dispatched", f"候选 {ticket.arg}"), chat_id)
         threading.Thread(target=self.track_approval, args=(ticket, chat_id), daemon=True).start()
+
+    def track_selftest(self, ticket, chat_id: str):
+        run_id = self._await_gate(ticket, chat_id, SELFTEST_WORKFLOW)
+        if not run_id or not self._approve_gate(ticket, chat_id, run_id, f"intake selftest {ticket.ticket_id}"):
+            return
+        conclusion = self._await_completion(ticket, chat_id, run_id)
+        if conclusion == "success":
+            self.tracked(ticket, "done", cards.progress_card("联调", ticket.ticket_id, "done", "真实 GitHub 门禁与回执链路通过；未发布网站内容"), chat_id)
+        else:
+            self.tracked(ticket, "failed", cards.error_card("联调未通过", str(conclusion), "检查对应 Actions 运行"), chat_id)
 
     def track_approval(self, ticket, chat_id: str):
         """dispatch → review run → approve its gate → merged → publish run → approve gate → done."""
@@ -433,7 +459,7 @@ class Bot:
             time.sleep(20)
             try:
                 run = self.gh.get_run(run_id)
-                workflow = "publish.yml" if ticket.publish_sha else REVIEW_WORKFLOW
+                workflow = SELFTEST_WORKFLOW if ticket.kind == "selftest" else "publish.yml" if ticket.publish_sha else REVIEW_WORKFLOW
                 if run_id not in ticket.run_ids or not self._matches_run(ticket, run, workflow):
                     self.tracked(ticket, "failed", cards.error_card("拒绝自动批准", "run 与票据不匹配", "请人工检查 Actions"), chat_id)
                     return False
@@ -546,8 +572,12 @@ class Bot:
         threading.Thread(target=self.daily_digest, name="digest", daemon=True).start()
         log.info("intake bot starting (bootstrap=%s commit=%s)", self.config["bootstrap"], self.config["commit_sha"])
         from lark_oapi.ws import Client as WsClient
-        handler = lark.EventDispatcherHandler.builder("", "").register_p2_im_message_receive_v1(self.on_event).build()
-        ws = WsClient(self.config["app_id"], self.config["app_secret"], event_handler=handler, log_level=lark.LogLevel.INFO)
+        handler = (lark.EventDispatcherHandler.builder("", "")
+                   .register_p2_im_message_receive_v1(self.on_event)
+                   .register_p2_im_chat_access_event_bot_p2p_chat_entered_v1(lambda event: None)
+                   .register_p2_im_chat_member_bot_added_v1(lambda event: None).build())
+        # INFO connection logs include temporary WebSocket credentials.
+        ws = WsClient(self.config["app_id"], self.config["app_secret"], event_handler=handler, log_level=lark.LogLevel.WARNING)
         ws.start()
 
 
