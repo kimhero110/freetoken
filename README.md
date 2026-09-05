@@ -147,7 +147,7 @@ GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TE
 | `帮助` / `谁我` | 手册卡片 / 返回自己的 open_id |
 | （裸 HTTPS 链接） | 歧义卡：回复 `平台` 或 `文章` |
 
-审批安全模型（A+）：daemon 持**仅限本仓库、仅 Actions 读写**的 fine-grained PAT（90 天过期、每周自检、提前 30 天告警）；代码内只批准"本票据自己 dispatch 的 run"；确认码防误触（不防会话劫持——由仅偏差触发的异常卡与日报"昨日自动批准"计数兜底）；权威审计身份永远是 `github.actor`，飞书身份只作标注。已声明的残余风险：服务器完全沦陷可绕过（单操作者接受）。
+审批安全模型（A+）：daemon 持**仅限本仓库、Actions 与 Deployments 读写**的 fine-grained PAT（建议 90 天过期，另设轮换提醒）；代码内只批准"本票据自己 dispatch 的 run"；确认码防误触（不防会话劫持——由仅偏差触发的异常卡与日报"昨日自动批准"计数兜底）；权威审计身份永远是 `github.actor`，飞书身份只作标注。已声明的残余风险：服务器完全沦陷可绕过（单操作者接受）。
 
 运行关联使用唯一 ticket_id、候选/决定、PAT 操作者、main 提交 SHA 和工作流路径；生产发布只关联该审核运行对应 PR 的合并 SHA 和合并者。等待 Environment 的 `waiting` 状态可直接被发现，非 production 门禁或多个匹配运行不会自动批准。关联所需的提交与 PR 信息读取自本公开仓库，不增加 PAT 写权限。若 dispatch 前后的 main 恰好变化，关联会保守失败，需要重新发起命令。
 
@@ -156,7 +156,7 @@ GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TE
 ### 快速开始（部署后 30 分钟内完成首条命令）
 
 1. [开放平台](https://open.feishu.cn/) 创建**企业自建应用**：添加"机器人"能力；权限勾选 `im:message`（获取与发送单聊消息）；事件订阅选择**长连接**模式，订阅 `im.message.receive_v1`；发布版本并可用范围=自己。
-2. 创建 fine-grained PAT：GitHub → Settings → Developer settings → Fine-grained tokens → 仅 `kimhero110/freetoken`，权限仅 `Actions: Read and write`，有效期 90 天。
+2. 创建 fine-grained PAT：GitHub → Settings → Developer settings → Fine-grained tokens → 仅 `kimhero110/freetoken`，权限为 `Actions: Read and write` 和 `Deployments: Read and write`（不授予 Contents 写权限），有效期 90 天。
 3. 服务器：`git clone` 本仓库到 `/opt/freetoken-intake`；`cp daemon/env.example /opt/freetoken-intake/.env` 并填入 `FEISHU_APP_ID/FEISHU_APP_SECRET/GITHUB_PAT/GITHUB_REPO`，`BOOTSTRAP=1` 保持开启，`chmod 600 .env`。
 4. 启动：`cd /opt/freetoken-intake && GIT_COMMIT=$(git rev-parse --short HEAD) docker compose -f deploy/docker-compose.feishu-intake.yml up -d --build`。
 5. 引导：飞书私聊发 `谁我` → 机器人回你的 open_id → 填入 `.env` 的 `OWNER_OPEN_ID`，去掉 `BOOTSTRAP=1` → `docker compose -f deploy/docker-compose.feishu-intake.yml up -d --force-recreate feishu-intake`。
@@ -166,10 +166,10 @@ GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TE
 
 ### 运维手册
 
-- **PAT 轮换**（每 90 天，状态卡会提前 30 天告警）：建新 PAT → 更新 `/opt/freetoken-intake/.env` → `docker compose -f deploy/docker-compose.feishu-intake.yml up -d --force-recreate feishu-intake` → 发 `状态` 验证。
+- **PAT 轮换**（建议每 90 天，需另设到期提醒）：建新 PAT → 更新 `/opt/freetoken-intake/.env` → `docker compose -f deploy/docker-compose.feishu-intake.yml up -d --force-recreate feishu-intake` → 发 `状态` 验证。
 - **升级 daemon**：`cd /opt/freetoken-intake && git pull && GIT_COMMIT=$(git rev-parse --short HEAD) docker compose -f deploy/docker-compose.feishu-intake.yml up -d --build`；`状态` 卡显示新 commit 即生效。
 - **日志**：`docker logs -f freetoken-feishu-intake`；票据全生命周期在容器卷 `/data/journal.jsonl`。
-- **宕机语义**：断线期间的命令不会补跑（重连卡有提示）；外部看门狗 = GitHub Actions 定时探测健康端点并发告警卡。
+- **宕机语义**：重启后在途任务会标记 interrupted 并更新卡片，管理员核对原 Actions 运行后处理；不会重放提交或批准。等待确认的票据保留原有效期。断线期间尚未送达的消息不保证补收。
 - **看门狗**：dispatch 后 30 分钟未获批准的 run 自动取消并告警（防止并发组被毒化）。
 - **回滚**：`docker compose -f deploy/docker-compose.feishu-intake.yml down` 即完全回到无机器人现状；GitHub 侧审批流始终可独立使用（并行通道）。
 
@@ -197,3 +197,5 @@ GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TE
 Send `selftest` (or the Chinese integration-check command) to the configured bot, then reply with the confirmation code shown on its card. This dispatches `feishu-self-test.yml` and exercises the existing `production` approval gate without changing or deploying site content. An empty, absent candidates directory is treated as an empty queue only after its parent is verified readable.
 
 Environment-file edits require container recreation; a Docker restart does not reload env_file. Validate the owner ID using the bot bootstrap command before disabling BOOTSTRAP. See [live integration record](docs/feishu-live-integration.md).
+
+审批接口的 403 权限拒绝会立即结束票据、回报失败并尝试取消本票据已校验的运行；只有明确限流的 403 才归为 RATE。GET pending_deployments 的 current_user_can_approve 仅表示账号审批资格，不能证明 PAT 有 Deployments 写权限。完整验收必须让真实确认的 self-test 运行通过门禁并回写飞书卡片。

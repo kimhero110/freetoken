@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: freetoken-production-deploy
+  group: freetoken-production-deploy-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'main' }}
   cancel-in-progress: false
 
 jobs:
