@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Intake daemon entrypoint: Feishu long-connection router.
 
-Commands → GitHub Actions (workflow_dispatch via Actions-only PAT).
+Commands → GitHub Actions (repository-scoped Actions + Deployments PAT).
 All canonical data changes still flow through gated PRs; the daemon is a router.
 """
 
@@ -92,8 +92,11 @@ class Bot:
         return matches[0] if matches else None
 
     def tracked(self, ticket, phase: str, card: dict, chat_id: str):
+        # Repeated polls must not reset the watchdog's phase timeout.
+        changed = ticket.phase != phase
         ticket.phase = phase
-        ticket.updated_at = time.time()
+        if changed:
+            ticket.updated_at = time.time()
         self.journal.append(ticket.to_event())
         message_id = self.card(chat_id, card, patch_id=ticket.card_message_id)
         if message_id and message_id != ticket.card_message_id:
@@ -446,7 +449,7 @@ class Bot:
                         self.journal.append(ticket.to_event())
                     return run["id"]
             except GhError as exc:
-                if exc.kind == "CONTRACT":
+                if exc.kind in {"CONTRACT", "PERMISSION", "PAT_DEAD"}:
                     self.tracked(ticket, "failed", cards.error_card("审批关联失败", str(exc), "请人工检查 Actions"), chat_id)
                     return None
                 log.warning("await_gate poll %s", exc)
@@ -457,6 +460,8 @@ class Bot:
         deadline = time.time() + self.config["watchdog_minutes"] * 60 - 60
         while time.time() < deadline:
             time.sleep(20)
+            if ticket.phase in {"cancelled", "failed", "interrupted"}:
+                return False
             try:
                 run = self.gh.get_run(run_id)
                 workflow = SELFTEST_WORKFLOW if ticket.kind == "selftest" else "publish.yml" if ticket.publish_sha else REVIEW_WORKFLOW
@@ -468,9 +473,24 @@ class Bot:
                     if len(pendings) != 1 or pendings[0].get("environment", {}).get("name") != "production":
                         self.tracked(ticket, "failed", cards.error_card("拒绝自动批准", "非预期的 Environment", "请人工检查 Actions"), chat_id)
                         return False
-                    self.tracked(ticket, "awaiting_gate", cards.progress_card(ticket.kind, ticket.ticket_id, "awaiting_gate", f"run {run_id}"), chat_id)
+                    if pendings[0].get("current_user_can_approve") is False:
+                        self.tracked(ticket, "failed", cards.error_card("无门禁审批资格", "当前 GitHub 身份不是可用审批者", "核对 production 必需审批者与自审规则；不要关闭门禁"), chat_id)
+                        return False
+                    if ticket.phase != "awaiting_gate":
+                        self.tracked(ticket, "awaiting_gate", cards.progress_card(ticket.kind, ticket.ticket_id, "awaiting_gate", f"run {run_id}"), chat_id)
                     environment = pendings[0]["environment"]
-                    self.gh.approve_deployment(run_id, environment["id"], comment)
+                    try:
+                        self.gh.approve_deployment(run_id, environment["id"], comment)
+                    except GhError as exc:
+                        if exc.kind in {"PERMISSION", "PAT_DEAD", "CONTRACT"}:
+                            # This run was just validated against the confirmed ticket.
+                            try:
+                                self.gh.cancel_run(run_id)
+                            except GhError:
+                                log.warning("could not cancel failed ticket run=%s", run_id)
+                            self.tracked(ticket, "failed", cards.error_card("GitHub 门禁审批失败", f"{exc.kind}: {exc}", "当前仓库 PAT 需 Actions 和 Deployments 的读写权限；不需要 Contents 写权限。权限错误不会继续重试。"), chat_id)
+                            return False
+                        raise
                     self.journal.append({"type": "gate_approved", "ticket_id": ticket.ticket_id,
                                          "run_id": run_id, "environment_id": environment["id"], "ts": now_iso()})
                     log.info("approved gate run=%s env=%s ticket=%s", run_id, environment.get("name"), ticket.ticket_id)
@@ -478,11 +498,12 @@ class Bot:
                 if run.get("status") == "completed":
                     return True  # gate passed some other way (no env wait)
             except GhError as exc:
-                if exc.kind == "PAT_DEAD":
-                    self.tracked(ticket, "failed", cards.error_card("PAT 失效", exc.__str__()[:200], "按运维手册轮换 PAT 后重发命令"), chat_id)
+                if exc.kind in {"PAT_DEAD", "PERMISSION", "CONTRACT"}:
+                    self.tracked(ticket, "failed", cards.error_card("GitHub 请求失败", exc.__str__()[:200], "核对当前仓库的令牌权限与运行记录；不会无限重试"), chat_id)
                     return False
                 log.warning("approve_gate %s", exc)
-        self.tracked(ticket, "failed", cards.error_card("门禁批准超时", f"run {run_id}", "看门狗稍后会取消该 run"), chat_id)
+        # Keep awaiting_gate so the watchdog can actually cancel the scoped run.
+        self.tracked(ticket, "awaiting_gate", cards.error_card("门禁批准超时", f"run {run_id}", "看门狗将在超时阈值后尝试取消该 run"), chat_id)
         return False
 
     def _await_completion(self, ticket, chat_id: str, run_id: int, timeout: int = 900) -> str:
@@ -493,7 +514,9 @@ class Bot:
                 run = self.gh.get_run(run_id)
                 if run.get("status") == "completed":
                     return run.get("conclusion") or "unknown"
-            except GhError:
+            except GhError as exc:
+                if exc.kind in {"PERMISSION", "PAT_DEAD", "CONTRACT"}:
+                    return str(exc)
                 continue
         return "timeout"
 
@@ -505,7 +528,7 @@ class Bot:
                 if run:
                     return run
             except GhError as exc:
-                if exc.kind == "CONTRACT":
+                if exc.kind in {"CONTRACT", "PERMISSION", "PAT_DEAD"}:
                     return None
                 log.warning("find publish %s", exc)
             time.sleep(15)
@@ -570,7 +593,27 @@ class Bot:
                                     cards.daily_card(pending, "详见 Actions 探针 Job Summary", releases, approvals),
                                     receive_id_type="open_id")
 
+    def report_interrupted(self):
+        """Surface lost tracking workers after restart without replaying writes."""
+        for ticket in list(self.store.tickets.values()):
+            if ticket.phase not in {"dispatched", "awaiting_gate", "merged", "publishing", "interrupted"}:
+                continue
+            card = cards.error_card("服务重启，任务需核对", f"票据 {ticket.ticket_id}；运行 {ticket.run_ids}",
+                                    "原运行可能仍在 GitHub 等待或执行；请管理员核对。未重复提交或自动批准。")
+            try:
+                delivered = bool(ticket.card_message_id and self.feishu.patch_card(ticket.card_message_id, card))
+                if not delivered:
+                    delivered = bool(self.feishu.send_card(self.config["owner_open_id"], card, receive_id_type="open_id"))
+                if not delivered:
+                    log.error("restart notification failed ticket=%s", ticket.ticket_id)
+            except Exception:
+                log.exception("restart notification failed ticket=%s", ticket.ticket_id)
+            ticket.phase = "interrupted"
+            ticket.updated_at = time.time()
+            self.journal.append(ticket.to_event())
+
     def run(self):
+        self.report_interrupted()
         self.watchdog.start()
         threading.Thread(target=self.daily_digest, name="digest", daemon=True).start()
         log.info("intake bot starting (bootstrap=%s commit=%s)", self.config["bootstrap"], self.config["commit_sha"])
