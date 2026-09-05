@@ -1,0 +1,68 @@
+schema_version: 2
+slug: pollinations
+name: Pollinations AI (免Key生图与对话)
+name_en: Pollinations AI
+category: 多模态生图
+intro: 完全开源、零门槛、免注册、免 API Key 的多模态生图与大模型对话服务，直接 GET/POST 即可调用！
+intro_en: Completely free, open-source, keyless multimodal generation API for images
+  and text.
+website: https://pollinations.ai/
+doc_url: https://pollinations.github.io/docs/
+api_base_url: https://text.pollinations.ai/openai
+free_models:
+- openai
+- qwen
+- mistral
+- flux
+free_quota:
+  type: 永久免费
+  amount: 完全免费
+  unit: 免注册 / 免 API Key
+  reset_period: 永久
+  details: 无需注册账号或创建 API Key，直接向接口发起请求即可生成文本或 FLUX 图像。
+  details_en: Completely free and keyless access for text and image generation.
+verification: 无需注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 免注册
+- 多模态生图
+gotchas:
+- 社区公用算力池，高并发时请加入重试与限流逻辑。
+gotchas_en:
+- Public shared infrastructure; add retry logic for stability.
+registration:
+  url: https://pollinations.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: image_generation
+      protocol: rest
+      endpoint_url: null
+      models: []
+      auth:
+        type: none
+        header: null
+        query_param: null
+        env_var: null
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://pollinations.github.io/docs/
+  checked_at: '2026-09-02'

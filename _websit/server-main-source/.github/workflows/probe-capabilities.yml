@@ -1,0 +1,127 @@
+name: Capability probe candidates
+
+on:
+  schedule:
+    - cron: "17 3 * * 2"
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: Canonical provider to probe
+        required: true
+        type: choice
+        options:
+          - deepseek
+          - siliconflow
+          - aliyun-bailian
+          - moonshot-kimi
+          - google-ai-studio
+          - groq
+          - volcengine
+          - zhipu-ai
+          - openrouter
+          - gmi-cloud-minimax
+      tool:
+        description: Client contract to probe
+        required: true
+        default: raw_http
+        type: choice
+        options:
+          - raw_http
+          - openai_python
+          - openai_node
+          - all
+
+permissions:
+  contents: read
+
+concurrency:
+  group: freetoken-main-writer
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: scripts/requirements.lock
+
+      - name: Install hash-locked dependencies
+        run: pip install --require-hashes -r scripts/requirements.lock
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: scripts/node/package-lock.json
+
+      - name: Install locked Node probe dependencies
+        run: npm ci --prefix scripts/node
+
+      - name: Probe capability
+        id: probe
+        continue-on-error: true
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PROVIDER: ${{ inputs.provider }}
+          TOOL: ${{ inputs.tool }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+          ALIYUN_BAILIAN_API_KEY: ${{ secrets.ALIYUN_BAILIAN_API_KEY }}
+          MOONSHOT_KIMI_API_KEY: ${{ secrets.MOONSHOT_KIMI_API_KEY }}
+          GOOGLE_AI_STUDIO_API_KEY: ${{ secrets.GOOGLE_AI_STUDIO_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          VOLCENGINE_API_KEY: ${{ secrets.VOLCENGINE_API_KEY }}
+          ZHIPU_AI_API_KEY: ${{ secrets.ZHIPU_AI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GMI_CLOUD_MINIMAX_API_KEY: ${{ secrets.GMI_CLOUD_MINIMAX_API_KEY }}
+        run: |
+          python scripts/probe_secret_coverage.py
+          TOOLS=(--tool raw_http --tool openai_python --tool openai_node)
+          if [ "$EVENT_NAME" = "schedule" ]; then
+            python scripts/probe_capabilities.py --all-configured --operation chat_completions "${TOOLS[@]}"
+          elif [ "$TOOL" = "all" ]; then
+            python scripts/probe_capabilities.py --provider "$PROVIDER" --operation chat_completions "${TOOLS[@]}"
+          else
+            python scripts/probe_capabilities.py --provider "$PROVIDER" --operation chat_completions --tool "$TOOL"
+          fi
+
+      - name: Preserve the observation
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          git config user.name "freetoken-bot[bot]"
+          git config user.email "4818224+freetoken-bot[bot]@users.noreply.github.com"
+          git add --all -- data/candidates/
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "chore(data): record capability probe candidate"
+          git pull --rebase origin main
+          BRANCH="auto/probe-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git push origin HEAD:refs/heads/"$BRANCH"
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore(data): record capability probe candidate" \
+            --body "Automated capability probe observation from run ${GITHUB_RUN_ID}. Candidate data only; canonical platform data changes still require a gated Review candidate run."
+          gh pr merge --auto --merge --delete-branch "$BRANCH"
+
+      - name: Report probe failure after preserving evidence
+        if: steps.probe.outcome == 'failure'
+        run: exit 1

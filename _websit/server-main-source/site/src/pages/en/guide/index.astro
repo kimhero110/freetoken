@@ -1,0 +1,107 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CodeGenerator from '../../../components/CodeGenerator.astro';
+import GuideArticles from '../../../components/GuideArticles.astro';
+import platforms from '../../../data/platforms.json';
+---
+
+<Base 
+  title="Safe Integration Generator & Playbook · FreeToken"
+  description="Generate cURL, Python, and Node.js OpenAI Chat Completions examples using exact operation evidence levels: claimed, documented, or live."
+  lang="en"
+  analytics={false}
+>
+  <section class="guide-hero-section">
+    <div class="container">
+      <div class="guide-hero-badge">PRACTICE PLAYBOOK · TECHNICAL WHITE PAPER</div>
+      <h1 class="guide-hero-title">Free API Integration Code Generator & Practice Playbook</h1>
+      <p class="guide-hero-desc">
+        The generator uses only verified v2 operation endpoints, models, and environment variables. <strong>Claimed means provider-claimed but docs not checked and does not generate requests; documented means official docs checked; live means a recent real call passed.</strong> Failed, unknown, and stale live operations do not generate requests.
+      </p>
+
+      <nav class="guide-toc-nav">
+        <span class="toc-nav-label">Quick Jump:</span>
+        <a href="#code-generator" class="toc-link">⚡ 10s Generator</a>
+        <a href="#art-01" class="toc-link">01 · OpenAI Protocol</a>
+        <a href="#art-02" class="toc-link">02 · 450M Tokens</a>
+        <a href="#art-03" class="toc-link">03 · Gateways</a>
+        <a href="#art-04" class="toc-link">04 · Rolling Window</a>
+        <a href="#art-05" class="toc-link">05 · 90% Cost Saving</a>
+        <a href="#art-06" class="toc-link">06 · Model Matrix</a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section-wrap">
+    <div class="container">
+      <CodeGenerator platforms={platforms} lang="en" />
+    </div>
+  </section>
+
+  <GuideArticles lang="en" />
+
+  <style>
+    .guide-hero-section {
+      padding: 48px 0 24px;
+      border-bottom: 1px solid var(--card-border);
+      background: #ffffff;
+    }
+    .guide-hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: var(--accent);
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+    }
+    .guide-hero-title {
+      font-size: clamp(22px, 3.8vw, 34px);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.6px;
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .guide-hero-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .guide-toc-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+    }
+    .toc-nav-label {
+      font-weight: 700;
+      color: var(--text);
+    }
+    .toc-link {
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      background: var(--bg-subtle);
+      padding: 3px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc-link:hover {
+      color: var(--text);
+      border-color: var(--text);
+    }
+    .section-wrap {
+      padding: 36px 0 0;
+    }
+  </style>
+</Base>

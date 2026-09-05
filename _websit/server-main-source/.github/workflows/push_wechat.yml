@@ -1,0 +1,37 @@
+name: 一键推送最新文章至微信公众号草稿箱
+
+on:
+  workflow_dispatch: # 支持在 GitHub Actions 随时一键点击推送到微信
+
+permissions:
+  contents: read
+
+jobs:
+  push-wechat:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: 安装 Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: scripts/requirements.lock
+
+      - name: 安装依赖
+        run: pip install --require-hashes -r scripts/requirements.lock
+
+      - name: 生成最新图文排版
+        run: python scripts/generate_content.py
+
+      - name: 推送至微信公众号草稿箱
+        env:
+          WECHAT_APP_ID: ${{ secrets.WECHAT_APP_ID }}
+          WECHAT_APP_SECRET: ${{ secrets.WECHAT_APP_SECRET }}
+        run: python scripts/push_to_wechat.py
+

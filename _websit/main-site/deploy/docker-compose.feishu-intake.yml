@@ -1,0 +1,15 @@
+services:
+  feishu-intake:
+    build:
+      context: ../daemon
+      args:
+        GIT_COMMIT: ${GIT_COMMIT:-dev}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.tuna.tsinghua.edu.cn/simple}
+    container_name: freetoken-feishu-intake
+    restart: always
+    env_file: /opt/freetoken-intake/.env
+    volumes:
+      - intake-data:/data
+
+volumes:
+  intake-data:

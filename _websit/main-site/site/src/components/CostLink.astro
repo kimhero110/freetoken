@@ -1,0 +1,13 @@
+---
+import book from '../../../data/pricing/pricebook.json';
+const { platform, lang = 'zh' } = Astro.props;
+const en = lang === 'en';
+const record = book.records.find(r => r.platform === platform.slug);
+const query = new URLSearchParams({ platform: platform.slug, ...(record ? { model: record.model } : {}) });
+---
+<aside class="budget-link">
+  <div><strong>{en ? 'Plan your API budget' : '接入前，先算一笔预算'}</strong>
+  <p>{record ? (en ? 'Documented rates available. Estimate input, output and cache costs.' : '已有官方文档报价，可按输入、输出与缓存用量估算。') : (en ? 'No verified price entry yet. Enter your own rates to estimate.' : '该平台尚未收录核验报价，可手动填写单价估算。')}</p></div>
+  <a href={`${en ? '/en' : ''}/cost/?${query}`}>{en ? 'Cost calculator →' : '打开成本计算器 →'}</a>
+</aside>
+<style>.budget-link { padding: 24px; margin: 24px 0; border: 1px solid #b7dbc9; border-radius: 12px; background: #f1faf5; display: flex; align-items: center; justify-content: space-between; gap: 20px; } p { margin: 8px 0 0; font-size: 14px; color: #52625b; } a { white-space: nowrap; color: #146842; } @media(max-width:600px){.budget-link{align-items:flex-start;flex-direction:column;}}</style>

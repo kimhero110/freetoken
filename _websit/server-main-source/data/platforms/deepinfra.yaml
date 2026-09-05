@@ -1,0 +1,70 @@
+schema_version: 2
+name: DeepInfra
+name_en: DeepInfra
+slug: deepinfra
+website: https://deepinfra.com
+category: 海外主流
+free_quota:
+  amount: '5'
+  unit: 美元体验金
+  type: 限时/体验金
+  reset_period: 注册赠送
+  conditions:
+  - 新用户注册赠送体验金
+  - 支持 Llama 3、DeepSeek 与 Qwen 满血版
+free_models:
+- meta-llama/Meta-Llama-3.1-70B-Instruct
+- deepseek-ai/DeepSeek-V3
+- Qwen/Qwen2.5-Coder-32B-Instruct
+api_base_url: https://api.deepinfra.com/v1/openai
+register_url: https://deepinfra.com
+docs_url: https://deepinfra.com/docs
+source_urls:
+- https://deepinfra.com
+last_verified: '2026-09-02'
+status: active
+intro: 极速 Serverless AI 模型推理与托管平台。注册即赠送免费体验金，超低延迟支持 Llama 3、DeepSeek-V3 满血调用。
+intro_en: Ultra-fast serverless AI inference platform. Free trial credits for new
+  accounts with full OpenAI SDK compatibility.
+tags:
+- 限时
+- 体验金
+- OpenAI兼容
+- 高并发
+registration:
+  url: https://deepinfra.com
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.deepinfra.com/v1/openai/chat/completions
+      models:
+      - meta-llama/Meta-Llama-3.1-70B-Instruct
+      - deepseek-ai/DeepSeek-V3
+      - Qwen/Qwen2.5-Coder-32B-Instruct
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: DEEPINFRA_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://deepinfra.com
+  checked_at: '2026-09-02'

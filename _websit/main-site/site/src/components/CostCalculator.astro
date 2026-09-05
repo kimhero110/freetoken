@@ -1,0 +1,112 @@
+---
+import book from '../../../data/pricing/pricebook.json';
+import { validatePricebook } from '../lib/pricebook.mjs';
+validatePricebook(book);
+const { lang = 'zh' } = Astro.props;
+const en = lang === 'en';
+const t = (zh: string, english: string) => en ? english : zh;
+---
+<section class="cost-shell container" id="calculator" data-lang={lang}>
+  <header><p class="eyebrow">WITKIT / COST / V1</p><h1>{t('API 成本计算器', 'API cost calculator')}</h1>
+    <p>{t('按真实用量做预算。无需 API Key，计算在浏览器本地完成。', 'Budget from your workload. No API key; calculations stay in your browser.')}</p></header>
+  <noscript>{t('请启用 JavaScript 以计算预算。', 'Enable JavaScript to calculate your budget.')}</noscript>
+  <form id="cost-form">
+    <div class="cost-grid">
+      <div class="panel">
+        <h2>{t('1. 选择报价', '1. Choose rates')}</h2>
+        <label>{t('模型 / 报价来源', 'Model / rate source')}<select id="model">
+          {book.records.map(r => <option value={r.model}>{r.revision} · {r.currency}</option>)}
+          <option value="custom">{t('其他平台 · 自填报价', 'Other provider · custom rates')}</option>
+        </select></label>
+        <p id="platform-note" class="hint"></p>
+        <div id="official-settings">
+          <label>{t('计费时段（本次全部用量）', 'Billing period (all usage in this estimate)')}<select id="period"><option value="peak">{t('高峰价格', 'Peak rates')}</option><option value="offpeak">{t('非高峰价格', 'Off-peak rates')}</option></select></label>
+          <p class="hint">{t('高峰：周一至周五 UTC 01–04、06–10（北京时间 09–12、14–18）。跨时段用量请分别计算后相加。', 'Peak: Mon–Fri 01–04 and 06–10 UTC. Calculate mixed periods separately and add the results.')}</p>
+        </div>
+        <label>{t('币种', 'Currency')}<select id="currency"><option>USD</option><option>CNY</option></select></label>
+        <div class="rates">
+          <label>{t('输入未命中 / 百万 tokens', 'Uncached input / 1M tokens')}<input id="rate-input" inputmode="decimal" value="0.44" required /></label>
+          <label>{t('缓存命中 / 百万 tokens', 'Cached input / 1M tokens')}<input id="rate-cached" inputmode="decimal" value="0.014" placeholder={t('留空表示未知', 'Blank means unknown')} /></label>
+          <label>{t('输出 / 百万 tokens', 'Output / 1M tokens')}<input id="rate-output" inputmode="decimal" value="1.32" required /></label>
+        </div>
+        <p class="hint" id="evidence"></p><a id="source" href={book.records[0].source} target="_blank" rel="noopener noreferrer">{t('查看官方价格来源 ↗', 'Official pricing source ↗')}</a>
+      </div>
+      <div class="panel">
+        <h2>{t('2. 填写月用量', '2. Monthly usage')}</h2>
+        <label>{t('总输入 tokens（含缓存命中）', 'Total input tokens (including cache hits)')}<input id="input" inputmode="numeric" value="1000000" required /></label>
+        <label>{t('其中缓存命中 tokens', 'Cached input tokens within total')}<input id="cached" inputmode="numeric" value="0" required /></label>
+        <label>{t('总输出 tokens（含计费推理 tokens）', 'Total output tokens (include billed reasoning tokens)')}<input id="output" inputmode="numeric" value="1000000" required /></label>
+        <label>{t('本月确认可抵扣余额（所选币种）', 'Confirmed eligible credit this month (selected currency)')}<input id="credit" inputmode="decimal" value="0" required /></label>
+        <p class="hint">{t('仅填写确认适用于该模型、该月的余额；平台介绍中的免费额度不会自动抵扣。RPM、TPM 和并发需另外核对。', 'Only use credit eligible for this model and month. Listed free tiers are not automatically deducted. Check RPM, TPM and concurrency separately.')}</p>
+        <label>{t('可选：1 单位所选币种 = 多少另一币种', 'Optional: 1 selected currency unit = units of the other currency')}<input id="fx" inputmode="decimal" placeholder={t('自填汇率；留空不换算', 'Your exchange rate; blank skips conversion')} /></label>
+        <button type="submit">{t('计算月预算', 'Calculate monthly budget')} →</button>
+      </div>
+    </div>
+  </form>
+  <section class="result panel" aria-live="polite" aria-atomic="true">
+    <h2>{t('预计月支出', 'Estimated monthly spend')}</h2><p id="error" role="alert"></p>
+    <div id="result-values"><strong id="total">—</strong><p id="breakdown"></p><p id="converted"></p></div>
+    <p class="hint">{t('预算估算，不是账单。仅含所填 token 费用，不含税费、工具调用、图片、搜索或其他附加费。报价标记为“文档记录”，不代表实测或官方身份认证。', 'Budget estimate, not an invoice. Token charges only; excludes taxes, tools, images, search and other fees. Documented rates do not imply measured billing or verified model identity.')}</p>
+  </section>
+  <div class="next-links"><a href={en ? '/en/#products' : '/#products'}>{t('← 查免费额度', '← Explore free quotas')}</a><a href="https://test.witkit.zone/">{t('去评测接口质量 ↗', 'Evaluate API quality ↗')}</a></div>
+</section>
+<script define:vars={{ book }}>document.getElementById('calculator').dataset.book = JSON.stringify(book);</script>
+<script>
+  import { estimate, formatMoney, convert } from '../lib/cost-engine.mjs';
+  const root = document.querySelector<HTMLElement>('#calculator')!;
+  const book = JSON.parse(root.dataset.book!);
+  const en = root.dataset.lang === 'en';
+  const t = (zh: string, english: string) => en ? english : zh;
+  const field = (id: string) => document.getElementById(id) as HTMLInputElement;
+  const set = (id: string, text: string) => { document.getElementById(id)!.textContent = text; };
+  const params = new URLSearchParams(location.search);
+  const requested = book.records.find((r: any) => r.model === params.get('model') && (!params.has('platform') || r.platform === params.get('platform')));
+  const platformRecord = book.records.find((r: any) => r.platform === params.get('platform'));
+  if (params.has('platform') || params.has('model')) field('model').value = requested?.model ?? (!params.has('model') ? platformRecord?.model : null) ?? 'custom';
+  if (field('model').value === 'custom') set('platform-note', t('该链接未匹配核验报价，请填写所需平台的单价。', 'This link has no matching documented rate. Enter the provider’s rates.'));
+  function selectRates() {
+    const record = book.records.find((r: any) => r.model === field('model').value);
+    document.getElementById('official-settings')!.hidden = !record;
+    const source = document.getElementById('source') as HTMLAnchorElement;
+    source.hidden = !record;
+    field('currency').disabled = !!record;
+    field('credit').value = '0';
+    field('fx').value = '';
+    for (const key of ['input', 'cached', 'output']) {
+      field('rate-' + key).readOnly = !!record;
+      field('rate-' + key).value = record ? record[field('period').value][key] ?? '' : '';
+    }
+    if (record) {
+      field('currency').value = record.currency;
+      source.href = record.source;
+      const stale = Date.now() - Date.parse(record.checked_at + 'T00:00:00Z') > 30 * 86400000;
+      set('evidence', `${t('文档记录 · 核查', 'Documented · checked')} ${record.checked_at} · ${book.version}${stale ? t(' · 超过 30 天，请复核报价', ' · Over 30 days old: recheck rates') : ''}`);
+    } else set('evidence', t('自填报价 · 未核验。单价最多 6 位小数，缓存单价留空表示未知。', 'Custom rates · unverified. Up to 6 decimal places. Blank cached rate means unknown.'));
+  }
+  function calculate() {
+    try {
+      const result = estimate({ input: field('input').value, cached: field('cached').value, output: field('output').value, credit: field('credit').value,
+        rates: { input: field('rate-input').value || null, cached: field('rate-cached').value || null, output: field('rate-output').value || null } });
+      const currency = field('currency').value;
+      // Validate FX before displaying any result, including unknown totals.
+      const converted = field('fx').value ? convert(result.net, field('fx').value) : null;
+      set('error', '');
+      set('total', result.net === null ? t('价格未知，无法合计', 'Unknown rate; total unavailable') : `${currency} ${formatMoney(result.net)}`);
+      set('breakdown', `${t('未抵扣', 'Before credit')}: ${currency} ${formatMoney(result.gross)} · ${t('输入 / 缓存 / 输出', 'Input / cache / output')}: ${result.parts.map(formatMoney).join(' / ')}`);
+      set('converted', field('fx').value ? `${t('按自填汇率换算', 'At your exchange rate')}: ${currency === 'USD' ? 'CNY' : 'USD'} ${formatMoney(converted)}` : '');
+    } catch {
+      set('error', t('请检查输入：tokens 须为 0–999999999999999 的整数，缓存不能超过总输入；金额最多 12 位整数和 6 位小数，汇率须大于 0。', 'Check inputs: whole tokens from 0 to 999999999999999; cached ≤ total input. Money allows 12 integer digits and 6 decimals; FX must be positive.'));
+      set('total', '—'); set('breakdown', ''); set('converted', '');
+    }
+  }
+  document.getElementById('cost-form')!.addEventListener('submit', event => { event.preventDefault(); calculate(); });
+  document.getElementById('cost-form')!.addEventListener('input', calculate);
+  field('model').addEventListener('change', () => { set('platform-note', ''); selectRates(); calculate(); });
+  field('period').addEventListener('change', () => { selectRates(); calculate(); });
+  field('currency').addEventListener('change', () => { field('credit').value = '0'; field('fx').value = ''; calculate(); });
+  selectRates(); calculate();
+</script>
+<style>
+  .cost-shell { max-width: 1100px; padding-top: 55px; padding-bottom: 55px; } header { margin-bottom: 32px; } h1 { font-size: clamp(30px, 5vw, 48px); margin: 12px 0; letter-spacing: -.04em; } .eyebrow { color: #147748; font: 700 12px monospace; letter-spacing: .15em; } header > p { line-height: 1.8; }
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; } .panel { background: #fff; border: 1px solid #dce5df; border-radius: 16px; padding: 28px; } h2 { font-size: 21px; margin: 0 0 22px; } label { display: block; font-size: 14px; margin-bottom: 18px; } input, select { display: block; width: 100%; box-sizing: border-box; padding: 11px 12px; margin-top: 8px; border-radius: 7px; border: 1px solid #bdcec3; font: inherit; color: #153e2a; background: white; } input:read-only { background: #f4f7f5; } :is(input, select, button, a):focus-visible { outline: 3px solid #45a87b; outline-offset: 3px; } .hint { font-size: 13px; line-height: 1.8; color: #586a60; margin: 10px 0 18px; } button { border: 0; background: #175f3b; color: white; padding: 14px 22px; border-radius: 8px; font: inherit; cursor: pointer; width: 100%; } a { color: #176640; } .result { margin-top: 24px; background: #edf8f1; } #total { font: 700 clamp(24px, 4vw, 36px) monospace; overflow-wrap: anywhere; } #error { color: #9b2424; } #breakdown { line-height: 1.8; margin-top: 16px; overflow-wrap: anywhere; } .next-links { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; } [hidden] { display: none !important; } @media(max-width:760px) { .cost-grid { grid-template-columns: 1fr; } .panel { padding: 20px; } }
+</style>

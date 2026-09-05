@@ -1,0 +1,71 @@
+schema_version: 2
+slug: lingyiwanwu-01
+name: 零一万物 (01.AI 开放平台)
+name_en: 01.AI (Yi Models)
+category: 国内主流
+intro: 李开复博士创立的零一万物大模型，注册即送千万 Tokens（或 20 元代金券），支持 Yi-Lightning 超强性能！
+intro_en: Founded by Kai-Fu Lee. 20 RMB (~10M tokens) on registration for Yi-Lightning
+  & Yi-Large.
+website: https://platform.01.ai/
+doc_url: https://platform.01.ai/docs
+api_base_url: https://api.01.ai/v1
+free_models:
+- yi-lightning
+- yi-large
+- yi-medium
+free_quota:
+  type: 限时赠送
+  amount: 1000 万
+  unit: Tokens (或 20 元代金券)
+  reset_period: 一次性
+  details: 新用户注册发放 20 元代金券，支持千亿参数 Yi-Lightning 极速推理。
+  details_en: 20 RMB promotional voucher upon sign-up.
+verification: 手机号注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- 代金券有效期 90 天。
+gotchas_en:
+- Voucher expires in 90 days.
+registration:
+  url: https://platform.01.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.01.ai/v1/chat/completions
+      models:
+      - yi-lightning
+      - yi-large
+      - yi-medium
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: LINGYIWANWU_01_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://platform.01.ai/docs
+  checked_at: '2026-09-02'

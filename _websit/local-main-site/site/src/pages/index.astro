@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import TelemetrySweep from '../components/TelemetrySweep.astro';
+import HeroEditorial from '../components/HeroEditorial.astro';
+import PlatformGrid from '../components/PlatformGrid.astro';
+import platforms from '../data/platforms.json';
+---
+
+<Base lang="zh">
+  <TelemetrySweep lang="zh" />
+  <HeroEditorial lang="zh" />
+  <PlatformGrid platforms={platforms} lang="zh" />
+</Base>

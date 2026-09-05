@@ -1,0 +1,174 @@
+test_approved_update_candidate_persists_source_hash (test_candidates.CandidateWorkflowTests.test_approved_update_candidate_persists_source_hash) ... ok
+test_extraction_writes_auditable_candidate_without_mutating_platform (test_candidates.CandidateWorkflowTests.test_extraction_writes_auditable_candidate_without_mutating_platform) ... ok
+test_failed_approval_restores_platform_and_hash_state (test_candidates.CandidateWorkflowTests.test_failed_approval_restores_platform_and_hash_state) ... ok
+test_failed_probe_cannot_downgrade_and_can_be_rejected_with_audit (test_candidates.CandidateWorkflowTests.test_failed_probe_cannot_downgrade_and_can_be_rejected_with_audit) ... ok
+test_live_probe_promotes_operation_and_only_the_probed_http_tool (test_candidates.CandidateWorkflowTests.test_live_probe_promotes_operation_and_only_the_probed_http_tool) ... ok
+test_llm_json_rejects_non_finite_numbers (test_candidates.CandidateWorkflowTests.test_llm_json_rejects_non_finite_numbers) ... ok
+test_new_platform_candidate_can_be_approved_and_archived (test_candidates.CandidateWorkflowTests.test_new_platform_candidate_can_be_approved_and_archived) ... ok
+test_rejected_update_candidate_records_reviewed_source_hash (test_candidates.CandidateWorkflowTests.test_rejected_update_candidate_records_reviewed_source_hash) ... ok
+test_rejection_records_feishu_annotation_with_actor_authoritative (test_candidates.CandidateWorkflowTests.test_rejection_records_feishu_annotation_with_actor_authoritative) ... ok
+test_stale_probe_is_rejected_without_mutation (test_candidates.CandidateWorkflowTests.test_stale_probe_is_rejected_without_mutation) ... ok
+test_stale_update_candidate_is_rejected (test_candidates.CandidateWorkflowTests.test_stale_update_candidate_is_rejected) ... ok
+test_duplicate_slug_is_rejected (test_compile_data.CompileArticlesTests.test_duplicate_slug_is_rejected) ... ok
+test_impossible_date_is_rejected (test_compile_data.CompileArticlesTests.test_impossible_date_is_rejected) ... ok
+test_invalid_date_is_rejected (test_compile_data.CompileArticlesTests.test_invalid_date_is_rejected) ... ok
+test_invalid_slug_is_rejected (test_compile_data.CompileArticlesTests.test_invalid_slug_is_rejected) ... ok
+test_invalid_tags_are_rejected (test_compile_data.CompileArticlesTests.test_invalid_tags_are_rejected) ... ok
+test_overlong_title_is_rejected (test_compile_data.CompileArticlesTests.test_overlong_title_is_rejected) ... ok
+test_sitemap_is_well_formed_xml (test_compile_data.CompileArticlesTests.test_sitemap_is_well_formed_xml) ... ok
+test_source_url_absent_is_allowed_for_legacy_articles (test_compile_data.CompileArticlesTests.test_source_url_absent_is_allowed_for_legacy_articles) ... ok
+test_source_url_must_be_https (test_compile_data.CompileArticlesTests.test_source_url_must_be_https) ... ok
+test_source_url_validated_and_propagated (test_compile_data.CompileArticlesTests.test_source_url_validated_and_propagated) ... ok
+test_valid_article_compiles (test_compile_data.CompileArticlesTests.test_valid_article_compiles) ... ok
+test_wechat_output_escapes_platform_fields (test_content_generation.ContentGenerationTests.test_wechat_output_escapes_platform_fields) ... ok
+test_owner_authorized (test_daemon_auth.AuthTests.test_owner_authorized) ... ok
+test_redact (test_daemon_auth.AuthTests.test_redact) ... ok
+test_stranger_rejected_even_in_bootstrap (test_daemon_auth.AuthTests.test_stranger_rejected_even_in_bootstrap) ... ok
+test_whoami_answered_in_bootstrap_only_for_strangers (test_daemon_auth.AuthTests.test_whoami_answered_in_bootstrap_only_for_strangers) ... ok
+test_bootstrap_flag (test_daemon_auth.ConfigTests.test_bootstrap_flag) ... ok
+test_full_env_parses_with_defaults (test_daemon_auth.ConfigTests.test_full_env_parses_with_defaults) ... ok
+test_missing_env_raises_with_names (test_daemon_auth.ConfigTests.test_missing_env_raises_with_names) ... ok
+test_anomaly_card_has_revoke_button (test_daemon_cards.CardBuilderTests.test_anomaly_card_has_revoke_button) ... ok
+test_candidate_card_contains_footer_and_escaped_fields (test_daemon_cards.CardBuilderTests.test_candidate_card_contains_footer_and_escaped_fields) ... ok
+test_card_json_is_serializable (test_daemon_cards.CardBuilderTests.test_card_json_is_serializable) ... ok
+test_daily_card_includes_approval_counter (test_daemon_cards.CardBuilderTests.test_daily_card_includes_approval_counter) ... ok
+test_error_card_problem_cause_fix (test_daemon_cards.CardBuilderTests.test_error_card_problem_cause_fix) ... ok
+test_help_card_lists_all_commands (test_daemon_cards.CardBuilderTests.test_help_card_lists_all_commands) ... ok
+test_pending_list_empty_state_is_warm (test_daemon_cards.CardBuilderTests.test_pending_list_empty_state_is_warm) ... ok
+test_escapes_ampersand_and_brackets (test_daemon_cards.LarkEscapeTests.test_escapes_ampersand_and_brackets) ... ok
+test_escapes_at_injection (test_daemon_cards.LarkEscapeTests.test_escapes_at_injection) ... ok
+test_non_string_coerced (test_daemon_cards.LarkEscapeTests.test_non_string_coerced) ... ok
+test_bare_url_detected (test_daemon_commands.CommandParsingTests.test_bare_url_detected) ... ok
+test_basic_platform_command (test_daemon_commands.CommandParsingTests.test_basic_platform_command) ... ok
+test_candidate_id_validation (test_daemon_commands.CommandParsingTests.test_candidate_id_validation) ... ok
+test_confirm_code_validation (test_daemon_commands.CommandParsingTests.test_confirm_code_validation) ... ok
+test_empty (test_daemon_commands.CommandParsingTests.test_empty) ... ok
+test_english_aliases (test_daemon_commands.CommandParsingTests.test_english_aliases) ... ok
+test_fullwidth_space_and_trailing_punctuation (test_daemon_commands.CommandParsingTests.test_fullwidth_space_and_trailing_punctuation) ... ok
+test_short_id_parsing (test_daemon_commands.CommandParsingTests.test_short_id_parsing) ... ok
+test_unknown_command (test_daemon_commands.CommandParsingTests.test_unknown_command) ... ok
+test_url_validation (test_daemon_commands.CommandParsingTests.test_url_validation) ... ok
+test_append_and_load_roundtrip (test_daemon_journal.JournalTests.test_append_and_load_roundtrip) ... ok
+test_prime_seen_events_rebuilds_on_restart (test_daemon_journal.JournalTests.test_prime_seen_events_rebuilds_on_restart) ... ok
+test_seen_event_dedup (test_daemon_journal.JournalTests.test_seen_event_dedup) ... ok
+test_spool_roundtrip (test_daemon_journal.JournalTests.test_spool_roundtrip) ... ok
+test_torn_tail_write_is_skipped (test_daemon_journal.JournalTests.test_torn_tail_write_is_skipped) ... ok
+test_expired_code_rejected (test_daemon_state.ConfirmCodeTests.test_expired_code_rejected) ... ok
+test_issue_and_confirm_ok (test_daemon_state.ConfirmCodeTests.test_issue_and_confirm_ok) ... ok
+test_wrong_code_three_times_locks (test_daemon_state.ConfirmCodeTests.test_wrong_code_three_times_locks) ... ok
+test_active_approval_lock (test_daemon_state.TicketStoreTests.test_active_approval_lock) ... ok
+test_candidate_freshness_window (test_daemon_state.TicketStoreTests.test_candidate_freshness_window) ... ok
+test_event_roundtrip_rebuilds_state (test_daemon_state.TicketStoreTests.test_event_roundtrip_rebuilds_state) ... ok
+test_latest_own_submission (test_daemon_state.TicketStoreTests.test_latest_own_submission) ... ok
+test_short_id_deterministic (test_daemon_state.TicketStoreTests.test_short_id_deterministic) ... ok
+test_half_success_is_not_degraded (test_fetch_sources.CoverageThresholdTests.test_half_success_is_not_degraded) ... ok
+test_just_under_half_is_degraded (test_fetch_sources.CoverageThresholdTests.test_just_under_half_is_degraded) ... ok
+test_majority_success_is_not_degraded (test_fetch_sources.CoverageThresholdTests.test_majority_success_is_not_degraded) ... ok
+test_no_attempts_is_not_degraded (test_fetch_sources.CoverageThresholdTests.test_no_attempts_is_not_degraded) ... ok
+test_single_total_failure_is_degraded (test_fetch_sources.CoverageThresholdTests.test_single_total_failure_is_degraded) ... ok
+test_auth_invariants_and_verification_date_are_enforced (test_platform_schema.PlatformSchemaTests.test_auth_invariants_and_verification_date_are_enforced) ... ok
+test_capability_objects_reject_unknown_fields (test_platform_schema.PlatformSchemaTests.test_capability_objects_reject_unknown_fields) ... ok
+test_every_platform_satisfies_the_public_data_contract (test_platform_schema.PlatformSchemaTests.test_every_platform_satisfies_the_public_data_contract) ... ok
+test_executable_urls_reject_shell_breakout_characters (test_platform_schema.PlatformSchemaTests.test_executable_urls_reject_shell_breakout_characters) ... ok
+test_malformed_auth_values_return_errors_instead_of_raising (test_platform_schema.PlatformSchemaTests.test_malformed_auth_values_return_errors_instead_of_raising) ... ok
+test_openai_chat_requires_the_expected_endpoint_and_models (test_platform_schema.PlatformSchemaTests.test_openai_chat_requires_the_expected_endpoint_and_models) ... ok
+test_quota_rejects_non_finite_numbers_and_unknown_fields (test_platform_schema.PlatformSchemaTests.test_quota_rejects_non_finite_numbers_and_unknown_fields) ... ok
+test_verification_status_controls_required_provenance (test_platform_schema.PlatformSchemaTests.test_verification_status_controls_required_provenance) ... ok
+test_build_platform_shape_and_source_url (test_platform_tip.BuildPlatformTests.test_build_platform_shape_and_source_url) ... ok
+test_invalid_url_rejected_before_any_work (test_platform_tip.BuildPlatformTests.test_invalid_url_rejected_before_any_work) ... ok
+test_new_platform_candidate_with_slug_conflict_suffix (test_platform_tip.BuildPlatformTests.test_new_platform_candidate_with_slug_conflict_suffix) ... ok
+test_slug_fallback_from_url_when_llm_garbage (test_platform_tip.BuildPlatformTests.test_slug_fallback_from_url_when_llm_garbage) ... ok
+test_domain_of (test_platform_tip.DomainTests.test_domain_of) ... ok
+test_match_via_temp_platforms (test_platform_tip.FindMatchTests.test_match_via_temp_platforms) ... ok
+test_note_candidate_for_existing_unauthorized_source (test_platform_tip.FindMatchTests.test_note_candidate_for_existing_unauthorized_source) ... ok
+test_all_configured_errors_without_naming_secrets_when_none_are_configured (test_probe_capabilities.ProbeCapabilityTests.test_all_configured_errors_without_naming_secrets_when_none_are_configured) ... ok
+test_all_configured_retains_all_candidates_and_fails_on_mixed_results (test_probe_capabilities.ProbeCapabilityTests.test_all_configured_retains_all_candidates_and_fails_on_mixed_results) ... ok
+test_all_configured_skips_missing_credentials_and_probes_each_configured_once (test_probe_capabilities.ProbeCapabilityTests.test_all_configured_skips_missing_credentials_and_probes_each_configured_once) ... ok
+test_candidate_creation_never_overwrites_an_existing_observation (test_probe_capabilities.ProbeCapabilityTests.test_candidate_creation_never_overwrites_an_existing_observation) ... ok
+test_fixed_credential_mapping_rejects_canonical_secret_name_changes (test_probe_capabilities.ProbeCapabilityTests.test_fixed_credential_mapping_rejects_canonical_secret_name_changes) ... ok
+test_fixed_probe_rejects_canonical_endpoint_or_model_changes (test_probe_capabilities.ProbeCapabilityTests.test_fixed_probe_rejects_canonical_endpoint_or_model_changes) ... ok
+test_missing_secret_writes_failed_candidate_without_network (test_probe_capabilities.ProbeCapabilityTests.test_missing_secret_writes_failed_candidate_without_network) ... ok
+test_protocol_response_requires_non_empty_assistant_content (test_probe_capabilities.ProbeCapabilityTests.test_protocol_response_requires_non_empty_assistant_content) ... ok
+test_success_writes_only_a_safe_protocol_observation (test_probe_capabilities.ProbeCapabilityTests.test_success_writes_only_a_safe_protocol_observation) ... ok
+test_frontmatter_keys_within_whitelist (test_rewrite_article.RenderMarkdownTests.test_frontmatter_keys_within_whitelist) ... ok
+test_outline_label_present (test_rewrite_article.RenderMarkdownTests.test_outline_label_present) ... ok
+test_source_url_is_forced_to_original (test_rewrite_article.RenderMarkdownTests.test_source_url_is_forced_to_original) ... ok
+test_fallback_from_url (test_rewrite_article.SlugifyTests.test_fallback_from_url) ... ok
+test_from_title (test_rewrite_article.SlugifyTests.test_from_title) ... ok
+test_length_cap (test_rewrite_article.SlugifyTests.test_length_cap) ... ok
+test_bad_tags_rejected (test_rewrite_article.ValidateOutputTests.test_bad_tags_rejected) ... ok
+test_outline_allows_shorter_body (test_rewrite_article.ValidateOutputTests.test_outline_allows_shorter_body) ... ok
+test_short_body_rejected_for_rewrite (test_rewrite_article.ValidateOutputTests.test_short_body_rejected_for_rewrite) ... ok
+test_valid (test_rewrite_article.ValidateOutputTests.test_valid) ... ok
+test_accepts_a_public_https_destination (test_safe_http.SafeHttpTests.test_accepts_a_public_https_destination) ... ok
+test_authenticated_json_post_is_bounded_and_pinned (test_safe_http.SafeHttpTests.test_authenticated_json_post_is_bounded_and_pinned) ... ok
+test_authenticated_redirect_is_rejected_without_second_request (test_safe_http.SafeHttpTests.test_authenticated_redirect_is_rejected_without_second_request) ... ok
+test_post_does_not_retry_another_resolved_address (test_safe_http.SafeHttpTests.test_post_does_not_retry_another_resolved_address) ... ok
+test_rejects_host_override_and_oversized_body (test_safe_http.SafeHttpTests.test_rejects_host_override_and_oversized_body) ... ok
+test_rejects_non_https_and_authenticated_urls (test_safe_http.SafeHttpTests.test_rejects_non_https_and_authenticated_urls) ... ok
+test_rejects_private_and_loopback_destinations (test_safe_http.SafeHttpTests.test_rejects_private_and_loopback_destinations) ... ok
+test_request_connects_to_the_validated_ip (test_safe_http.SafeHttpTests.test_request_connects_to_the_validated_ip) ... ok
+test_text_redirect_drops_sensitive_headers (test_safe_http.SafeHttpTests.test_text_redirect_drops_sensitive_headers) ... ok
+test_actions_are_pinned_to_commits (test_security_invariants.SecurityInvariantTests.test_actions_are_pinned_to_commits) ... ok
+test_candidate_ids_and_platform_slugs_reject_path_traversal (test_security_invariants.SecurityInvariantTests.test_candidate_ids_and_platform_slugs_reject_path_traversal) ... ok
+test_capability_probe_is_weekly_allowlisted_and_commits_only_candidates (test_security_invariants.SecurityInvariantTests.test_capability_probe_is_weekly_allowlisted_and_commits_only_candidates) ... ok
+test_ci_installs_only_hash_locked_python_dependencies (test_security_invariants.SecurityInvariantTests.test_ci_installs_only_hash_locked_python_dependencies) ... ok
+test_data_writer_workflows_use_gated_pull_requests (test_security_invariants.SecurityInvariantTests.test_data_writer_workflows_use_gated_pull_requests) ... ok
+test_deploy_does_not_use_unconditional_force_push (test_security_invariants.SecurityInvariantTests.test_deploy_does_not_use_unconditional_force_push) ... ok
+test_feishu_configuration_is_empty_when_secrets_are_missing (test_security_invariants.SecurityInvariantTests.test_feishu_configuration_is_empty_when_secrets_are_missing) ... ok
+test_feishu_credentials_have_no_repository_defaults (test_security_invariants.SecurityInvariantTests.test_feishu_credentials_have_no_repository_defaults) ... ok
+test_production_deploy_only_accepts_main (test_security_invariants.SecurityInvariantTests.test_production_deploy_only_accepts_main) ... ok
+test_repository_writers_serialize_duplicate_runs_and_rebase_before_push (test_security_invariants.SecurityInvariantTests.test_repository_writers_serialize_duplicate_runs_and_rebase_before_push) ... ok
+test_review_workflow_is_main_only_and_passes_inputs_via_environment (test_security_invariants.SecurityInvariantTests.test_review_workflow_is_main_only_and_passes_inputs_via_environment) ... ok
+test_review_workflow_mints_app_token_before_authenticated_writes (test_security_invariants.SecurityInvariantTests.test_review_workflow_mints_app_token_before_authenticated_writes) ... ok
+test_scheduled_extraction_only_commits_candidates (test_security_invariants.SecurityInvariantTests.test_scheduled_extraction_only_commits_candidates) ... ok
+test_secret_bearing_manual_workflows_only_run_main (test_security_invariants.SecurityInvariantTests.test_secret_bearing_manual_workflows_only_run_main) ... ok
+test_server_deploy_normalizes_artifact_permissions_for_nginx (test_security_invariants.SecurityInvariantTests.test_server_deploy_normalizes_artifact_permissions_for_nginx) ... ok
+test_ssh_deploy_requires_host_verification_and_non_root_user (test_security_invariants.SecurityInvariantTests.test_ssh_deploy_requires_host_verification_and_non_root_user) ... ok
+test_workflow_inputs_are_not_interpolated_into_shell_source (test_security_invariants.SecurityInvariantTests.test_workflow_inputs_are_not_interpolated_into_shell_source) ... ok
+test_compiles_data_into_pr (test_workflow_contracts.ArticleRewriteWorkflowContractTests.test_compiles_data_into_pr) ... ok
+test_dispatch_inputs_with_mode_choice (test_workflow_contracts.ArticleRewriteWorkflowContractTests.test_dispatch_inputs_with_mode_choice) ... ok
+test_draft_pr_is_never_auto_merged (test_workflow_contracts.ArticleRewriteWorkflowContractTests.test_draft_pr_is_never_auto_merged) ... ok
+test_inputs_never_interpolated_into_shell (test_workflow_contracts.ArticleRewriteWorkflowContractTests.test_inputs_never_interpolated_into_shell) ... ok
+test_app_token_pinned_and_gated_pr (test_workflow_contracts.PlatformTipWorkflowContractTests.test_app_token_pinned_and_gated_pr) ... ok
+test_candidate_only_writes (test_workflow_contracts.PlatformTipWorkflowContractTests.test_candidate_only_writes) ... ok
+test_dispatch_trigger_with_exact_inputs (test_workflow_contracts.PlatformTipWorkflowContractTests.test_dispatch_trigger_with_exact_inputs) ... ok
+test_inputs_never_interpolated_into_shell (test_workflow_contracts.PlatformTipWorkflowContractTests.test_inputs_never_interpolated_into_shell) ... ok
+test_annotated_approval_inputs_exist_but_actor_stays_authoritative (test_workflow_contracts.ReviewCandidateAnnotationContractTests.test_annotated_approval_inputs_exist_but_actor_stays_authoritative) ... ok
+
+----------------------------------------------------------------------
+Ran 137 tests in 1.487s
+
+OK
+[1/2] �������ɾۺ����� (compile_data.py)...
+[2/2] ������̬��ҳ (npm run build)...
+[OK] ���ͨ������ɹ���: data/platforms/demo.yaml
+
+ƽ̨��demo������׼��ͨ�����ع������ȴ�������
+
+  [���˹����] C:\Users\ADMINI~1\AppData\Local\Temp\tmpkih80kwx\candidates\update-demo-aaaaaaaaaaaa.yaml
+[1/2] �������ɾۺ����� (compile_data.py)...
+[OK] �Ѿܾ����鵵��ѡԴ: probe-demo-chat-completions.yaml
+[1/2] �������ɾۺ����� (compile_data.py)...
+[2/2] ������̬��ҳ (npm run build)...
+[OK] ���ͨ������ɹ���: data/platforms/demo.yaml
+
+ƽ̨��demo������׼��ͨ�����ع������ȴ�������
+
+[1/2] �������ɾۺ����� (compile_data.py)...
+[2/2] ������̬��ҳ (npm run build)...
+[OK] ���ͨ������ɹ���: data/platforms/demo.yaml
+
+ƽ̨��demo������׼��ͨ�����ع������ȴ�������
+
+[OK] �Ѿܾ����鵵��ѡԴ: update-demo-aaaaaaaaaaaa.yaml
+[OK] �Ѿܾ����鵵��ѡԴ: update-demo-aaaaaaaaaaaa.yaml
+[DATA] Articles compiled: 1 articles -> articles.json
+[DATA] Sitemap generated: 14 URLs indexed -> sitemap.xml
+[DATA] Articles compiled: 1 articles -> articles.json
+[DATA] Articles compiled: 1 articles -> articles.json
+[DATA] Articles compiled: 1 articles -> articles.json
+[ERROR] invalid url
+[OK] new platform candidate: taken-2
+[OK] platform exists: demo (unauthorized source, note-only candidate)
+[PROBE] deepseek/chat_completions/raw_http: failed; candidate=probe-deepseek-chat-completions-raw-http-20260905t1509058341150000.yaml

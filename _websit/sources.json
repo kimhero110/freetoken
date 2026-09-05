@@ -1,0 +1,24 @@
+{
+  "captured_at": "2026-09-05T16:43:49.942524+00:00",
+  "sources": [
+    {
+      "source": "D:\\Project\\freetoken",
+      "head": "40bf5450d359b7a3b5d788848ede55fe1ccd465d",
+      "files": 325
+    },
+    {
+      "source": "C:\\Users\\Administrator\\freetoken",
+      "head": "558b386f19efe7971457983ce2359bf4e0b925fb",
+      "files": 311
+    }
+  ],
+  "antigravity_task": "bf3efad4-9f27-4be8-aa5a-bb85d75a1b06",
+  "server_source": "wuhao-server:/opt/witkit-bench",
+  "server_service": "witkit-bench.service",
+  "log_policy": "Sensitive lines and report IDs redacted; originals in ignored private/.",
+  "main_server": {
+    "source": "FreeTokenLab:/var/www/freetoken-public",
+    "checkout": "FreeTokenLab:/opt/freetoken-intake",
+    "release_id": "20260903154831-a21d9cdd1cca"
+  }
+}

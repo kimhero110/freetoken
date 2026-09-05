@@ -1,0 +1,71 @@
+schema_version: 2
+slug: aliyun-bailian
+name: 阿里云百炼 (DashScope)
+name_en: Alibaba Cloud Bailian
+category: 大厂云服务
+intro: 阿里云官方大模型服务平台，聚合通义千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。
+intro_en: Alibaba Cloud enterprise platform offering Qwen 2.5, Qwen-Max, and Wanx
+  multimodal models with free credits.
+website: https://bailian.console.aliyun.com/
+doc_url: https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio
+api_base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+free_models:
+- qwen-turbo
+- qwen-plus
+- qwen-max
+free_quota:
+  type: 限时赠送
+  amount: 1000 万
+  unit: Tokens (180天超长有效)
+  reset_period: 一次性
+  details: 通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens，半年有效。
+  details_en: 1,000,000 free tokens for Qwen-Turbo and Qwen-Plus valid for 180 days.
+verification: 阿里云实名
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 大厂基座
+- 国产直连
+- OpenAI兼容
+gotchas:
+- 免费额度消耗后自动转为按量扣费，请设置用量预警。
+gotchas_en:
+- Automatic pay-as-you-go billing after trial depletion.
+registration:
+  url: https://bailian.console.aliyun.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions
+      models:
+      - qwen-turbo
+      - qwen-plus
+      - qwen-max
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: ALIYUN_BAILIAN_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio
+  checked_at: '2026-09-02'

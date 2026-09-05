@@ -1,0 +1,45 @@
+[1/2] 重新生成聚合数据 (compile_data.py)...
+[2/2] 构建静态网页 (npm run build)...
+[OK] 审核通过并完成构建: data/platforms/demo.yaml
+
+平台【demo】已批准并通过本地构建，等待发布。
+
+  [待人工审核] C:\Users\ADMINI~1\AppData\Local\Temp\tmpt9g9m667\candidates\update-demo-aaaaaaaaaaaa.yaml
+[1/2] 重新生成聚合数据 (compile_data.py)...
+[OK] 已拒绝并归档候选源: probe-demo-chat-completions.yaml
+[1/2] 重新生成聚合数据 (compile_data.py)...
+[2/2] 构建静态网页 (npm run build)...
+[OK] 审核通过并完成构建: data/platforms/demo.yaml
+
+平台【demo】已批准并通过本地构建，等待发布。
+
+[1/2] 重新生成聚合数据 (compile_data.py)...
+[2/2] 构建静态网页 (npm run build)...
+[OK] 审核通过并完成构建: data/platforms/demo.yaml
+
+平台【demo】已批准并通过本地构建，等待发布。
+
+[OK] 已拒绝并归档候选源: update-demo-aaaaaaaaaaaa.yaml
+----------------------------------------------------------------------
+Ran 142 tests in 1.596s
+
+OK
+[OK] 已拒绝并归档候选源: update-demo-aaaaaaaaaaaa.yaml
+[DATA] Articles compiled: 1 articles -> articles.json
+[DATA] Sitemap generated: 16 URLs indexed -> sitemap.xml
+[DATA] Articles compiled: 1 articles -> articles.json
+[DATA] Articles compiled: 1 articles -> articles.json
+[DATA] Articles compiled: 1 articles -> articles.json
+[ERROR] invalid url
+[OK] new platform candidate: taken-2
+[OK] platform exists: demo (unauthorized source, note-only candidate)
+[OK] platform exists: demo (authorized source)
+[1/2] 重新生成聚合数据 (compile_data.py)...
+[2/2] 构建静态网页 (npm run build)...
+[OK] 审核通过并完成构建: data/platforms/demo.yaml
+
+平台【Demo】已批准并通过本地构建，等待发布。
+
+[OK] platform exists: demo (authorized source)
+[ERROR] update extraction has invalid quota
+[PROBE] deepseek/chat_completions/raw_http: failed; candidate=probe-deepseek-chat-completions-raw-http-20260905t1622102212830000.yaml

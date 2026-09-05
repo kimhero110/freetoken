@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleReader from '../../components/ArticleReader.astro';
+import articles from '../../data/articles.json';
+
+export async function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const relatedArticles = articles.filter((a) => a.slug !== article.slug).slice(0, 2);
+---
+
+<Base
+  title={`${article.title} · FreeToken 深度文章`}
+  description={article.summary}
+  lang="zh"
+  localized={false}
+>
+  <ArticleReader article={article} relatedArticles={relatedArticles} lang="zh" />
+</Base>

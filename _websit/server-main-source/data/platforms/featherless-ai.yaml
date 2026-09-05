@@ -1,0 +1,70 @@
+schema_version: 2
+name: Featherless AI
+name_en: Featherless AI
+slug: featherless-ai
+website: https://featherless.ai
+category: 海外主流
+free_quota:
+  amount: 免费试用配额
+  unit: Tokens
+  type: 限时/免费层
+  reset_period: 注册赠送
+  conditions:
+  - 注册即享免费测试额度
+  - 1000+ 开源模型免部署即用
+free_models:
+- meta-llama/Meta-Llama-3.1-8B-Instruct
+- mistralai/Mistral-7B-Instruct-v0.3
+- Qwen/Qwen2.5-7B-Instruct
+api_base_url: https://api.featherless.ai/v1
+register_url: https://featherless.ai
+docs_url: https://featherless.ai/docs
+source_urls:
+- https://featherless.ai
+last_verified: '2026-09-02'
+status: active
+intro: 提供 1,000+ 款开源大模型 Serverless 推理云。注册即享免费测试配额，完美兼容标准 OpenAI API 格式。
+intro_en: Serverless inference cloud with 1,000+ open-source LLMs. Free trial credits
+  included with drop-in OpenAI protocol compatibility.
+tags:
+- 限时
+- 开源模型
+- OpenAI兼容
+- 多模型聚合
+registration:
+  url: https://featherless.ai
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.featherless.ai/v1/chat/completions
+      models:
+      - meta-llama/Meta-Llama-3.1-8B-Instruct
+      - mistralai/Mistral-7B-Instruct-v0.3
+      - Qwen/Qwen2.5-7B-Instruct
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: FEATHERLESS_AI_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://featherless.ai
+  checked_at: '2026-09-02'

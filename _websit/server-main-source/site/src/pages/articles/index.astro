@@ -1,0 +1,81 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleList from '../../components/ArticleList.astro';
+import articles from '../../data/articles.json';
+---
+
+<Base
+  title="深度技术文章与实战白皮书 · FreeToken 智库"
+  description="精选大模型算力经济学、OpenClaw 智能体降本、多 Key 聚合网关与 5 小时滑动窗口深度技术长文与架构指南。"
+  lang="zh"
+>
+  <section class="articles-hero-section">
+    <div class="container">
+      <div class="articles-hero-badge">ARTICLE HUB · 深度技术智库</div>
+      <h1 class="articles-hero-title">大模型算力架构与 Agent 降本实战专栏</h1>
+      <p class="articles-hero-desc">
+        从底层协议到工业级落地：沉淀 OpenClaw 极客降本、4.5 亿 Tokens 算账模型、网关集群搭建与滑动窗口避坑的原创深度长文。
+      </p>
+
+      <div class="articles-meta-bar">
+        <span>共 {articles.length} 篇深度长文</span>
+        <span class="meta-dot">·</span>
+        <span>持续高频更新</span>
+        <span class="meta-dot">·</span>
+        <a href="https://github.com/kimhero110/freetoken/tree/main/content/articles" target="_blank" rel="noopener" class="article-gh-link">在 GitHub 参与编写 ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap section-bg">
+    <div class="container">
+      <ArticleList articles={articles} lang="zh" />
+    </div>
+  </section>
+
+  <style>
+    .articles-hero-section {
+      padding: 56px 0 28px;
+      border-bottom: 1px solid var(--card-border);
+      background: #ffffff;
+    }
+    .articles-hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: var(--accent);
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+    }
+    .articles-hero-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.6px;
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .articles-hero-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+    .articles-meta-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .meta-dot { opacity: 0.5; }
+    .article-gh-link { color: var(--text); font-weight: 600; text-decoration: underline; }
+    .section-wrap { padding: 44px 0; }
+    .section-bg { background: var(--bg-subtle); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); }
+  </style>
+</Base>

@@ -1,0 +1,68 @@
+schema_version: 2
+slug: hyperbolic
+name: Hyperbolic (去中心化算力)
+name_en: Hyperbolic
+category: 海外主流
+intro: 高性能去中心化 GPU 算力网络，注册即送 10 美元体验金，支持 DeepSeek R1 满血版 671B 极速推理！
+intro_en: Decentralized GPU cloud. $10 free developer credits for DeepSeek R1 671B
+  full-parameter inference.
+website: https://hyperbolic.xyz/
+doc_url: https://docs.hyperbolic.xyz/
+api_base_url: https://api.hyperbolic.xyz/v1
+free_models:
+- deepseek-ai/DeepSeek-R1
+- deepseek-ai/DeepSeek-V3
+free_quota:
+  type: 限时赠送
+  amount: 10 美元
+  unit: USD Credits (约数千万Tokens)
+  reset_period: 一次性
+  details: 新注册开发者发放 10 美元算力额度，支持 DeepSeek R1 671B 满血版推理。
+  details_en: $10 trial credit upon registration for DeepSeek R1 and V3.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 体验金有效期 30 天。
+gotchas_en:
+- Credits valid for 30 days.
+registration:
+  url: https://hyperbolic.xyz/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.hyperbolic.xyz/v1/chat/completions
+      models:
+      - deepseek-ai/DeepSeek-R1
+      - deepseek-ai/DeepSeek-V3
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: HYPERBOLIC_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://docs.hyperbolic.xyz/
+  checked_at: '2026-09-02'

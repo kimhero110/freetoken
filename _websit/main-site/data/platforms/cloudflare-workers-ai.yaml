@@ -1,0 +1,70 @@
+schema_version: 2
+slug: cloudflare-workers-ai
+name: Cloudflare Workers AI
+name_en: Cloudflare Workers AI
+category: 大厂云服务
+intro: 全球最大边缘网络官方 AI 推理平台，每天免费提供 10,000 次神经元（Neurons）计算额度！
+intro_en: Serverless GPU inference at the edge. 10,000 free Neurons daily (~100K-300K
+  tokens).
+website: https://ai.cloudflare.com/
+doc_url: https://developers.cloudflare.com/workers-ai/
+api_base_url: https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1
+free_models:
+- '@cf/meta/llama-3.3-70b-instruct'
+- '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b'
+free_quota:
+  type: 每日刷新
+  amount: 10,000
+  unit: Neurons / 天 (约数十万Tokens)
+  reset_period: 每日刷新
+  details: 每天提供 10,000 神经元计算额度，覆盖数百款前沿开源模型与多模态生图。
+  details_en: 10,000 Neurons per day (~100-300K tokens) free tier across global edge
+    network.
+verification: 邮箱验证
+status: active
+last_verified: '2026-09-02'
+tags:
+- 每日
+- 大厂基座
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 需要获取 Account ID 拼入 Base URL。
+gotchas_en:
+- Requires Cloudflare Account ID in Base URL.
+registration:
+  url: https://ai.cloudflare.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions
+      models:
+      - '@cf/meta/llama-3.3-70b-instruct'
+      - '@cf/deepseek-ai/deepseek-r1-distill-qwen-32b'
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: CLOUDFLARE_WORKERS_AI_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://developers.cloudflare.com/workers-ai/
+  checked_at: '2026-09-02'

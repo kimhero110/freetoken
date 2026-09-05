@@ -1,0 +1,71 @@
+schema_version: 2
+slug: moonshot-kimi
+name: 月之暗面 (Kimi 开放平台)
+name_en: Moonshot AI (Kimi)
+category: 国内主流
+intro: 国内超长文本开创者 Kimi 官方开放平台，新注册开发者赠送 15 元代金券（约 125 万 Tokens），长文档分析极强。
+intro_en: Pioneered 2M-token long context in China. 15 RMB voucher (~1.25M tokens)
+  on registration.
+website: https://platform.moonshot.cn/
+doc_url: https://platform.moonshot.cn/docs/intro
+api_base_url: https://api.moonshot.cn/v1
+free_models:
+- moonshot-v1-8k
+- moonshot-v1-32k
+- moonshot-v1-128k
+free_quota:
+  type: 限时赠送
+  amount: 15 元
+  unit: 代金券 (约 125 万 Tokens)
+  reset_period: 一次性
+  details: 新用户注册发放 15 元体验额度，支持 128K 超长上下文分析与结构化抽取。
+  details_en: 15 RMB trial voucher upon registration for Moonshot-v1 series.
+verification: 手机号注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- 代金券用尽后需按量充值。
+gotchas_en:
+- Pay-as-you-go applies after voucher depletion.
+registration:
+  url: https://platform.moonshot.cn/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.moonshot.cn/v1/chat/completions
+      models:
+      - moonshot-v1-8k
+      - moonshot-v1-32k
+      - moonshot-v1-128k
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: MOONSHOT_KIMI_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://platform.moonshot.cn/docs/intro
+  checked_at: '2026-09-02'

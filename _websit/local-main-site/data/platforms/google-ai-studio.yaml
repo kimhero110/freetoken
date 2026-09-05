@@ -1,0 +1,70 @@
+schema_version: 2
+slug: google-ai-studio
+name: Google AI Studio (Gemini)
+name_en: Google AI Studio (Gemini)
+category: 大厂基座
+intro: Google 官方开发者大模型服务，Gemini 2.5 Flash 每天免费提供高达 1500 次请求，百万超长上下文！
+intro_en: Official Google API. 1,500 free requests per day (~10M tokens) for Gemini
+  2.5 Flash with 1M context.
+website: https://aistudio.google.com/
+doc_url: https://ai.google.dev/docs
+api_base_url: https://generativelanguage.googleapis.com/v1beta/openai/
+free_models:
+- gemini-2.5-flash
+- gemini-2.5-pro
+free_quota:
+  type: 每日刷新
+  amount: 1500 次 / 天
+  unit: Requests (约 1000 万 Tokens/天)
+  reset_period: 每日刷新
+  details: 全网最慷慨大厂官方免费层：每天 1500 次请求，15 RPM，支持 100 万 Token 上下文。
+  details_en: 1,500 requests per day at 15 RPM for Gemini 2.5 Flash.
+verification: Google 账号
+status: active
+last_verified: '2026-09-02'
+tags:
+- 每日
+- 大厂基座
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 免费层 Prompt 数据可能会被 Google 用于模型优化。
+- 需要国际网络。
+gotchas_en:
+- Free tier inputs may be logged for quality improvements.
+registration:
+  url: https://aistudio.google.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://generativelanguage.googleapis.com/v1beta/openai/chat/completions
+      models:
+      - gemini-2.5-flash
+      - gemini-2.5-pro
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: GOOGLE_AI_STUDIO_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://ai.google.dev/docs
+  checked_at: '2026-09-02'

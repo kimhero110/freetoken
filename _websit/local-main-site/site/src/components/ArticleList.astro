@@ -1,0 +1,171 @@
+---
+interface Props {
+  articles: any[];
+  lang?: 'zh' | 'en';
+}
+
+const { articles = [], lang = 'zh' } = Astro.props;
+const isEn = lang === 'en';
+---
+
+<div class="articles-grid">
+  {articles.map((art) => (
+    <article class="article-listing-card">
+      <div class="art-card-top">
+        <span class="art-category-badge">{art.category}</span>
+        <span class="art-read-time">{art.reading_time}</span>
+      </div>
+
+      <h2 class="art-card-title">
+        <a href={`/article/${art.slug}/`}>
+          {isEn ? (art.title_en || art.title) : art.title}
+        </a>
+      </h2>
+
+      <p class="art-card-summary">
+        {isEn ? (art.summary_en || art.summary) : art.summary}
+      </p>
+
+      <div class="art-tags-list">
+        {art.tags.map((tag: string) => (
+          <span class="art-tag">#{tag}</span>
+        ))}
+      </div>
+
+      <div class="art-card-footer">
+        <div class="art-author-date">
+          <span class="art-author">{art.author}</span>
+          <span class="art-date">{isEn ? `Published ${art.date}` : `发布于 ${art.date}`}</span>
+        </div>
+        <a href={`/article/${art.slug}/`} class="art-read-btn">
+          {isEn ? 'Read in Chinese →' : '阅读全文 →'}
+        </a>
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 768px) {
+    .articles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .article-listing-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+  }
+  .article-listing-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--text);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  .art-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .art-category-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .art-read-time {
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .art-card-title {
+    font-size: 18.5px;
+    font-weight: 800;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  .art-card-title a {
+    color: var(--text);
+    transition: color 0.15s;
+  }
+  .art-card-title a:hover {
+    color: var(--accent);
+  }
+
+  .art-card-summary {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .art-tags-list {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .art-tag {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text-light);
+    background: var(--bg-subtle);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .art-card-footer {
+    border-top: 1px solid var(--card-border);
+    padding-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .art-author-date {
+    display: flex;
+    flex-direction: column;
+    font-size: 11.5px;
+  }
+  .art-author {
+    font-weight: 700;
+    color: var(--text);
+  }
+  .art-date {
+    color: var(--text-light);
+  }
+  .art-read-btn {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    transition: transform 0.15s;
+  }
+  .art-read-btn:hover {
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 640px) {
+    .article-listing-card {
+      padding: 18px 16px;
+    }
+  }
+</style>

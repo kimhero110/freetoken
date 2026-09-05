@@ -1,0 +1,28 @@
+---
+import articles from '../../../data/articles.json';
+
+export function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const destination = `/article/${article.slug}/`;
+const canonical = new URL(destination, 'https://freetokens.info').toString();
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content={`0; url=${destination}`} />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={canonical} />
+    <title>{article.title} | FreeToken</title>
+  </head>
+  <body>
+    <p>This article is currently available in Chinese. <a href={destination}>Continue to the article</a>.</p>
+  </body>
+</html>

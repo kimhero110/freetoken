@@ -1,0 +1,37 @@
+558b386f19efe7971457983ce2359bf4e0b925fb
+20260903154831-a21d9cdd1cca
+server {
+    listen 80;
+    server_name _;
+
+    root /usr/share/nginx/html;  # 容器内静态目录映射路径
+    index index.html;
+
+    # 静态资源缓存
+    location ~* \.(?:css|js|svg|png|jpg|jpeg|gif|ico|woff2?)$ {
+        expires 7d;
+        add_header Cache-Control "public, max-age=604800";
+        try_files $uri =404;
+    }
+
+    # Astro 静态目录路由支持 (兼容 /platform/xxx 和 /platform/xxx/)
+    location / {
+        try_files $uri $uri/ $uri/index.html /index.html =404;
+    }
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml text/plain;
+}
+
+# ICP 备案 + 证书就绪后，取消下面注释并配置 HTTPS（推荐使用 certbot 签发）：
+# server {
+#     listen 443 ssl;
+#     server_name freetokens.info www.freetokens.info;
+#     ssl_certificate     /etc/letsencrypt/live/freetokens.info/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/freetokens.info/privkey.pem;
+#     root /var/www/freetoken;
+#     index index.html;
+#     location / { try_files $uri $uri/index.html $uri.html =404; }
+# }
+sha256:00a11548886c216d52ba7dd3471b84ecbc1f8f9bece7495d75e30d04094b5ec9
+sha256:db35bfc6b2951e7f8a72db5db120288c127ffaeeb4a6d4b95a26fead017d5913

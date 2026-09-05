@@ -1,0 +1,107 @@
+---
+import platforms from '../data/platforms.json';
+
+interface Props {
+  lang?: 'zh' | 'en';
+}
+const { lang = 'zh' } = Astro.props;
+const isEn = lang === 'en';
+const totalNodes = platforms.length;
+const verifiedDates = platforms.map((p) => p.last_verified).filter(Boolean).sort();
+const latestVerified = verifiedDates.at(-1) || (isEn ? 'Not verified' : '未核实');
+---
+
+<div class="telemetry-bar">
+  <div class="container telemetry-inner">
+    <div class="telemetry-left">
+      <span class="telemetry-label">{isEn ? 'DATABASE:' : '数据目录:'}</span>
+      <span class="telemetry-status">{isEn ? `${totalNodes} tracked platforms` : `已收录 ${totalNodes} 个平台`}</span>
+      <span class="telemetry-sep">|</span>
+      <span class="telemetry-time">{isEn ? `Latest verification: ${latestVerified}` : `最近核验：${latestVerified}`}</span>
+    </div>
+    <div class="telemetry-right">
+      <span class="telemetry-item">{isEn ? 'Changes require human approval' : '数据变更需人工审核'}</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .telemetry-bar {
+    background: #18181b;
+    color: #e4e4e7;
+    font-size: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid #27272a;
+    font-family: var(--font-mono);
+  }
+  .telemetry-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .telemetry-left, .telemetry-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .telemetry-pulse {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: telemetryPulse 2s infinite;
+  }
+  @keyframes telemetryPulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+  .telemetry-label {
+    color: #a1a1aa;
+    font-weight: 600;
+  }
+  .telemetry-status {
+    color: #34d399;
+    font-weight: 600;
+  }
+  .telemetry-sep {
+    color: #52525b;
+  }
+  .telemetry-time {
+    color: #cbd5e1;
+  }
+  .telemetry-dim {
+    color: #71717a;
+  }
+  .telemetry-item strong {
+    color: #fbbf24;
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .telemetry-bar {
+      padding: 7px 0;
+      font-size: 11px;
+    }
+    .telemetry-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .telemetry-left {
+      width: 100%;
+      justify-content: flex-start;
+      gap: 6px;
+    }
+    .telemetry-right {
+      width: 100%;
+      justify-content: flex-start;
+      gap: 6px;
+    }
+  }
+</style>

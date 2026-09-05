@@ -1,0 +1,298 @@
+---
+interface Props {
+  lang?: 'zh' | 'en';
+}
+const { lang = 'zh' } = Astro.props;
+const isEn = lang === 'en';
+---
+
+<!-- 6 大深度实战长文专区 -->
+<section class="section-wrap" id="articles-area">
+  <div class="container">
+    <div class="section-head-guide">
+      <span class="guide-area-badge">{isEn ? 'TECHNICAL PLAYBOOKS & WHITE PAPERS' : '深度实战长文与白皮书专区'}</span>
+      <h2 class="guide-area-title">{isEn ? 'Mastering AI Compute & Autonomous Agents' : '大模型算力调度与自主智能体（Agent）实战深度篇'}</h2>
+      <p class="guide-area-desc">
+        {isEn
+          ? 'Six practical playbooks covering OpenAI-compatible protocols, gateway clustering, and rolling windows. Claims require the evidence level shown in platform data.'
+          : '从底层协议到 90% 极客降本、网关集群搭建与滑动窗口避坑：6 大重磅实战篇章带你掌握工业级算力调度。'}
+      </p>
+    </div>
+
+    <div class="guide-articles-stack">
+      
+      <!-- 篇章 01 -->
+      <article class="article-card" id="art-01">
+        <div class="art-card-header">
+          <div class="art-meta-tag">CHAPTER 01 · 协议与多场景接入</div>
+          <h2 class="art-title">标准 OpenAI 协议 3 参数体系与 4 大主流场景实战</h2>
+          <div class="art-badge-row">
+            <span class="art-badge">OpenAI 标准</span>
+            <span class="art-badge">OpenClaw</span>
+            <span class="art-badge">Claude Code</span>
+            <span class="art-badge">Cursor</span>
+          </div>
+        </div>
+        <div class="art-body">
+          <p>目录中只有标记为 <strong>claimed、documented 或 live</strong> 的 OpenAI Chat Completions 操作才会生成示例；三者分别表示平台声称、已核查官方文档、真实调用通过。接入时使用操作记录中的 3 个核心参数：</p>
+          <div class="proto-grid">
+            <div class="proto-card">
+              <h4>1. API Base URL (端点)</h4>
+              <p>从规范 <code>/chat/completions</code> 端点精确移除该后缀获得；不能假定以 <code>/v1</code> 结尾。</p>
+            </div>
+            <div class="proto-card">
+              <h4>2. API Key (密钥凭证)</h4>
+              <p>在各家平台控制台创建的身份鉴权令牌，以 <code>Bearer sk-...</code> 格式请求。</p>
+            </div>
+            <div class="proto-card">
+              <h4>3. Model Name (模型名)</h4>
+              <p>厂商提供的官方精确模型代号，大小写敏感，如 <code>deepseek-ai/DeepSeek-R1</code>。</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 篇章 02 -->
+      <article class="article-card" id="art-02">
+        <div class="art-card-header">
+          <div class="art-meta-tag">CHAPTER 02 · 免费算力经济学</div>
+          <h2 class="art-title">2026 全球免费算力硬核算账：4.5 亿 Tokens 如何实现「0 成本永动机」？</h2>
+          <div class="art-badge-row">
+            <span class="art-badge">Token 经济学</span>
+            <span class="art-badge">一次性赠送池</span>
+            <span class="art-badge">每日循环池</span>
+            <span class="art-badge">0成本运转</span>
+          </div>
+        </div>
+        <div class="art-body">
+          <p>根据我们对全球 40+ 家平台的拉网式实测，当前个人开发者可以调动的免费算力池分为两大核心板块：</p>
+          <div class="pool-grid">
+            <div class="pool-card pool-once">
+              <h4>🎁 一次性赠送池（累计 4.5 亿+ Tokens，价值 $200+ USD）</h4>
+              <ul>
+                <li><strong>国家超算互联网 (SCNet)</strong>：1000 万 Tokens 算力券</li>
+                <li><strong>硅基流动 (SiliconFlow)</strong>：2000 万 Tokens (14元)</li>
+                <li><strong>GMI Cloud</strong>：20 亿 Tokens 限时巨量算力补贴 (MiniMax 专属)</li>
+                <li><strong>阿里云百炼 (DashScope)</strong>：1000 万 Tokens (180天超长有效期)</li>
+                <li><strong>xAI Grok</strong>：25 美元注册金 + 每月 150 美元数据共享补贴</li>
+                <li><strong>智谱 AI (BigModel)</strong>：2500 万 Tokens 旗舰模型体验金</li>
+              </ul>
+            </div>
+            <div class="pool-card pool-daily">
+              <h4>🔄 每日循环刷新池（每天 550 万+ Tokens，永久无限续杯）</h4>
+              <ul>
+                <li><strong>火山引擎 (火山方舟)</strong>：每天 200 万 Tokens (豆包/DeepSeek满血)</li>
+                <li><strong>Google AI Studio</strong>：每天 1500 次请求 (Gemini 2.5 Flash 百万上下文)</li>
+                <li><strong>智谱 AI</strong>：GLM-4-Flash / GLM-4V-Flash 完全永久免费</li>
+                <li><strong>百度千帆</strong>：ERNIE-Speed / ERNIE-Lite 永久免费</li>
+                <li><strong>Cerebras Inference</strong>：每天 100 万 Tokens (1800+ tokens/s)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 篇章 03 -->
+      <article class="article-card" id="art-03">
+        <div class="art-card-header">
+          <div class="art-meta-tag">CHAPTER 03 · 网关与负载均衡</div>
+          <h2 class="art-title">多 Key 聚合池与高可用网关实操指南（FreeLLMAPI & One API）</h2>
+          <div class="art-badge-row">
+            <span class="art-badge">多Key聚合</span>
+            <span class="art-badge">自动降级</span>
+            <span class="art-badge">FreeLLMAPI</span>
+            <span class="art-badge">One API</span>
+          </div>
+        </div>
+        <div class="art-body">
+          <p>单家平台的免费 API 往往有 20~30 RPM 的并发限制。通过轻量级网关，你可以把全网 40+ 家免费 Key 打包为统一的私有接口，实现<strong>跨厂商自动故障转移（Fallback）与加权负载均衡</strong>。</p>
+        </div>
+      </article>
+
+      <!-- 篇章 04 -->
+      <article class="article-card" id="art-04">
+        <div class="art-card-header">
+          <div class="art-meta-tag">CHAPTER 04 · 计费避坑与滑动窗口</div>
+          <h2 class="art-title">Agent 计费避坑：5 小时滑动窗口机制与扣费陷阱深度解密</h2>
+          <div class="art-badge-row">
+            <span class="art-badge">5小时滑动窗口</span>
+            <span class="art-badge">扣费陷阱</span>
+            <span class="art-badge">单位换算</span>
+          </div>
+        </div>
+        <div class="art-body">
+          <p>许多商业 Coding Plan 宣称“每月几万次”，底层实际上实施了 <strong>5 小时滚动滑动窗口限制</strong>。一旦短时间内连续执行大型工程重构，会瞬间撞满滑动限额被锁死，必须等待旧请求匀速滑出窗口释放。</p>
+        </div>
+      </article>
+
+      <!-- 篇章 05 -->
+      <article class="article-card" id="art-05">
+        <div class="art-card-header">
+          <div class="art-meta-tag">CHAPTER 05 · 极客降本 90% 实战</div>
+          <h2 class="art-title">OpenClaw 与 Coding Agent 降本 90% 的 6 大极客技巧</h2>
+          <div class="art-badge-row">
+            <span class="art-badge">立省 90%</span>
+            <span class="art-badge">Prompt缓存</span>
+            <span class="art-badge">三级路由</span>
+            <span class="art-badge">QMD切片</span>
+          </div>
+        </div>
+        <div class="art-body">
+          <div class="hacks-grid">
+            <div class="hack-card">
+              <h4>1. 关闭隐形后台任务（立省 70%）</h4>
+              <p>关闭自动生成标题、标签与后台心跳，将 30 轮调用的 120 万 Tokens 砍至 36 万。</p>
+            </div>
+            <div class="hack-card">
+              <h4>2. 智能三级模型路由（省 60-80%）</h4>
+              <p>GLM-4-Flash 清洗格式，Claude 3.5 / Qwen 72B 写代码，R1 / Opus 攻坚架构。</p>
+            </div>
+            <div class="hack-card">
+              <h4>3. 启用 Prompt 前缀缓存（省 80-90%）</h4>
+              <p>固定系统提示词命中缓存，输入 Tokens 费用降低 80%~90%。</p>
+            </div>
+            <div class="hack-card">
+              <h4>4. QMD 本地向量切片检索（省 85-97%）</h4>
+              <p>精准切片提取 200 行核心代码注入上下文，拒绝全量 Dump。</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 篇章 06 -->
+      <article class="article-card" id="art-06">
+        <div class="art-card-header">
+          <div class="art-meta-tag">CHAPTER 06 · 大模型选型矩阵</div>
+          <h2 class="art-title">国内外主流大模型在智能体场景的实战评测与选型矩阵</h2>
+          <div class="art-badge-row">
+            <span class="art-badge">DeepSeek R1/V3</span>
+            <span class="art-badge">Claude 3.5 Sonnet</span>
+            <span class="art-badge">Grok 4.1</span>
+            <span class="art-badge">Gemini 2.5</span>
+          </div>
+        </div>
+        <div class="art-body">
+          <p>横向对比推理智力、Tool Calling 严格度、上下文长度与网络直连性，为你的自主智能体匹配最佳基座。</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-wrap {
+    padding: 44px 0;
+  }
+  .section-head-guide {
+    margin-bottom: 32px;
+  }
+  .guide-area-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    color: var(--accent);
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .guide-area-title {
+    font-size: clamp(22px, 3.5vw, 30px);
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .guide-area-desc {
+    font-size: 14.5px;
+    color: var(--text-muted);
+    max-width: 800px;
+    line-height: 1.6;
+  }
+
+  .guide-articles-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .article-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+  }
+  .art-card-header {
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 18px;
+    margin-bottom: 20px;
+  }
+  .art-meta-tag {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+  .art-title {
+    font-size: clamp(19px, 2.5vw, 24px);
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.35;
+  }
+  .art-badge-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .art-badge {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--bg-subtle);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .art-body {
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: var(--text-muted);
+  }
+  .proto-grid, .pool-grid, .hacks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+  .proto-card, .pool-card, .hack-card {
+    background: var(--bg-subtle);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .proto-card h4, .pool-card h4, .hack-card h4 {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .pool-card ul {
+    padding-left: 18px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  @media (max-width: 640px) {
+    .article-card {
+      padding: 20px 16px;
+    }
+  }
+</style>

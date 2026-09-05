@@ -1,0 +1,81 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ArticleList from '../../../components/ArticleList.astro';
+import articles from '../../../data/articles.json';
+---
+
+<Base
+  title="In-Depth Technical Articles & Playbooks · FreeToken Intelligence"
+  description="Curated long-form guides on LLM compute economics, OpenClaw agent cost reduction, multi-key gateways, and 5-hour rolling windows."
+  lang="en"
+>
+  <section class="articles-hero-section">
+    <div class="container">
+      <div class="articles-hero-badge">ARTICLE HUB · TECHNICAL INTELLIGENCE</div>
+      <h1 class="articles-hero-title">AI Compute Architecture & Autonomous Agent Playbooks</h1>
+      <p class="articles-hero-desc">
+        From standard protocols to production battle-tested optimization: Deep architectural playbooks on cutting OpenClaw token burns by 90%, 450M token economics, and rolling window limits.
+      </p>
+
+      <div class="articles-meta-bar">
+        <span>{articles.length} In-Depth Articles</span>
+        <span class="meta-dot">·</span>
+        <span>Continuously Updated</span>
+        <span class="meta-dot">·</span>
+        <a href="https://github.com/kimhero110/freetoken/tree/main/content/articles" target="_blank" rel="noopener" class="article-gh-link">Contribute on GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap section-bg">
+    <div class="container">
+      <ArticleList articles={articles} lang="en" />
+    </div>
+  </section>
+
+  <style>
+    .articles-hero-section {
+      padding: 56px 0 28px;
+      border-bottom: 1px solid var(--card-border);
+      background: #ffffff;
+    }
+    .articles-hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: var(--accent);
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+    }
+    .articles-hero-title {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.6px;
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .articles-hero-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+    .articles-meta-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .meta-dot { opacity: 0.5; }
+    .article-gh-link { color: var(--text); font-weight: 600; text-decoration: underline; }
+    .section-wrap { padding: 44px 0; }
+    .section-bg { background: var(--bg-subtle); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); }
+  </style>
+</Base>

@@ -1,0 +1,71 @@
+schema_version: 2
+slug: scnet
+name: 国家超算互联网 (SCNet)
+name_en: China National Supercomputer SCNet
+category: 大厂基座
+intro: 国家级超算互联网官方平台，新用户注册认证发放 1000 万 Tokens 免费算力券，央企级高可靠基础设施！
+intro_en: China's national supercomputing AI grid. 10,000,000 free tokens voucher
+  upon developer registration.
+website: https://www.scnet.cn/
+doc_url: https://www.scnet.cn/ui/mall/
+api_base_url: https://api.scnet.cn/v1
+free_models:
+- deepseek-r1
+- deepseek-v3
+- qwen2.5-72b
+free_quota:
+  type: 限时赠送
+  amount: 1000 万
+  unit: Tokens (算力补贴券)
+  reset_period: 一次性
+  details: 新用户完成实名认证后发放 1000 万 Tokens 算力代金券，全面支持 DeepSeek 与 Qwen 满血大模型。
+  details_en: 10M free tokens upon verified registration for DeepSeek and Qwen.
+verification: 手机实名认证
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 大厂基座
+- 国产直连
+- OpenAI兼容
+gotchas:
+- 算力券有效期通常为 30-90 天，适合 Agent 项目重度开发。
+gotchas_en:
+- Voucher valid for 30-90 days.
+registration:
+  url: https://www.scnet.cn/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.scnet.cn/v1/chat/completions
+      models:
+      - deepseek-r1
+      - deepseek-v3
+      - qwen2.5-72b
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: SCNET_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://www.scnet.cn/ui/mall/
+  checked_at: '2026-09-02'

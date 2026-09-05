@@ -1,0 +1,73 @@
+schema_version: 2
+slug: siliconflow
+name: 硅基流动 (SiliconFlow)
+name_en: SiliconFlow
+category: 国内主流
+intro: 国内领先大模型加速推理平台，注册送 2000 万 Tokens（14元），并提供 Qwen/DeepSeek/GLM 多款完全永久免费模型！
+intro_en: Leading Chinese inference accelerator. 20,000,000 tokens on sign-up plus
+  permanent free models.
+website: https://cloud.siliconflow.cn/
+doc_url: https://docs.siliconflow.cn/
+api_base_url: https://api.siliconflow.cn/v1
+free_models:
+- Qwen/Qwen2.5-7B-Instruct
+- deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
+- THUDM/glm-4-9b-chat
+free_quota:
+  type: 永久免费
+  amount: 2000 万 + 永久免费
+  unit: Tokens (7B-9B 模型完全永久免费)
+  reset_period: 永久
+  details: 注册发放 2000 万 Tokens 体验额度，同时 7B/9B 等系列模型完全永久免费调用。
+  details_en: 20,000,000 free tokens for new users, with 7B-9B models permanently
+    free.
+verification: 手机号注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 限时
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- 免费 7B-9B 模型无扣费风险，适合 Agent 自动化日常保底。
+gotchas_en:
+- Free 7B-9B models are permanently free with zero billing risk.
+registration:
+  url: https://cloud.siliconflow.cn/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.siliconflow.cn/v1/chat/completions
+      models:
+      - Qwen/Qwen2.5-7B-Instruct
+      - deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
+      - THUDM/glm-4-9b-chat
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: SILICONFLOW_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://docs.siliconflow.cn/
+  checked_at: '2026-09-02'

@@ -1,0 +1,6 @@
+unrelated_review_run_selected: 999
+waiting_review_run_selected: None
+undeclared_platform_inputs: ['mode']
+valid_event_extracted: None
+[OK] platform exists: demo (authorized source)
+generated_update_approval_error: 更新候选来源哈希无效

@@ -1,0 +1,129 @@
+name: 定时生成免费额度变更候选
+
+on:
+  schedule:
+    # 限制在 DeepSeek 官方优惠波谷时段运行（北京时间 00:30~08:30，享五折）
+    # UTC 17:30 / 20:30 / 23:30 对应北京时间 01:30 / 04:30 / 07:30
+    - cron: "30 17,20,23 * * *"
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: "选择提取使用的模型提供商 (default 为 config/llm.yaml 默认)"
+        required: false
+        default: "default"
+        type: choice
+        options:
+          - "default"
+          - "deepseek"
+          - "siliconflow"
+          - "kimi"
+          - "dashscope"
+          - "custom_proxy"
+      strategy:
+        description: "调用策略 (specified 单模型 / fallback 回退 / load_balance 负载均衡)"
+        required: false
+        default: "default"
+        type: choice
+        options:
+          - "default"
+          - "specified"
+          - "fallback"
+          - "load_balance"
+      model_override:
+        description: "覆盖模型名称 (如 deepseek-chat, qwen-plus，选填)"
+        required: false
+        type: string
+        default: ""
+      ignore_off_peak:
+        description: "忽略 DeepSeek 波谷时段保护强制执行"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: freetoken-main-writer
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mint GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: 检出仓库
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: 安装 Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: scripts/requirements.lock
+
+      - name: 安装 Python 依赖
+        run: pip install --require-hashes -r scripts/requirements.lock
+
+      - name: 抓取来源页面（变更检测）
+        run: python scripts/fetch_sources.py
+
+      - name: 调用大模型提取结构化信息 (灵活自定义模式)
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+          DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
+          CUSTOM_LLM_KEY: ${{ secrets.CUSTOM_LLM_KEY }}
+          PROVIDER_INPUT: ${{ inputs.provider }}
+          STRATEGY_INPUT: ${{ inputs.strategy }}
+          MODEL_OVERRIDE_INPUT: ${{ inputs.model_override }}
+          IGNORE_OFF_PEAK_INPUT: ${{ inputs.ignore_off_peak }}
+        run: |
+          ARGS=()
+          if [ "$PROVIDER_INPUT" != "default" ] && [ -n "$PROVIDER_INPUT" ]; then
+            ARGS+=(--provider "$PROVIDER_INPUT")
+          fi
+          if [ "$STRATEGY_INPUT" != "default" ] && [ -n "$STRATEGY_INPUT" ]; then
+            ARGS+=(--strategy "$STRATEGY_INPUT")
+          fi
+          if [ -n "$MODEL_OVERRIDE_INPUT" ]; then
+            if [[ ! "$MODEL_OVERRIDE_INPUT" =~ ^[A-Za-z0-9._:/-]{1,128}$ ]]; then
+              echo "Invalid model override" >&2
+              exit 2
+            fi
+            ARGS+=(--model "$MODEL_OVERRIDE_INPUT")
+          fi
+          if [ "$IGNORE_OFF_PEAK_INPUT" = "true" ]; then
+            ARGS+=(--ignore-off-peak)
+          fi
+          python scripts/extract.py "${ARGS[@]}"
+
+      - name: 回写待人工审核候选
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          git config user.name "freetoken-bot[bot]"
+          git config user.email "4818224+freetoken-bot[bot]@users.noreply.github.com"
+          git add data/candidates/
+          if git diff --cached --quiet; then
+            echo "无新候选，跳过提交"
+          else
+            git commit -m "chore(data): 提交待审核额度变更候选"
+            git pull --rebase origin main
+            BRANCH="auto/extract-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            git push origin HEAD:refs/heads/"$BRANCH"
+            gh pr create --base main --head "$BRANCH" \
+              --title "chore(data): 提交待审核额度变更候选" \
+              --body "定时额度变更候选，仅写入 data/candidates/，正式数据仍需人工审批。"
+            gh pr merge --auto --merge --delete-branch "$BRANCH"
+          fi

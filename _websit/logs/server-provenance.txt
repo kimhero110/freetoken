@@ -1,0 +1,48 @@
+# /etc/systemd/system/witkit-bench.service
+[Unit]
+Description=WitKit Bench (LLM benchmark, Tailscale-only)
+After=tailscaled.service
+
+[Service]
+User=witkit
+WorkingDirectory=/opt/witkit-bench
+ExecStart=/usr/bin/python3 /opt/witkit-bench/server_bench.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+ExecStart={ path=/usr/bin/python3 ; argv[]=/usr/bin/python3 /opt/witkit-bench/server_bench.py ; ignore_errors=no ; start_time=[Fri 2026-09-04 01:23:39 CST] ; stop_time=[n/a] ; pid=518963 ; code=(null) ; status=0/0 }
+WorkingDirectory=/opt/witkit-bench
+ActiveState=active
+f4b44ed8e20f33ccb6936728670ff8d5dca09794f7d8a390e7ec3aa0e31acc35  /opt/witkit-bench/server_bench.py
+4bcb764042f14e6b6ef88b6e6c1aec90615bbaabaf4642b8d5825c37e4b82dbf  /opt/witkit-bench/bench/baselines.py
+b019a6fa7e2cbd5bb1fdca67e0e78c43d55039aa52b86149fa99e23899d1debf  /opt/witkit-bench/bench/client.py
+e6818f8689850e9089c76e6afe816bb0a261e626d8261a269ed719292d41d42f  /opt/witkit-bench/bench/guard.py
+387a7cbc3acf46b04048395d9eed58bb46a66c38288015b701efadd6085d1b5a  /opt/witkit-bench/bench/__init__.py
+49c6cae0378054f9c4bf22883fa11ab0c3ad6be6ee3bfa9fd432c7e132967830  /opt/witkit-bench/bench/matching.py
+2915ac4c83c27eb4ac022103a847cb404e636bfd4d2409e8abe238362b2638fb  /opt/witkit-bench/bench/pages.py
+e4ce5eb28f4d6da730c7c97753dcd35fa87cb354968bbc4b80957131fa8a36ed  /opt/witkit-bench/bench/radar.py
+1e56f48a88c3caf67f2876773c574e3a3c51cdc8eb2532e02770053c32ba8ef3  /opt/witkit-bench/bench/registry.py
+f01fe93f7bf93cfde9bf993cd0fb0b119883f592be4d430f28864fe39615a241  /opt/witkit-bench/bench/runner.py
+42fd59e31e20932922f27fbb9432b5a4e09b4967a9998a3b4b68293ecc39aacc  /opt/witkit-bench/bench/scoring.py
+6e2677aac2c473870b5bcfd6e18b230322b474e201c242907903fa56ddc9a565  /opt/witkit-bench/bench/store.py
+cd013d10f2bba3bcf9bfb58d72f5d2a0a28339f2e65f1a800622c7fc0fd6e054  /opt/witkit-bench/bench/ui.py
+7354ad9fb6350e389b4fa648551b361911ac3c4d525a7ea99ae582220f7f7c6d  /opt/witkit-bench/bench/tests/compliance.py
+9f3cac2f29d7fe49af5f1a6fc418505f1024df172a1c6d5164ac4f8e5c28fb27  /opt/witkit-bench/bench/tests/concurrency.py
+a6dd20a4ab26ec2da652ae77e93a592386e13c4fce1ecfa82338f0e35d1e3129  /opt/witkit-bench/bench/tests/determinism.py
+23e7c57f5ecefc762d898f8f14446ebba79a93a5316b185d079df6c865ca15cb  /opt/witkit-bench/bench/tests/downgrade.py
+eb5614138ec3891fb85ef4f87911a7f28e08e392ec33ef04ff6d327f6268ac7c  /opt/witkit-bench/bench/tests/funcall.py
+51f7d389f6eea0eb8a57069e53d9a10e409543f54f5501ba05320618f586fab5  /opt/witkit-bench/bench/tests/headers.py
+a0d8698d58079f9b0896b6099c34dedff986e932c8a82256da56ca616beb49e7  /opt/witkit-bench/bench/tests/identity.py
+53dc7309e80be4efad72ba15ae1f67500356bf006892245dd79414f302006954  /opt/witkit-bench/bench/tests/__init__.py
+3bac01a49d22f57756f5252a4a6fea543703c269ae2b0cc5023d44ca0cbd33a9  /opt/witkit-bench/bench/tests/jsonmode.py
+63a7ae548a1e7004ab20cb0417d6fb01266b3d2b6c57a528ca90b4ee0cf74bc3  /opt/witkit-bench/bench/tests/knowledge.py
+9ae845b3bd650aff44d6d0ac240294b1fb6ef7ae5c584239e6529a78b6a54aef  /opt/witkit-bench/bench/tests/longgen.py
+0e741aa4b7953073650c7a20e727735175382b98c3d4dc30d9b608836135d960  /opt/witkit-bench/bench/tests/multiturn.py
+dc8f86227ae67ed48a386ee9f8fd31ae75cff2addce959a4538c507515bdd794  /opt/witkit-bench/bench/tests/needle.py
+9fcd2d629daeede5e768886c87f54ede55e34fb4297bfeb041eb9cd115c39b1a  /opt/witkit-bench/bench/tests/throttling.py
+1b19456fcbd5ea9f089be3cc6c50b38a76766f89dd4a4c0ebec398bce3a33a0b  /opt/witkit-bench/bench/tests/tokenizer.py
+93f6387dfa41e5cf3d1528a36ea44d7c458cbce22484f4625445e90f3fba3030  /opt/witkit-bench/bench/tests/ttft.py
+9066f66085966a07f19a5d28968e2405942239d7a54eb84abd63a8ed44ea83f2  /opt/witkit-bench/tools/mock_llm.py
+fd38b4fe61424f82a5cea97253064ddc97f1e77aed6361a1e424813db39dbaa5  /opt/witkit-bench/tools/test_matching.py

@@ -1,0 +1,68 @@
+schema_version: 2
+slug: gmi-cloud-minimax
+name: GMI Cloud (MiniMax 专属)
+name_en: GMI Cloud x MiniMax
+category: 海外主流
+intro: GMI Cloud 联合 MiniMax 推出限时超级算力补贴，注册即送 20 亿免费 Tokens，支持 245K 超长上下文！
+intro_en: 'Massive compute grant: 2,000,000,000 free tokens for MiniMax-Text-01 with
+  245K context window.'
+website: https://gmicloud.ai/
+doc_url: https://docs.gmicloud.ai/
+api_base_url: https://api.gmicloud.ai/v1
+free_models:
+- MiniMax-Text-01
+- abab6.5s
+free_quota:
+  type: 限时赠送
+  amount: 20 亿
+  unit: Tokens (限时巨量补贴)
+  reset_period: 一次性
+  details: 注册发放高达 20 亿 Tokens 免费体验额度，全网额度天花板。
+  details_en: 2 Billion free tokens for MiniMax-Text-01 upon registration.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 巨量补贴活动名额有限，请尽早注册领用。
+gotchas_en:
+- Limited-time promotional capacity.
+registration:
+  url: https://gmicloud.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.gmicloud.ai/v1/chat/completions
+      models:
+      - MiniMax-Text-01
+      - abab6.5s
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: GMI_CLOUD_MINIMAX_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://docs.gmicloud.ai/
+  checked_at: '2026-09-02'
