@@ -1,13 +1,35 @@
 """Offline regressions for failures discovered during production integration."""
 import unittest
+import json
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 from daemon.gh_client import GitHubClient, GhError
+from daemon.feishu_client import FeishuClient
+from daemon import cards
 from daemon.main import SELFTEST_WORKFLOW
 from test_intake import bot, event
 
 
 class LiveContracts(unittest.TestCase):
+    def test_im_reply_create_and_patch_receive_card_not_webhook_envelope(self):
+        client = FeishuClient.__new__(FeishuClient)
+        client.client = Mock()
+        response = SimpleNamespace(success=lambda: True, data=SimpleNamespace(message_id='om_new'))
+        api = client.client.im.v1.message
+        for method in (api.reply, api.create, api.patch):
+            method.return_value = response
+        card = cards.status_card(['identity'], '?', 'test', '0')
+        client.send_card('oc_chat', card, 'om_parent')
+        client.send_card('ou_owner', card, receive_id_type='open_id')
+        client.patch_card('om_parent', card)
+        for method in (api.reply, api.create, api.patch):
+            content = json.loads(method.call_args.args[0].request_body.content)
+            self.assertEqual(content, card['card'])
+            self.assertIn('elements', content)
+            self.assertNotIn('msg_type', content)
+            self.assertNotIn('card', content)
+
     def test_missing_candidate_directory_requires_readable_parent(self):
         client = GitHubClient('test-token', 'owner/repo')
         client._request = Mock(side_effect=[GhError('CONTRACT', 'Not found', 404), [{'name': 'platforms'}]])
