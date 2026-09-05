@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Feishu OpenAPI client wrapper. Thin on purpose: SDK-dependent, verified on server, not unit-tested locally."""
+"""Feishu OpenAPI client wrapper for replies and proactive messages."""
 
 import logging
 
@@ -10,6 +10,8 @@ from lark_oapi.api.im.v1 import (
     ReplyMessageRequestBody,
     PatchMessageRequest,
     PatchMessageRequestBody,
+    CreateMessageRequest,
+    CreateMessageRequestBody,
 )
 
 from .cards import card_json
@@ -27,17 +29,18 @@ class FeishuClient:
             .build()
         )
 
-    def send_card(self, chat_id: str, card: dict, message_id: str = "") -> str:
+    def send_card(self, chat_id: str, card: dict, message_id: str = "", *, receive_id_type: str = "chat_id") -> str:
         """Reply in-thread when message_id given, else send to chat. Returns new message_id."""
-        body = ReplyMessageRequestBody.builder() \
-            .content(card_json(card)) \
-            .msg_type("interactive") \
-            .build()
-        request = ReplyMessageRequest.builder() \
-            .message_id(message_id or chat_id) \
-            .request_body(body) \
-            .build()
-        response = self.client.im.v1.message.reply(request)
+        if message_id:
+            body = ReplyMessageRequestBody.builder().content(card_json(card)).msg_type("interactive").build()
+            request = ReplyMessageRequest.builder().message_id(message_id).request_body(body).build()
+            response = self.client.im.v1.message.reply(request)
+        else:
+            if not chat_id or receive_id_type not in {"chat_id", "open_id"}:
+                raise ValueError("a valid recipient and receive_id_type are required")
+            body = CreateMessageRequestBody.builder().receive_id(chat_id).content(card_json(card)).msg_type("interactive").build()
+            request = CreateMessageRequest.builder().receive_id_type(receive_id_type).request_body(body).build()
+            response = self.client.im.v1.message.create(request)
         if not response.success():
             log.error("send_card failed: %s %s", response.code, response.msg)
             return ""
@@ -69,6 +72,9 @@ def extract_message(event_data: P2ImMessageReceiveV1):
         # strip @bot mention markers
         if text.startswith("@_user_"):
             text = text.split(" ", 1)[-1] if " " in text else ""
-        return sender.open_id, message.chat_id, message.message_id, text
-    except (AttributeError, ValueError):
+        open_id = sender.sender_id.open_id
+        if not open_id or not message.chat_id or not message.message_id:
+            return None
+        return open_id, message.chat_id, message.message_id, text
+    except (AttributeError, ValueError, TypeError):
         return None

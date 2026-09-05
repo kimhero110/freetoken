@@ -6,6 +6,7 @@ Every approval is journaled by callers; codes bound to ticket-initiated runs.
 """
 
 import time
+from urllib.parse import urlencode
 
 import requests
 
@@ -90,7 +91,28 @@ class GitHubClient:
     # -- actions -------------------------------------------------------------
     def dispatch_workflow(self, workflow: str, ref: str = "main", inputs: dict | None = None) -> None:
         self._request("POST", f"/repos/{self.repo}/actions/workflows/{workflow}/dispatches",
-                      {"ref": ref, "inputs": inputs or {}})
+                      {"ref": ref, "inputs": inputs or {}}, retries=1)
+
+    def dispatch_identity(self) -> tuple[str, str]:
+        actor = self._request("GET", "/user")["login"]
+        sha = self._request("GET", f"/repos/{self.repo}/commits/main")["sha"]
+        return actor, sha
+
+    def reviewed_merge(self, run: dict) -> dict | None:
+        """Resolve the exact PR branch written by this review run and attempt."""
+        branch = f"auto/review-{run['id']}-{run['run_attempt']}"
+        query = urlencode({"state": "closed", "head": f"{self.repo.split('/')[0]}:{branch}", "base": "main", "per_page": 100})
+        pulls = self._request("GET", f"/repos/{self.repo}/pulls?{query}")
+        matches = [p for p in pulls if p.get("head", {}).get("ref") == branch
+                   and p.get("head", {}).get("repo", {}).get("full_name") == self.repo
+                   and p.get("base", {}).get("repo", {}).get("full_name") == self.repo
+                   and p.get("base", {}).get("ref") == "main" and p.get("merged_at")]
+        if len(matches) != 1:
+            return None
+        pull = self._request("GET", f"/repos/{self.repo}/pulls/{matches[0]['number']}")
+        if not pull.get("merged"):
+            return None
+        return {"sha": pull.get("merge_commit_sha"), "actor": (pull.get("merged_by") or {}).get("login")}
 
     def get_run(self, run_id: int) -> dict:
         return self._request("GET", f"/repos/{self.repo}/actions/runs/{run_id}")
@@ -116,8 +138,19 @@ class GitHubClient:
 
     # -- contents (read-only is allowed for any token with repo access) ------
     def list_candidates(self) -> list:
-        data = self._request("GET", f"/repos/{self.repo}/contents/data/candidates")
-        return [item["name"].rsplit(".", 1)[0] for item in data if item["type"] == "file"]
+        try:
+            data = self._request("GET", f"/repos/{self.repo}/contents/data/candidates")
+        except GhError as exc:
+            if exc.status != 404:
+                raise
+            # An empty Git directory does not exist. Verify the readable parent
+            # before treating 404 as empty, so broken credentials stay visible.
+            parent = self._request("GET", f"/repos/{self.repo}/contents/data")
+            if any(item.get("name") == "candidates" for item in parent):
+                raise exc
+            return []
+        return [item["name"].rsplit(".", 1)[0] for item in data
+                if item["type"] == "file" and item["name"].endswith((".yaml", ".json"))]
 
     def run_url(self, run_id: int) -> str:
         return f"https://github.com/{self.repo}/actions/runs/{run_id}"

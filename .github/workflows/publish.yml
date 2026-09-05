@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "data/platforms/**"
+      - "data/pricing/**"
       - "content/**"
       - "site/**"
       - "scripts/**"
@@ -40,6 +41,12 @@ jobs:
           python -m unittest discover -s tests -v
           python scripts/compile_data.py
           git diff --exit-code -- data/platforms.json site/src/data/platforms.json site/public/sitemap.xml
+
+      - name: 验证真实飞书 SDK 与审批集成
+        run: |
+          python -m venv .venv-daemon
+          .venv-daemon/bin/python -m pip install -r daemon/requirements.txt
+          .venv-daemon/bin/python -m unittest discover -s tests/daemon_integration -v
 
       - name: 安装 Node.js 22
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
@@ -81,6 +88,8 @@ jobs:
           }
           check_route / "FreeToken"
           check_route /en/ "FreeToken"
+          check_route /cost/ "API"
+          check_route /en/cost/ "API"
           check_route /platform/deepseek/ "DeepSeek"
           check_route /en/platform/deepseek/ "DeepSeek"
           check_route /articles/ "FreeToken"

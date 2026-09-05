@@ -27,6 +27,10 @@ class Ticket:
     created_at: float = field(default_factory=time.time)
     updated_at: float = field(default_factory=time.time)
     owner: str = ""
+    dispatch_actor: str = ""
+    dispatch_sha: str = ""
+    publish_sha: str = ""
+    publish_actor: str = ""
 
     def to_event(self) -> dict:
         return {
@@ -45,6 +49,10 @@ class Ticket:
             "created_at": self.created_at,
             "updated_at": self.updated_at,
             "owner": self.owner,
+            "dispatch_actor": self.dispatch_actor,
+            "dispatch_sha": self.dispatch_sha,
+            "publish_sha": self.publish_sha,
+            "publish_actor": self.publish_actor,
         }
 
     @classmethod
@@ -64,6 +72,10 @@ class Ticket:
             created_at=float(event.get("created_at", 0) or 0),
             updated_at=float(event.get("updated_at", 0) or 0),
             owner=event.get("owner", ""),
+            dispatch_actor=event.get("dispatch_actor", ""),
+            dispatch_sha=event.get("dispatch_sha", ""),
+            publish_sha=event.get("publish_sha", ""),
+            publish_actor=event.get("publish_actor", ""),
         )
 
 

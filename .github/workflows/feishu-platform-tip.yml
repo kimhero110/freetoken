@@ -1,4 +1,5 @@
 name: Feishu platform tip
+run-name: 'intake:${{ inputs.ticket_id }}'
 
 on:
   workflow_dispatch:

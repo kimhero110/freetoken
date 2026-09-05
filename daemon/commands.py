@@ -26,6 +26,8 @@ VERBS = {
     "whoami": "whoami",
     "确认": "confirm",
     "confirm": "confirm",
+    "联调": "selftest",
+    "selftest": "selftest",
 }
 
 BARE_URL_RE = re.compile(r"^https://\S{3,300}$", re.IGNORECASE)

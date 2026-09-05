@@ -62,6 +62,16 @@ Windows PowerShell 激活虚拟环境时使用：
 .venv\Scripts\Activate.ps1
 ```
 
+飞书入口集成测试使用真实锁定版本的 SDK 和本地 mock，不发送消息或触发 Actions。daemon 与数据脚本的 requests 版本不同，请用独立环境运行（发布工作流的 build 门禁也执行此检查）：
+
+```bash
+python -m venv .venv-daemon
+.venv-daemon/bin/python -m pip install -r daemon/requirements.txt
+.venv-daemon/bin/python -m unittest discover -s tests/daemon_integration -v
+```
+
+Windows 将以上 `.venv-daemon/bin/python` 替换为 `.venv-daemon\Scripts\python.exe`。
+
 ## 数据更新流程
 
 1. `python scripts/fetch_sources.py` 检测来源变化。
@@ -139,20 +149,24 @@ GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TE
 
 审批安全模型（A+）：daemon 持**仅限本仓库、仅 Actions 读写**的 fine-grained PAT（90 天过期、每周自检、提前 30 天告警）；代码内只批准"本票据自己 dispatch 的 run"；确认码防误触（不防会话劫持——由仅偏差触发的异常卡与日报"昨日自动批准"计数兜底）；权威审计身份永远是 `github.actor`，飞书身份只作标注。已声明的残余风险：服务器完全沦陷可绕过（单操作者接受）。
 
+运行关联使用唯一 ticket_id、候选/决定、PAT 操作者、main 提交 SHA 和工作流路径；生产发布只关联该审核运行对应 PR 的合并 SHA 和合并者。等待 Environment 的 `waiting` 状态可直接被发现，非 production 门禁或多个匹配运行不会自动批准。关联所需的提交与 PR 信息读取自本公开仓库，不增加 PAT 写权限。若 dispatch 前后的 main 恰好变化，关联会保守失败，需要重新发起命令。
+
+升级时先让新版工作流进入 main，再重建 daemon；旧票据没有新的关联字段，不会自动批准，请重新发起。日报和看门狗通知使用 OWNER_OPEN_ID 主动发送，不需要填写聊天 ID。
+
 ### 快速开始（部署后 30 分钟内完成首条命令）
 
 1. [开放平台](https://open.feishu.cn/) 创建**企业自建应用**：添加"机器人"能力；权限勾选 `im:message`（获取与发送单聊消息）；事件订阅选择**长连接**模式，订阅 `im.message.receive_v1`；发布版本并可用范围=自己。
 2. 创建 fine-grained PAT：GitHub → Settings → Developer settings → Fine-grained tokens → 仅 `kimhero110/freetoken`，权限仅 `Actions: Read and write`，有效期 90 天。
 3. 服务器：`git clone` 本仓库到 `/opt/freetoken-intake`；`cp daemon/env.example /opt/freetoken-intake/.env` 并填入 `FEISHU_APP_ID/FEISHU_APP_SECRET/GITHUB_PAT/GITHUB_REPO`，`BOOTSTRAP=1` 保持开启，`chmod 600 .env`。
 4. 启动：`cd /opt/freetoken-intake && GIT_COMMIT=$(git rev-parse --short HEAD) docker compose -f deploy/docker-compose.feishu-intake.yml up -d --build`。
-5. 引导：飞书私聊发 `谁我` → 机器人回你的 open_id → 填入 `.env` 的 `OWNER_OPEN_ID`，去掉 `BOOTSTRAP=1` → `docker compose -f deploy/docker-compose.feishu-intake.yml restart`。
+5. 引导：飞书私聊发 `谁我` → 机器人回你的 open_id → 填入 `.env` 的 `OWNER_OPEN_ID`，去掉 `BOOTSTRAP=1` → `docker compose -f deploy/docker-compose.feishu-intake.yml up -d --force-recreate feishu-intake`。
 6. 验证：发 `状态`，应在 10 秒内收到卡片（无响应=长连接未建立，查容器日志与事件订阅配置）。
 7. 首条真实命令：发 `待审`（空列表卡片）→ 再发 `平台 <任一已收录平台URL>` 应返回"已在库"。
 8. 记录实际 TTHW 到本节（boomerang：上线后跑 /devex-review 复测）。
 
 ### 运维手册
 
-- **PAT 轮换**（每 90 天，状态卡会提前 30 天告警）：建新 PAT → 更新 `/opt/freetoken-intake/.env` → `docker compose -f deploy/docker-compose.feishu-intake.yml restart` → 发 `状态` 验证。
+- **PAT 轮换**（每 90 天，状态卡会提前 30 天告警）：建新 PAT → 更新 `/opt/freetoken-intake/.env` → `docker compose -f deploy/docker-compose.feishu-intake.yml up -d --force-recreate feishu-intake` → 发 `状态` 验证。
 - **升级 daemon**：`cd /opt/freetoken-intake && git pull && GIT_COMMIT=$(git rev-parse --short HEAD) docker compose -f deploy/docker-compose.feishu-intake.yml up -d --build`；`状态` 卡显示新 commit 即生效。
 - **日志**：`docker logs -f freetoken-feishu-intake`；票据全生命周期在容器卷 `/data/journal.jsonl`。
 - **宕机语义**：断线期间的命令不会补跑（重连卡有提示）；外部看门狗 = GitHub Actions 定时探测健康端点并发告警卡。
@@ -173,3 +187,13 @@ GitHub 的 `production` Environment 需要配置 `TENCENT_SSH_PRIVATE_KEY`、`TE
 ## License
 
 [MIT](LICENSE)
+
+## 成本预算工具
+
+主站 `/cost/` 和 `/en/cost/` 提供本地月预算估算，支持缓存、峰谷价格、明确适用的免费余额和自填汇率。价格独立维护在 `data/pricing/pricebook.json`，经代码审查更新。数据规则、验证命令及评测站后续接入见 [成本计算器 V1](docs/cost-calculator-v1.md)。
+
+## Live integration check
+
+Send `selftest` (or the Chinese integration-check command) to the configured bot, then reply with the confirmation code shown on its card. This dispatches `feishu-self-test.yml` and exercises the existing `production` approval gate without changing or deploying site content. An empty, absent candidates directory is treated as an empty queue only after its parent is verified readable.
+
+Environment-file edits require container recreation; a Docker restart does not reload env_file. Validate the owner ID using the bot bootstrap command before disabling BOOTSTRAP. See [live integration record](docs/feishu-live-integration.md).

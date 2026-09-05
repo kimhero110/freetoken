@@ -1,0 +1,71 @@
+schema_version: 2
+slug: groq
+name: Groq LPU 极速推理
+name_en: Groq LPU Acceleration
+category: 海外主流
+intro: 基于自研 LPU 架构的全球极速推理平台，生成速度超 500-800 tokens/秒，永久提供免费层！
+intro_en: World-record LPU inference (500-800 t/s). Generous permanent free tier with
+  30 RPM.
+website: https://groq.com/
+doc_url: https://console.groq.com/docs/quickstart
+api_base_url: https://api.groq.com/openai/v1
+free_models:
+- llama-3.3-70b-versatile
+- llama-3.1-8b-instant
+- deepseek-r1-distill-llama-70b
+free_quota:
+  type: 永久免费
+  amount: 永久免费层
+  unit: 30 RPM / 14,400 RPD
+  reset_period: 每日刷新
+  details: 永久提供 30 RPM 与每日 14,400 次请求免费额度，极速体验极佳。
+  details_en: Permanent free tier with 30 RPM and 14,400 daily requests.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 每日
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 免费层受限于严格的 TPM 限制，适合单轮高频交互。
+gotchas_en:
+- Strict TPM limit applies on free tier.
+registration:
+  url: https://groq.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.groq.com/openai/v1/chat/completions
+      models:
+      - llama-3.3-70b-versatile
+      - llama-3.1-8b-instant
+      - deepseek-r1-distill-llama-70b
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: GROQ_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://console.groq.com/docs/quickstart
+  checked_at: '2026-09-02'

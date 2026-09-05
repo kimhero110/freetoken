@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 .venv/
+.venv-daemon/
 
 # Node
 site/node_modules/

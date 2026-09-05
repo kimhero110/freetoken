@@ -1,0 +1,28 @@
+{
+  "version": "2026-09-06.1",
+  "unit": "per_million_tokens",
+  "records": [
+    {
+      "platform": "deepseek",
+      "model": "deepseek-v4-flash",
+      "revision": "DeepSeek-V4-Flash-0731",
+      "currency": "USD",
+      "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "checked_at": "2026-09-06",
+      "evidence": "documented",
+      "peak": { "input": "0.44", "cached": "0.014", "output": "1.32" },
+      "offpeak": { "input": "0.22", "cached": "0.007", "output": "0.66" }
+    },
+    {
+      "platform": "deepseek",
+      "model": "deepseek-v4-pro",
+      "revision": "DeepSeek-V4-Pro-0813",
+      "currency": "USD",
+      "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "checked_at": "2026-09-06",
+      "evidence": "documented",
+      "peak": { "input": "1.32", "cached": "0.044", "output": "3.96" },
+      "offpeak": { "input": "0.66", "cached": "0.022", "output": "1.98" }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+# /etc/systemd/system/witkit-bench.service
+[Unit]
+Description=WitKit Bench (LLM benchmark, Tailscale-only)
+After=tailscaled.service
+
+[Service]
+User=witkit
+WorkingDirectory=/opt/witkit-bench
+ExecStart=/usr/bin/python3 /opt/witkit-bench/server_bench.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

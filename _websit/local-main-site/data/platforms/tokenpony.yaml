@@ -1,0 +1,72 @@
+schema_version: 2
+slug: tokenpony
+name: 小马算力 (TokenPony)
+name_en: TokenPony Cloud
+category: 国内主流
+intro: 基于 H200 与华为昇腾国产算力集群的极速大模型平台，注册送 200万-500万 Tokens，支持 1024K 超长上下文！
+intro_en: High-throughput cloud powered by H200 and Ascend clusters. 2M-5M tokens
+  on sign-up with 1024K context.
+website: https://www.tokenpony.cn/
+doc_url: https://www.tokenpony.cn/docs
+api_base_url: https://api.tokenpony.cn/v1
+free_models:
+- deepseek-r1
+- deepseek-v3
+- qwen2.5-72b-1024k
+free_quota:
+  type: 限时赠送
+  amount: 200万-500万
+  unit: Tokens (注册赠送 + 每日签到)
+  reset_period: 每日签到赠送
+  details: 注册即送数百万 Tokens 算力，每日签到可持续获得免费额度，支持百万长上下文推理。
+  details_en: 2M-5M tokens upon registration plus daily check-in rewards.
+verification: 手机号注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 每日
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- 支持超长文本与高并发集群加速。
+gotchas_en:
+- Supports ultra-long context and high concurrency.
+registration:
+  url: https://www.tokenpony.cn/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.tokenpony.cn/v1/chat/completions
+      models:
+      - deepseek-r1
+      - deepseek-v3
+      - qwen2.5-72b-1024k
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: TOKENPONY_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://www.tokenpony.cn/docs
+  checked_at: '2026-09-02'

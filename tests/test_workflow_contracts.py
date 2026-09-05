@@ -72,6 +72,25 @@ class ReviewCandidateAnnotationContractTests(unittest.TestCase):
         self.assertIn('REVIEWER: ${{ github.actor }}', workflow)
         self.assertNotIn("${{ inputs.approver", blocks)
 
+    def test_dispatch_titles_and_inputs_match_daemon_contract(self):
+        import yaml
+        expected = {
+            "feishu-platform-tip.yml": ({"url", "note", "ticket_id"}, "intake:${{ inputs.ticket_id }}"),
+            "feishu-article-rewrite.yml": ({"url", "note", "ticket_id", "mode"}, "intake:${{ inputs.ticket_id }}"),
+            "review-candidate.yml": ({"candidate_id", "decision", "approver_via", "approver_id", "ticket_id"},
+                                     "intake:${{ inputs.ticket_id }}:${{ inputs.decision }}:${{ inputs.candidate_id }}"),
+        }
+        for filename, (fields, title) in expected.items():
+            workflow = yaml.load((WORKFLOWS / filename).read_text(encoding="utf-8"), Loader=yaml.BaseLoader)
+            self.assertEqual(set(workflow["on"]["workflow_dispatch"]["inputs"]), fields)
+            self.assertEqual(workflow["run-name"], title)
+
+    def test_build_runs_real_sdk_tests_in_isolated_environment(self):
+        workflow = (WORKFLOWS / "publish.yml").read_text(encoding="utf-8")
+        self.assertIn("python -m venv .venv-daemon", workflow)
+        self.assertIn(".venv-daemon/bin/python -m pip install -r daemon/requirements.txt", workflow)
+        self.assertIn(".venv-daemon/bin/python -m unittest discover -s tests/daemon_integration -v", workflow)
+
 
 if __name__ == "__main__":
     unittest.main()

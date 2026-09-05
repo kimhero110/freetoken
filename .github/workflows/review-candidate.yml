@@ -1,8 +1,14 @@
 name: Review candidate
+run-name: 'intake:${{ inputs.ticket_id }}:${{ inputs.decision }}:${{ inputs.candidate_id }}'
 
 on:
   workflow_dispatch:
     inputs:
+      ticket_id:
+        description: Unique intake ticket (empty for manual review)
+        required: false
+        default: ""
+        type: string
       candidate_id:
         description: Candidate filename without .yaml or .json
         required: true

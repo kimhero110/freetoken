@@ -1,0 +1,481 @@
+---
+// FreeTokens.info English Platform Detail Page
+import Base from '../../../layouts/Base.astro';
+import CostLink from '../../../components/CostLink.astro';
+import platforms from '../../../data/platforms.json';
+import { generateSnippet, getToolState, selectChatOperation, VERIFICATION_LABELS } from '../../../lib/operation-generator.mjs';
+
+export function getStaticPaths() {
+  return platforms.map((p: any) => ({
+    params: { slug: p.slug },
+    props: { platform: p },
+  }));
+}
+
+const { platform: p } = Astro.props;
+const q = p.free_quota ?? {};
+const statusMap: Record<string, string> = {
+  active: 'Operational',
+  degraded: 'Degraded',
+  expired: 'Expired',
+  unknown: 'Unknown',
+  unverified: 'Pending Verification',
+};
+
+const requirements = p.requirements ?? {};
+const operations = p.capabilities?.operations ?? [];
+const chatOperation = selectChatOperation(p);
+const primaryModel = chatOperation?.models[0];
+const snippets = chatOperation && primaryModel ? {
+  curl: getToolState(p.capabilities?.tools, 'curl', 'en').enabled ? generateSnippet(chatOperation, primaryModel, 'curl') : null,
+  python: getToolState(p.capabilities?.tools, 'openai_python', 'en').enabled ? generateSnippet(chatOperation, primaryModel, 'python') : null,
+  node: getToolState(p.capabilities?.tools, 'openai_node', 'en').enabled ? generateSnippet(chatOperation, primaryModel, 'node') : null,
+} : null;
+
+function formatVerified(dateStr: any): string {
+  return dateStr || 'Not verified';
+}
+
+const requirementLabel = (value: string) => value === 'required' ? 'Required' : value === 'not_required' ? 'Not required' : 'Not verified';
+---
+<Base
+  lang="en"
+  currentSlug={p.slug}
+  title={`${p.name_en || p.name} Free API Quota & Integration`}
+  description={`${p.name_en || p.name} Free Tier: ${q.amount} ${q.unit ?? ''}. ${p.intro_en || p.intro}`}
+>
+  <div class="container detail-container">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a href="/en/">Home</a>
+      <span>/</span>
+      <a href="/en/#products">Directory</a>
+      <span>/</span>
+      <span class="current">{p.name_en || p.name}</span>
+    </nav>
+
+    <!-- Main Detail Card -->
+    <article class="detail-card">
+      <header class="detail-header">
+        <div class="detail-meta">
+          <span class="category-badge">{p.category}</span>
+          <span class={`status-pill status-${p.status}`}>
+            {statusMap[p.status] ?? 'Unknown'}
+          </span>
+        </div>
+        <h1 class="detail-title">
+          {p.name_en || p.name}
+          {p.name_en && p.name !== p.name_en && <small class="detail-title-en">{p.name}</small>}
+        </h1>
+        <p class="detail-intro">{p.intro_en || p.intro}</p>
+      </header>
+
+      <!-- Core Free Tier Highlight -->
+      <div class="quota-highlight-box">
+        <div class="quota-head">Core Free Tier</div>
+        <div class="quota-main">
+          <span class="quota-big">{q.amount} {q.unit ?? ''}</span>
+          {q.type && <span class="quota-type-tag">{q.type}</span>}
+        </div>
+        {(q.details_en || q.details) && <p class="quota-details-text">{q.details_en || q.details}</p>}
+        {q.reset_period && <p class="quota-reset-hint">Reset Cycle: {q.reset_period}</p>}
+      </div>
+      <CostLink platform={p} lang="en" />
+
+      <!-- Eligibility & Verification Requirements -->
+      <section class="detail-section">
+        <h2 class="section-heading">Eligibility & Verification Requirements</h2>
+        <div class="conditions-grid">
+          <div class="condition-item">
+            <span class="cond-label">Phone Verification</span>
+            <span class="cond-value">{requirementLabel(requirements.phone)}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">Credit Card</span>
+            <span class="cond-value">{requirementLabel(requirements.card)}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">Network / Region</span>
+            <span class="cond-value">{requirements.region === 'unknown' ? 'Not verified' : requirements.regions?.join(', ') || 'No restriction'}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">Concurrency Rate</span>
+            <span class="cond-value">RPM {requirements.rpm ?? 'Not verified'} · TPM {requirements.tpm ?? 'Not verified'}</span>
+          </div>
+        </div>
+      </section>
+
+      {operations.length > 0 && <section class="detail-section">
+        <h2 class="section-heading">Operation status and evidence</h2>
+        <div class="operations-list">
+          {operations.map((operation: any) => <article class="operation-card">
+            <div class="operation-title">
+              <code>{operation.id}</code>
+              <span class={`operation-level level-${operation.verification.status}`}>{VERIFICATION_LABELS.en[operation.verification.status]}</span>
+            </div>
+            <dl>
+              <div><dt>Protocol</dt><dd>{operation.protocol}</dd></div>
+              <div><dt>Checked</dt><dd>{operation.verification.checked_at || 'Not checked'}</dd></div>
+              <div><dt>Endpoint</dt><dd><code>{operation.endpoint_url || 'See official documentation'}</code></dd></div>
+              <div><dt>Evidence</dt><dd>{operation.verification.evidence_url ? <a href={operation.verification.evidence_url} target="_blank" rel="noopener noreferrer">Verification record ↗</a> : 'Not provided'}</dd></div>
+            </dl>
+            {operation.models?.length > 0 && <div class="model-list">{operation.models.map((model: string) => <code>{model}</code>)}</div>}
+          </article>)}
+        </div>
+      </section>}
+
+      {snippets && (snippets.curl || snippets.python || snippets.node) ? (<section class="detail-section">
+        <h2 class="section-heading">Safe OpenAI Chat Completions examples</h2>
+        <p class="code-guidance">These examples use the verified operation endpoint and model, reading the key from <code>{chatOperation.auth.env_var}</code>. Every example sends one POST attempt with automatic retries disabled to avoid duplicate billable calls. Output is bounded to 64 tokens.</p>
+        <div class="code-tabs">
+          <div class="tabs-nav" role="tablist" aria-label="Integration code language">
+            {snippets.curl && <button id="tab-button-curl" class="tab-btn active" data-tab="tab-curl" role="tab" aria-selected="true" aria-controls="tab-curl">cURL</button>}
+            {snippets.python && <button id="tab-button-python" class:list={['tab-btn', { active: !snippets.curl }]} data-tab="tab-python" role="tab" aria-selected={!snippets.curl ? 'true' : 'false'} aria-controls="tab-python" tabindex={snippets.curl ? '-1' : '0'}>Python SDK</button>}
+            {snippets.node && <button id="tab-button-node" class:list={['tab-btn', { active: !snippets.curl && !snippets.python }]} data-tab="tab-node" role="tab" aria-selected={!snippets.curl && !snippets.python ? 'true' : 'false'} aria-controls="tab-node" tabindex={snippets.curl || snippets.python ? '-1' : '0'}>Node.js SDK</button>}
+          </div>
+          {snippets.curl && <div id="tab-curl" class="tab-pane active" role="tabpanel" aria-labelledby="tab-button-curl"><pre><code>{snippets.curl}</code></pre></div>}
+          {snippets.python && <div id="tab-python" class:list={['tab-pane', { active: !snippets.curl }]} role="tabpanel" aria-labelledby="tab-button-python" hidden={!!snippets.curl}><pre><code>{snippets.python}</code></pre></div>}
+          {snippets.node && <div id="tab-node" class:list={['tab-pane', { active: !snippets.curl && !snippets.python }]} role="tabpanel" aria-labelledby="tab-button-node" hidden={!!(snippets.curl || snippets.python)}><pre><code>{snippets.node}</code></pre></div>}
+        </div>
+      </section>) : (
+        <section class="detail-section">
+          <h2 class="section-heading">Integration</h2>
+          <p>No OpenAI Chat Completions example can currently be generated safely. For generic or non-chat operations, follow the <a href={p.doc_url} target="_blank" rel="noopener noreferrer">official documentation ↗</a> rather than adapting a chat endpoint.</p>
+        </section>
+      )}
+
+      <!-- Gotchas & Precautions -->
+      {p.gotchas && p.gotchas.length > 0 && (
+        <section class="detail-section gotchas-section">
+          <h2 class="section-heading">Gotchas & Risk Precautions</h2>
+          <ul class="gotchas-list">
+            {(p.gotchas_en || p.gotchas).map((g: string) => (
+              <li>{g}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <!-- Footer Action Bar -->
+      <footer class="detail-footer-bar">
+        <div class="footer-meta">
+          <span>Directory data checked: {formatVerified(p.last_verified)} · {statusMap[p.status] ?? 'Unknown'} (see operation evidence above)</span>
+        </div>
+        <div class="footer-buttons">
+          <a class="btn-register" href={p.registration.url} target="_blank" rel="noopener noreferrer">
+            Get Free Tier on Official Site ↗
+          </a>
+        </div>
+      </footer>
+    </article>
+  </div>
+
+  <style>
+    .detail-container {
+      padding: 36px 24px 64px;
+      max-width: 840px;
+    }
+    .breadcrumb {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      display: flex;
+      gap: 8px;
+    }
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .detail-card {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 36px;
+    }
+    .detail-header {
+      margin-bottom: 28px;
+    }
+    .detail-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .category-badge {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--text-light);
+    }
+    .status-pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid var(--card-border);
+    }
+    .status-active {
+      background: var(--bg-subtle);
+      color: var(--text);
+    }
+    .status-degraded, .status-unverified, .status-unknown {
+      color: #92400e;
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+    .status-expired {
+      color: #991b1b;
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+    .detail-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .detail-title-en {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text-light);
+    }
+    .detail-intro {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Quota Highlight Box */
+    .quota-highlight-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 32px;
+    }
+    .quota-head {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .quota-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .quota-big {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .quota-type-tag {
+      font-size: 11px;
+      font-weight: 600;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--text);
+    }
+    .quota-details-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .quota-reset-hint {
+      font-size: 12px;
+      color: var(--text-light);
+      font-family: var(--font-mono);
+    }
+
+    .detail-section {
+      margin-bottom: 32px;
+    }
+    .operations-list { display:grid; gap:12px; }
+    .operation-card { padding:14px; border:1px solid var(--card-border); border-radius:7px; background:var(--bg-subtle); }
+    .operation-title { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+    .operation-level { color:#92400e; font-size:11px; font-weight:700; }
+    .operation-level.level-documented,.operation-level.level-live { color:#166534; }
+    .operation-card dl { display:grid; gap:6px; margin:0 0 10px; font-size:12px; }
+    .operation-card dl div { display:grid; grid-template-columns:74px minmax(0,1fr); gap:8px; }
+    .operation-card dt { color:var(--text-light); }
+    .operation-card dd { margin:0; overflow-wrap:anywhere; }
+    .model-list { display:flex; flex-wrap:wrap; gap:7px; }
+    .model-list code { padding:3px 7px; border:1px solid var(--card-border); border-radius:4px; background:#fff; font-size:11px; }
+    .code-guidance { margin:-4px 0 12px; color:var(--text-muted); font-size:12.5px; line-height:1.6; }
+    .section-heading {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      letter-spacing: -0.2px;
+    }
+
+    /* Conditions Grid */
+    .conditions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .condition-item {
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+    }
+    .cond-label {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-bottom: 2px;
+    }
+    .cond-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Code Tabs */
+    .code-tabs {
+      background: #18181b;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #27272a;
+    }
+    .tabs-nav {
+      display: flex;
+      background: #09090b;
+      border-bottom: 1px solid #27272a;
+      padding: 0 8px;
+      overflow-x: auto;
+      min-width: max-content;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #71717a;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 10px 14px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover {
+      color: #ffffff;
+    }
+    .tab-btn.active {
+      color: #ffffff;
+      border-bottom-color: #ffffff;
+    }
+    .tab-pane {
+      display: none;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #e4e4e7;
+      line-height: 1.6;
+      overflow-x: auto;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Gotchas List */
+    .gotchas-list {
+      padding-left: 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .gotchas-list li {
+      margin-bottom: 6px;
+    }
+
+    /* Detail Footer Bar */
+    .detail-footer-bar {
+      border-top: 1px solid var(--card-border);
+      margin-top: 36px;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-meta {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .btn-register {
+      background: var(--text);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 9px 18px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .btn-register:hover {
+      background: #000000;
+    }
+  </style>
+
+  <script is:inline>
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panes = document.querySelectorAll('.tab-pane');
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+          t.setAttribute('tabindex', '-1');
+        });
+        panes.forEach(p => {
+          p.classList.remove('active');
+          p.setAttribute('hidden', '');
+        });
+
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        btn.removeAttribute('tabindex');
+        const target = btn.getAttribute('data-tab');
+        if (target) {
+          const pane = document.getElementById(target);
+          pane?.classList.add('active');
+          pane?.removeAttribute('hidden');
+        }
+      });
+      btn.addEventListener('keydown', event => {
+        const buttons = [...tabs];
+        const index = buttons.indexOf(btn);
+        let next = null;
+        if (event.key === 'ArrowRight') next = buttons[(index + 1) % buttons.length];
+        if (event.key === 'ArrowLeft') next = buttons[(index - 1 + buttons.length) % buttons.length];
+        if (event.key === 'Home') next = buttons[0];
+        if (event.key === 'End') next = buttons[buttons.length - 1];
+        if (next) {
+          event.preventDefault();
+          next.click();
+          next.focus();
+        }
+      });
+    });
+  </script>
+</Base>

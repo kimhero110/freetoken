@@ -1,0 +1,62 @@
+# FreeToken 大模型调用与路由配置文件
+
+# 运行策略：
+# - "specified": 仅使用 active 字段指定的模型提供商
+# - "fallback": 当指定模型调用失败时，按 providers 列表顺序自动降级重试
+# - "load_balance": 在所有已配置 Key 的可用模型中随机/轮询负载均衡
+strategy: "specified"
+
+# 默认激活的模型提供商标识（可在 GitHub Actions 界面或环境变量 LLM_ACTIVE_PROVIDER 中动态覆盖）
+active: "deepseek"
+
+# 波谷时段保护策略（DeepSeek 官方 5 折优惠时段：北京时间 00:30 ~ 08:30）
+off_peak_strategy:
+  enabled: true
+  deepseek_off_peak_only: true
+  # 非波谷时段触发时的行为：
+  # - "switch_to": 自动切换为下方 fallback_provider 指定的模型
+  # - "skip": 跳过本次调用，等待波谷期定时任务
+  action: "switch_to"
+  fallback_provider: "siliconflow"
+
+# 模型提供商列表（可根据需要自由扩展、增删修改）
+providers:
+  deepseek:
+    name: "DeepSeek 官方"
+    base_url: "https://api.deepseek.com"
+    model: "deepseek-chat"
+    api_key_env: "DEEPSEEK_API_KEY"
+    temperature: 0.1
+    response_format_json: true
+
+  siliconflow:
+    name: "硅基流动 (SiliconFlow)"
+    base_url: "https://api.siliconflow.cn/v1"
+    model: "deepseek-ai/DeepSeek-V3"
+    api_key_env: "SILICONFLOW_API_KEY"
+    temperature: 0.1
+    response_format_json: false
+
+  kimi:
+    name: "Moonshot Kimi"
+    base_url: "https://api.moonshot.cn/v1"
+    model: "moonshot-v1-8k"
+    api_key_env: "MOONSHOT_API_KEY"
+    temperature: 0.1
+    response_format_json: true
+
+  dashscope:
+    name: "阿里百炼 (DashScope)"
+    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    model: "qwen-plus"
+    api_key_env: "DASHSCOPE_API_KEY"
+    temperature: 0.1
+    response_format_json: false
+
+  custom_proxy:
+    name: "自定义第三方 / 中转 API"
+    base_url: "https://api.openai.com/v1"
+    model: "gpt-4o-mini"
+    api_key_env: "CUSTOM_LLM_KEY"
+    temperature: 0.1
+    response_format_json: true

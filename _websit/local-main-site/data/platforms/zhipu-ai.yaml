@@ -1,0 +1,72 @@
+schema_version: 2
+slug: zhipu-ai
+name: 智谱 AI (BigModel 开放平台)
+name_en: Zhipu AI BigModel
+category: 国内主流
+intro: 清华系大模型领军企业，GLM-4-Flash 主力模型全面永久免费！新注册赠送 2500 万 Tokens（或 25 元代金券）。
+intro_en: Leading Chinese AI laboratory. GLM-4-Flash is permanently free; new users
+  get 25,000,000 free tokens.
+website: https://bigmodel.cn/
+doc_url: https://bigmodel.cn/dev/api/normal-model/glm-4
+api_base_url: https://open.bigmodel.cn/api/paas/v4
+free_models:
+- glm-4-flash
+- glm-4v-flash
+- glm-4-plus
+free_quota:
+  type: 永久免费
+  amount: 2500 万 + 永久免费
+  unit: Tokens (GLM-4-Flash 永久免费)
+  reset_period: 永久
+  details: GLM-4-Flash 与 GLM-4V-Flash 视觉模型全面永久免费不限量；注册送 2500 万旗舰模型额度。
+  details_en: GLM-4-Flash is permanently free; 25M tokens granted on registration.
+verification: 手机号注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 限时
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- GLM-4-Flash 完全免费，是 Agent 自动化与格式化任务的最佳零成本保底源。
+gotchas_en:
+- GLM-4-Flash is permanently free, ideal for daily zero-cost pipelines.
+registration:
+  url: https://bigmodel.cn/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://open.bigmodel.cn/api/paas/v4/chat/completions
+      models:
+      - glm-4-flash
+      - glm-4v-flash
+      - glm-4-plus
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: ZHIPU_AI_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://bigmodel.cn/dev/api/normal-model/glm-4
+  checked_at: '2026-09-02'

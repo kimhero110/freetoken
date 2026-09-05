@@ -1,0 +1,212 @@
+name: 发布已验证站点
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/platforms/**"
+      - "data/pricing/**"
+      - "content/**"
+      - "site/**"
+      - "scripts/**"
+      - "tests/**"
+      - "package.json"
+      - ".github/workflows/**"
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: freetoken-production-deploy
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: 安装 Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: scripts/requirements.lock
+
+      - name: 安装 Python 依赖并验证数据
+        run: |
+          pip install --require-hashes -r scripts/requirements.lock
+          python -m unittest discover -s tests -v
+          python scripts/compile_data.py
+          git diff --exit-code -- data/platforms.json site/src/data/platforms.json site/public/sitemap.xml
+
+      - name: 验证真实飞书 SDK 与审批集成
+        run: |
+          python -m venv .venv-daemon
+          .venv-daemon/bin/python -m pip install -r daemon/requirements.txt
+          .venv-daemon/bin/python -m unittest discover -s tests/daemon_integration -v
+
+      - name: 安装 Node.js 22
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: 测试并构建站点
+        working-directory: site
+        run: |
+          npm ci
+          npm test
+          npm run build
+
+      - name: 写入不可变发布标识
+        run: |
+          RELEASE_ID="$(date -u +%Y%m%d%H%M%S)-$(printf '%s' "$GITHUB_SHA" | cut -c1-12)"
+          printf '%s\n' "$RELEASE_ID" > site/dist/release-id.txt
+          echo "Stamped release ${RELEASE_ID}"
+
+      - name: 冒烟测试已验证构建
+        run: |
+          python -m http.server 8765 --directory site/dist --bind 127.0.0.1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          sleep 2
+          check_route() {
+            local path="$1" marker="$2" body
+            if ! body=$(curl -fsS --max-time 15 "http://127.0.0.1:8765${path}"); then
+              echo "route failed: ${path}" >&2
+              exit 1
+            fi
+            if ! grep -qF "$marker" <<<"$body"; then
+              echo "marker '${marker}' missing on ${path}" >&2
+              exit 1
+            fi
+            echo "verified ${path}"
+          }
+          check_route / "FreeToken"
+          check_route /en/ "FreeToken"
+          check_route /cost/ "API"
+          check_route /en/cost/ "API"
+          check_route /platform/deepseek/ "DeepSeek"
+          check_route /en/platform/deepseek/ "DeepSeek"
+          check_route /articles/ "FreeToken"
+          curl -fsS --max-time 15 http://127.0.0.1:8765/sitemap.xml | grep -q '<urlset'
+          status=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "http://127.0.0.1:8765/definitely-missing-page")
+          if [ "$status" != "404" ]; then
+            echo "missing page returned ${status}, expected 404" >&2
+            exit 1
+          fi
+          echo "smoke test passed"
+
+      - name: 保存不可变构建产物
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-${{ github.sha }}
+          path: site/dist
+          if-no-files-found: error
+          retention-days: 14
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: write
+      checks: read
+    steps:
+      - name: 检出发布脚本
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: 获取已验证构建产物
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: site-${{ github.sha }}
+          path: site/dist
+
+      - name: 采纳已验证发布标识
+        run: echo "FREETOKEN_RELEASE_ID=$(tr -d '\r\n' < site/dist/release-id.txt)" >> "$GITHUB_ENV"
+
+      - name: 发布到 deploy 分支
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          DEPLOY_DIR=$(mktemp -d)
+          cp -r site/dist/. "$DEPLOY_DIR/"
+          cd "$DEPLOY_DIR"
+          git init -b deploy
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "deploy: ${GITHUB_SHA}"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${REPOSITORY}.git"
+          EXPECTED_DEPLOY=$(git ls-remote origin refs/heads/deploy | cut -f1)
+          if [ -n "$EXPECTED_DEPLOY" ]; then
+            git push --force-with-lease="refs/heads/deploy:$EXPECTED_DEPLOY" origin HEAD:deploy
+          else
+            git push origin HEAD:deploy
+          fi
+          DEPLOY_SHA=$(git rev-parse HEAD)
+          for attempt in $(seq 1 30); do
+            if ! CONCLUSION=$(gh api "repos/${REPOSITORY}/commits/${DEPLOY_SHA}/check-runs" \
+              --jq '[.check_runs[] | select(.name | test("Cloudflare Pages"; "i"))] | if length == 0 then "missing" elif any(.conclusion == "failure" or .conclusion == "cancelled" or .conclusion == "timed_out") then "failure" elif all(.status == "completed" and .conclusion == "success") then "success" else "pending" end'); then
+              sleep 20
+              continue
+            fi
+            case "$CONCLUSION" in
+              success) exit 0 ;;
+              failure) echo "Cloudflare Pages deployment failed" >&2; exit 1 ;;
+            esac
+            sleep 20
+          done
+          echo "Cloudflare Pages did not report a successful deployment in time" >&2
+          exit 1
+
+      - name: 发布同一构建产物到腾讯云
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.TENCENT_SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.TENCENT_KNOWN_HOSTS }}
+          FREETOKEN_DEPLOY_HOST: ${{ secrets.TENCENT_DEPLOY_HOST }}
+          FREETOKEN_DEPLOY_USER: freetoken-deploy
+          FREETOKEN_SSH_KEY: ${{ runner.temp }}/freetoken-deploy-key
+          FREETOKEN_KNOWN_HOSTS: ${{ runner.temp }}/freetoken-known-hosts
+        run: |
+          umask 077
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$FREETOKEN_SSH_KEY"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$FREETOKEN_KNOWN_HOSTS"
+          python scripts/sync_to_tencent.py
+
+      - name: 双节点公网发布验证
+        run: |
+          EXPECTED=$(tr -d '\r\n' < site/dist/release-id.txt)
+          echo "Expected release: ${EXPECTED}"
+          status=0
+          for url in https://freetokens.info/release-id.txt https://witkit.zone/release-id.txt; do
+            observed=""
+            for attempt in $(seq 1 30); do
+              observed=$(curl -fsSL --max-time 20 "$url" 2>/dev/null | tr -d '\r\n' || true)
+              if [ "$observed" = "$EXPECTED" ]; then
+                echo "verified ${url} -> ${EXPECTED}"
+                continue 2
+              fi
+              sleep 15
+            done
+            echo "release verification failed at ${url}: expected ${EXPECTED}, observed ${observed:-<unreachable>}" >&2
+            status=1
+          done
+          exit $status
+
+      - name: 发送已验证发布通知
+        if: success()
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+        run: |
+          RELEASE_ID=$(tr -d '\r\n' < site/dist/release-id.txt)
+          python scripts/notify_deploy.py --release-id "$RELEASE_ID" --run-url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"

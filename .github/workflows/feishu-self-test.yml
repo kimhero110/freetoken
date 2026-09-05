@@ -1,0 +1,24 @@
+name: 飞书审批链路联调（不发布内容）
+run-name: intake:${{ inputs.ticket_id }}
+on:
+  workflow_dispatch:
+    inputs:
+      ticket_id:
+        description: Ticket confirmed by the configured Feishu owner
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  approval-test:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 3
+    steps:
+      - name: Record successful gate passage without modifying content
+        env:
+          TICKET_ID: ${{ inputs.ticket_id }}
+        run: |
+          printf 'Feishu gate integration succeeded for ticket %s\n' "$TICKET_ID" >> "$GITHUB_STEP_SUMMARY"
+          printf 'No content, deployment, or repository writes were performed.\n' >> "$GITHUB_STEP_SUMMARY"

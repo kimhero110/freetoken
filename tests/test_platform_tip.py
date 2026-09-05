@@ -1,6 +1,7 @@
 import sys
 import tempfile
 import unittest
+from contextlib import ExitStack
 from pathlib import Path
 from unittest.mock import patch
 
@@ -9,7 +10,7 @@ import yaml
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 sys.path.append(str(Path(__file__).resolve().parents[1] / "scripts"))
 
-from scripts import platform_tip
+from scripts import platform_tip, review_candidates
 
 
 class DomainTests(unittest.TestCase):
@@ -92,6 +93,70 @@ class BuildPlatformTests(unittest.TestCase):
     def test_invalid_url_rejected_before_any_work(self):
         with patch("sys.argv", ["platform_tip.py", "--url", "http://insecure.io", "--ticket-id", "pl-2"]):
             self.assertEqual(platform_tip.main(), 2)
+
+
+class UpdateIntakeTests(unittest.TestCase):
+    def test_generated_update_can_be_approved_and_archived(self):
+        self._roundtrip()
+
+    def test_generated_update_rejects_changed_source_and_preserves_candidate(self):
+        self._roundtrip(changed_source=True)
+
+    def _roundtrip(self, changed_source=False):
+        from test_candidates import CandidateWorkflowTests
+        with tempfile.TemporaryDirectory() as directory, ExitStack() as stack:
+            root = Path(directory)
+            platforms, candidates = root / "platforms", root / "candidates"
+            platforms.mkdir()
+            platform = CandidateWorkflowTests.platform()
+            original = yaml.safe_dump(platform)
+            platform_file = platforms / "demo.yaml"
+            platform_file.write_text(original, encoding="utf-8")
+            source = "https://example.com/source"
+            html = "<p>" + "Official quota details " * 20 + "</p>"
+            for module in (platform_tip, review_candidates):
+                stack.enter_context(patch.object(module, "PLATFORMS_DIR", platforms))
+                stack.enter_context(patch.object(module, "CANDIDATES_DIR", candidates))
+            for name, value in {"REVIEWS_DIR": root / "reviews", "LOCK_FILE": root / "review.lock",
+                                "HASHES_FILE": root / "hashes.json", "GENERATED_FILES": ()}.items():
+                stack.enter_context(patch.object(review_candidates, name, value))
+            stack.enter_context(patch.object(platform_tip, "get_public_text", return_value=html))
+            stack.enter_context(patch.object(platform_tip, "call_deepseek", return_value={
+                "intro": "Updated quota", "free_quota": {"amount": 2, "unit": "tokens", "type": "每日"}}))
+            stack.enter_context(patch("sys.argv", ["platform_tip.py", "--url", source, "--ticket-id", "pl-roundtrip"]))
+            self.assertEqual(platform_tip.main(), 0)
+            self.assertEqual(platform_file.read_text(encoding="utf-8"), original)
+            candidate_file = candidates / "update-demo-pl-roundtrip.yaml"
+            proposed = yaml.safe_load(candidate_file.read_text(encoding="utf-8"))
+            self.assertEqual(proposed["current"]["intro"], "Old")
+            self.assertEqual(len(proposed["platform_hash"]), 64)
+            stack.enter_context(patch.object(review_candidates, "get_public_text", return_value=html + ("changed" if changed_source else "")))
+            build = stack.enter_context(patch.object(review_candidates.subprocess, "run"))
+            if changed_source:
+                with self.assertRaisesRegex(ValueError, "来源页面已"):
+                    review_candidates.approve_candidate(candidate_file.stem)
+                self.assertTrue(candidate_file.exists())
+                self.assertEqual(platform_file.read_text(encoding="utf-8"), original)
+                build.assert_not_called()
+            else:
+                self.assertTrue(review_candidates.approve_candidate(candidate_file.stem))
+                updated = yaml.safe_load(platform_file.read_text(encoding="utf-8"))
+                self.assertEqual(updated["free_quota"]["amount"], 2)
+                self.assertEqual(updated["intro"], "Updated quota")
+                self.assertFalse(candidate_file.exists())
+                self.assertTrue((root / "reviews" / f"{candidate_file.stem}-approved.yaml").exists())
+                self.assertEqual(build.call_count, 2)
+
+    def test_invalid_extraction_does_not_create_update(self):
+        with tempfile.TemporaryDirectory() as directory:
+            candidates = Path(directory) / "candidates"
+            with patch.object(platform_tip, "CANDIDATES_DIR", candidates), patch.object(
+                platform_tip, "find_match", return_value=("demo", {"source_urls": ["https://example.com/source"]}, True)
+            ), patch.object(platform_tip, "get_public_text", return_value="x" * 200), patch.object(
+                platform_tip, "call_deepseek", return_value={"intro": "new", "free_quota": {"amount": float("nan")}}
+            ), patch("sys.argv", ["platform_tip.py", "--url", "https://example.com/source", "--ticket-id", "pl-invalid"]):
+                self.assertEqual(platform_tip.main(), 4)
+                self.assertFalse(candidates.exists())
 
 
 if __name__ == "__main__":

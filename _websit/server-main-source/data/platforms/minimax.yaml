@@ -1,0 +1,69 @@
+schema_version: 2
+slug: minimax
+name: MiniMax 开放平台
+name_en: MiniMax AI
+category: 国内主流
+intro: 自研万亿 MoE 架构大模型平台，新注册用户赠送 1500 万 Tokens（或 15 元代金券），长文本与拟真语音极佳。
+intro_en: Trillion-parameter MoE foundation model. 15,000,000 free tokens for MiniMax-Text-01
+  and TTS.
+website: https://platform.minimaxi.com/
+doc_url: https://platform.minimaxi.com/document/guides
+api_base_url: https://api.minimax.chat/v1
+free_models:
+- MiniMax-Text-01
+- abab6.5s-chat
+free_quota:
+  type: 限时赠送
+  amount: 1500 万
+  unit: Tokens (或 15 元代金券)
+  reset_period: 一次性
+  details: 新用户实名发放 15 元体验金，支持万亿 MoE 与拟真语音生成。
+  details_en: 15 RMB trial voucher (~15M tokens) on sign-up.
+verification: 手机号注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- 代金券有效期为 30 天。
+gotchas_en:
+- Trial voucher expires in 30 days.
+registration:
+  url: https://platform.minimaxi.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.minimax.chat/v1/chat/completions
+      models:
+      - MiniMax-Text-01
+      - abab6.5s-chat
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: MINIMAX_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://platform.minimaxi.com/document/guides
+  checked_at: '2026-09-02'

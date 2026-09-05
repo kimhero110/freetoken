@@ -1,0 +1,73 @@
+schema_version: 2
+slug: huggingface-inference
+name: Hugging Face (Serverless API)
+name_en: Hugging Face Serverless Inference
+category: 海外主流
+intro: 全球最大开源模型社区官方 Serverless 推理 API，300+ 款开源模型完全免费调用，共享算力池每小时提供 300 次调用。
+intro_en: Official Serverless Inference API by Hugging Face. Free access to 300+ open-source
+  models with 300 req/hr tier.
+website: https://huggingface.co/docs/api-inference/
+doc_url: https://huggingface.co/docs/api-inference/
+api_base_url: https://api-inference.huggingface.co/v1
+free_models:
+- deepseek-ai/DeepSeek-R1
+- Qwen/Qwen2.5-72B-Instruct
+- meta-llama/Llama-3.3-70B-Instruct
+free_quota:
+  type: 每日刷新
+  amount: 300 次 / 小时
+  unit: Requests (永久免费)
+  reset_period: 每小时重置
+  details: 免费层提供每小时 300 次请求，覆盖 Hugging Face 托管的数百款前沿开源大模型，完全兼容 OpenAI 格式。
+  details_en: 300 requests per hour free tier for hundreds of popular open models.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 每日
+- 永久
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 冷门模型可能存在冷启动排队延迟。
+- 高并发请添加重试机制。
+gotchas_en:
+- Cold start latency may apply to less frequent models.
+- Include retry logic for rate limit spikes.
+registration:
+  url: https://huggingface.co/docs/api-inference/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api-inference.huggingface.co/v1/chat/completions
+      models:
+      - deepseek-ai/DeepSeek-R1
+      - Qwen/Qwen2.5-72B-Instruct
+      - meta-llama/Llama-3.3-70B-Instruct
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: HUGGINGFACE_INFERENCE_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://huggingface.co/docs/api-inference/
+  checked_at: '2026-09-02'

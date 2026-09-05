@@ -1,0 +1,23 @@
+candidate_type: capability_probe
+candidate_version: 2
+platform_slug: deepseek
+platform_hash: b1a77f4fdc7a73cb00608513765f3b6cb0e5b6f5c2953195b9e5693ab06afab1
+operation_id: chat_completions
+tool: openai_node
+promotion_target: openai_node
+client: openai
+client_version: 7.9.0
+probe_config_hash: 57e9d94bf2cac204081642ed59de7e867eaaf460d61eead4ac1bf6b93b1aff84
+endpoint_url: https://api.deepseek.com/chat/completions
+endpoint_hash: 948f1ecb6b48f91adc4e110d0351cd172b16450e9936d358992e0dfad7b863f3
+model: deepseek-v4-flash
+observed_status_code: 200
+latency_ms: 1077
+protocol_valid: true
+decision: live
+checked_at: '2026-09-03T11:21:29.430769+00:00'
+evidence_url: https://github.com/kimhero110/freetoken/actions/runs/33749214858
+review:
+  decision: approved
+  reviewed_at: '2026-09-03T11:47:23.417468+00:00'
+  reviewer: kimhero110

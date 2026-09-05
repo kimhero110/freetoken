@@ -1,0 +1,2 @@
+# Preserve snapshot bytes so SHA-256 verification works on Windows and Linux.
+* -text

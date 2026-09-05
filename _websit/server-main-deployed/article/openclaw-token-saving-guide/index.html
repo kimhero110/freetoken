@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>OpenClaw 这样买 Token 最划算：一文看懂各大平台 Coding Plan 与降本 90% 技巧 · FreeToken 深度文章 | FreeToken</title><meta name="description" content="深入剖析 OpenClaw 5 大 Token 吞噬黑洞、5小时滑动窗口机制与 6 大极客降本技巧，让有限算力发挥 10 倍效能。"><!-- Open Graph / Meta --><meta property="og:type" content="website"><meta property="og:title" content="OpenClaw 这样买 Token 最划算：一文看懂各大平台 Coding Plan 与降本 90% 技巧 · FreeToken 深度文章 | FreeToken"><meta property="og:description" content="深入剖析 OpenClaw 5 大 Token 吞噬黑洞、5小时滑动窗口机制与 6 大极客降本技巧，让有限算力发挥 10 倍效能。"><meta property="og:image" content="/images/hero-mascot.webp"><meta property="og:url" content="https://freetokens.info/article/openclaw-token-saving-guide/"><!-- Canonical & hreflang SEO --><link rel="canonical" href="https://freetokens.info/article/openclaw-token-saving-guide/"><!-- Favicon --><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- Umami Private Analytics (Dynamic routing for freetokens.info & witkit.zone) --><script>
+    (function() {
+      try {
+        var h = window.location.hostname || '';
+        var wid = (h.indexOf('witkit.zone') !== -1)
+          ? '0a887fe2-61cb-4bc6-8480-e8de3e4be328'
+          : 'cd161655-a597-4450-acb9-30397e390c54';
+        var s = document.createElement('script');
+        s.defer = true;
+        s.src = 'https://analytics.witkit.zone/script.js';
+        s.setAttribute('data-website-id', wid);
+        document.head.appendChild(s);
+      } catch (e) {}
+    })();
+  </script><link rel="stylesheet" href="/_astro/Base.BKBak-wt.css"><link rel="stylesheet" href="/_astro/_slug_.A8PiA5Si.css"></head><body><header class="site-header"><div class="container header-inner"><a href="/" class="brand-logo"><span>FreeTokens.info</span><span class="brand-badge">情报局</span></a><!-- 桌面端横排导航 (>=768px) --><nav class="nav-desktop-links"><a href="/" class="nav-item">⚡ 算力雷达</a><a href="/articles/" class="nav-item">📚 深度文章</a><a href="/guide/" class="nav-item">📖 接入指南</a><a href="/about/" class="nav-item">🧭 长期主义</a><a href="/en/articles/" class="nav-lang-switch" title="切换至英文版">🌐 English</a><button class="nav-btn-wechat" id="btn-open-wechat"><span>公众号</span></button><a class="nav-github-link" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener"><span>GitHub</span></a></nav><!-- 移动端精简栏 (<768px: 语言切换 + 汉堡按钮) --><div class="mobile-nav-right"><a href="/en/articles/" class="nav-lang-switch" title="切换至英文版">🌐</a><button class="btn-hamburger" id="btn-open-drawer" aria-label="Open Navigation Menu"><span>☰</span></button></div></div></header><!-- 移动端侧滑抽屉菜单 --><div class="mobile-drawer-backdrop" id="drawer-backdrop"></div><div class="mobile-drawer-panel" id="drawer-panel"><div class="drawer-header"><span class="drawer-title">FreeTokens 导航</span><button class="btn-drawer-close" id="btn-close-drawer">&times;</button></div><nav class="drawer-nav-list"><a href="/" class="drawer-nav-item"><span>⚡</span><span>算力雷达 (首页)</span></a><a href="/articles/" class="drawer-nav-item"><span>📚</span><span>深度文章专栏</span></a><a href="/guide/" class="drawer-nav-item"><span>📖</span><span>接入指南与生成器</span></a><a href="/about/" class="drawer-nav-item"><span>🧭</span><span>长期主义理念</span></a></nav><div class="drawer-footer-actions"><button class="btn-drawer-wechat" id="btn-drawer-wechat-action"><span>💬 关注官方公众号</span></button><a class="btn-drawer-gh" href="https://github.com/kimhero110/freetoken" target="_blank" rel="noopener"><span>⭐ GitHub 仓库 ↗</span></a></div></div><main><article class="article-detail-page" data-astro-cid-xrrgwii6><div class="container article-layout" data-astro-cid-xrrgwii6><!-- 主内容区 --><main class="article-main" data-astro-cid-xrrgwii6><!-- 面包屑导航 --><nav class="article-breadcrumb" data-astro-cid-xrrgwii6><a href="/" data-astro-cid-xrrgwii6>算力雷达</a><span class="bc-sep" data-astro-cid-xrrgwii6>/</span><a href="/articles/" data-astro-cid-xrrgwii6>深度文章</a><span class="bc-sep" data-astro-cid-xrrgwii6>/</span><span class="bc-current" data-astro-cid-xrrgwii6>实战指南</span></nav><header class="article-header" data-astro-cid-xrrgwii6><div class="article-meta-top" data-astro-cid-xrrgwii6><span class="article-cat-tag" data-astro-cid-xrrgwii6>实战指南</span><span class="article-read-badge" data-astro-cid-xrrgwii6>6 分钟</span></div><h1 class="article-main-title" data-astro-cid-xrrgwii6>OpenClaw 这样买 Token 最划算：一文看懂各大平台 Coding Plan 与降本 90% 技巧</h1><div class="article-author-bar" data-astro-cid-xrrgwii6><span class="author-name" data-astro-cid-xrrgwii6>✍️ FreeToken Lab</span><span class="meta-dot" data-astro-cid-xrrgwii6>·</span><span class="publish-date" data-astro-cid-xrrgwii6>发布于 2026-04-13</span><span class="meta-dot" data-astro-cid-xrrgwii6>·</span><span class="update-date" data-astro-cid-xrrgwii6>更新于 2026-09-02</span></div></header><!-- 移动端可折叠 TOC 抽屉 --><details class="mobile-toc-drawer" data-astro-cid-xrrgwii6><summary class="mobile-toc-summary" data-astro-cid-xrrgwii6><span data-astro-cid-xrrgwii6>📑 展开文章目录导航 (10)</span></summary><nav class="mobile-toc-list" data-astro-cid-xrrgwii6><a href="#01-agent-的-5-大-token-吞噬黑洞" class="mobile-toc-item toc-level-2" data-astro-cid-xrrgwii6>01 · Agent 的 5 大 Token 吞噬黑洞</a><a href="#02-5-小时滑动窗口与计费避坑要点" class="mobile-toc-item toc-level-2" data-astro-cid-xrrgwii6>02 · 5 小时滑动窗口与计费避坑要点</a><a href="#核心真相-5-小时滑动窗口-rolling-window" class="mobile-toc-item toc-level-3" data-astro-cid-xrrgwii6>核心真相：5 小时滑动窗口（Rolling Window）</a><a href="#03-openclaw-降本-90-的-6-大极客技巧" class="mobile-toc-item toc-level-2" data-astro-cid-xrrgwii6>03 · OpenClaw 降本 90% 的 6 大极客技巧</a><a href="#技巧-1-关闭隐形后台任务-立省-70" class="mobile-toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 1：关闭隐形后台任务（立省 70%）</a><a href="#技巧-2-智能三级模型路由-省-60-80" class="mobile-toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 2：智能三级模型路由（省 60-80%）</a><a href="#技巧-3-启用-prompt-caching-前缀缓存" class="mobile-toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 3：启用 Prompt Caching（前缀缓存）</a><a href="#技巧-4-qmd-本地向量切片检索-省-85-97" class="mobile-toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 4：QMD 本地向量切片检索（省 85-97%）</a><a href="#技巧-5-会话定期压缩-compact" class="mobile-toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 5：会话定期压缩（`/compact`）</a><a href="#技巧-6-本地-ollama-零成本兜底" class="mobile-toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 6：本地 Ollama 零成本兜底</a></nav></details><!-- Markdown output escapes raw HTML and allowlists link protocols. --><div class="article-content-body" data-astro-cid-xrrgwii6><h1 id="openclaw-这样买-token-最划算-一文看懂各大平台-coding-plan-与降本-90-技巧">OpenClaw 这样买 Token 最划算：一文看懂各大平台 Coding Plan 与降本 90% 技巧</h1>
+<blockquote>
+<p><strong>导读</strong>：模型是 OpenClaw 等自主智能体（Agent）的大脑，直接影响执行效果。目前海外模型在复杂推理上稍强，但价格高且常面临封号与海外支付门槛；国内模型性价比极高且直连稳定。本文为你彻底算清 Agent 消耗账目，并公开 6 大立省 90% 的降本黑科技。</p>
+</blockquote>
+<hr>
+<h2 id="01-agent-的-5-大-token-吞噬黑洞">01 · Agent 的 5 大 Token 吞噬黑洞</h2>
+<p>在传统对话中，用户提问一次消耗几百 Token；但在 OpenClaw、Claude Code 等自主智能体工作流中，一个稍微复杂的任务往往会持续运行 10~30 轮子循环。Token 消耗分布如下：</p>
+<ol>
+<li><strong>上下文累积膨胀（40% - 50%）</strong>：每一轮新的思考和工具调用，都会把之前所有轮次的对话历史全量重新发送给模型；</li>
+<li><strong>工具调用（Tool Call）冗长输出（20% - 30%）</strong>：执行终端命令、搜索网页或读取文件时产生的巨量控制台输出全被塞入 Prompt；</li>
+<li><strong>系统提示词（System Prompt）重复传输（10% - 15%）</strong>：OpenClaw 框架自带的长达 1.5 万 Token 的严格规则和工具描述，每一轮都在重复计费；</li>
+<li><strong>多轮深度推理（10% - 15%）</strong>：模型自身的自我纠错、反思和中间思考过程消耗；</li>
+<li><strong>隐形后台任务（5% - 10%）</strong>：自动生成会话标题、自动打标签、心跳保持等边缘请求。</li>
+</ol>
+<hr>
+<h2 id="02-5-小时滑动窗口与计费避坑要点">02 · 5 小时滑动窗口与计费避坑要点</h2>
+<p>很多开发者购买了商业 Coding Plan 后发现：<em>“明明号称每月几万次配额，为什么写了两个小时代码就被限制了？”</em></p>
+<h3 id="核心真相-5-小时滑动窗口-rolling-window">核心真相：5 小时滑动窗口（Rolling Window）</h3>
+<p>绝大多数代码生成平台采用的是 <strong>5 小时滑动窗口限制</strong>，而非按天或按月重置。系统每分钟都在统计过去 300 分钟内的总用量。一旦短时间内连续执行大型工程重构，极易瞬间撞满滑动限额，只能等待时间推移匀速释放。</p>
+<pre><code>[时间轴 00:00 ------------------&gt; 05:00] (滑动窗口实时向前推移)
+  密集调用阶段(01:00-02:30) ➔ 触发 429 限流 ➔ 必须等旧请求在 06:00 后滑出窗口释放
+</code></pre>
+<hr>
+<h2 id="03-openclaw-降本-90-的-6-大极客技巧">03 · OpenClaw 降本 90% 的 6 大极客技巧</h2>
+<h3 id="技巧-1-关闭隐形后台任务-立省-70">技巧 1：关闭隐形后台任务（立省 70%）</h3>
+<p>在 OpenClaw 设置中关闭“自动生成标题”、“自动标签”和“心跳检测”，实测 30 轮交互的 Token 消耗从 120 万直接砍至 36 万！</p>
+<h3 id="技巧-2-智能三级模型路由-省-60-80">技巧 2：智能三级模型路由（省 60-80%）</h3>
+<ul>
+<li><strong>Tier 1 (轻量清洗)</strong>：使用 <code>GLM-4-Flash / DeepSeek V3</code> 处理格式化、日志清洗与摘要；</li>
+<li><strong>Tier 2 (主力编码)</strong>：使用 <code>Claude 3.5 Sonnet / Qwen 2.5 72B</code> 执行核心代码编写；</li>
+<li><strong>Tier 3 (架构突破)</strong>：仅在遇到疑难 Bug 或复杂架构推导时调用 <code>DeepSeek R1 / Opus</code>。</li>
+</ul>
+<h3 id="技巧-3-启用-prompt-caching-前缀缓存">技巧 3：启用 Prompt Caching（前缀缓存）</h3>
+<p>当系统提示词不变时，开启 Prefix Caching 可以让命中缓存的输入 Token 成本降低 80%~90%。</p>
+<h3 id="技巧-4-qmd-本地向量切片检索-省-85-97">技巧 4：QMD 本地向量切片检索（省 85-97%）</h3>
+<p>拒绝将整个代码库暴力 Dump 进 Prompt。利用 QMD 本地向量索引，只切片提取相关度最高的 200 行代码注入上下文。</p>
+<h3 id="技巧-5-会话定期压缩-compact">技巧 5：会话定期压缩（<code>/compact</code>）</h3>
+<p>每完成一个功能模块，主动输入 <code>/compact</code> 压缩历史记录，清除已执行完毕的无用命令输出。</p>
+<h3 id="技巧-6-本地-ollama-零成本兜底">技巧 6：本地 Ollama 零成本兜底</h3>
+<p>在本地显卡部署 <code>Qwen 2.5 Coder 7B</code>，把单元测试生成和基本语法校验全部在本地运行，外部 API 消耗直接归零。</p>
+</div><!-- 原文来源标注（仅改写文章渲染） --><!-- 底部关注卡片 --><div class="article-footer-card" data-astro-cid-xrrgwii6><div class="footer-card-copy" data-astro-cid-xrrgwii6><h4 data-astro-cid-xrrgwii6>💡 觉得有收获？</h4><p data-astro-cid-xrrgwii6>欢迎关注公众号【FreeToken 免费情报局】，获取全球一手免费算力与 Agent 提效内参。</p></div><button class="btn-open-wechat-sub open-wechat-trigger" data-astro-cid-xrrgwii6>关注公众号 ↗</button></div><!-- 底部相关文章 --><div class="related-articles-section" data-astro-cid-xrrgwii6><h3 class="related-title" data-astro-cid-xrrgwii6>延伸阅读推荐</h3><div class="related-grid" data-astro-cid-xrrgwii6><a href="/article/quotabar-desktop-hud-guide/" class="related-card" data-astro-cid-xrrgwii6><span class="rel-cat" data-astro-cid-xrrgwii6>开发者工具</span><h4 data-astro-cid-xrrgwii6>告别 429 限流：用 QuotaBar 实时监控 Claude 5小时滚动窗口与多模型配额</h4><span class="rel-time" data-astro-cid-xrrgwii6>5 分钟</span></a><a href="/article/global-free-token-economics-2026/" class="related-card" data-astro-cid-xrrgwii6><span class="rel-cat" data-astro-cid-xrrgwii6>算力算账</span><h4 data-astro-cid-xrrgwii6>2026 全球免费算力硬核算账：4.5 亿 Tokens 如何实现「0 成本永动机」？</h4><span class="rel-time" data-astro-cid-xrrgwii6>6 分钟</span></a></div></div><div class="article-back-nav" data-astro-cid-xrrgwii6><a href="/articles/" class="btn-back" data-astro-cid-xrrgwii6>← 返回文章专栏大厅</a><a href="/guide/" class="btn-back" data-astro-cid-xrrgwii6>📖 查看 10 秒代码生成器 →</a></div></main><!-- 桌面端侧边栏：TOC 目录与快捷操作 --><aside class="article-sidebar" data-astro-cid-xrrgwii6><div class="sidebar-sticky-box" data-astro-cid-xrrgwii6><div class="toc-card" data-astro-cid-xrrgwii6><div class="toc-header" data-astro-cid-xrrgwii6><span class="toc-icon" data-astro-cid-xrrgwii6>📑</span><span class="toc-title" data-astro-cid-xrrgwii6>文章目录</span></div><nav class="toc-list" data-astro-cid-xrrgwii6><a href="#01-agent-的-5-大-token-吞噬黑洞" class="toc-item toc-level-2" data-astro-cid-xrrgwii6>01 · Agent 的 5 大 Token 吞噬黑洞</a><a href="#02-5-小时滑动窗口与计费避坑要点" class="toc-item toc-level-2" data-astro-cid-xrrgwii6>02 · 5 小时滑动窗口与计费避坑要点</a><a href="#核心真相-5-小时滑动窗口-rolling-window" class="toc-item toc-level-3" data-astro-cid-xrrgwii6>核心真相：5 小时滑动窗口（Rolling Window）</a><a href="#03-openclaw-降本-90-的-6-大极客技巧" class="toc-item toc-level-2" data-astro-cid-xrrgwii6>03 · OpenClaw 降本 90% 的 6 大极客技巧</a><a href="#技巧-1-关闭隐形后台任务-立省-70" class="toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 1：关闭隐形后台任务（立省 70%）</a><a href="#技巧-2-智能三级模型路由-省-60-80" class="toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 2：智能三级模型路由（省 60-80%）</a><a href="#技巧-3-启用-prompt-caching-前缀缓存" class="toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 3：启用 Prompt Caching（前缀缓存）</a><a href="#技巧-4-qmd-本地向量切片检索-省-85-97" class="toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 4：QMD 本地向量切片检索（省 85-97%）</a><a href="#技巧-5-会话定期压缩-compact" class="toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 5：会话定期压缩（`/compact`）</a><a href="#技巧-6-本地-ollama-零成本兜底" class="toc-item toc-level-3" data-astro-cid-xrrgwii6>技巧 6：本地 Ollama 零成本兜底</a></nav></div><div class="sidebar-action-card" data-astro-cid-xrrgwii6><h4 data-astro-cid-xrrgwii6>⚡ 算力调度实验室</h4><p data-astro-cid-xrrgwii6>10 秒生成 44+ 家平台 OpenAI 兼容配置代码。</p><a href="/guide/" class="btn-sidebar-guide" data-astro-cid-xrrgwii6>立即生成配置 ↗</a></div></div></aside></div></article></main><footer class="site-footer"><div class="container"><div class="footer-inner"><div class="footer-brand"><h4>FreeTokens.info · 免费Token情报局</h4><p>持续追踪全球主流大模型与云平台免费 API 配额，为独立开发者与 AI 爱好者提供清晰、透明、可复用的接入指南。</p></div><div class="footer-links"><a href="/">算力雷达</a><a href="/articles/">深度文章</a><a href="/guide/">接入指南</a><a href="/about/">长期主义</a><a href="/sitemap.xml" target="_blank">Sitemap</a><a href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank">推荐新源</a><a href="https://github.com/kimhero110/freetoken" target="_blank">GitHub</a></div></div><div class="footer-ecosystem"><span>生态基础设施：</span><a href="https://github.com/withastro/astro" target="_blank" rel="noopener">Astro Engine ↗</a><a href="https://github.com/BerriAI/litellm" target="_blank" rel="noopener">LiteLLM Gateway ↗</a><a href="https://github.com/openai/openai-python" target="_blank" rel="noopener">OpenAI Python SDK ↗</a><a href="https://github.com/langgenius/dify" target="_blank" rel="noopener">Dify Platform ↗</a></div><div class="footer-bottom"><div>© 2026 FreeTokens.info · MIT License · Open Source Intelligence <span id="footer-icp-slot" style="display: inline;"><span style="margin: 0 6px; opacity: 0.4;">|</span><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">苏ICP备2026003689号-2</a></span></div><div>Continuous Radar Sweeps across 40+ LLM Providers</div></div></div></footer><!-- 微信关注弹窗 --><div class="wechat-modal-backdrop" id="wechat-modal"><div class="wechat-modal-card"><button class="modal-close-btn" id="btn-close-wechat">&times;</button><h3 class="modal-title">关注【FreeToken 免费情报局】</h3><p class="modal-desc">扫码关注官方公众号，第一时间接收全网大模型免费额度变动、新源上线与 Agent 降本内参。</p><img src="/wechat-qrcode.jpg" alt="FreeToken 官方公众号二维码" class="modal-qrcode-img"><p class="modal-desc" style="font-size: 11.5px; color: var(--text-light);">微信扫一扫 · 极客同行</p></div></div><script>
+    // 微信弹窗逻辑
+    const wechatModal = document.getElementById('wechat-modal');
+    const openWechatBtns = [
+      document.getElementById('btn-open-wechat'),
+      document.getElementById('btn-drawer-wechat-action')
+    ];
+    const closeWechatBtn = document.getElementById('btn-close-wechat');
+
+    openWechatBtns.forEach(btn => {
+      btn?.addEventListener('click', () => {
+        wechatModal?.classList.add('open');
+        closeDrawer();
+      });
+    });
+
+    closeWechatBtn?.addEventListener('click', () => {
+      wechatModal?.classList.remove('open');
+    });
+
+    wechatModal?.addEventListener('click', (e) => {
+      if (e.target === wechatModal) {
+        wechatModal.classList.remove('open');
+      }
+    });
+
+    // 移动端侧滑抽屉逻辑
+    const openDrawerBtn = document.getElementById('btn-open-drawer');
+    const closeDrawerBtn = document.getElementById('btn-close-drawer');
+    const drawerBackdrop = document.getElementById('drawer-backdrop');
+    const drawerPanel = document.getElementById('drawer-panel');
+
+    function openDrawer() {
+      drawerBackdrop?.classList.add('open');
+      drawerPanel?.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      drawerBackdrop?.classList.remove('open');
+      drawerPanel?.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    openDrawerBtn?.addEventListener('click', openDrawer);
+    closeDrawerBtn?.addEventListener('click', closeDrawer);
+    drawerBackdrop?.addEventListener('click', closeDrawer);
+  
+    // 域名检测：如果是国内腾讯云域名 witkit.zone，自动激活 ICP 备案标识
+    if (window.location.hostname.includes('witkit.zone') || window.location.hostname.includes('124.221.254.56')) {
+      const icpSlot = document.getElementById('footer-icp-slot');
+      if (icpSlot) icpSlot.style.display = 'inline';
+    }
+  </script></body></html>

@@ -1,0 +1,71 @@
+schema_version: 2
+slug: xfyun-spark
+name: 讯飞星火认知大模型
+name_en: iFLYTEK Spark
+category: 国内主流
+intro: 科大讯飞官方大模型开放平台，Spark Lite 模型全面永久免费！支持语音、长文本与多模态交互。
+intro_en: iFLYTEK AI platform. Spark Lite model is permanently free for all developers
+  with full OpenAI compatibility.
+website: https://xinghuo.xfyun.cn/sparkapi
+doc_url: https://www.xfyun.cn/doc/spark/Web.html
+api_base_url: https://spark-api-open.xf-yun.com/v1
+free_models:
+- general
+- generalv3.5
+- generalv3
+free_quota:
+  type: 永久免费
+  amount: 永久免费
+  unit: Spark Lite 永久完全免费
+  reset_period: 永久
+  details: Spark Lite 版本对所有开发者永久免费开放，新认证用户还送 200 万高阶模型体验包。
+  details_en: Spark Lite is permanently free; verified users get 2M tokens for Max.
+verification: 讯飞账号认证
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 大厂基座
+- 国产直连
+- OpenAI兼容
+gotchas:
+- 已全面支持标准 OpenAI REST API 格式调用。
+gotchas_en:
+- Fully compatible with standard OpenAI REST protocol.
+registration:
+  url: https://xinghuo.xfyun.cn/sparkapi
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://spark-api-open.xf-yun.com/v1/chat/completions
+      models:
+      - general
+      - generalv3.5
+      - generalv3
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: XFYUN_SPARK_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://www.xfyun.cn/doc/spark/Web.html
+  checked_at: '2026-09-02'

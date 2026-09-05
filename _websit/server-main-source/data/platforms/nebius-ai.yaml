@@ -1,0 +1,68 @@
+schema_version: 2
+slug: nebius-ai
+name: Nebius AI Studio
+name_en: Nebius AI Studio
+category: 海外主流
+intro: 欧洲顶尖 GPU 云基础设施平台，注册即送 5-10 美元体验金，超低延迟部署 DeepSeek R1 与 Llama 3.3！
+intro_en: European AI cloud infrastructure. $5-$10 free credits upon sign-up for DeepSeek
+  R1 and Llama 3.3.
+website: https://nebius.ai/
+doc_url: https://docs.nebius.ai/
+api_base_url: https://api.studio.nebius.ai/v1
+free_models:
+- deepseek-ai/DeepSeek-R1
+- meta-llama/Meta-Llama-3.1-70B-Instruct
+free_quota:
+  type: 限时赠送
+  amount: 5-10 美元
+  unit: USD Credits (约数千万Tokens)
+  reset_period: 一次性
+  details: 新注册开发者发放 5-10 美元算力金，支持欧洲低延迟高并发大模型推理。
+  details_en: $5-$10 trial credits for new developer accounts.
+verification: 海外手机/绑定卡
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 绑定海外信用卡可解锁更高并发额度。
+gotchas_en:
+- Credit card verification unlocks higher concurrency.
+registration:
+  url: https://nebius.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.studio.nebius.ai/v1/chat/completions
+      models:
+      - deepseek-ai/DeepSeek-R1
+      - meta-llama/Meta-Llama-3.1-70B-Instruct
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: NEBIUS_AI_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://docs.nebius.ai/
+  checked_at: '2026-09-02'

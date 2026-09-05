@@ -1,0 +1,465 @@
+---
+// FreeTokens.info 平台详情页 - 极简主义技术文档风格
+import Base from '../../layouts/Base.astro';
+import platforms from '../../data/platforms.json';
+import { generateSnippet, getToolState, selectChatOperation, VERIFICATION_LABELS } from '../../lib/operation-generator.mjs';
+
+export async function getStaticPaths() {
+  return platforms.map((p: any) => ({
+    params: { slug: p.slug },
+    props: { platform: p },
+  }));
+}
+
+const { platform: p } = Astro.props;
+const q = p.free_quota ?? {};
+const statusMap: Record<string, string> = {
+  active: '正常可用',
+  degraded: '服务降级',
+  expired: '已失效',
+  unknown: '状态未知',
+  unverified: '待核实',
+};
+
+const requirements = p.requirements ?? {};
+const operations = p.capabilities?.operations ?? [];
+const chatOperation = selectChatOperation(p);
+const primaryModel = chatOperation?.models[0];
+const snippets = chatOperation && primaryModel ? {
+  curl: getToolState(p.capabilities?.tools, 'curl', 'zh').enabled ? generateSnippet(chatOperation, primaryModel, 'curl') : null,
+  python: getToolState(p.capabilities?.tools, 'openai_python', 'zh').enabled ? generateSnippet(chatOperation, primaryModel, 'python') : null,
+  node: getToolState(p.capabilities?.tools, 'openai_node', 'zh').enabled ? generateSnippet(chatOperation, primaryModel, 'node') : null,
+} : null;
+
+function formatVerified(dateStr: any): string {
+  return dateStr || '未核实';
+}
+
+const requirementLabel = (value: string) => value === 'required' ? '需要' : value === 'not_required' ? '不需要' : '未核实';
+---
+<Base currentSlug={p.slug} title={`${p.name} 免费API额度与接入指南`} description={`${p.name} 免费API额度：${q.amount} ${q.unit ?? ''}。${p.intro}`}>
+  <div class="container detail-container">
+    <!-- 面包屑 -->
+    <nav class="breadcrumb">
+      <a href="/">首页</a>
+      <span>/</span>
+      <a href="/#products">资源目录</a>
+      <span>/</span>
+      <span class="current">{p.name}</span>
+    </nav>
+
+    <!-- 主详情卡片 -->
+    <article class="detail-card">
+      <header class="detail-header">
+        <div class="detail-meta">
+          <span class="category-badge">{p.category}</span>
+          <span class={`status-pill status-${p.status}`}>
+            {statusMap[p.status] ?? '状态未知'}
+          </span>
+        </div>
+        <h1 class="detail-title">
+          {p.name}
+          {p.name_en && <small class="detail-name-en">{p.name_en}</small>}
+        </h1>
+        <p class="detail-intro">{p.intro}</p>
+      </header>
+
+      <!-- 核心免费额度专区 -->
+      <div class="quota-highlight-box">
+        <div class="quota-head">核心免费额度</div>
+        <div class="quota-main">
+          <span class="quota-big">{q.amount} {q.unit ?? ''}</span>
+          {q.type && <span class="quota-type-tag">{q.type}</span>}
+        </div>
+        {q.details && <p class="quota-details-text">{q.details}</p>}
+        {q.reset_period && <p class="quota-reset-hint">刷新周期：{q.reset_period}</p>}
+      </div>
+
+      <!-- 申领条件与限制规则 -->
+      <section class="detail-section">
+        <h2 class="section-heading">申领条件与风控要求</h2>
+        <div class="conditions-grid">
+          <div class="condition-item">
+            <span class="cond-label">手机验证</span>
+            <span class="cond-value">{requirementLabel(requirements.phone)}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">信用卡绑定</span>
+            <span class="cond-value">{requirementLabel(requirements.card)}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">网络环境</span>
+            <span class="cond-value">{requirements.region === 'unknown' ? '未核实' : requirements.regions?.join(', ') || '无限制'}</span>
+          </div>
+          <div class="condition-item">
+            <span class="cond-label">并发限制</span>
+            <span class="cond-value">RPM {requirements.rpm ?? '未核实'} · TPM {requirements.tpm ?? '未核实'}</span>
+          </div>
+        </div>
+      </section>
+
+      {operations.length > 0 && <section class="detail-section">
+        <h2 class="section-heading">操作能力与证据</h2>
+        <div class="operations-list">
+          {operations.map((operation: any) => <article class="operation-card">
+            <div class="operation-title">
+              <code>{operation.id}</code>
+              <span class={`operation-level level-${operation.verification.status}`}>{VERIFICATION_LABELS.zh[operation.verification.status]}</span>
+            </div>
+            <dl>
+              <div><dt>协议</dt><dd>{operation.protocol}</dd></div>
+              <div><dt>核查日期</dt><dd>{operation.verification.checked_at || '未核查'}</dd></div>
+              <div><dt>端点</dt><dd><code>{operation.endpoint_url || '请查阅官方文档'}</code></dd></div>
+              <div><dt>证据</dt><dd>{operation.verification.evidence_url ? <a href={operation.verification.evidence_url} target="_blank" rel="noopener noreferrer">核验记录 ↗</a> : '未提供'}</dd></div>
+            </dl>
+            {operation.models?.length > 0 && <div class="models-pill-wrap">{operation.models.map((model: string) => <span class="model-pill">{model}</span>)}</div>}
+          </article>)}
+        </div>
+      </section>}
+
+      {snippets && (snippets.curl || snippets.python || snippets.node) ? <section class="detail-section">
+        <h2 class="section-heading">OpenAI Chat Completions 安全示例</h2>
+        <p class="code-guidance">代码使用已核验的操作端点与模型，并从 <code>{chatOperation.auth.env_var}</code> 环境变量读取密钥。所有示例仅发送一次 POST，不自动重试，以免重复产生计费调用。输出限制为 64 tokens。</p>
+        <div class="code-box-container">
+          <div class="code-tabs" id="code-tabs" role="tablist" aria-label="接入代码语言">
+            {snippets.curl && <button id="code-tab-curl" class="code-tab active" data-lang="curl" role="tab" aria-selected="true" aria-controls="code-curl">cURL</button>}
+            {snippets.python && <button id="code-tab-python" class:list={['code-tab', { active: !snippets.curl }]} data-lang="python" role="tab" aria-selected={!snippets.curl ? 'true' : 'false'} aria-controls="code-python" tabindex={snippets.curl ? '-1' : '0'}>Python SDK</button>}
+            {snippets.node && <button id="code-tab-node" class:list={['code-tab', { active: !snippets.curl && !snippets.python }]} data-lang="node" role="tab" aria-selected={!snippets.curl && !snippets.python ? 'true' : 'false'} aria-controls="code-node" tabindex={snippets.curl || snippets.python ? '-1' : '0'}>Node.js SDK</button>}
+          </div>
+          {snippets.curl && <div class="code-block active" id="code-curl" role="tabpanel" aria-labelledby="code-tab-curl"><pre><code>{snippets.curl}</code></pre></div>}
+          {snippets.python && <div class:list={['code-block', { active: !snippets.curl }]} id="code-python" role="tabpanel" aria-labelledby="code-tab-python" hidden={!!snippets.curl}><pre><code>{snippets.python}</code></pre></div>}
+          {snippets.node && <div class:list={['code-block', { active: !snippets.curl && !snippets.python }]} id="code-node" role="tabpanel" aria-labelledby="code-tab-node" hidden={!!(snippets.curl || snippets.python)}><pre><code>{snippets.node}</code></pre></div>}
+        </div>
+      </section> : <section class="detail-section">
+        <h2 class="section-heading">接入方式</h2>
+        <p>当前没有可安全生成的 OpenAI Chat Completions 示例。通用或非对话操作请遵循<a href={p.doc_url} target="_blank" rel="noopener noreferrer">官方文档 ↗</a>，不要套用对话端点。</p>
+      </section>}
+
+      <!-- 避坑与注意事项 -->
+      {p.gotchas && p.gotchas.length > 0 && (
+        <section class="detail-section gotchas-section">
+          <h2 class="section-heading">避坑提示与风控防范</h2>
+          <ul class="gotchas-list">
+            {p.gotchas.map((g: string) => (
+              <li>{g}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <!-- 底部操作栏 -->
+      <footer class="detail-footer-bar">
+        <div class="footer-meta">
+          <span>目录数据检查：{formatVerified(p.last_verified)} · {statusMap[p.status] ?? '状态未知'}（操作核查等级见上方）</span>
+        </div>
+        <div class="footer-buttons">
+          <a class="btn-register" href={p.registration.url} target="_blank" rel="noopener noreferrer">
+            直达官网领取额度 ↗
+          </a>
+        </div>
+      </footer>
+    </article>
+  </div>
+
+  <style>
+    .detail-container {
+      padding: 36px 24px 64px;
+      max-width: 840px;
+    }
+    .breadcrumb {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      display: flex;
+      gap: 8px;
+    }
+    .breadcrumb a:hover {
+      color: var(--text);
+    }
+    .breadcrumb .current {
+      color: var(--text);
+      font-weight: 500;
+    }
+    .detail-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 36px;
+    }
+    @media (max-width: 640px) {
+      .detail-card { padding: 20px; }
+    }
+    .detail-meta {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .category-badge {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--text-light);
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .status-pill {
+      font-size: 11px;
+      font-weight: 500;
+      color: #166534;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .status-degraded, .status-unverified, .status-unknown {
+      color: #92400e;
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+    .status-expired {
+      color: #991b1b;
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+    .detail-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+    .detail-name-en {
+      font-size: 16px;
+      color: var(--text-light);
+      font-weight: 400;
+      margin-left: 8px;
+    }
+    .detail-intro {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+    .quota-highlight-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 32px;
+    }
+    .quota-head {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+    }
+    .quota-main {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .quota-big {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accent-warm);
+    }
+    .quota-type-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: #1e293b;
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .quota-details-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .quota-reset-hint {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+    .detail-section {
+      margin-bottom: 32px;
+    }
+    .section-heading {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+    }
+    .conditions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .condition-item {
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    .cond-label {
+      font-size: 11px;
+      color: var(--text-light);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .cond-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .models-pill-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .operations-list { display: grid; gap: 12px; }
+    .operation-card { padding: 14px; border: 1px solid var(--card-border); border-radius: 8px; background: var(--bg-subtle); }
+    .operation-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .operation-level { font-size: 11px; font-weight: 700; color: #92400e; }
+    .operation-level.level-documented,.operation-level.level-live { color: #166534; }
+    .operation-card dl { display: grid; gap: 6px; margin: 0 0 12px; font-size: 12px; }
+    .operation-card dl div { display: grid; grid-template-columns: 74px minmax(0,1fr); gap: 8px; }
+    .operation-card dt { color: var(--text-light); }
+    .operation-card dd { margin: 0; overflow-wrap: anywhere; }
+    .code-guidance { margin: -4px 0 12px; color: var(--text-muted); font-size: 12.5px; line-height: 1.6; }
+    .model-pill {
+      font-size: 12px;
+      font-weight: 500;
+      font-family: var(--font-mono);
+      background: var(--bg-subtle);
+      border: 1px solid var(--card-border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: var(--text);
+    }
+    .code-box-container {
+      background: #18181b;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #27272a;
+    }
+    .code-tabs {
+      display: flex;
+      background: #09090b;
+      border-bottom: 1px solid #27272a;
+      overflow-x: auto;
+      min-width: max-content;
+    }
+    .code-tab {
+      background: none;
+      border: none;
+      color: #a1a1aa;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 9px 16px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .code-tab.active {
+      color: #ffffff;
+      border-bottom-color: #f59e0b;
+      background: #18181b;
+    }
+    .code-block {
+      display: none;
+      padding: 16px;
+      overflow-x: auto;
+    }
+    .code-block.active {
+      display: block;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.6;
+      color: #f4f4f5;
+    }
+    .gotchas-list {
+      padding-left: 20px;
+      font-size: 13px;
+      color: #991b1b;
+      line-height: 1.7;
+    }
+    .detail-footer-bar {
+      border-top: 1px solid var(--card-border);
+      padding-top: 24px;
+      margin-top: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-meta {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    .btn-register {
+      background: var(--text);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .btn-register:hover {
+      background: #000000;
+    }
+  </style>
+
+  <script is:inline>
+    const codeTabs = document.querySelectorAll('.code-tab');
+    const codeBlocks = document.querySelectorAll('.code-block');
+
+    codeTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        codeTabs.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+          t.setAttribute('tabindex', '-1');
+        });
+        codeBlocks.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('hidden', '');
+        });
+
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        tab.removeAttribute('tabindex');
+        const lang = tab.getAttribute('data-lang');
+        const activeBlock = document.getElementById(`code-${lang}`);
+        activeBlock?.classList.add('active');
+        activeBlock?.removeAttribute('hidden');
+      });
+      tab.addEventListener('keydown', event => {
+        const tabs = [...codeTabs];
+        const index = tabs.indexOf(tab);
+        let next = null;
+        if (event.key === 'ArrowRight') next = tabs[(index + 1) % tabs.length];
+        if (event.key === 'ArrowLeft') next = tabs[(index - 1 + tabs.length) % tabs.length];
+        if (event.key === 'Home') next = tabs[0];
+        if (event.key === 'End') next = tabs[tabs.length - 1];
+        if (next) {
+          event.preventDefault();
+          next.click();
+          next.focus();
+        }
+      });
+    });
+  </script>
+</Base>

@@ -1,0 +1,3933 @@
+[
+  {
+    "schema_version": 2,
+    "slug": "ai21-labs",
+    "name": "AI21 Labs (Jamba)",
+    "name_en": "AI21 Labs (Jamba)",
+    "category": "海外主流",
+    "intro": "Mamba-Transformer 混合架构创新大模型平台，注册即送 10 美元体验金，超高吞吐量与 256K 超长上下文。",
+    "intro_en": "Innovative SSM-Transformer hybrid models. $10 free developer credits upon sign-up with 256K context.",
+    "website": "https://www.ai21.com/",
+    "doc_url": "https://docs.ai21.com/",
+    "api_base_url": "https://api.ai21.com/studio/v1",
+    "free_models": [
+      "jamba-1.5-mini",
+      "jamba-1.5-large"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "10 美元",
+      "unit": "USD Credits (3个月有效)",
+      "reset_period": "一次性",
+      "details": "注册开发者发放 10 美元 API 免费额度，支持 Jamba 混合架构模型极速推理。",
+      "details_en": "$10 trial credit valid for 3 months upon sign-up."
+    },
+    "verification": "邮箱验证",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "体验金有效期 3 个月，适合长文本摘要与结构化抽取测试。"
+    ],
+    "gotchas_en": [
+      "Trial credits expire after 90 days."
+    ],
+    "registration": {
+      "url": "https://www.ai21.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.ai21.com/studio/v1/chat/completions",
+          "models": [
+            "jamba-1.5-mini",
+            "jamba-1.5-large"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "AI21_LABS_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.ai21.com/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "aliyun-bailian",
+    "name": "阿里云百炼 (DashScope)",
+    "name_en": "Alibaba Cloud Bailian",
+    "category": "大厂云服务",
+    "intro": "阿里云官方大模型服务平台，聚合通义千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。",
+    "intro_en": "Alibaba Cloud enterprise platform offering Qwen 2.5, Qwen-Max, and Wanx multimodal models with free credits.",
+    "website": "https://bailian.console.aliyun.com/",
+    "doc_url": "https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio",
+    "api_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "free_models": [
+      "qwen-turbo",
+      "qwen-plus",
+      "qwen-max"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "1000 万",
+      "unit": "Tokens (180天超长有效)",
+      "reset_period": "一次性",
+      "details": "通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens，半年有效。",
+      "details_en": "1,000,000 free tokens for Qwen-Turbo and Qwen-Plus valid for 180 days."
+    },
+    "verification": "阿里云实名",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "大厂基座",
+      "国产直连",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "免费额度消耗后自动转为按量扣费，请设置用量预警。"
+    ],
+    "gotchas_en": [
+      "Automatic pay-as-you-go billing after trial depletion."
+    ],
+    "registration": {
+      "url": "https://bailian.console.aliyun.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "models": [
+            "qwen-turbo",
+            "qwen-plus",
+            "qwen-max"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "ALIYUN_BAILIAN_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "baichuan-ai",
+    "name": "百川智能开放平台",
+    "name_en": "Baichuan AI",
+    "category": "国内主流",
+    "intro": "王小川创立的百川智能大模型，注册即送千万 Tokens 体验额度，擅长中文语义理解与医疗行业知识。",
+    "intro_en": "Leading Chinese LLM founded by Sogou CEO. 10M tokens on sign-up, specialized in Chinese NLP and healthcare.",
+    "website": "https://platform.baichuan-ai.com/",
+    "doc_url": "https://platform.baichuan-ai.com/docs/api",
+    "api_base_url": "https://api.baichuan-ai.com/v1",
+    "free_models": [
+      "Baichuan4",
+      "Baichuan3-Turbo",
+      "Baichuan2-Turbo"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "1000 万",
+      "unit": "Tokens",
+      "reset_period": "一次性",
+      "details": "新用户注册实名认证即送 1000 万 Tokens 免费额度，支持 Baichuan4 与 3-Turbo 模型。",
+      "details_en": "10,000,000 free tokens for Baichuan4 upon registration."
+    },
+    "verification": "手机实名",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "代金券有效期通常为 1-3 个月。"
+    ],
+    "gotchas_en": [
+      "Promotional voucher valid for 90 days."
+    ],
+    "registration": {
+      "url": "https://platform.baichuan-ai.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.baichuan-ai.com/v1/chat/completions",
+          "models": [
+            "Baichuan4",
+            "Baichuan3-Turbo",
+            "Baichuan2-Turbo"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "BAICHUAN_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://platform.baichuan-ai.com/docs/api",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "baidu-qianfan",
+    "name": "百度千帆大模型平台",
+    "name_en": "Baidu Qianfan Platform",
+    "category": "大厂云服务",
+    "intro": "百度智能云大模型服务平台，ERNIE-Speed 与 ERNIE-Lite 两款主力轻量模型全面永久免费！",
+    "intro_en": "Baidu AI Cloud platform. ERNIE-Speed and ERNIE-Lite models are permanently free for all developers.",
+    "website": "https://console.bce.baidu.com/qianfan/",
+    "doc_url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html",
+    "api_base_url": "https://qianfan.baidubce.com/v2",
+    "free_models": [
+      "ernie-speed-128k",
+      "ernie-speed-8k",
+      "ernie-lite-8k"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "永久免费",
+      "unit": "ERNIE-Speed/Lite 系列不限量",
+      "reset_period": "永久",
+      "details": "ERNIE-Speed 与 ERNIE-Lite 模型全面永久免费调用，新认证用户还送 2000 万旗舰模型额度券。",
+      "details_en": "ERNIE Speed and ERNIE Lite are permanently free; new accounts receive 20M tokens."
+    },
+    "verification": "百度账号",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "大厂基座",
+      "国产直连",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "免费模型默认并发限制约为 10 QPS，适合中轻度调用。"
+    ],
+    "gotchas_en": [
+      "Free models rate-limited to 10 QPS."
+    ],
+    "registration": {
+      "url": "https://console.bce.baidu.com/qianfan/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://qianfan.baidubce.com/v2/chat/completions",
+          "models": [
+            "ernie-speed-128k",
+            "ernie-speed-8k",
+            "ernie-lite-8k"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "BAIDU_QIANFAN_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "cerebras",
+    "name": "Cerebras Inference",
+    "name_en": "Cerebras Inference",
+    "category": "海外主流",
+    "intro": "全球最快 AI 芯片晶圆级推理引擎，生成速度超 1800+ tokens/秒，每天免费提供 100 万 Tokens！",
+    "intro_en": "World's fastest wafer-scale inference engine (1800+ tokens/s). 1,000,000 free tokens daily.",
+    "website": "https://cerebras.ai/",
+    "doc_url": "https://inference-docs.cerebras.ai/",
+    "api_base_url": "https://api.cerebras.ai/v1",
+    "free_models": [
+      "llama3.1-8b",
+      "llama3.1-70b"
+    ],
+    "free_quota": {
+      "type": "每日刷新",
+      "amount": "100 万",
+      "unit": "Tokens / 天",
+      "reset_period": "每日刷新",
+      "details": "每日免费刷新 100 万 Tokens，推理速度高达 1800+ tokens/秒，极客体验极佳。",
+      "details_en": "1,000,000 free daily tokens across LLaMA 3.1 models."
+    },
+    "verification": "邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "每日",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "免费层限制 30 RPM，速度极快适合 Agent 工具快速决策。"
+    ],
+    "gotchas_en": [
+      "Free tier has 30 RPM limit."
+    ],
+    "registration": {
+      "url": "https://cerebras.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.cerebras.ai/v1/chat/completions",
+          "models": [
+            "llama3.1-8b",
+            "llama3.1-70b"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "CEREBRAS_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://inference-docs.cerebras.ai/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "name": "Chutes AI",
+    "name_en": "Chutes AI",
+    "slug": "chutes-ai",
+    "website": "https://chutes.ai",
+    "category": "海外主流",
+    "free_quota": {
+      "amount": "免费试用额度",
+      "unit": "Requests",
+      "type": "限时/免费层",
+      "reset_period": "注册赠送",
+      "conditions": [
+        "注册即享开源模型测试配额",
+        "去中心化无服务器算力"
+      ]
+    },
+    "free_models": [
+      "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+      "meta-llama/Llama-3.3-70B-Instruct"
+    ],
+    "api_base_url": "https://chutes.ai/v1",
+    "register_url": "https://chutes.ai",
+    "docs_url": "https://chutes.ai/docs",
+    "source_urls": [
+      "https://chutes.ai"
+    ],
+    "last_verified": "2026-09-02",
+    "status": "active",
+    "intro": "去中心化无服务器 AI 算力网络。提供轻量级开源大模型即开即用 API 与免费探索层，无需自建集群。",
+    "intro_en": "Decentralized serverless AI compute. Provides instant drop-in open LLM APIs and free exploration tier.",
+    "tags": [
+      "限时",
+      "Serverless",
+      "OpenAI兼容",
+      "开源生态"
+    ],
+    "registration": {
+      "url": "https://chutes.ai"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://chutes.ai/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+            "meta-llama/Llama-3.3-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "CHUTES_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://chutes.ai",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "cloudflare-workers-ai",
+    "name": "Cloudflare Workers AI",
+    "name_en": "Cloudflare Workers AI",
+    "category": "大厂云服务",
+    "intro": "全球最大边缘网络官方 AI 推理平台，每天免费提供 10,000 次神经元（Neurons）计算额度！",
+    "intro_en": "Serverless GPU inference at the edge. 10,000 free Neurons daily (~100K-300K tokens).",
+    "website": "https://ai.cloudflare.com/",
+    "doc_url": "https://developers.cloudflare.com/workers-ai/",
+    "api_base_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1",
+    "free_models": [
+      "@cf/meta/llama-3.3-70b-instruct",
+      "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
+    ],
+    "free_quota": {
+      "type": "每日刷新",
+      "amount": "10,000",
+      "unit": "Neurons / 天 (约数十万Tokens)",
+      "reset_period": "每日刷新",
+      "details": "每天提供 10,000 神经元计算额度，覆盖数百款前沿开源模型与多模态生图。",
+      "details_en": "10,000 Neurons per day (~100-300K tokens) free tier across global edge network."
+    },
+    "verification": "邮箱验证",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "每日",
+      "大厂基座",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "需要获取 Account ID 拼入 Base URL。"
+    ],
+    "gotchas_en": [
+      "Requires Cloudflare Account ID in Base URL."
+    ],
+    "registration": {
+      "url": "https://ai.cloudflare.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1/chat/completions",
+          "models": [
+            "@cf/meta/llama-3.3-70b-instruct",
+            "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "CLOUDFLARE_WORKERS_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://developers.cloudflare.com/workers-ai/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "cohere",
+    "name": "Cohere (Command & Rerank)",
+    "name_en": "Cohere",
+    "category": "海外主流",
+    "intro": "顶尖企业级大模型与 Rerank 重排序引擎，Trial 试用 Key 永久免费提供基础额度，RAG 开发必备。",
+    "intro_en": "Top enterprise NLP provider. Trial Key is permanently free for Command R+ and world-class Rerank models.",
+    "website": "https://cohere.com/",
+    "doc_url": "https://docs.cohere.com/",
+    "api_base_url": "https://api.cohere.ai/v1",
+    "free_models": [
+      "command-r-plus",
+      "command-r",
+      "rerank-v3.5"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "Trial Key",
+      "unit": "1000次/月 (10-20 RPM)",
+      "reset_period": "每月刷新",
+      "details": "开发者可创建永久免费的 Trial API Key，调用 Command R+ 与业界最强 Rerank 模型。",
+      "details_en": "Free trial key allows 10-20 RPM for evaluation and prototyping."
+    },
+    "verification": "邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "每月",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "Trial Key 严禁用于生产高并发环境。"
+    ],
+    "gotchas_en": [
+      "Trial key is for non-production use."
+    ],
+    "registration": {
+      "url": "https://cohere.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.cohere.ai/v1/chat/completions",
+          "models": [
+            "command-r-plus",
+            "command-r",
+            "rerank-v3.5"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "COHERE_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.cohere.com/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "name": "DeepInfra",
+    "name_en": "DeepInfra",
+    "slug": "deepinfra",
+    "website": "https://deepinfra.com",
+    "category": "海外主流",
+    "free_quota": {
+      "amount": "5",
+      "unit": "美元体验金",
+      "type": "限时/体验金",
+      "reset_period": "注册赠送",
+      "conditions": [
+        "新用户注册赠送体验金",
+        "支持 Llama 3、DeepSeek 与 Qwen 满血版"
+      ]
+    },
+    "free_models": [
+      "meta-llama/Meta-Llama-3.1-70B-Instruct",
+      "deepseek-ai/DeepSeek-V3",
+      "Qwen/Qwen2.5-Coder-32B-Instruct"
+    ],
+    "api_base_url": "https://api.deepinfra.com/v1/openai",
+    "register_url": "https://deepinfra.com",
+    "docs_url": "https://deepinfra.com/docs",
+    "source_urls": [
+      "https://deepinfra.com"
+    ],
+    "last_verified": "2026-09-02",
+    "status": "active",
+    "intro": "极速 Serverless AI 模型推理与托管平台。注册即赠送免费体验金，超低延迟支持 Llama 3、DeepSeek-V3 满血调用。",
+    "intro_en": "Ultra-fast serverless AI inference platform. Free trial credits for new accounts with full OpenAI SDK compatibility.",
+    "tags": [
+      "限时",
+      "体验金",
+      "OpenAI兼容",
+      "高并发"
+    ],
+    "registration": {
+      "url": "https://deepinfra.com"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.deepinfra.com/v1/openai/chat/completions",
+          "models": [
+            "meta-llama/Meta-Llama-3.1-70B-Instruct",
+            "deepseek-ai/DeepSeek-V3",
+            "Qwen/Qwen2.5-Coder-32B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "DEEPINFRA_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://deepinfra.com",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "deepseek",
+    "name": "DeepSeek (深度求索)",
+    "name_en": "DeepSeek AI",
+    "category": "国内主流",
+    "intro": "全球大模型性价比天花板，新用户注册即送 500 万 Tokens（或 10 元代金券），支持 V3 与 R1 满血版！",
+    "intro_en": "Global efficiency frontier. 5,000,000 free tokens upon registration for DeepSeek V3 and R1 reasoning models.",
+    "website": "https://platform.deepseek.com/",
+    "doc_url": "https://api-docs.deepseek.com/",
+    "api_base_url": "https://api.deepseek.com",
+    "free_models": [
+      "deepseek-v4-flash",
+      "deepseek-v4-pro"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "500 万",
+      "unit": "Tokens (或 10 元代金券)",
+      "reset_period": "一次性",
+      "details": "注册发放 500 万 Tokens 免费体验额度，全面支持 DeepSeek V3 与 R1 深度推理。",
+      "details_en": "5,000,000 free tokens for new accounts."
+    },
+    "verification": "手机/邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "额度有效期通常为 30 天。"
+    ],
+    "gotchas_en": [
+      "Trial credits valid for 30 days."
+    ],
+    "registration": {
+      "url": "https://platform.deepseek.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.deepseek.com/chat/completions",
+          "models": [
+            "deepseek-v4-flash",
+            "deepseek-v4-pro"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "DEEPSEEK_API_KEY"
+          },
+          "verification": {
+            "status": "live",
+            "checked_at": "2026-09-03",
+            "evidence_url": "https://github.com/kimhero110/freetoken/actions/runs/33766507785"
+          }
+        }
+      ],
+      "tools": {
+        "curl": "live",
+        "openai_python": "live",
+        "openai_node": "live",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://api-docs.deepseek.com/",
+        "checked_at": "2026-09-03"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "name": "Featherless AI",
+    "name_en": "Featherless AI",
+    "slug": "featherless-ai",
+    "website": "https://featherless.ai",
+    "category": "海外主流",
+    "free_quota": {
+      "amount": "免费试用配额",
+      "unit": "Tokens",
+      "type": "限时/免费层",
+      "reset_period": "注册赠送",
+      "conditions": [
+        "注册即享免费测试额度",
+        "1000+ 开源模型免部署即用"
+      ]
+    },
+    "free_models": [
+      "meta-llama/Meta-Llama-3.1-8B-Instruct",
+      "mistralai/Mistral-7B-Instruct-v0.3",
+      "Qwen/Qwen2.5-7B-Instruct"
+    ],
+    "api_base_url": "https://api.featherless.ai/v1",
+    "register_url": "https://featherless.ai",
+    "docs_url": "https://featherless.ai/docs",
+    "source_urls": [
+      "https://featherless.ai"
+    ],
+    "last_verified": "2026-09-02",
+    "status": "active",
+    "intro": "提供 1,000+ 款开源大模型 Serverless 推理云。注册即享免费测试配额，完美兼容标准 OpenAI API 格式。",
+    "intro_en": "Serverless inference cloud with 1,000+ open-source LLMs. Free trial credits included with drop-in OpenAI protocol compatibility.",
+    "tags": [
+      "限时",
+      "开源模型",
+      "OpenAI兼容",
+      "多模型聚合"
+    ],
+    "registration": {
+      "url": "https://featherless.ai"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.featherless.ai/v1/chat/completions",
+          "models": [
+            "meta-llama/Meta-Llama-3.1-8B-Instruct",
+            "mistralai/Mistral-7B-Instruct-v0.3",
+            "Qwen/Qwen2.5-7B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "FEATHERLESS_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://featherless.ai",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "fireworks-ai",
+    "name": "Fireworks AI",
+    "name_en": "Fireworks AI",
+    "category": "海外主流",
+    "intro": "全球顶尖高性能开源大模型推理加速云平台，新注册开发者发放 1 美元试用金（约 500 万 Tokens）！",
+    "intro_en": "High-performance inference platform. $1 free credit (~5,000,000 tokens) on sign-up with ultra-low latency.",
+    "website": "https://fireworks.ai/",
+    "doc_url": "https://docs.fireworks.ai/",
+    "api_base_url": "https://api.fireworks.ai/inference/v1",
+    "free_models": [
+      "accounts/fireworks/models/deepseek-r1",
+      "accounts/fireworks/models/llama-v3p3-70b-instruct"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "1 美元",
+      "unit": "USD Credit (约500万Tokens)",
+      "reset_period": "一次性",
+      "details": "注册送 1 美元试用余额，极速推理 DeepSeek R1、Qwen 2.5、Llama 3.3 等前沿大模型。",
+      "details_en": "$1 trial credit upon registration (~5M tokens)."
+    },
+    "verification": "GitHub / Google",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "支持 Function Calling 与 JSON 结构化输出。"
+    ],
+    "gotchas_en": [
+      "Full support for tool calling and JSON mode."
+    ],
+    "registration": {
+      "url": "https://fireworks.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.fireworks.ai/inference/v1/chat/completions",
+          "models": [
+            "accounts/fireworks/models/deepseek-r1",
+            "accounts/fireworks/models/llama-v3p3-70b-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "FIREWORKS_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.fireworks.ai/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "github-models",
+    "name": "GitHub Models (Azure AI)",
+    "name_en": "GitHub Models",
+    "category": "大厂云服务",
+    "intro": "微软与 GitHub 联合推出的开发者原生大模型试验场，每个 GitHub 账号每天免费提供数百次调用！",
+    "intro_en": "Official GitHub & Azure playground. Free daily rate limits across GPT-4o, Claude 3.5, and DeepSeek R1.",
+    "website": "https://github.com/marketplace/models",
+    "doc_url": "https://docs.github.com/en/github-models",
+    "api_base_url": "https://models.inference.ai.azure.com",
+    "free_models": [
+      "gpt-4o",
+      "gpt-4o-mini",
+      "DeepSeek-R1",
+      "Phi-3.5-mini-instruct"
+    ],
+    "free_quota": {
+      "type": "每日刷新",
+      "amount": "150 次 / 天",
+      "unit": "Requests (高阶模型) + 50次/天 (思考模型)",
+      "reset_period": "每日刷新",
+      "details": "只要有 GitHub 个人访问令牌（PAT），即可免费调用 GPT-4o 与 DeepSeek R1。",
+      "details_en": "150 requests/day for standard models and 50 req/day for reasoning models."
+    },
+    "verification": "GitHub 账号",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "每日",
+      "大厂基座",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "使用 GitHub Personal Access Token 作为 API Key。"
+    ],
+    "gotchas_en": [
+      "Authenticate using standard GitHub PAT."
+    ],
+    "registration": {
+      "url": "https://github.com/marketplace/models"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://models.inference.ai.azure.com/chat/completions",
+          "models": [
+            "gpt-4o",
+            "gpt-4o-mini",
+            "DeepSeek-R1",
+            "Phi-3.5-mini-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "GITHUB_MODELS_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.github.com/en/github-models",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "gmi-cloud-minimax",
+    "name": "GMI Cloud (MiniMax 专属)",
+    "name_en": "GMI Cloud x MiniMax",
+    "category": "海外主流",
+    "intro": "GMI Cloud 联合 MiniMax 推出限时超级算力补贴，注册即送 20 亿免费 Tokens，支持 245K 超长上下文！",
+    "intro_en": "Massive compute grant: 2,000,000,000 free tokens for MiniMax-Text-01 with 245K context window.",
+    "website": "https://gmicloud.ai/",
+    "doc_url": "https://docs.gmicloud.ai/",
+    "api_base_url": "https://api.gmicloud.ai/v1",
+    "free_models": [
+      "MiniMax-Text-01",
+      "abab6.5s"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "20 亿",
+      "unit": "Tokens (限时巨量补贴)",
+      "reset_period": "一次性",
+      "details": "注册发放高达 20 亿 Tokens 免费体验额度，全网额度天花板。",
+      "details_en": "2 Billion free tokens for MiniMax-Text-01 upon registration."
+    },
+    "verification": "邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "巨量补贴活动名额有限，请尽早注册领用。"
+    ],
+    "gotchas_en": [
+      "Limited-time promotional capacity."
+    ],
+    "registration": {
+      "url": "https://gmicloud.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.gmicloud.ai/v1/chat/completions",
+          "models": [
+            "MiniMax-Text-01",
+            "abab6.5s"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "GMI_CLOUD_MINIMAX_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.gmicloud.ai/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "google-ai-studio",
+    "name": "Google AI Studio (Gemini)",
+    "name_en": "Google AI Studio (Gemini)",
+    "category": "大厂基座",
+    "intro": "Google 官方开发者大模型服务，Gemini 2.5 Flash 每天免费提供高达 1500 次请求，百万超长上下文！",
+    "intro_en": "Official Google API. 1,500 free requests per day (~10M tokens) for Gemini 2.5 Flash with 1M context.",
+    "website": "https://aistudio.google.com/",
+    "doc_url": "https://ai.google.dev/docs",
+    "api_base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+    "free_models": [
+      "gemini-2.5-flash",
+      "gemini-2.5-pro"
+    ],
+    "free_quota": {
+      "type": "每日刷新",
+      "amount": "1500 次 / 天",
+      "unit": "Requests (约 1000 万 Tokens/天)",
+      "reset_period": "每日刷新",
+      "details": "全网最慷慨大厂官方免费层：每天 1500 次请求，15 RPM，支持 100 万 Token 上下文。",
+      "details_en": "1,500 requests per day at 15 RPM for Gemini 2.5 Flash."
+    },
+    "verification": "Google 账号",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "每日",
+      "大厂基座",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "免费层 Prompt 数据可能会被 Google 用于模型优化。",
+      "需要国际网络。"
+    ],
+    "gotchas_en": [
+      "Free tier inputs may be logged for quality improvements."
+    ],
+    "registration": {
+      "url": "https://aistudio.google.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+          "models": [
+            "gemini-2.5-flash",
+            "gemini-2.5-pro"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "GOOGLE_AI_STUDIO_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://ai.google.dev/docs",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "groq",
+    "name": "Groq LPU 极速推理",
+    "name_en": "Groq LPU Acceleration",
+    "category": "海外主流",
+    "intro": "基于自研 LPU 架构的全球极速推理平台，生成速度超 500-800 tokens/秒，永久提供免费层！",
+    "intro_en": "World-record LPU inference (500-800 t/s). Generous permanent free tier with 30 RPM.",
+    "website": "https://groq.com/",
+    "doc_url": "https://console.groq.com/docs/quickstart",
+    "api_base_url": "https://api.groq.com/openai/v1",
+    "free_models": [
+      "llama-3.3-70b-versatile",
+      "llama-3.1-8b-instant",
+      "deepseek-r1-distill-llama-70b"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "永久免费层",
+      "unit": "30 RPM / 14,400 RPD",
+      "reset_period": "每日刷新",
+      "details": "永久提供 30 RPM 与每日 14,400 次请求免费额度，极速体验极佳。",
+      "details_en": "Permanent free tier with 30 RPM and 14,400 daily requests."
+    },
+    "verification": "邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "每日",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "免费层受限于严格的 TPM 限制，适合单轮高频交互。"
+    ],
+    "gotchas_en": [
+      "Strict TPM limit applies on free tier."
+    ],
+    "registration": {
+      "url": "https://groq.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.groq.com/openai/v1/chat/completions",
+          "models": [
+            "llama-3.3-70b-versatile",
+            "llama-3.1-8b-instant",
+            "deepseek-r1-distill-llama-70b"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "GROQ_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://console.groq.com/docs/quickstart",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "huggingface-inference",
+    "name": "Hugging Face (Serverless API)",
+    "name_en": "Hugging Face Serverless Inference",
+    "category": "海外主流",
+    "intro": "全球最大开源模型社区官方 Serverless 推理 API，300+ 款开源模型完全免费调用，共享算力池每小时提供 300 次调用。",
+    "intro_en": "Official Serverless Inference API by Hugging Face. Free access to 300+ open-source models with 300 req/hr tier.",
+    "website": "https://huggingface.co/docs/api-inference/",
+    "doc_url": "https://huggingface.co/docs/api-inference/",
+    "api_base_url": "https://api-inference.huggingface.co/v1",
+    "free_models": [
+      "deepseek-ai/DeepSeek-R1",
+      "Qwen/Qwen2.5-72B-Instruct",
+      "meta-llama/Llama-3.3-70B-Instruct"
+    ],
+    "free_quota": {
+      "type": "每日刷新",
+      "amount": "300 次 / 小时",
+      "unit": "Requests (永久免费)",
+      "reset_period": "每小时重置",
+      "details": "免费层提供每小时 300 次请求，覆盖 Hugging Face 托管的数百款前沿开源大模型，完全兼容 OpenAI 格式。",
+      "details_en": "300 requests per hour free tier for hundreds of popular open models."
+    },
+    "verification": "邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "每日",
+      "永久",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "冷门模型可能存在冷启动排队延迟。",
+      "高并发请添加重试机制。"
+    ],
+    "gotchas_en": [
+      "Cold start latency may apply to less frequent models.",
+      "Include retry logic for rate limit spikes."
+    ],
+    "registration": {
+      "url": "https://huggingface.co/docs/api-inference/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api-inference.huggingface.co/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1",
+            "Qwen/Qwen2.5-72B-Instruct",
+            "meta-llama/Llama-3.3-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "HUGGINGFACE_INFERENCE_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://huggingface.co/docs/api-inference/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "hyperbolic",
+    "name": "Hyperbolic (去中心化算力)",
+    "name_en": "Hyperbolic",
+    "category": "海外主流",
+    "intro": "高性能去中心化 GPU 算力网络，注册即送 10 美元体验金，支持 DeepSeek R1 满血版 671B 极速推理！",
+    "intro_en": "Decentralized GPU cloud. $10 free developer credits for DeepSeek R1 671B full-parameter inference.",
+    "website": "https://hyperbolic.xyz/",
+    "doc_url": "https://docs.hyperbolic.xyz/",
+    "api_base_url": "https://api.hyperbolic.xyz/v1",
+    "free_models": [
+      "deepseek-ai/DeepSeek-R1",
+      "deepseek-ai/DeepSeek-V3"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "10 美元",
+      "unit": "USD Credits (约数千万Tokens)",
+      "reset_period": "一次性",
+      "details": "新注册开发者发放 10 美元算力额度，支持 DeepSeek R1 671B 满血版推理。",
+      "details_en": "$10 trial credit upon registration for DeepSeek R1 and V3."
+    },
+    "verification": "邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "体验金有效期 30 天。"
+    ],
+    "gotchas_en": [
+      "Credits valid for 30 days."
+    ],
+    "registration": {
+      "url": "https://hyperbolic.xyz/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.hyperbolic.xyz/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1",
+            "deepseek-ai/DeepSeek-V3"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "HYPERBOLIC_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.hyperbolic.xyz/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "infini-ai",
+    "name": "无问芯穹 (Infini-AI)",
+    "name_en": "Infini-AI (Infinence)",
+    "category": "国内主流",
+    "intro": "清华系大模型软硬件协同加速平台，注册送数十元体验金，支持 DeepSeek R1/V3 与 Qwen 系列国产算力卡直连。",
+    "intro_en": "Tsinghua spin-off multi-chip AI platform. Tens of RMB in free credits with domestic GPU acceleration.",
+    "website": "https://cloud.infini-ai.com/",
+    "doc_url": "https://docs.infini-ai.com/",
+    "api_base_url": "https://cloud.infini-ai.com/maas/v1",
+    "free_models": [
+      "deepseek-r1",
+      "deepseek-v3",
+      "qwen2.5-72b-instruct"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "数十元代金券",
+      "unit": "约数百万Tokens",
+      "reset_period": "一次性",
+      "details": "新注册开发者发放体验代金券，支持国产多芯片异构集群满血大模型推理。",
+      "details_en": "Registration credits for multi-chip heterogeneous inference."
+    },
+    "verification": "手机号注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "支持多种国产 GPU 架构无缝切换。"
+    ],
+    "gotchas_en": [
+      "Seamless support for domestic GPU accelerators."
+    ],
+    "registration": {
+      "url": "https://cloud.infini-ai.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://cloud.infini-ai.com/maas/v1/chat/completions",
+          "models": [
+            "deepseek-r1",
+            "deepseek-v3",
+            "qwen2.5-72b-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "INFINI_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.infini-ai.com/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "jina-ai",
+    "name": "Jina AI (Reader & Search)",
+    "name_en": "Jina AI",
+    "category": "搜索与工具",
+    "intro": "全球领先的大模型搜索与网页 Markdown 提取服务，免费提供 1000 万 Tokens 提取额度！",
+    "intro_en": "Developer toolkit for RAG & LLM web reading. 10,000,000 free tokens for r.jina.ai and s.jina.ai.",
+    "website": "https://jina.ai/",
+    "doc_url": "https://jina.ai/reader/",
+    "api_base_url": "https://r.jina.ai/",
+    "free_models": [
+      "jina-reader",
+      "jina-search",
+      "jina-embeddings-v3"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "1000 万",
+      "unit": "Tokens (免鉴权可直接用)",
+      "reset_period": "一次性",
+      "details": "注册即送 1000 万 Tokens，免 Key 亦可在 URL 前加 r.jina.ai 免费提取网页 Markdown。",
+      "details_en": "10M free tokens upon registration; works keyless with 20 RPM."
+    },
+    "verification": "免注册 / 注册送Key",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "永久",
+      "搜索与工具"
+    ],
+    "gotchas": [
+      "免 Key 基础模式每分钟限 20 次请求。"
+    ],
+    "gotchas_en": [
+      "Keyless access throttled at 20 RPM."
+    ],
+    "registration": {
+      "url": "https://jina.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "search",
+          "protocol": "rest",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "none",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        },
+        {
+          "id": "text_extraction",
+          "protocol": "rest",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "none",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://jina.ai/reader/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "lingyiwanwu-01",
+    "name": "零一万物 (01.AI 开放平台)",
+    "name_en": "01.AI (Yi Models)",
+    "category": "国内主流",
+    "intro": "李开复博士创立的零一万物大模型，注册即送千万 Tokens（或 20 元代金券），支持 Yi-Lightning 超强性能！",
+    "intro_en": "Founded by Kai-Fu Lee. 20 RMB (~10M tokens) on registration for Yi-Lightning & Yi-Large.",
+    "website": "https://platform.01.ai/",
+    "doc_url": "https://platform.01.ai/docs",
+    "api_base_url": "https://api.01.ai/v1",
+    "free_models": [
+      "yi-lightning",
+      "yi-large",
+      "yi-medium"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "1000 万",
+      "unit": "Tokens (或 20 元代金券)",
+      "reset_period": "一次性",
+      "details": "新用户注册发放 20 元代金券，支持千亿参数 Yi-Lightning 极速推理。",
+      "details_en": "20 RMB promotional voucher upon sign-up."
+    },
+    "verification": "手机号注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "代金券有效期 90 天。"
+    ],
+    "gotchas_en": [
+      "Voucher expires in 90 days."
+    ],
+    "registration": {
+      "url": "https://platform.01.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.01.ai/v1/chat/completions",
+          "models": [
+            "yi-lightning",
+            "yi-large",
+            "yi-medium"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "LINGYIWANWU_01_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://platform.01.ai/docs",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "name": "Manus",
+    "name_en": "Manus AI",
+    "slug": "manus",
+    "website": "https://manus.im",
+    "category": "海外主流",
+    "free_quota": {
+      "amount": "1万亿",
+      "unit": "Tokens 开发者总池",
+      "type": "限时/活动补贴",
+      "reset_period": "活动期间",
+      "conditions": [
+        "用于在 Manus 平台构建与部署 Web 应用",
+        "官方免费提供内置多模态与通用 Agent 算力",
+        "零底层 API 成本直接调用"
+      ]
+    },
+    "free_models": [
+      "manus-agent-general",
+      "manus-web-builder",
+      "claude-3-5-sonnet-manus"
+    ],
+    "api_base_url": "https://api.manus.im/v1",
+    "register_url": "https://events.manus.im/zh-cn/campaign/free-tokens",
+    "docs_url": "https://manus.im/docs",
+    "source_urls": [
+      "https://events.manus.im/zh-cn/campaign/free-tokens"
+    ],
+    "last_verified": "2026-09-02",
+    "status": "active",
+    "intro": "全球知名通用 AI Agent 平台。官方推出 1 万亿免费 AI 代币开发者激励计划，助力开发者零成本构建与部署智能 Web 应用程序。",
+    "intro_en": "Leading autonomous AI Agent platform. Official 1 Trillion free AI tokens campaign for developers to build and host full-stack intelligent web apps.",
+    "tags": [
+      "限时",
+      "1万亿",
+      "Agent",
+      "Web应用"
+    ],
+    "registration": {
+      "url": "https://events.manus.im/zh-cn/campaign/free-tokens"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "agent",
+          "protocol": "custom",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "unknown",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://events.manus.im/zh-cn/campaign/free-tokens",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "minimax",
+    "name": "MiniMax 开放平台",
+    "name_en": "MiniMax AI",
+    "category": "国内主流",
+    "intro": "自研万亿 MoE 架构大模型平台，新注册用户赠送 1500 万 Tokens（或 15 元代金券），长文本与拟真语音极佳。",
+    "intro_en": "Trillion-parameter MoE foundation model. 15,000,000 free tokens for MiniMax-Text-01 and TTS.",
+    "website": "https://platform.minimaxi.com/",
+    "doc_url": "https://platform.minimaxi.com/document/guides",
+    "api_base_url": "https://api.minimax.chat/v1",
+    "free_models": [
+      "MiniMax-Text-01",
+      "abab6.5s-chat"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "1500 万",
+      "unit": "Tokens (或 15 元代金券)",
+      "reset_period": "一次性",
+      "details": "新用户实名发放 15 元体验金，支持万亿 MoE 与拟真语音生成。",
+      "details_en": "15 RMB trial voucher (~15M tokens) on sign-up."
+    },
+    "verification": "手机号注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "代金券有效期为 30 天。"
+    ],
+    "gotchas_en": [
+      "Trial voucher expires in 30 days."
+    ],
+    "registration": {
+      "url": "https://platform.minimaxi.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.minimax.chat/v1/chat/completions",
+          "models": [
+            "MiniMax-Text-01",
+            "abab6.5s-chat"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "MINIMAX_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://platform.minimaxi.com/document/guides",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "mistral-ai",
+    "name": "Mistral AI (La Plateforme)",
+    "name_en": "Mistral AI",
+    "category": "海外主流",
+    "intro": "欧洲顶尖大模型独角兽官方平台，Experimentation 开发者模式永久免费提供基础额度，代码与多语言极强。",
+    "intro_en": "Europe's leading AI lab. Permanent free experimentation tier with 1 RPS for Mistral Large and Codestral.",
+    "website": "https://console.mistral.ai/",
+    "doc_url": "https://docs.mistral.ai/",
+    "api_base_url": "https://api.mistral.ai/v1",
+    "free_models": [
+      "mistral-large-latest",
+      "codestral-latest",
+      "mistral-small-latest"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "永久免费层",
+      "unit": "1 RPS / 500k TPM",
+      "reset_period": "永久",
+      "details": "验证手机号后开启永久免费 Experimentation 模式，支持 Codestral 编程模型。",
+      "details_en": "Permanent free tier with 1 RPS and 500k TPM after phone verification."
+    },
+    "verification": "手机号/邮箱验证",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "需要绑定手机号激活 Experimentation 免费层。"
+    ],
+    "gotchas_en": [
+      "Phone verification required to activate free tier."
+    ],
+    "registration": {
+      "url": "https://console.mistral.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.mistral.ai/v1/chat/completions",
+          "models": [
+            "mistral-large-latest",
+            "codestral-latest",
+            "mistral-small-latest"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "MISTRAL_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.mistral.ai/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "modelscope",
+    "name": "魔搭社区 (ModelScope)",
+    "name_en": "ModelScope (Alibaba)",
+    "category": "国内主流",
+    "intro": "阿里官方开源模型社区，免费提供数十款主流开源模型 Serverless 推理 API，免配置即刻调用。",
+    "intro_en": "Alibaba's open-source model hub. Free Serverless Inference API for Qwen 2.5, DeepSeek, and Llama 3.",
+    "website": "https://modelscope.cn/",
+    "doc_url": "https://modelscope.cn/docs/InferenceAPI",
+    "api_base_url": "https://api-inference.modelscope.cn/v1",
+    "free_models": [
+      "Qwen/Qwen2.5-72B-Instruct",
+      "deepseek-ai/DeepSeek-R1",
+      "meta-llama/Llama-3.3-70B-Instruct"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "永久免费",
+      "unit": "共享算力池",
+      "reset_period": "永久",
+      "details": "魔搭社区开发者可直接调用平台托管的主流开源模型，零成本体验。",
+      "details_en": "Free Serverless API access across hosted open models."
+    },
+    "verification": "魔搭/淘宝账号",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "共享算力池偶有排队延迟。"
+    ],
+    "gotchas_en": [
+      "Shared compute may experience queuing during peak hours."
+    ],
+    "registration": {
+      "url": "https://modelscope.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api-inference.modelscope.cn/v1/chat/completions",
+          "models": [
+            "Qwen/Qwen2.5-72B-Instruct",
+            "deepseek-ai/DeepSeek-R1",
+            "meta-llama/Llama-3.3-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "MODELSCOPE_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://modelscope.cn/docs/InferenceAPI",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "moonshot-kimi",
+    "name": "月之暗面 (Kimi 开放平台)",
+    "name_en": "Moonshot AI (Kimi)",
+    "category": "国内主流",
+    "intro": "国内超长文本开创者 Kimi 官方开放平台，新注册开发者赠送 15 元代金券（约 125 万 Tokens），长文档分析极强。",
+    "intro_en": "Pioneered 2M-token long context in China. 15 RMB voucher (~1.25M tokens) on registration.",
+    "website": "https://platform.moonshot.cn/",
+    "doc_url": "https://platform.moonshot.cn/docs/intro",
+    "api_base_url": "https://api.moonshot.cn/v1",
+    "free_models": [
+      "moonshot-v1-8k",
+      "moonshot-v1-32k",
+      "moonshot-v1-128k"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "15 元",
+      "unit": "代金券 (约 125 万 Tokens)",
+      "reset_period": "一次性",
+      "details": "新用户注册发放 15 元体验额度，支持 128K 超长上下文分析与结构化抽取。",
+      "details_en": "15 RMB trial voucher upon registration for Moonshot-v1 series."
+    },
+    "verification": "手机号注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "代金券用尽后需按量充值。"
+    ],
+    "gotchas_en": [
+      "Pay-as-you-go applies after voucher depletion."
+    ],
+    "registration": {
+      "url": "https://platform.moonshot.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.moonshot.cn/v1/chat/completions",
+          "models": [
+            "moonshot-v1-8k",
+            "moonshot-v1-32k",
+            "moonshot-v1-128k"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "MOONSHOT_KIMI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://platform.moonshot.cn/docs/intro",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "nebius-ai",
+    "name": "Nebius AI Studio",
+    "name_en": "Nebius AI Studio",
+    "category": "海外主流",
+    "intro": "欧洲顶尖 GPU 云基础设施平台，注册即送 5-10 美元体验金，超低延迟部署 DeepSeek R1 与 Llama 3.3！",
+    "intro_en": "European AI cloud infrastructure. $5-$10 free credits upon sign-up for DeepSeek R1 and Llama 3.3.",
+    "website": "https://nebius.ai/",
+    "doc_url": "https://docs.nebius.ai/",
+    "api_base_url": "https://api.studio.nebius.ai/v1",
+    "free_models": [
+      "deepseek-ai/DeepSeek-R1",
+      "meta-llama/Meta-Llama-3.1-70B-Instruct"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "5-10 美元",
+      "unit": "USD Credits (约数千万Tokens)",
+      "reset_period": "一次性",
+      "details": "新注册开发者发放 5-10 美元算力金，支持欧洲低延迟高并发大模型推理。",
+      "details_en": "$5-$10 trial credits for new developer accounts."
+    },
+    "verification": "海外手机/绑定卡",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "绑定海外信用卡可解锁更高并发额度。"
+    ],
+    "gotchas_en": [
+      "Credit card verification unlocks higher concurrency."
+    ],
+    "registration": {
+      "url": "https://nebius.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.studio.nebius.ai/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1",
+            "meta-llama/Meta-Llama-3.1-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "NEBIUS_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.nebius.ai/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "novita-ai",
+    "name": "Novita AI",
+    "name_en": "Novita AI",
+    "category": "海外主流",
+    "intro": "超高性价比 AI 推理平台，新注册开发者发放 0.5-2 美元体验金，支持 DeepSeek R1/V3 与数百款开源模型！",
+    "intro_en": "Fast and affordable serverless LLM platform. $0.5-$2 free credits on sign-up with low pricing.",
+    "website": "https://novita.ai/",
+    "doc_url": "https://novita.ai/docs",
+    "api_base_url": "https://api.novita.ai/v3/openai",
+    "free_models": [
+      "deepseek/deepseek-r1",
+      "meta-llama/llama-3.3-70b-instruct"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "0.5-2 美元",
+      "unit": "USD Credits (约数百万Tokens)",
+      "reset_period": "一次性",
+      "details": "注册送体验余额，完全兼容 OpenAI 协议标准。",
+      "details_en": "$0.5-$2 trial credit on sign-up."
+    },
+    "verification": "GitHub / 邮箱",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "支持 Llama 3.3 与生图模型 API。"
+    ],
+    "gotchas_en": [
+      "Supports text and image generation endpoints."
+    ],
+    "registration": {
+      "url": "https://novita.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.novita.ai/v3/openai/chat/completions",
+          "models": [
+            "deepseek/deepseek-r1",
+            "meta-llama/llama-3.3-70b-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "NOVITA_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://novita.ai/docs",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "nvidia-nim",
+    "name": "NVIDIA NIM (Build)",
+    "name_en": "NVIDIA NIM",
+    "category": "大厂基座",
+    "intro": "英伟达官方微服务推理平台，注册送 1000 免费 Credits，在英伟达顶级 H100/H200 上极速跑 DeepSeek 与 Llama！",
+    "intro_en": "Official NVIDIA enterprise inference platform. 1,000 free API credits (~40M tokens) hosted on H100 clusters.",
+    "website": "https://build.nvidia.com/",
+    "doc_url": "https://docs.api.nvidia.com/nim/",
+    "api_base_url": "https://integrate.api.nvidia.com/v1",
+    "free_models": [
+      "deepseek-ai/deepseek-r1",
+      "meta/llama-3.3-70b-instruct"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "1000",
+      "unit": "Credits (约 4000 万 Tokens)",
+      "reset_period": "一次性",
+      "details": "每个账号提供 1000 API Credits，完全部署在英伟达官方顶级算力集群上。",
+      "details_en": "1,000 free credits upon account registration for enterprise microservices."
+    },
+    "verification": "邮箱验证",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "大厂基座",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "需要合规网络环境访问。"
+    ],
+    "gotchas_en": [
+      "Requires compliant international network."
+    ],
+    "registration": {
+      "url": "https://build.nvidia.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://integrate.api.nvidia.com/v1/chat/completions",
+          "models": [
+            "deepseek-ai/deepseek-r1",
+            "meta/llama-3.3-70b-instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "NVIDIA_NIM_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.api.nvidia.com/nim/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "openrouter",
+    "name": "OpenRouter (免费模型池)",
+    "name_en": "OpenRouter",
+    "category": "聚合路由",
+    "intro": "全球最大大模型聚合路由网关，收录 30+ 款带有 :free 后缀的开源大模型，永久完全免费调用！",
+    "intro_en": "Global LLM unified gateway. Permanent free access to 30+ open-source models with ':free' suffix.",
+    "website": "https://openrouter.ai/",
+    "doc_url": "https://openrouter.ai/docs",
+    "api_base_url": "https://openrouter.ai/api/v1",
+    "free_models": [
+      "deepseek/deepseek-r1:free",
+      "meta-llama/llama-3.3-70b-instruct:free",
+      "google/gemini-2.0-flash-exp:free"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "永久免费",
+      "unit": "20 RPM (30+款免费模型)",
+      "reset_period": "永久",
+      "details": "永久免费调用带 :free 后缀的几十款前沿模型，支持智能故障降级。",
+      "details_en": "Permanent 20 RPM free tier across all models with ':free' suffix."
+    },
+    "verification": "Google / GitHub / 邮箱",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "聚合路由",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "调用时模型名称必须带 ':free' 后缀。"
+    ],
+    "gotchas_en": [
+      "Model names must include the ':free' suffix."
+    ],
+    "registration": {
+      "url": "https://openrouter.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://openrouter.ai/api/v1/chat/completions",
+          "models": [
+            "deepseek/deepseek-r1:free",
+            "meta-llama/llama-3.3-70b-instruct:free",
+            "google/gemini-2.0-flash-exp:free"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "OPENROUTER_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://openrouter.ai/docs",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "pollinations",
+    "name": "Pollinations AI (免Key生图与对话)",
+    "name_en": "Pollinations AI",
+    "category": "多模态生图",
+    "intro": "完全开源、零门槛、免注册、免 API Key 的多模态生图与大模型对话服务，直接 GET/POST 即可调用！",
+    "intro_en": "Completely free, open-source, keyless multimodal generation API for images and text.",
+    "website": "https://pollinations.ai/",
+    "doc_url": "https://pollinations.github.io/docs/",
+    "api_base_url": "https://text.pollinations.ai/openai",
+    "free_models": [
+      "openai",
+      "qwen",
+      "mistral",
+      "flux"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "完全免费",
+      "unit": "免注册 / 免 API Key",
+      "reset_period": "永久",
+      "details": "无需注册账号或创建 API Key，直接向接口发起请求即可生成文本或 FLUX 图像。",
+      "details_en": "Completely free and keyless access for text and image generation."
+    },
+    "verification": "无需注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "免注册",
+      "多模态生图"
+    ],
+    "gotchas": [
+      "社区公用算力池，高并发时请加入重试与限流逻辑。"
+    ],
+    "gotchas_en": [
+      "Public shared infrastructure; add retry logic for stability."
+    ],
+    "registration": {
+      "url": "https://pollinations.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "image_generation",
+          "protocol": "rest",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "none",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://pollinations.github.io/docs/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "sambanova",
+    "name": "SambaNova Cloud",
+    "name_en": "SambaNova Cloud",
+    "category": "海外主流",
+    "intro": "基于自研 SN40L 芯片的超低延迟推理云，永久免费提供全尺寸 DeepSeek R1 满血版与 Llama 3.3！",
+    "intro_en": "SN40L custom silicon cloud. Permanent free tier for full-parameter DeepSeek R1 671B and Llama 3.3.",
+    "website": "https://sambanova.ai/",
+    "doc_url": "https://docs.sambanova.ai/",
+    "api_base_url": "https://api.sambanova.ai/v1",
+    "free_models": [
+      "DeepSeek-R1",
+      "Meta-Llama-3.3-70B-Instruct"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "永久免费层",
+      "unit": "5-10 RPM",
+      "reset_period": "每日刷新",
+      "details": "永久免费提供 DeepSeek R1 满血版极速推理，开箱即用。",
+      "details_en": "Permanent free tier for full DeepSeek R1 with low latency."
+    },
+    "verification": "邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "每日",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "免费层限制约 5-10 RPM。"
+    ],
+    "gotchas_en": [
+      "Rate-limited to 5-10 RPM on free tier."
+    ],
+    "registration": {
+      "url": "https://sambanova.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.sambanova.ai/v1/chat/completions",
+          "models": [
+            "DeepSeek-R1",
+            "Meta-Llama-3.3-70B-Instruct"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "SAMBANOVA_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.sambanova.ai/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "scnet",
+    "name": "国家超算互联网 (SCNet)",
+    "name_en": "China National Supercomputer SCNet",
+    "category": "大厂基座",
+    "intro": "国家级超算互联网官方平台，新用户注册认证发放 1000 万 Tokens 免费算力券，央企级高可靠基础设施！",
+    "intro_en": "China's national supercomputing AI grid. 10,000,000 free tokens voucher upon developer registration.",
+    "website": "https://www.scnet.cn/",
+    "doc_url": "https://www.scnet.cn/ui/mall/",
+    "api_base_url": "https://api.scnet.cn/v1",
+    "free_models": [
+      "deepseek-r1",
+      "deepseek-v3",
+      "qwen2.5-72b"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "1000 万",
+      "unit": "Tokens (算力补贴券)",
+      "reset_period": "一次性",
+      "details": "新用户完成实名认证后发放 1000 万 Tokens 算力代金券，全面支持 DeepSeek 与 Qwen 满血大模型。",
+      "details_en": "10M free tokens upon verified registration for DeepSeek and Qwen."
+    },
+    "verification": "手机实名认证",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "大厂基座",
+      "国产直连",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "算力券有效期通常为 30-90 天，适合 Agent 项目重度开发。"
+    ],
+    "gotchas_en": [
+      "Voucher valid for 30-90 days."
+    ],
+    "registration": {
+      "url": "https://www.scnet.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.scnet.cn/v1/chat/completions",
+          "models": [
+            "deepseek-r1",
+            "deepseek-v3",
+            "qwen2.5-72b"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "SCNET_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://www.scnet.cn/ui/mall/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "sepolia-faucet",
+    "name": "Sepolia ETH 测试网水龙头",
+    "name_en": "Sepolia ETH Faucets",
+    "category": "区块链水龙头",
+    "intro": "全球主流以太坊测试网水龙头聚合导航，每天免费领取 0.05-0.5 Sepolia ETH 用于 Web3 与智能合约测试。",
+    "intro_en": "Curated Sepolia testnet ETH faucets. Free 0.05-0.5 testnet ETH daily for Web3 developers.",
+    "website": "https://sepolia-faucet.pk910.de/",
+    "doc_url": "https://ethereum.org/en/developers/docs/networks/#sepolia",
+    "api_base_url": "https://rpc.sepolia.org",
+    "free_models": [
+      "PoW Faucet",
+      "Google Cloud Web3",
+      "Alchemy Faucet"
+    ],
+    "free_quota": {
+      "type": "每日刷新",
+      "amount": "0.05-0.5",
+      "unit": "Sepolia ETH / 天",
+      "reset_period": "每日刷新",
+      "details": "提供 PoW 算力挖矿水龙头与 Google Cloud / Alchemy 每日水龙头领取入口。",
+      "details_en": "0.05-0.5 Sepolia ETH daily via PoW and infrastructure faucets."
+    },
+    "verification": "钱包地址",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "每日",
+      "区块链水龙头"
+    ],
+    "gotchas": [
+      "部分水龙头要求主网钱包持有少量 ETH 防女巫攻击。"
+    ],
+    "gotchas_en": [
+      "Some faucets require mainnet balance to prevent sybil attacks."
+    ],
+    "registration": {
+      "url": "https://sepolia-faucet.pk910.de/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "rpc",
+          "protocol": "rpc",
+          "endpoint_url": null,
+          "models": [],
+          "auth": {
+            "type": "unknown",
+            "header": null,
+            "query_param": null,
+            "env_var": null
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://ethereum.org/en/developers/docs/networks/#sepolia",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "siliconflow",
+    "name": "硅基流动 (SiliconFlow)",
+    "name_en": "SiliconFlow",
+    "category": "国内主流",
+    "intro": "国内领先大模型加速推理平台，注册送 2000 万 Tokens（14元），并提供 Qwen/DeepSeek/GLM 多款完全永久免费模型！",
+    "intro_en": "Leading Chinese inference accelerator. 20,000,000 tokens on sign-up plus permanent free models.",
+    "website": "https://cloud.siliconflow.cn/",
+    "doc_url": "https://docs.siliconflow.cn/",
+    "api_base_url": "https://api.siliconflow.cn/v1",
+    "free_models": [
+      "Qwen/Qwen2.5-7B-Instruct",
+      "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+      "THUDM/glm-4-9b-chat"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "2000 万 + 永久免费",
+      "unit": "Tokens (7B-9B 模型完全永久免费)",
+      "reset_period": "永久",
+      "details": "注册发放 2000 万 Tokens 体验额度，同时 7B/9B 等系列模型完全永久免费调用。",
+      "details_en": "20,000,000 free tokens for new users, with 7B-9B models permanently free."
+    },
+    "verification": "手机号注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "免费 7B-9B 模型无扣费风险，适合 Agent 自动化日常保底。"
+    ],
+    "gotchas_en": [
+      "Free 7B-9B models are permanently free with zero billing risk."
+    ],
+    "registration": {
+      "url": "https://cloud.siliconflow.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.siliconflow.cn/v1/chat/completions",
+          "models": [
+            "Qwen/Qwen2.5-7B-Instruct",
+            "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+            "THUDM/glm-4-9b-chat"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "SILICONFLOW_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.siliconflow.cn/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "stepfun",
+    "name": "阶跃星辰 (StepFun 开放平台)",
+    "name_en": "StepFun AI",
+    "category": "国内主流",
+    "intro": "国内领先自研千亿大模型开放平台，新用户注册赠送 15 元代金券，支持 Step-2/Step-1 系列模型，中文语义理解强劲且无过度拦截。",
+    "intro_en": "Leading Chinese Foundation Model provider. 15 RMB free voucher on registration for Step-2 series models.",
+    "website": "https://platform.stepfun.com/",
+    "doc_url": "https://platform.stepfun.com/docs/llm/text",
+    "api_base_url": "https://api.stepfun.com/v1",
+    "free_models": [
+      "step-2-16k",
+      "step-1-8k",
+      "step-1-32k",
+      "step-1-128k"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "15 元",
+      "unit": "代金券 (约数百万Tokens)",
+      "reset_period": "一次性",
+      "details": "新注册开发者发放 15 元代金券，全面支持 Step 系列长文本与代码生成模型，100% 兼容 OpenAI 格式。",
+      "details_en": "15 RMB trial voucher upon registration for Step-2/Step-1 models."
+    },
+    "verification": "手机号注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "代金券消耗完毕后按量计费，适合 Agent 测试与多模型对比。"
+    ],
+    "gotchas_en": [
+      "Standard billing applies after trial voucher is fully consumed."
+    ],
+    "registration": {
+      "url": "https://platform.stepfun.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.stepfun.com/v1/chat/completions",
+          "models": [
+            "step-2-16k",
+            "step-1-8k",
+            "step-1-32k",
+            "step-1-128k"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "STEPFUN_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://platform.stepfun.com/docs/llm/text",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "tavily",
+    "name": "Tavily AI (AI 搜索专用引擎)",
+    "name_en": "Tavily AI",
+    "category": "搜索与工具",
+    "intro": "专为 AI Agent 与 RAG 设计的实时搜索引擎，每月免费提供 1000 次高质量结构化搜索调用！",
+    "intro_en": "Search engine optimized for AI agents & LLMs. 1,000 free search API calls every month.",
+    "website": "https://tavily.com/",
+    "doc_url": "https://docs.tavily.com/",
+    "api_base_url": "https://api.tavily.com",
+    "free_models": [
+      "tavily-search",
+      "tavily-context",
+      "tavily-qna"
+    ],
+    "free_quota": {
+      "type": "每日刷新",
+      "amount": "1000 次",
+      "unit": "Search API Calls / 月",
+      "reset_period": "每月刷新",
+      "details": "每月免费发放 1000 次搜索配额，专为 LangChain、AutoGPT、OpenClaw 等智能体优化。",
+      "details_en": "1,000 free monthly search credits with real-time web context."
+    },
+    "verification": "GitHub / Google",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "每日",
+      "每月",
+      "搜索与工具"
+    ],
+    "gotchas": [
+      "原生适配 LangChain 与主流 Agent 搜索插件。"
+    ],
+    "gotchas_en": [
+      "Directly supported in LangChain and OpenClaw search tools."
+    ],
+    "registration": {
+      "url": "https://tavily.com/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "search",
+          "protocol": "rest",
+          "endpoint_url": "https://api.tavily.com/search",
+          "method": "POST",
+          "request_body": {
+            "query": "What are the latest developments in artificial intelligence?",
+            "search_depth": "basic",
+            "max_results": 5
+          },
+          "models": [],
+          "auth": {
+            "type": "api_key_header",
+            "header": "X-API-Key",
+            "query_param": null,
+            "env_var": "TAVILY_API_KEY"
+          },
+          "verification": {
+            "status": "documented",
+            "checked_at": "2026-09-03",
+            "evidence_url": "https://docs.tavily.com/documentation/api-reference/endpoint/search"
+          }
+        }
+      ],
+      "tools": {
+        "curl": "documented",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.tavily.com/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "tencent-hunyuan",
+    "name": "腾讯混元大模型",
+    "name_en": "Tencent Hunyuan",
+    "category": "大厂云服务",
+    "intro": "腾讯官方大模型开放平台，新注册用户赠送 10 万-100 万 Tokens 免费体验金，多模态与企微生态深度整合。",
+    "intro_en": "Tencent's foundation model service. Free credits for new accounts with strong multi-turn WeChat reasoning.",
+    "website": "https://cloud.tencent.com/product/hunyuan",
+    "doc_url": "https://cloud.tencent.com/document/product/1729",
+    "api_base_url": "https://api.hunyuan.cloud.tencent.com/v1",
+    "free_models": [
+      "hunyuan-standard",
+      "hunyuan-turbo",
+      "hunyuan-lite"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "100 万",
+      "unit": "Tokens",
+      "reset_period": "一次性",
+      "details": "新用户实名开通即可领取混元模型免费体验资源包。",
+      "details_en": "1,000,000 free tokens for new verified Tencent Cloud accounts."
+    },
+    "verification": "腾讯云实名",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "大厂基座",
+      "国产直连",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "资源包过期后自动切换为后付费按量计费。"
+    ],
+    "gotchas_en": [
+      "Switches to post-paid after promotional package expires."
+    ],
+    "registration": {
+      "url": "https://cloud.tencent.com/product/hunyuan"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.hunyuan.cloud.tencent.com/v1/chat/completions",
+          "models": [
+            "hunyuan-standard",
+            "hunyuan-turbo",
+            "hunyuan-lite"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "TENCENT_HUNYUAN_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://cloud.tencent.com/document/product/1729",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "together-ai",
+    "name": "Together AI",
+    "name_en": "Together AI",
+    "category": "海外主流",
+    "intro": "全球领先的开源大模型云平台，注册即送 5 美元体验金（约 2500 万 Tokens），支持 100+ 开源前沿模型！",
+    "intro_en": "Leading open-source cloud. $5 free trial credits (~25M tokens) for LLaMA, DeepSeek, and FLUX.",
+    "website": "https://together.ai/",
+    "doc_url": "https://docs.together.ai/",
+    "api_base_url": "https://api.together.xyz/v1",
+    "free_models": [
+      "deepseek-ai/DeepSeek-R1",
+      "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "black-forest-labs/FLUX.1-schnell"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "5 美元",
+      "unit": "USD Credits (约 2500 万 Tokens)",
+      "reset_period": "一次性",
+      "details": "注册送 5 美元体验金，支持文本推理、微调与生图 API。",
+      "details_en": "$5 trial credits for new accounts (~25M tokens)."
+    },
+    "verification": "邮箱注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "体验金有效期为 90 天。"
+    ],
+    "gotchas_en": [
+      "Trial credits expire after 90 days."
+    ],
+    "registration": {
+      "url": "https://together.ai/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.together.xyz/v1/chat/completions",
+          "models": [
+            "deepseek-ai/DeepSeek-R1",
+            "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+            "black-forest-labs/FLUX.1-schnell"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "TOGETHER_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.together.ai/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "tokenpony",
+    "name": "小马算力 (TokenPony)",
+    "name_en": "TokenPony Cloud",
+    "category": "国内主流",
+    "intro": "基于 H200 与华为昇腾国产算力集群的极速大模型平台，注册送 200万-500万 Tokens，支持 1024K 超长上下文！",
+    "intro_en": "High-throughput cloud powered by H200 and Ascend clusters. 2M-5M tokens on sign-up with 1024K context.",
+    "website": "https://www.tokenpony.cn/",
+    "doc_url": "https://www.tokenpony.cn/docs",
+    "api_base_url": "https://api.tokenpony.cn/v1",
+    "free_models": [
+      "deepseek-r1",
+      "deepseek-v3",
+      "qwen2.5-72b-1024k"
+    ],
+    "free_quota": {
+      "type": "限时赠送",
+      "amount": "200万-500万",
+      "unit": "Tokens (注册赠送 + 每日签到)",
+      "reset_period": "每日签到赠送",
+      "details": "注册即送数百万 Tokens 算力，每日签到可持续获得免费额度，支持百万长上下文推理。",
+      "details_en": "2M-5M tokens upon registration plus daily check-in rewards."
+    },
+    "verification": "手机号注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "每日",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "支持超长文本与高并发集群加速。"
+    ],
+    "gotchas_en": [
+      "Supports ultra-long context and high concurrency."
+    ],
+    "registration": {
+      "url": "https://www.tokenpony.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.tokenpony.cn/v1/chat/completions",
+          "models": [
+            "deepseek-r1",
+            "deepseek-v3",
+            "qwen2.5-72b-1024k"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "TOKENPONY_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://www.tokenpony.cn/docs",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "volcengine",
+    "name": "火山引擎 (火山方舟)",
+    "name_en": "ByteDance Volcengine Ark",
+    "category": "大厂云服务",
+    "intro": "字节跳动旗下大模型服务平台，推出「千亿协同计划」，每天免费提供 200 万 Tokens（折合 6000 万/月）！",
+    "intro_en": "ByteDance cloud platform. 2,000,000 free tokens daily (60M/month) for Doubao and DeepSeek via Ark program.",
+    "website": "https://www.volcengine.com/product/ark",
+    "doc_url": "https://www.volcengine.com/docs/82379",
+    "api_base_url": "https://ark.cn-beijing.volces.com/api/v3",
+    "free_models": [
+      "doubao-pro-32k",
+      "doubao-lite-32k",
+      "deepseek-r1"
+    ],
+    "free_quota": {
+      "type": "每日刷新",
+      "amount": "200 万",
+      "unit": "Tokens / 天 (每月 6000 万)",
+      "reset_period": "每日刷新",
+      "details": "「千亿协同计划」每天刷新 200 万 Tokens 免费算力，支持豆包系列与 DeepSeek 满血版。",
+      "details_en": "2,000,000 free daily tokens for Doubao and DeepSeek models."
+    },
+    "verification": "火山引擎实名",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "每日",
+      "大厂基座",
+      "国产直连",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "调用时 Model 需填入在火山方舟控制台创建的 Endpoint ID。"
+    ],
+    "gotchas_en": [
+      "Requires custom Endpoint ID in model parameter."
+    ],
+    "registration": {
+      "url": "https://www.volcengine.com/product/ark"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://ark.cn-beijing.volces.com/api/v3/chat/completions",
+          "models": [
+            "doubao-pro-32k",
+            "doubao-lite-32k",
+            "deepseek-r1"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "VOLCENGINE_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://www.volcengine.com/docs/82379",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "xai-grok",
+    "name": "xAI (Grok 开放平台)",
+    "name_en": "xAI (Grok API)",
+    "category": "海外主流",
+    "intro": "马斯克旗下 xAI 开发者平台，注册即送 25 美元体验金；在控制台开启数据共享计划（Data Sharing）每月发放最高 150 美元/月免费算力！",
+    "intro_en": "Elon Musk's xAI platform. $25 sign-up credit plus up to $150/month free credits via Data Sharing program.",
+    "website": "https://x.ai/api",
+    "doc_url": "https://docs.x.ai/",
+    "api_base_url": "https://api.x.ai/v1",
+    "free_models": [
+      "grok-4.1-fast",
+      "grok-4",
+      "grok-3"
+    ],
+    "free_quota": {
+      "type": "每月循环",
+      "amount": "25 美元 + 150 美元/月",
+      "unit": "USD Credits (约数亿Tokens)",
+      "reset_period": "每月刷新",
+      "details": "注册发放 25 美元 API 额度；开启 Data Sharing 计划后每月发放 150 美元免费额度，支持 2M 超长上下文推理。",
+      "details_en": "$25 on sign-up, plus $150/month continuous credit when enrolled in the Data Sharing plan."
+    },
+    "verification": "海外手机号/绑定卡",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "限时",
+      "每日",
+      "海外主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "数据共享计划开启后 prompt 和响应将被用于训练且不可撤回。",
+      "需要合规网络访问。"
+    ],
+    "gotchas_en": [
+      "Data sharing agreement is irrevocable once enabled.",
+      "Requires compliant international network."
+    ],
+    "registration": {
+      "url": "https://x.ai/api"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://api.x.ai/v1/chat/completions",
+          "models": [
+            "grok-4.1-fast",
+            "grok-4",
+            "grok-3"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "XAI_GROK_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://docs.x.ai/",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "xfyun-spark",
+    "name": "讯飞星火认知大模型",
+    "name_en": "iFLYTEK Spark",
+    "category": "国内主流",
+    "intro": "科大讯飞官方大模型开放平台，Spark Lite 模型全面永久免费！支持语音、长文本与多模态交互。",
+    "intro_en": "iFLYTEK AI platform. Spark Lite model is permanently free for all developers with full OpenAI compatibility.",
+    "website": "https://xinghuo.xfyun.cn/sparkapi",
+    "doc_url": "https://www.xfyun.cn/doc/spark/Web.html",
+    "api_base_url": "https://spark-api-open.xf-yun.com/v1",
+    "free_models": [
+      "general",
+      "generalv3.5",
+      "generalv3"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "永久免费",
+      "unit": "Spark Lite 永久完全免费",
+      "reset_period": "永久",
+      "details": "Spark Lite 版本对所有开发者永久免费开放，新认证用户还送 200 万高阶模型体验包。",
+      "details_en": "Spark Lite is permanently free; verified users get 2M tokens for Max."
+    },
+    "verification": "讯飞账号认证",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "大厂基座",
+      "国产直连",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "已全面支持标准 OpenAI REST API 格式调用。"
+    ],
+    "gotchas_en": [
+      "Fully compatible with standard OpenAI REST protocol."
+    ],
+    "registration": {
+      "url": "https://xinghuo.xfyun.cn/sparkapi"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://spark-api-open.xf-yun.com/v1/chat/completions",
+          "models": [
+            "general",
+            "generalv3.5",
+            "generalv3"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "XFYUN_SPARK_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://www.xfyun.cn/doc/spark/Web.html",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
+    "slug": "zhipu-ai",
+    "name": "智谱 AI (BigModel 开放平台)",
+    "name_en": "Zhipu AI BigModel",
+    "category": "国内主流",
+    "intro": "清华系大模型领军企业，GLM-4-Flash 主力模型全面永久免费！新注册赠送 2500 万 Tokens（或 25 元代金券）。",
+    "intro_en": "Leading Chinese AI laboratory. GLM-4-Flash is permanently free; new users get 25,000,000 free tokens.",
+    "website": "https://bigmodel.cn/",
+    "doc_url": "https://bigmodel.cn/dev/api/normal-model/glm-4",
+    "api_base_url": "https://open.bigmodel.cn/api/paas/v4",
+    "free_models": [
+      "glm-4-flash",
+      "glm-4v-flash",
+      "glm-4-plus"
+    ],
+    "free_quota": {
+      "type": "永久免费",
+      "amount": "2500 万 + 永久免费",
+      "unit": "Tokens (GLM-4-Flash 永久免费)",
+      "reset_period": "永久",
+      "details": "GLM-4-Flash 与 GLM-4V-Flash 视觉模型全面永久免费不限量；注册送 2500 万旗舰模型额度。",
+      "details_en": "GLM-4-Flash is permanently free; 25M tokens granted on registration."
+    },
+    "verification": "手机号注册",
+    "status": "active",
+    "last_verified": "2026-09-02",
+    "tags": [
+      "永久",
+      "限时",
+      "国产直连",
+      "国内主流",
+      "OpenAI兼容"
+    ],
+    "gotchas": [
+      "GLM-4-Flash 完全免费，是 Agent 自动化与格式化任务的最佳零成本保底源。"
+    ],
+    "gotchas_en": [
+      "GLM-4-Flash is permanently free, ideal for daily zero-cost pipelines."
+    ],
+    "registration": {
+      "url": "https://bigmodel.cn/"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [
+        {
+          "id": "chat_completions",
+          "protocol": "openai",
+          "endpoint_url": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+          "models": [
+            "glm-4-flash",
+            "glm-4v-flash",
+            "glm-4-plus"
+          ],
+          "auth": {
+            "type": "bearer",
+            "header": "Authorization",
+            "query_param": null,
+            "env_var": "ZHIPU_AI_API_KEY"
+          },
+          "verification": {
+            "status": "claimed",
+            "checked_at": null,
+            "evidence_url": null
+          }
+        }
+      ],
+      "tools": {
+        "curl": "claimed",
+        "openai_python": "claimed",
+        "openai_node": "claimed",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://bigmodel.cn/dev/api/normal-model/glm-4",
+        "checked_at": "2026-09-02"
+      }
+    ]
+  }
+]

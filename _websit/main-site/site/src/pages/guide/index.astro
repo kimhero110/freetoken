@@ -1,0 +1,107 @@
+---
+import Base from '../../layouts/Base.astro';
+import CodeGenerator from '../../components/CodeGenerator.astro';
+import GuideArticles from '../../components/GuideArticles.astro';
+import platforms from '../../data/platforms.json';
+---
+
+<Base 
+  title="安全接入代码生成器与实战指南 · FreeToken"
+  description="按平台能力证据等级生成 cURL、Python 与 Node.js OpenAI Chat Completions 示例；明确区分平台声称、官方文档核查和真实调用通过。"
+  lang="zh"
+  analytics={false}
+>
+  <section class="guide-hero-section">
+    <div class="container">
+      <div class="guide-hero-badge">PRACTICE PLAYBOOK · 开发者实战白皮书</div>
+      <h1 class="guide-hero-title">全网免费 API 交互式接入配置生成器与实战指南</h1>
+      <p class="guide-hero-desc">
+        生成器只使用平台 v2 数据中已核验的操作端点、模型和环境变量。<strong>claimed 表示平台声称但文档未核查，不生成请求；documented 表示已核查官方文档，live 表示近期真实调用通过</strong>；failed、unknown 与过期 live 记录也不生成请求。
+      </p>
+
+      <nav class="guide-toc-nav">
+        <span class="toc-nav-label">目录速达：</span>
+        <a href="#code-generator" class="toc-link">⚡ 10秒代码生成器</a>
+        <a href="#art-01" class="toc-link">01 · OpenAI 协议</a>
+        <a href="#art-02" class="toc-link">02 · 4.5亿算账</a>
+        <a href="#art-03" class="toc-link">03 · 多Key网关</a>
+        <a href="#art-04" class="toc-link">04 · 滑动窗口</a>
+        <a href="#art-05" class="toc-link">05 · 降本90%</a>
+        <a href="#art-06" class="toc-link">06 · 选型矩阵</a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="section-wrap">
+    <div class="container">
+      <CodeGenerator platforms={platforms} lang="zh" />
+    </div>
+  </section>
+
+  <GuideArticles lang="zh" />
+
+  <style>
+    .guide-hero-section {
+      padding: 48px 0 24px;
+      border-bottom: 1px solid var(--card-border);
+      background: #ffffff;
+    }
+    .guide-hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: var(--accent);
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+    }
+    .guide-hero-title {
+      font-size: clamp(22px, 3.8vw, 34px);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.6px;
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .guide-hero-desc {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .guide-toc-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+    }
+    .toc-nav-label {
+      font-weight: 700;
+      color: var(--text);
+    }
+    .toc-link {
+      color: var(--text-muted);
+      border: 1px solid var(--card-border);
+      background: var(--bg-subtle);
+      padding: 3px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
+    .toc-link:hover {
+      color: var(--text);
+      border-color: var(--text);
+    }
+    .section-wrap {
+      padding: 36px 0 0;
+    }
+  </style>
+</Base>

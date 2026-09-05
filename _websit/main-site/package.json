@@ -1,0 +1,9 @@
+{
+  "name": "freetoken-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm --prefix site run build",
+    "test": "python -m unittest discover -s tests -v && npm --prefix site test"
+  }
+}

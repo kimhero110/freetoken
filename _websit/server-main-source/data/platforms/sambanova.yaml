@@ -1,0 +1,69 @@
+schema_version: 2
+slug: sambanova
+name: SambaNova Cloud
+name_en: SambaNova Cloud
+category: 海外主流
+intro: 基于自研 SN40L 芯片的超低延迟推理云，永久免费提供全尺寸 DeepSeek R1 满血版与 Llama 3.3！
+intro_en: SN40L custom silicon cloud. Permanent free tier for full-parameter DeepSeek
+  R1 671B and Llama 3.3.
+website: https://sambanova.ai/
+doc_url: https://docs.sambanova.ai/
+api_base_url: https://api.sambanova.ai/v1
+free_models:
+- DeepSeek-R1
+- Meta-Llama-3.3-70B-Instruct
+free_quota:
+  type: 永久免费
+  amount: 永久免费层
+  unit: 5-10 RPM
+  reset_period: 每日刷新
+  details: 永久免费提供 DeepSeek R1 满血版极速推理，开箱即用。
+  details_en: Permanent free tier for full DeepSeek R1 with low latency.
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 永久
+- 每日
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 免费层限制约 5-10 RPM。
+gotchas_en:
+- Rate-limited to 5-10 RPM on free tier.
+registration:
+  url: https://sambanova.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.sambanova.ai/v1/chat/completions
+      models:
+      - DeepSeek-R1
+      - Meta-Llama-3.3-70B-Instruct
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: SAMBANOVA_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://docs.sambanova.ai/
+  checked_at: '2026-09-02'

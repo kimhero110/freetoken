@@ -1,0 +1,9 @@
+2026-09-06 00:22:19,810 intake INFO approved gate run=10 env=production ticket=ap-2c7ea93df7
+2026-09-06 00:22:19,820 intake INFO approved gate run=10 env=production ticket=ap-48b234f13d
+2026-09-06 00:22:19,821 intake INFO approved gate run=20 env=production ticket=ap-48b234f13d
+2026-09-06 00:22:19,839 intake INFO ignored sender ou_stran
+2026-09-06 00:22:19,840 feishu ERROR send_card failed: 400 failed
+----------------------------------------------------------------------
+Ran 13 tests in 0.039s
+
+OK

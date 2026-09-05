@@ -1,0 +1,56 @@
+2026-09-03 17:11:29,266 intake INFO intake bot starting (bootstrap=True commit=558b386)
+[REDACTED: temporary connection credentials omitted]
+[REDACTED: temporary connection credentials omitted]
+2026-09-03 17:12:30,590 Lark ERROR handle message failed, message_type: event, message_id: df82bf50-efa9-4c2f-a82f-49dd769153de, trace_id: 674f0561c578e827e89e05e6c7700915, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681357762316700951]
+[Lark] [2026-09-03 17:12:30,590] [ERROR] handle message failed, message_type: event, message_id: df82bf50-efa9-4c2f-a82f-49dd769153de, trace_id: 674f0561c578e827e89e05e6c7700915, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681357762316700951]
+[Lark] [2026-09-03 17:12:46,444] [ERROR] handle message failed, message_type: event, message_id: 66eb7af5-ba07-4b18-9727-8e4303afb9e2, trace_id: 674f0561c578e827e89e05e6c7700915, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681357762316700951]
+2026-09-03 17:12:46,444 Lark ERROR handle message failed, message_type: event, message_id: 66eb7af5-ba07-4b18-9727-8e4303afb9e2, trace_id: 674f0561c578e827e89e05e6c7700915, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681357762316700951]
+2026-09-03 17:40:40,330 intake INFO intake bot starting (bootstrap=True commit=558b386)
+[REDACTED: temporary connection credentials omitted]
+[REDACTED: temporary connection credentials omitted]
+2026-09-03 17:41:21,824 Lark ERROR handle message failed, message_type: event, message_id: fe1fdddc-574c-4af8-9341-8c3dcf4f9bc2, trace_id: 85c951b68beac53d8ca5f98ead4c0e75, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681365283136081188]
+[Lark] [2026-09-03 17:41:21,824] [ERROR] handle message failed, message_type: event, message_id: fe1fdddc-574c-4af8-9341-8c3dcf4f9bc2, trace_id: 85c951b68beac53d8ca5f98ead4c0e75, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681365283136081188]
+[Lark] [2026-09-03 17:41:37,424] [ERROR] handle message failed, message_type: event, message_id: 3062b044-9570-4c74-a474-c836d43c1927, trace_id: 85c951b68beac53d8ca5f98ead4c0e75, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681365283136081188]
+2026-09-03 17:41:37,424 Lark ERROR handle message failed, message_type: event, message_id: 3062b044-9570-4c74-a474-c836d43c1927, trace_id: 85c951b68beac53d8ca5f98ead4c0e75, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681365283136081188]
+2026-09-03 17:46:40,617 intake INFO intake bot starting (bootstrap=True commit=558b386)
+[REDACTED: temporary connection credentials omitted]
+[REDACTED: temporary connection credentials omitted]
+2026-09-03 17:47:01,427 intake INFO intake bot starting (bootstrap=True commit=558b386)
+[REDACTED: temporary connection credentials omitted]
+[REDACTED: temporary connection credentials omitted]
+2026-09-03 17:51:50,110 intake INFO intake bot starting (bootstrap=True commit=558b386)
+[REDACTED: temporary connection credentials omitted]
+[REDACTED: temporary connection credentials omitted]
+2026-09-04 01:00:01,260 intake ERROR daily digest failed
+Traceback (most recent call last):
+  File "/app/daemon/main.py", line 465, in daily_digest
+    pending = sorted(self.gh.list_candidates())
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/daemon/gh_client.py", line 119, in list_candidates
+    data = self._request("GET", f"/repos/{self.repo}/contents/data/candidates")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/daemon/gh_client.py", line 87, in _request
+    raise GhError(_kind_for_status(response.status_code), message, response.status_code)
+daemon.gh_client.GhError: CONTRACT: Not Found
+2026-09-04 02:09:00,793 Lark ERROR handle message failed, message_type: event, message_id: a123277c-6cbb-4400-abf0-4fb08a20eefa, trace_id: 7cde3e2c8a21d5bea43ab462692d3eb2, err: processor not found, type: im.chat.member.bot.added_v1 [conn_id=7681368172222287033]
+[Lark] [2026-09-04 02:09:00,793] [ERROR] handle message failed, message_type: event, message_id: a123277c-6cbb-4400-abf0-4fb08a20eefa, trace_id: 7cde3e2c8a21d5bea43ab462692d3eb2, err: processor not found, type: im.chat.member.bot.added_v1 [conn_id=7681368172222287033]
+2026-09-04 02:12:14,083 intake INFO intake bot starting (bootstrap=True commit=558b386)
+[REDACTED: temporary connection credentials omitted]
+[REDACTED: temporary connection credentials omitted]
+2026-09-04 02:14:17,464 Lark ERROR handle message failed, message_type: event, message_id: ef9bf11e-9d5c-4ac6-b104-db7533cfb4e3, trace_id: 7cde3e2c8a21d5bea43ab462692d3eb2, err: processor not found, type: im.chat.member.bot.added_v1 [conn_id=7681497152652430516]
+[Lark] [2026-09-04 02:14:17,464] [ERROR] handle message failed, message_type: event, message_id: ef9bf11e-9d5c-4ac6-b104-db7533cfb4e3, trace_id: 7cde3e2c8a21d5bea43ab462692d3eb2, err: processor not found, type: im.chat.member.bot.added_v1 [conn_id=7681497152652430516]
+2026-09-05 01:00:00,733 intake ERROR daily digest failed
+Traceback (most recent call last):
+  File "/app/daemon/main.py", line 465, in daily_digest
+    pending = sorted(self.gh.list_candidates())
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/daemon/gh_client.py", line 119, in list_candidates
+    data = self._request("GET", f"/repos/{self.repo}/contents/data/candidates")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/daemon/gh_client.py", line 87, in _request
+    raise GhError(_kind_for_status(response.status_code), message, response.status_code)
+daemon.gh_client.GhError: CONTRACT: Not Found
+2026-09-05 15:46:13,980 Lark ERROR handle message failed, message_type: event, message_id: 3174c071-856a-459e-8b51-0b1ceb2391ca, trace_id: bef1529b40a0f6fff1e799016fb8c3d2, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681497152652430516]
+[Lark] [2026-09-05 15:46:13,980] [ERROR] handle message failed, message_type: event, message_id: 3174c071-856a-459e-8b51-0b1ceb2391ca, trace_id: bef1529b40a0f6fff1e799016fb8c3d2, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681497152652430516]
+[Lark] [2026-09-05 15:46:30,257] [ERROR] handle message failed, message_type: event, message_id: d36dd3f6-9833-4666-a45c-c5174a05527d, trace_id: bef1529b40a0f6fff1e799016fb8c3d2, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681497152652430516]
+2026-09-05 15:46:30,257 Lark ERROR handle message failed, message_type: event, message_id: d36dd3f6-9833-4666-a45c-c5174a05527d, trace_id: bef1529b40a0f6fff1e799016fb8c3d2, err: processor not found, type: im.chat.access_event.bot_p2p_chat_entered_v1 [conn_id=7681497152652430516]

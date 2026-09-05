@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>小红书爆款图文卡片流预览 (FreeToken Studio)</title>
+  <style>
+    body { background: #0f172a; margin: 0; padding: 40px; font-family: -apple-system, sans-serif; display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; }
+    .xhs-card {
+      width: 375px;
+      height: 500px;
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 1px solid #334155;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      padding: 28px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #f8fafc;
+      position: relative;
+      overflow: hidden;
+    }
+    .xhs-card::after {
+      content: '';
+      position: absolute;
+      top: -50px; right: -50px;
+      width: 150px; height: 150px;
+      background: radial-gradient(circle, rgba(56,189,248,0.2), transparent 70%);
+    }
+    .card-tag { font-size: 12px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 1px; }
+    .card-title { font-size: 24px; font-weight: 800; line-height: 1.3; margin: 10px 0; color: #ffffff; }
+    .card-highlight { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); padding: 14px; border-radius: 12px; margin: 12px 0; }
+    .card-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); padding: 10px 14px; border-radius: 10px; margin-bottom: 8px; font-size: 13px; }
+    .card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: #64748b; border-top: 1px solid #334155; padding-top: 14px; }
+  </style>
+</head>
+<body>
+
+  <!-- 卡片 1: 封面卡 (Cover Card) -->
+  <div class="xhs-card" style="background: linear-gradient(135deg, #0284c7, #0f172a);">
+    <div>
+      <div class="card-tag">⚡ AI 开发者必备</div>
+      <h1 class="card-title" style="font-size: 28px; margin-top: 20px;">2026 全球与国内<br><span style="color:#38bdf8;">29 家免费 API Token</span><br>白嫖全攻略！</h1>
+      <p style="font-size: 14px; color: #cbd5e1; line-height: 1.6; margin-top: 16px;">
+        告别昂贵 API 费用！涵盖 Google Gemini、阿里通义、智谱 GLM、GMI 20亿额度...零成本玩转大模型与 Agent！
+      </p>
+    </div>
+    <div class="card-footer">
+      <span>📱 免费Token情报局</span>
+      <span>1/4</span>
+    </div>
+  </div>
+
+  <!-- 卡片 2: 限时羊毛专区 (Limited Deals) -->
+  <div class="xhs-card">
+    <div>
+      <div class="card-tag" style="color:#f97316;">🔥 正在进行的限时大额福利</div>
+      <div class="card-title" style="font-size: 20px;">绝不能错过的限时免费</div>
+      
+      <div class="card-highlight" style="border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.1);">
+        <div style="font-weight:700; color:#fb923c;">🌟 GMI Cloud x MiniMax</div>
+        <div style="font-size:12px; color:#fdba74; margin-top:2px;">送最高 20 亿 Tokens (M3/语音/音乐)</div>
+        <div style="font-size:11px; color:#cbd5e1; margin-top:4px;">活动截止：2026.09.06 (GitHub登录即用)</div>
+      </div>
+
+      <div class="card-item">
+        <strong style="color:#38bdf8;">Fireworks AI</strong>：注册送 $1 美元极速推理金
+      </div>
+      <div class="card-item">
+        <strong style="color:#38bdf8;">Nebius AI Studio</strong>：欧洲超算云送 $5 算力代金券
+      </div>
+      <div class="card-item">
+        <strong style="color:#38bdf8;">Novita AI</strong>：赠送 FLUX.1 文生图 API 免费测试金
+      </div>
+    </div>
+    <div class="card-footer">
+      <span>🌐 在线工具: freetokens.info</span>
+      <span>2/4</span>
+    </div>
+  </div>
+
+  <!-- 卡片 3: 永久免费大厂清单 (Permanent Tier) -->
+  <div class="xhs-card">
+    <div>
+      <div class="card-tag" style="color:#4ade80;">💎 永久免费 & 每日刷新大厂</div>
+      <div class="card-title" style="font-size: 20px;">长期稳定 · 零成本开发首选</div>
+
+      <div class="card-item">
+        <strong style="color:#4ade80;">Google AI Studio</strong><br>
+        Gemini 1.5/2.0 Flash 永久免费 (1500次/天)
+      </div>
+      <div class="card-item">
+        <strong style="color:#4ade80;">智谱 AI (GLM-4-Flash)</strong><br>
+        国产直连 0 成本调用，速度极快适合 Agent
+      </div>
+      <div class="card-item">
+        <strong style="color:#4ade80;">GitHub Models</strong><br>
+        每日免费配额调用 GPT-4o、Claude 3.5
+      </div>
+      <div class="card-item">
+        <strong style="color:#4ade80;">Groq & Cerebras</strong><br>
+        全球最快芯片驱动，免费调用 Llama 3.3
+      </div>
+    </div>
+    <div class="card-footer">
+      <span>📱 免费Token情报局</span>
+      <span>3/4</span>
+    </div>
+  </div>
+
+  <!-- 卡片 4: 尾页与直达入口 (Action Card) -->
+  <div class="xhs-card" style="text-align: center; justify-content: center; gap: 20px;">
+    <div style="font-size: 40px;">⚡</div>
+    <div style="font-size: 22px; font-weight: 800; color: #fff;">
+      全部 29 家平台详情<br>& 10秒接入代码
+    </div>
+    <div style="font-size: 13px; color: #94a3b8; line-height: 1.8;">
+      浏览器直达在线实时雷达站：<br>
+      <strong style="color: #38bdf8; font-size: 15px;">👉 https://freetokens.info</strong><br>
+      或关注微信公众号：<br>
+      <strong style="color: #4ade80; font-size: 15px;">📱【免费Token情报局】</strong>
+    </div>
+    <div class="card-footer" style="position: absolute; bottom: 28px; left: 28px; right: 28px;">
+      <span>收藏防走丢 💖</span>
+      <span>4/4</span>
+    </div>
+  </div>
+
+</body>
+</html>

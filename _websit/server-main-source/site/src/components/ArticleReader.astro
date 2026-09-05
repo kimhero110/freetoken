@@ -1,0 +1,548 @@
+---
+import { renderSafeMarkdown } from '../lib/markdown.mjs';
+
+interface Props {
+  article: any;
+  relatedArticles?: any[];
+  lang?: 'zh' | 'en';
+}
+
+const { article, relatedArticles = [], lang = 'zh' } = Astro.props;
+const isEn = lang === 'en';
+
+const { html: htmlContent, toc } = renderSafeMarkdown(article.content_md);
+---
+
+<article class="article-detail-page">
+  <div class="container article-layout">
+    
+    <!-- 主内容区 -->
+    <main class="article-main">
+      <!-- 面包屑导航 -->
+      <nav class="article-breadcrumb">
+        <a href={isEn ? "/en/" : "/"}>{isEn ? 'Radar' : '算力雷达'}</a>
+        <span class="bc-sep">/</span>
+        <a href={isEn ? "/en/articles/" : "/articles/"}>{isEn ? 'Articles' : '深度文章'}</a>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">{article.category}</span>
+      </nav>
+
+      <header class="article-header">
+        <div class="article-meta-top">
+          <span class="article-cat-tag">{article.category}</span>
+          <span class="article-read-badge">{article.reading_time}</span>
+        </div>
+
+        <h1 class="article-main-title">{isEn ? (article.title_en || article.title) : article.title}</h1>
+
+        <div class="article-author-bar">
+          <span class="author-name">✍️ {article.author}</span>
+          <span class="meta-dot">·</span>
+          <span class="publish-date">{isEn ? `Published ${article.date}` : `发布于 ${article.date}`}</span>
+          {article.updated && article.updated !== article.date && (
+            <>
+              <span class="meta-dot">·</span>
+              <span class="update-date">{isEn ? `Updated ${article.updated}` : `更新于 ${article.updated}`}</span>
+            </>
+          )}
+        </div>
+      </header>
+
+      <!-- 移动端可折叠 TOC 抽屉 -->
+      {toc.length > 0 && (
+        <details class="mobile-toc-drawer">
+          <summary class="mobile-toc-summary">
+            <span>📑 {isEn ? 'Table of Contents' : '展开文章目录导航'} ({toc.length})</span>
+          </summary>
+          <nav class="mobile-toc-list">
+            {toc.map((item) => (
+              <a href={`#${item.id}`} class={`mobile-toc-item toc-level-${item.level}`}>
+                {item.text}
+              </a>
+            ))}
+          </nav>
+        </details>
+      )}
+
+      <!-- Markdown output escapes raw HTML and allowlists link protocols. -->
+      <div class="article-content-body" set:html={htmlContent} />
+
+      <!-- 原文来源标注（仅改写文章渲染） -->
+      {article.source_url && (
+        <div class="article-source-note">
+          <span class="source-label">{isEn ? 'Source' : '原文来源'}</span>
+          <a href={article.source_url} target="_blank" rel="noopener nofollow">
+            {isEn ? 'This article is a rewrite based on the original.' : '本文基于原文改写。'}
+            {article.source_url.replace(/^https?:\/\//, '').split('/')[0]}
+          </a>
+        </div>
+      )}
+
+      <!-- 底部关注卡片 -->
+      <div class="article-footer-card">
+        <div class="footer-card-copy">
+          <h4>💡 {isEn ? 'Liked this playbook?' : '觉得有收获？'}</h4>
+          <p>{isEn ? 'Follow our intelligence bureau on GitHub and WeChat for continuous updates.' : '欢迎关注公众号【FreeToken 免费情报局】，获取全球一手免费算力与 Agent 提效内参。'}</p>
+        </div>
+        {!isEn && (
+          <button class="btn-open-wechat-sub open-wechat-trigger">关注公众号 ↗</button>
+        )}
+      </div>
+
+      <!-- 底部相关文章 -->
+      {relatedArticles.length > 0 && (
+        <div class="related-articles-section">
+          <h3 class="related-title">{isEn ? 'Recommended Reading' : '延伸阅读推荐'}</h3>
+          <div class="related-grid">
+            {relatedArticles.map((rel) => (
+              <a href={isEn ? `/en/article/${rel.slug}/` : `/article/${rel.slug}/`} class="related-card">
+                <span class="rel-cat">{rel.category}</span>
+                <h4>{isEn ? (rel.title_en || rel.title) : rel.title}</h4>
+                <span class="rel-time">{rel.reading_time}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div class="article-back-nav">
+        <a href={isEn ? "/en/articles/" : "/articles/"} class="btn-back">← {isEn ? 'Back to Articles' : '返回文章专栏大厅'}</a>
+        <a href={isEn ? "/en/guide/" : "/guide/"} class="btn-back">📖 {isEn ? '10s Config Generator →' : '查看 10 秒代码生成器 →'}</a>
+      </div>
+    </main>
+
+    <!-- 桌面端侧边栏：TOC 目录与快捷操作 -->
+    <aside class="article-sidebar">
+      <div class="sidebar-sticky-box">
+        {toc.length > 0 && (
+          <div class="toc-card">
+            <div class="toc-header">
+              <span class="toc-icon">📑</span>
+              <span class="toc-title">{isEn ? 'Table of Contents' : '文章目录'}</span>
+            </div>
+            <nav class="toc-list">
+              {toc.map((item) => (
+                <a href={`#${item.id}`} class={`toc-item toc-level-${item.level}`}>
+                  {item.text}
+                </a>
+              ))}
+            </nav>
+          </div>
+        )}
+
+        <div class="sidebar-action-card">
+          <h4>⚡ {isEn ? 'Compute Generator' : '算力调度实验室'}</h4>
+          <p>{isEn ? '10-second drop-in OpenAI compatible configuration code.' : '10 秒生成 44+ 家平台 OpenAI 兼容配置代码。'}</p>
+          <a href={isEn ? "/en/guide/" : "/guide/"} class="btn-sidebar-guide">{isEn ? 'Generate Config ↗' : '立即生成配置 ↗'}</a>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</article>
+
+<style>
+  .article-detail-page {
+    padding: 44px 0 64px;
+    background: #ffffff;
+  }
+  .article-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 48px;
+    align-items: flex-start;
+  }
+  @media (max-width: 900px) {
+    .article-layout {
+      grid-template-columns: 1fr;
+    }
+    .article-sidebar {
+      display: none;
+    }
+  }
+
+  .article-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--text-light);
+    margin-bottom: 20px;
+  }
+  .article-breadcrumb a {
+    color: var(--text-muted);
+    transition: color 0.15s;
+  }
+  .article-breadcrumb a:hover {
+    color: var(--text);
+  }
+  .bc-sep {
+    opacity: 0.4;
+  }
+  .bc-current {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .article-header {
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 24px;
+  }
+  .article-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .article-cat-tag {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .article-read-badge {
+    font-size: 12px;
+    color: var(--text-light);
+  }
+  .article-main-title {
+    font-size: clamp(22px, 3.8vw, 34px);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: -0.6px;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .article-author-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+  }
+  .meta-dot {
+    opacity: 0.4;
+  }
+
+  .mobile-toc-drawer {
+    display: none;
+    background: var(--bg-subtle);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+  }
+  .mobile-toc-summary {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+  .mobile-toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--card-border);
+  }
+  .mobile-toc-item {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  @media (max-width: 900px) {
+    .mobile-toc-drawer {
+      display: block;
+    }
+  }
+
+  .article-content-body {
+    font-size: 15.5px;
+    line-height: 1.8;
+    color: var(--text);
+    word-break: break-word;
+  }
+  .article-content-body :global(h2) {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.4px;
+    margin: 36px 0 16px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 10px;
+    scroll-margin-top: 80px;
+  }
+  .article-content-body :global(h3) {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 28px 0 12px;
+    scroll-margin-top: 80px;
+  }
+  .article-content-body :global(p) {
+    margin-bottom: 18px;
+  }
+  .article-content-body :global(blockquote) {
+    background: var(--bg-subtle);
+    border-left: 4px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-size: 14.5px;
+    color: var(--text-muted);
+  }
+  .article-content-body :global(ul), .article-content-body :global(ol) {
+    padding-left: 22px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .article-content-body :global(pre) {
+    background: #18181b;
+    color: #e4e4e7;
+    padding: 16px 18px;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 20px 0;
+    border: 1px solid #27272a;
+    -webkit-overflow-scrolling: touch;
+  }
+  .article-content-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--bg-subtle);
+    color: var(--accent);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .article-content-body :global(pre code) {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+  }
+  .article-content-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .article-content-body :global(th), .article-content-body :global(td) {
+    border: 1px solid var(--card-border);
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .article-content-body :global(th) {
+    background: var(--bg-subtle);
+    font-weight: 700;
+  }
+
+  .article-source-note {
+    margin: 18px 0;
+    padding: 12px 16px;
+    border: 1px solid rgba(120, 113, 108, 0.24);
+    border-radius: 12px;
+    background: rgba(120, 113, 108, 0.06);
+    font-size: 13px;
+    line-height: 1.7;
+    color: inherit;
+    opacity: 0.9;
+  }
+  .article-source-note .source-label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .article-source-note a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    word-break: break-all;
+  }
+
+  .article-footer-card {
+    background: var(--bg-subtle);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 22px;
+    margin: 36px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-card-copy h4 {
+    font-size: 15.5px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .footer-card-copy p {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .btn-open-wechat-sub {
+    background: var(--text);
+    color: #ffffff;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .related-articles-section {
+    margin-bottom: 36px;
+  }
+  .related-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 600px) {
+    .related-grid { grid-template-columns: 1fr; }
+  }
+  .related-card {
+    background: var(--bg-subtle);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.15s;
+  }
+  .related-card:hover {
+    border-color: var(--text);
+    background: #ffffff;
+    transform: translateY(-2px);
+  }
+  .rel-cat {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+    display: block;
+  }
+  .related-card h4 {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .rel-time {
+    font-size: 11px;
+    color: var(--text-light);
+  }
+
+  .article-back-nav {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--card-border);
+    padding-top: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .btn-back {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    border: 1px solid var(--card-border);
+    padding: 7px 14px;
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .btn-back:hover {
+    background: var(--text);
+    color: #ffffff;
+  }
+
+  .sidebar-sticky-box {
+    position: sticky;
+    top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .toc-card {
+    background: var(--bg-subtle);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .toc-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 8px;
+  }
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .toc-item {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    transition: color 0.15s;
+  }
+  .toc-item:hover {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .toc-level-3 {
+    padding-left: 12px;
+    font-size: 11.5px;
+    color: var(--text-light);
+  }
+  .sidebar-action-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .sidebar-action-card h4 {
+    font-size: 13.5px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .sidebar-action-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .btn-sidebar-guide {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: opacity 0.15s;
+  }
+  .btn-sidebar-guide:hover {
+    opacity: 0.9;
+  }
+</style>

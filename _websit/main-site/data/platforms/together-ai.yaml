@@ -1,0 +1,70 @@
+schema_version: 2
+slug: together-ai
+name: Together AI
+name_en: Together AI
+category: 海外主流
+intro: 全球领先的开源大模型云平台，注册即送 5 美元体验金（约 2500 万 Tokens），支持 100+ 开源前沿模型！
+intro_en: Leading open-source cloud. $5 free trial credits (~25M tokens) for LLaMA,
+  DeepSeek, and FLUX.
+website: https://together.ai/
+doc_url: https://docs.together.ai/
+api_base_url: https://api.together.xyz/v1
+free_models:
+- deepseek-ai/DeepSeek-R1
+- meta-llama/Llama-3.3-70B-Instruct-Turbo
+- black-forest-labs/FLUX.1-schnell
+free_quota:
+  type: 限时赠送
+  amount: 5 美元
+  unit: USD Credits (约 2500 万 Tokens)
+  reset_period: 一次性
+  details: 注册送 5 美元体验金，支持文本推理、微调与生图 API。
+  details_en: $5 trial credits for new accounts (~25M tokens).
+verification: 邮箱注册
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 海外主流
+- OpenAI兼容
+gotchas:
+- 体验金有效期为 90 天。
+gotchas_en:
+- Trial credits expire after 90 days.
+registration:
+  url: https://together.ai/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.together.xyz/v1/chat/completions
+      models:
+      - deepseek-ai/DeepSeek-R1
+      - meta-llama/Llama-3.3-70B-Instruct-Turbo
+      - black-forest-labs/FLUX.1-schnell
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: TOGETHER_AI_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://docs.together.ai/
+  checked_at: '2026-09-02'

@@ -1,0 +1,71 @@
+schema_version: 2
+slug: baichuan-ai
+name: 百川智能开放平台
+name_en: Baichuan AI
+category: 国内主流
+intro: 王小川创立的百川智能大模型，注册即送千万 Tokens 体验额度，擅长中文语义理解与医疗行业知识。
+intro_en: Leading Chinese LLM founded by Sogou CEO. 10M tokens on sign-up, specialized
+  in Chinese NLP and healthcare.
+website: https://platform.baichuan-ai.com/
+doc_url: https://platform.baichuan-ai.com/docs/api
+api_base_url: https://api.baichuan-ai.com/v1
+free_models:
+- Baichuan4
+- Baichuan3-Turbo
+- Baichuan2-Turbo
+free_quota:
+  type: 限时赠送
+  amount: 1000 万
+  unit: Tokens
+  reset_period: 一次性
+  details: 新用户注册实名认证即送 1000 万 Tokens 免费额度，支持 Baichuan4 与 3-Turbo 模型。
+  details_en: 10,000,000 free tokens for Baichuan4 upon registration.
+verification: 手机实名
+status: active
+last_verified: '2026-09-02'
+tags:
+- 限时
+- 国产直连
+- 国内主流
+- OpenAI兼容
+gotchas:
+- 代金券有效期通常为 1-3 个月。
+gotchas_en:
+- Promotional voucher valid for 90 days.
+registration:
+  url: https://platform.baichuan-ai.com/
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations:
+    - id: chat_completions
+      protocol: openai
+      endpoint_url: https://api.baichuan-ai.com/v1/chat/completions
+      models:
+      - Baichuan4
+      - Baichuan3-Turbo
+      - Baichuan2-Turbo
+      auth:
+        type: bearer
+        header: Authorization
+        query_param: null
+        env_var: BAICHUAN_AI_API_KEY
+      verification:
+        status: claimed
+        checked_at: null
+        evidence_url: null
+  tools:
+    curl: claimed
+    openai_python: claimed
+    openai_node: claimed
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://platform.baichuan-ai.com/docs/api
+  checked_at: '2026-09-02'

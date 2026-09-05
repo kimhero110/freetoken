@@ -345,6 +345,8 @@ def _approve_candidate_locked(candidate_id: str):
     else:
         data = json.loads(target_file.read_text(encoding="utf-8"))
 
+    if data.get("candidate_type") == "source_note":
+        raise ValueError("来源备注不能直接更新正式数据；核实并授权来源后重新提交，或拒绝归档此备注")
     if data.get("candidate_type") in {"platform_update", "capability_probe"}:
         final_slug = _safe_slug(data.get("platform_slug", ""))
     else:

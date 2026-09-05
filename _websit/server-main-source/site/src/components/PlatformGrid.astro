@@ -1,0 +1,390 @@
+---
+interface Props {
+  platforms: any[];
+  lang?: 'zh' | 'en';
+}
+
+const { platforms = [], lang = 'zh' } = Astro.props;
+const isEn = lang === 'en';
+const totalCount = platforms.length;
+---
+
+<section class="section-wrap section-bg" id="products">
+  <div class="container">
+    <header class="section-head">
+      <p class="section-eyebrow">{isEn ? 'RESOURCE RADAR' : '资源雷达'}</p>
+      <h2 class="section-title">
+        {isEn ? `Global LLM Free API Quotas (${totalCount} Platforms Verified)` : `全网免费 API Token 配额清单 (${totalCount} 平台已核验)`}
+      </h2>
+    </header>
+
+    <!-- 移动端防溢出滑动 Filter Tab -->
+    <div class="filter-pills-wrap">
+      <div class="filter-pills" id="filter-tabs">
+        <button class="filter-pill active" data-filter="all">{isEn ? `All (${totalCount})` : `全部平台 (${totalCount})`}</button>
+        <button class="filter-pill" data-filter="limited">{isEn ? 'Limited Promo' : '限时活动'}</button>
+        <button class="filter-pill" data-filter="permanent">{isEn ? 'Tier-1 Bases' : '大厂基座'}</button>
+        <button class="filter-pill" data-filter="daily">{isEn ? 'Daily Refresh' : '每日刷新'}</button>
+        <button class="filter-pill" data-filter="domestic">{isEn ? 'Domestic Direct' : '国产直连'}</button>
+        <button class="filter-pill" data-filter="tools">{isEn ? 'Dev & Search' : '开发与搜索'}</button>
+        <button class="filter-pill" data-filter="multimodal">{isEn ? 'Multimodal' : '多模态生图'}</button>
+        <button class="filter-pill" data-filter="web3">{isEn ? 'Web3 Faucet' : '测试网络'}</button>
+      </div>
+      <div class="filter-fade-indicator"></div>
+    </div>
+
+    <!-- 资源卡片网格 -->
+    <div class="editorial-grid" id="platform-grid">
+      {platforms.map((p) => {
+        const q = p.free_quota ?? {};
+        const qType = String(q.type || '');
+        const qReset = String(q.reset_period || '');
+        const tags = Array.isArray(p.tags) ? p.tags : [];
+        const tagsStr = tags.join(' ');
+
+        const isLimited = tags.includes('限时') || tags.includes('体验金') || qType.includes('限时') || qType.includes('体验') || qType.includes('赠送') || qType.includes('优惠') || qType.includes('补贴');
+        const isPermanent = tags.includes('永久') || tags.includes('免费层') || qType.includes('永久') || qType.includes('完全') || qType.includes('免费层');
+        const isDaily = tags.includes('每日') || tags.includes('每月') || qType.includes('每日') || qType.includes('每小时') || qType.includes('每月') || qReset.includes('日') || qReset.includes('小时') || qReset.includes('月');
+        const isDomestic = p.category === '国内主流' || p.category === '大厂云服务' || tags.includes('国产直连') || tags.includes('国内直连');
+        const isTools = p.category === '搜索与工具' || p.slug === 'tavily' || p.slug === 'jina-ai';
+        const isMultimodal = p.category === '多模态/工具' || p.category === '多模态' || p.slug === 'pollinations';
+        const isWeb3 = p.category === '区块链水龙头' || p.slug === 'sepolia-faucet';
+
+        const platformHref = isEn ? `/en/platform/${p.slug}/` : `/platform/${p.slug}/`;
+
+        return (
+          <a
+            class="editorial-card"
+            href={platformHref}
+            data-limited={isLimited ? "true" : "false"}
+            data-permanent={isPermanent ? "true" : "false"}
+            data-daily={isDaily ? "true" : "false"}
+            data-domestic={isDomestic ? "true" : "false"}
+            data-tools={isTools ? "true" : "false"}
+            data-multimodal={isMultimodal ? "true" : "false"}
+            data-web3={isWeb3 ? "true" : "false"}
+            data-search={`${p.name} ${p.name_en ?? ''} ${p.slug} ${p.intro ?? ''} ${tagsStr}`.toLowerCase()}
+          >
+            <div class="card-main-content">
+              <div class="card-meta-top">
+                <span class="card-category">{p.category}</span>
+                {isLimited && <span class="badge-tag badge-limited">{isEn ? 'Limited' : '限时'}</span>}
+                {isDaily && <span class="badge-tag badge-daily">{isEn ? 'Daily' : '每日'}</span>}
+                {isPermanent && <span class="badge-tag badge-permanent">{isEn ? 'Perpetual' : '永久'}</span>}
+                {isDomestic && <span class="badge-tag badge-domestic">{isEn ? 'Direct' : '国产'}</span>}
+              </div>
+
+              <h3 class="card-title">
+                {isEn ? (p.name_en || p.name) : p.name}
+                {!isEn && p.name_en && p.name !== p.name_en && <small class="card-name-en">{p.name_en}</small>}
+              </h3>
+
+              <div class="card-quota-box">
+                <div class="quota-amount">
+                  <span class="quota-val">{q.amount ?? (isEn ? 'Trial Credit' : '注册体验额度')}</span>
+                  {q.unit && <span class="quota-unit">{q.unit}</span>}
+                </div>
+                <div class="quota-type-tag">
+                  <span>{q.type ?? (isEn ? 'Tier' : '配额')}</span>
+                  {q.reset_period && <span>· {q.reset_period}</span>}
+                </div>
+              </div>
+
+              <p class="card-intro">
+                {isEn ? (p.intro_en || p.intro) : p.intro}
+              </p>
+            </div>
+
+            <div class="card-footer-action">
+              <span class="verified-date">✓ {p.last_verified || '2026-09-02'} {isEn ? 'verified' : '核验'}</span>
+              <span class="card-arrow-link">{isEn ? 'View Guide →' : '配置指引 →'}</span>
+            </div>
+          </a>
+        );
+      })}
+
+      <!-- 推荐新源卡片 -->
+      <a class="editorial-card card-submit-new" href="https://github.com/kimhero110/freetoken/issues/new?template=submit_platform.yml" target="_blank" rel="noopener">
+        <div class="card-main-content">
+          <div class="card-meta-top">
+            <span class="card-category">{isEn ? 'Ecosystem' : '开源贡献'}</span>
+            <span class="badge-tag badge-permanent">{isEn ? 'Continuous' : '高频更新'}</span>
+          </div>
+          <h3 class="card-title">{isEn ? '+ Submit New Free Tier' : '+ 提交新发现的免费源'}</h3>
+          <p class="card-intro">
+            {isEn
+              ? 'Found an unlisted model platform offering free credits? Submit a GitHub issue to get it swept and indexed!'
+              : '发现了未收录的大模型新源或限时算力活动？欢迎提交 Issue 或 PR，让更多开发者受益。'}
+          </p>
+        </div>
+        <div class="card-footer-action">
+          <span class="verified-date">GitHub Community</span>
+          <span class="card-arrow-link">{isEn ? 'Submit Tier ↗' : '立即推荐 ↗'}</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-wrap {
+    padding: 44px 0;
+  }
+  .section-bg {
+    background: var(--bg-subtle);
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .section-head {
+    margin-bottom: 24px;
+  }
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-size: clamp(20px, 3vw, 26px);
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.4px;
+  }
+
+  /* Filter Tab 移动端滑动手势与渐变 */
+  .filter-pills-wrap {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .filter-pills {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-fade-indicator {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 4px;
+    width: 24px;
+    background: linear-gradient(to right, rgba(244, 243, 239, 0), var(--bg-subtle));
+    pointer-events: none;
+  }
+
+  .filter-pill {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }
+  .filter-pill:hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
+  .filter-pill.active {
+    background: var(--text);
+    color: #ffffff;
+    border-color: var(--text);
+  }
+
+  /* 40 平台网格：自适应 1~3 列 */
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  @media (max-width: 640px) {
+    .editorial-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .editorial-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .editorial-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--text);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  }
+
+  .card-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .card-category {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+  }
+  .badge-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 1.5px 6px;
+    border-radius: 4px;
+  }
+  .badge-limited {
+    color: #b45309;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+  }
+  .badge-daily {
+    color: #047857;
+    background: #d1fae5;
+    border: 1px solid #a7f3d0;
+  }
+  .badge-permanent {
+    color: #1d4ed8;
+    background: #dbeafe;
+    border: 1px solid #bfdbfe;
+  }
+  .badge-domestic {
+    color: #b91c1c;
+    background: #fee2e2;
+    border: 1px solid #fecaca;
+  }
+
+  .card-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.35;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+  .card-name-en {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+
+  .card-quota-box {
+    background: var(--bg-subtle);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+  }
+  .quota-amount {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .quota-unit {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-left: 4px;
+  }
+  .quota-type-tag {
+    font-size: 11px;
+    color: var(--text-light);
+  }
+
+  .card-intro {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer-action {
+    border-top: 1px solid var(--card-border);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+  }
+  .verified-date {
+    color: var(--text-light);
+    font-size: 11px;
+    font-family: var(--font-mono);
+  }
+  .card-arrow-link {
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .card-submit-new {
+    border-style: dashed;
+    background: transparent;
+  }
+</style>
+
+<script is:inline>
+  const filterTabs = document.querySelectorAll('#filter-tabs .filter-pill');
+  const cards = document.querySelectorAll('#platform-grid .editorial-card');
+  const searchInput = document.getElementById('search-input');
+
+  let currentFilter = 'all';
+  let currentSearch = '';
+
+  function applyFilterAndSearch() {
+    cards.forEach(card => {
+      let matchFilter = false;
+      if (currentFilter === 'all') matchFilter = true;
+      else if (card.dataset[currentFilter] === 'true') matchFilter = true;
+      else if (card.classList.contains('card-submit-new')) matchFilter = true;
+
+      let matchSearch = true;
+      if (currentSearch) {
+        const text = card.dataset.search || '';
+        matchSearch = text.includes(currentSearch);
+      }
+
+      if (matchFilter && matchSearch) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentFilter = tab.dataset.filter || 'all';
+      applyFilterAndSearch();
+    });
+  });
+
+  searchInput?.addEventListener('input', (e) => {
+    currentSearch = e.target.value.trim().toLowerCase();
+    applyFilterAndSearch();
+  });
+</script>

@@ -49,8 +49,9 @@ class Watchdog:
                 ticket.updated_at = now
                 self.journal.append(ticket.to_event())
                 self.feishu.send_card(
-                    ticket.card_message_id or "",
+                    self.config["owner_open_id"],
                     cards.watchdog_card(ticket.ticket_id, run_id, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(ticket.updated_at))),
+                    receive_id_type="open_id",
                 )
                 log.info("watchdog cancelled run %s for ticket %s", run_id, ticket.ticket_id)
             except Exception as exc:
