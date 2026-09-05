@@ -524,13 +524,16 @@ class Bot:
     # -------------------------------------------------------------- dispatch
     def on_event(self, data: P2ImMessageReceiveV1) -> None:
         extracted = extract_message(data)
+        log.info("message event received; parsed=%s", bool(extracted))
         if not extracted:
             return
         sender, chat_id, message_id, text = extracted
         event_id = getattr(data, "header", None)
         event_key = getattr(event_id, "event_id", "") if event_id else ""
-        if event_key and self.journal.seen_event(event_key):
+        message_key = f"message:{message_id}"
+        if self.journal.seen_event(message_key) or (event_key and self.journal.seen_event(event_key)):
             return  # Feishu redelivery dedupe
+        self.journal.append({"type": "feishu_event", "event_id": message_key, "ts": now_iso()})
         if event_key:
             self.journal.append({"type": "feishu_event", "event_id": event_key, "ts": now_iso()})
         try:
@@ -574,6 +577,7 @@ class Bot:
         from lark_oapi.ws import Client as WsClient
         handler = (lark.EventDispatcherHandler.builder("", "")
                    .register_p2_im_message_receive_v1(self.on_event)
+                   .register_p2_im_message_message_read_v1(lambda event: None)
                    .register_p2_im_chat_access_event_bot_p2p_chat_entered_v1(lambda event: None)
                    .register_p2_im_chat_member_bot_added_v1(lambda event: None).build())
         # INFO connection logs include temporary WebSocket credentials.
