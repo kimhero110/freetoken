@@ -19,9 +19,13 @@
 - PR checks have their own concurrency group so a waiting production publication cannot block bot-fix verification.
 - Offline regression covers owner confirmation through dispatch, gate and completion, real SDK card request bodies, permission rejection, timeout timestamp and restart semantics. Offline mocks do not constitute live acceptance.
 
-## Remaining live acceptance
+## Live acceptance completed
 
-The existing repository-scoped token needs Deployments: Read and write. Do not replace it with a broader local credential. Do not remove required reviewers. Permission expansion needs owner approval. After that, verify the exact confirmed self-test run or a newly owner-confirmed ticket passes the gate and updates its Feishu card.
+With explicit owner authorization and GitHub Mobile reauthentication, the existing freetoken-intake-bot fine-grained PAT was updated in place. Verified scope: only kimhero110/freetoken; Actions and Deployments read/write, Metadata read; no account permissions. No token regeneration or credential replacement was needed.
+
+The original owner-confirmed ticket se-2a4a49916a resumed against its existing, identity-verified run 33981580789 without another dispatch or confirmation. The bot approved the production gate with its original PAT. The workflow completed successfully at 2026-09-05T18:08:32Z (2026-09-06 02:08:32 Asia/Shanghai). Journal verification found the matching gate_approved event and ticket phase done. Reading the original Feishu card back through the message API confirmed the success text was stored.
+
+Runtime version: 8311403ed6b558880481f49f47c073b2cbefcd92. Validation: 142 core Python tests, 22 real-SDK offline tests, and PR 16 build passed. This proves the no-content-change approval chain; actual candidate publication is a separate acceptance test.
 
 The unrelated main website publication run 33980406917 is outside this bot test. A self-test does not change content or deploy the website.
 
