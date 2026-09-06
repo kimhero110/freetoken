@@ -104,8 +104,9 @@ class CheckMonitor:
                 self.store.finish(event, attempts, now, unknown=True)
 
     def queue_candidates(self, now):
-        from .candidate_notifications import newest_candidates
-        candidates = newest_candidates(self.gh, self.config['github_repo'], now)
+        from .candidate_notifications import newest_candidates, source_is_current
+        candidates = [(name, data) for name, data in newest_candidates(self.gh, self.config['github_repo'], now)
+                      if source_is_current(data, getattr(self, 'source_observations', []), now)]
         self.store.supersede_candidates({candidate_id for candidate_id, _ in candidates})
         for candidate_id, data in candidates:
             summary = ('自动抓取已完成；请核对以下变更后点击直接发布。旧版本批准不继承。\n'
@@ -163,6 +164,7 @@ class CheckMonitor:
         if latest:
             self.store.transition('checks:paused', paused, 'PAID_CHECKS_PAUSED' if paused else 'CHECKS_RESUMED', now)
         fetch = latest.get('fetch', {})
+        self.source_observations = fetch.get('sources', [])
         return {'last_check_at': fetch.get('checked_at'),
                 'attempted': fetch.get('attempted'), 'succeeded': fetch.get('succeeded'),
                 'check_status': latest.get('status', 'unknown'),

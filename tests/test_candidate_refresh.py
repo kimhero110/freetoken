@@ -59,3 +59,12 @@ class CandidateNotificationTests(unittest.TestCase):
             self.assertIsNone(store.claim(1000))
             store.enqueue_candidate('new','New','summary',1000)
             self.assertEqual(store.claim(1000)[1]['candidate_id'],'new')
+
+    def test_notification_requires_recent_matching_successful_source(self):
+        from daemon.candidate_notifications import source_is_current
+        now=datetime.now(timezone.utc)
+        candidate={'platform_slug':'demo','source_url':'https://example.com','source_hash':'a'*64}
+        observation={'platform':'demo','url':'https://example.com','source_hash':'a'*64,'status':'changed','checked_at':now.isoformat()}
+        self.assertTrue(source_is_current(candidate,[observation],now.timestamp()))
+        for changes in ({'status':'fetch_failed'},{'status':'verified_unchanged'},{'source_hash':'b'*64},{'checked_at':(now-timedelta(days=3)).isoformat()}):
+            self.assertFalse(source_is_current(candidate,[dict(observation,**changes)],now.timestamp()))

@@ -32,3 +32,17 @@ def newest_candidates(gh, repo, now):
         if key not in latest or captured.timestamp() > latest[key][0]:
             latest[key] = (captured.timestamp(), name, data)
     return [(name, data) for stamp, name, data in latest.values() if 0 <= now-stamp < 48*3600]
+
+
+def source_is_current(data, observations, now):
+    for item in observations:
+        if item.get('platform') != data.get('platform_slug') or item.get('url') != data.get('source_url'):
+            continue
+        try:
+            checked = datetime.fromisoformat(item['checked_at'])
+            fresh = checked.tzinfo is not None and 0 <= now - checked.timestamp() < 48*3600
+        except (KeyError, TypeError, ValueError):
+            continue
+        if fresh and item.get('status') in {'changed', 'baseline_mismatch'} and item.get('source_hash') == data.get('source_hash'):
+            return True
+    return False
