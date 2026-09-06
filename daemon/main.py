@@ -180,6 +180,8 @@ class Bot:
             self.cmd_submit(chat_id, message_id, sender, "platform", arg)
         elif verb == "article":
             self.cmd_submit(chat_id, message_id, sender, "article", arg)
+        elif verb == "publish":
+            self.cmd_approve(chat_id, message_id, sender, "approve", arg, direct=True)
         elif verb in ("approve", "reject"):
             self.cmd_approve(chat_id, message_id, sender, verb, arg)
         elif verb == "confirm":
@@ -297,7 +299,10 @@ class Bot:
         return ""
 
     # ------------------------------------------------------------- approvals
-    def cmd_approve(self, chat_id: str, message_id: str, sender: str, decision: str, arg: str):
+    def cmd_approve(self, chat_id: str, message_id: str, sender: str, decision: str, arg: str, *, direct=False):
+        if direct and (not auth.is_authorized(sender, self.config["owner_open_id"]) or not commands.validate_candidate_id(arg)):
+            self.card(chat_id, cards.error_card("无法直接发布", "需要管理员发送完整候选 ID", "用法：直接发布 <完整候选ID>"), reply_to=message_id)
+            return
         candidates = None
         candidate_id = arg
         if not candidate_id and message_id:
@@ -323,11 +328,18 @@ class Bot:
             self.card(chat_id, cards.error_card("审批进行中", f"票据 {active.ticket_id} 已在处理", "等它完成或超时后重试"), reply_to=message_id)
             return
         fresh = self.candidate_fresh(candidate_id)
+        if direct and fresh is None:
+            self.card(chat_id, cards.error_card("暂不能直接发布", "无法核实候选有效期", "请稍后重试或发送 待审 核对候选"), reply_to=message_id)
+            return
         if fresh is False:
             self.card(chat_id, cards.error_card("候选已过期", f"{candidate_id} 超过 48h 新鲜窗口", "重新发 平台 <原URL> 生成新候选"), reply_to=message_id)
             return
         ticket = self.store.new_ticket("approve" if decision == "approve" else "reject", candidate_id, owner=sender)
         self.journal.append(ticket.to_event())
+        if direct:
+            ticket.note = "explicit_direct_publish"
+            self.dispatch_review(ticket, chat_id, sender)
+            return
         code = self.store.issue_confirm(ticket)
         self.journal.append(ticket.to_event())
         ticket.card_message_id = self.card(chat_id, cards.confirm_card(candidate_id, code), reply_to=message_id)
@@ -360,6 +372,10 @@ class Bot:
             except GhError as exc:
                 self.tracked(ticket, "failed", cards.error_card("联调触发失败", str(exc), "检查 Actions 权限及工作流版本"), chat_id)
             return
+        self.dispatch_review(ticket, chat_id, sender)
+
+    def dispatch_review(self, ticket, chat_id: str, sender: str):
+        """Shared gated pipeline after an explicit direct command or confirmation."""
         decision = "approve" if ticket.kind == "approve" else "reject"
         ticket.phase = "awaiting_confirm"
         ticket.updated_at = time.time()

@@ -8,6 +8,7 @@ VERBS = {
     "platform": "platform",
     "文章": "article",
     "article": "article",
+    "直接发布": "publish",
     "通过": "approve",
     "approve": "approve",
     "拒绝": "reject",
