@@ -9,7 +9,8 @@ strategy: "specified"
 # 默认激活的模型提供商标识（可在 GitHub Actions 界面或环境变量 LLM_ACTIVE_PROVIDER 中动态覆盖）
 active: "deepseek"
 
-# 既有执行时段策略：北京时间 00:30 ~ 08:30。折扣价格需另行核对。
+# 2026-09-06 核实：周一至周五 UTC 01-04、06-10 为高峰，其余为优惠时段。
+# https://api-docs.deepseek.com/quick_start/pricing/
 off_peak_strategy:
   enabled: true
   deepseek_off_peak_only: true
@@ -24,7 +25,7 @@ providers:
   deepseek:
     name: "DeepSeek 官方"
     base_url: "https://api.deepseek.com"
-    model: "deepseek-chat"
+    model: "deepseek-v4-flash"
     api_key_env: "DEEPSEEK_API_KEY"
     temperature: 0.1
     response_format_json: true

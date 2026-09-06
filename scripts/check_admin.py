@@ -2,7 +2,7 @@
 import argparse
 import json
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 from .check_state import GitState, StateError, digest
@@ -16,15 +16,25 @@ def main():
     parser.add_argument("--result-file", type=Path)
     parser.add_argument("--actor", help="Public GitHub login")
     parser.add_argument("--old-run-stopped", action="store_true")
+    parser.add_argument("--authorize-refresh", action="store_true")
     args = parser.parse_args()
     store = GitState(args.repo)
     if args.action == "init":
         history = json.loads((args.repo / "config/check-history.json").read_text(encoding="utf-8"))
         if history.get('version') != 1 or history.get('audit_complete') is not True:
             raise StateError('HISTORY_AUDIT_REQUIRED')
+        if args.authorize_refresh and (not args.old_run_stopped or not re.fullmatch('[A-Za-z0-9-]{1,39}', args.actor or '')):
+            raise StateError('EXPLICIT_RESOLUTION_REQUIRED')
         def initialize(state):
             for source in history['source_versions']:
                 state["history"].setdefault(source, "legacy_unconfirmed")
+            state['history'].setdefault('legacy_audit', {'runs': history.get('runs', []), 'audited_at': history.get('audited_at')})
+            if args.authorize_refresh:
+                for group in history.get('refresh_sources', []):
+                    state['history'].setdefault('refresh_group:' + group['source_id'], {
+                        'actor': args.actor, 'used': None, 'allowed_legacy': group['legacy_keys'],
+                        'expires_at': (datetime.now(timezone.utc) + timedelta(hours=1)).isoformat(),
+                        'reason': 'one_time_post_incident_revalidation'})
         store.update(initialize, initialize=True)
         print("STATE_INITIALIZED_WITH_HISTORICAL_BLOCKS")
     elif args.action == "inspect":

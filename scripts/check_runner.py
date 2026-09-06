@@ -24,14 +24,16 @@ def public_result(result):
 
 
 def next_window(now):
-    local = now.astimezone(timezone(timedelta(hours=8)))
-    opening = local.replace(hour=0, minute=30, second=0, microsecond=0)
-    if local >= opening:
-        opening += timedelta(days=1)
-    return opening.astimezone(timezone.utc).isoformat()
+    current = now.astimezone(timezone.utc)
+    if current.weekday() < 5:
+        if 1 <= current.hour < 4:
+            return current.replace(hour=4, minute=0, second=0, microsecond=0).isoformat()
+        if 6 <= current.hour < 10:
+            return current.replace(hour=10, minute=0, second=0, microsecond=0).isoformat()
+    return current.isoformat()
 
 
-def paid_result(store, *, key, source, run, request, validate, limit, fresh_hours=48):
+def paid_result(store, *, key, source, run, request, validate, limit, fresh_hours=48, history_keys=(), source_group=None):
     """Only a new, confirmed claim in this invocation may send the request.
 
     A crash leaves intent; its lease never authorizes another automatic request.
@@ -43,8 +45,14 @@ def paid_result(store, *, key, source, run, request, validate, limit, fresh_hour
         previous = state["calls"].get(key)
         if previous:
             return previous
-        if source in state["history"]:
-            raise StateError("HISTORICAL_CALL_REQUIRES_REVIEW")
+        blocked = [item for item in (source, *history_keys) if item in state['history']]
+        grant = None
+        if blocked:
+            grant = state['history'].get('refresh_group:' + str(source_group))
+            if (not isinstance(grant, dict) or grant.get('used') is not None
+                    or datetime.fromisoformat(grant['expires_at']) <= utcnow()
+                    or any(item not in grant['allowed_legacy'] for item in blocked)):
+                raise StateError('HISTORICAL_CALL_REQUIRES_REVIEW')
         if sum(c["run"] == run for c in state["calls"].values()) >= limit:
             raise StateError("RUN_BUDGET_EXHAUSTED")
         # One automatic attempt per source version, even when recipe/provider changes.
@@ -52,6 +60,8 @@ def paid_result(store, *, key, source, run, request, validate, limit, fresh_hour
             raise StateError("SOURCE_ALREADY_ATTEMPTED")
         record = {"owner": owner, "run": run, "source": source, "status": "intent",
                   "created_at": utcnow().isoformat()}
+        if grant is not None:
+            grant["used"] = key
         state["calls"][key] = record
         return record
     record = store.update(claim)
