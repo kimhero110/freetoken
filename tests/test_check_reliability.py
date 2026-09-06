@@ -181,7 +181,7 @@ class PublisherTests(unittest.TestCase):
                 pulls.append({'number': 1, 'state': 'OPEN', 'headRefName': args[args.index('--head') + 1],
                               'headRepositoryOwner': {'login': 'example'}, 'headRepository': {'name': 'repo'}})
             return subprocess.CompletedProcess(args, 0, '', '')
-        with patch.object(publish_candidates, 'command', side_effect=fake_gh):
+        with patch.dict(os.environ, {'GITHUB_REPOSITORY': 'example/repo'}), patch.object(publish_candidates, 'command', side_effect=fake_gh):
             first = publish_candidates.publish(self.repo)
             second = publish_candidates.publish(self.repo)
         self.assertEqual(len(pulls), 1)
