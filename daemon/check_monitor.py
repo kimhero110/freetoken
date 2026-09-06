@@ -43,9 +43,11 @@ def missing_slots(workflow, runs, start, now):
 def public_ledger(repo):
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repo):
         raise ValueError('REPO_INVALID')
-    url = f'https://raw.githubusercontent.com/{repo}/automation-state/state.json'
+    # Use public API raw media; no credentials or raw-host dependency.
+    url = f'https://api.github.com/repos/{repo}/contents/state.json?ref=automation-state'
     with requests.get(url, timeout=(5, 15), stream=True, allow_redirects=False,
-                      headers={'Cache-Control': 'no-cache'}) as response:
+                      headers={'Cache-Control': 'no-cache', 'Accept': 'application/vnd.github.raw+json',
+                               'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'freetoken-check-monitor'}) as response:
         if response.status_code != 200:
             raise RuntimeError('LEDGER_UNAVAILABLE')
         content = bytearray()
@@ -54,7 +56,7 @@ def public_ledger(repo):
             if len(content) > 8_000_000:
                 raise ValueError('LEDGER_TOO_LARGE')
     data = json.loads(content)
-    if data.get('version') != 1 or not all(isinstance(data.get(k), dict) for k in ('runs', 'calls', 'history')):
+    if not isinstance(data, dict) or data.get('version') != 1 or not all(isinstance(data.get(k), dict) for k in ('runs', 'calls', 'history')):
         raise ValueError('LEDGER_SCHEMA')
     return data
 
