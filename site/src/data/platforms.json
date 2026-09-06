@@ -913,9 +913,9 @@
     "source_urls": [
       "https://featherless.ai"
     ],
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-09-06",
     "status": "active",
-    "intro": "提供 1,000+ 款开源大模型 Serverless 推理云。注册即享免费测试配额，完美兼容标准 OpenAI API 格式。",
+    "intro": "Featherless提供服务器无状态LLM托管服务，支持多种开源模型，定价透明，无免费额度信息。",
     "intro_en": "Serverless inference cloud with 1,000+ open-source LLMs. Free trial credits included with drop-in OpenAI protocol compatibility.",
     "tags": [
       "限时",
@@ -970,9 +970,12 @@
     "evidence": [
       {
         "url": "https://featherless.ai",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-09-06",
+        "source_hash": "ccb55f2d537644a441d08a2410a0234b95431aea1e43fbdd9c2139d3038d0b9e",
+        "captured_at": "2026-09-06T08:39:37.939519+00:00"
       }
-    ]
+    ],
+    "last_checked": "2026-09-06"
   },
   {
     "schema_version": 2,

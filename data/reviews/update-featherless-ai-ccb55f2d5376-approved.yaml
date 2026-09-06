@@ -27,3 +27,9 @@ proposed:
     type: null
     conditions: []
   intro: Featherless提供服务器无状态LLM托管服务，支持多种开源模型，定价透明，无免费额度信息。
+review:
+  decision: approved
+  reviewed_at: '2026-09-06T12:20:07.953687+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
+  annotation_id: ou_f3d0a
