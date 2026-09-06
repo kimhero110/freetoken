@@ -12,13 +12,13 @@ from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
-from bench import pages,store
+from bench import pages,store,probe
 from bench.tests import *
 from bench.registry import all_meta,TESTS
 from bench.client import Client
 from bench.guard import ssrf_guard
 from cost_core import estimate,compare,VERSION
-import jobs,pricing,repository
+import jobs,pricing,repository,plans
 
 ROOT=Path(__file__).parent
 HOST=os.getenv('BENCH_HOST','100.64.0.17');PORT=int(os.getenv('BENCH_PORT','8500'))
@@ -50,8 +50,8 @@ class Handler(BaseHTTPRequestHandler):
     def json(self,status,data):self.send(status,json.dumps(data,ensure_ascii=False,allow_nan=False))
     def do_GET(self):
         self.owner=self.session();p=urlsplit(self.path).path
-        if p=='/healthz':return self.json(200,{'ok':True,'version':'3.0','engine':VERSION,'release':os.getenv('STUDIO_RELEASE','dev')})
-        if p in ('/','/cost','/compare','/reports') or re.fullmatch(r'/(report|share)/[\w-]+',p):
+        if p=='/healthz':return self.json(200,{'ok':True,'version':'4.0','probe':probe.VERSION,'engine':VERSION,'release':os.getenv('STUDIO_RELEASE','dev')})
+        if p in ('/','/cost','/compare','/reports','/plans','/api-cost','/probe','/criteria') or re.fullmatch(r'/(report|share)/[\w-]+',p):
             # Legacy URLs remain readable, never indexed in private history.
             if p.startswith('/report/'):
                 rid=p.rsplit('/',1)[-1]
@@ -102,6 +102,7 @@ class Handler(BaseHTTPRequestHandler):
             data=json.loads(self.rfile.read(n));
             if not isinstance(data,dict):raise ValueError('请求必须是对象')
             self.limited('all',120,60)
+            if p=='/api/plans/compare':return self.json(200,plans.compare(data))
             if p=='/api/cost/estimate':
                 return self.json(200,estimate(data.get('workload',{}),pricing.select(data),data.get('credit','0'),data.get('fx')))
             if p=='/api/cost/compare':
@@ -125,9 +126,19 @@ class Handler(BaseHTTPRequestHandler):
                 if offer and workload:estimate(workload,offer,credit,fx)
                 idem=data.get('idempotency_key','')
                 if not re.fullmatch(r'[\w-]{16,80}',idem):raise ValueError('缺少有效的任务幂等标识')
-                payload={'model':model,'tests':tests,'offer':offer,'workload':workload,'credit':credit,'fx':fx}
+                reference_id=data.get('reference_id','')
+                reference=None
+                if reference_id:
+                    ref=repository.get(reference_id,self.owner)
+                    if not ref or ref['state']!='done':raise ValueError('参考报告不存在、尚未完成或不属于当前会话')
+                    reference=((ref.get('result') or {}).get('tests',{}).get('downgrade',{}).get('evidence',{}).get('measurement'))
+                    if not reference or reference.get('config',{}).get('version')!=probe.VERSION:raise ValueError('参考报告没有当前版本探针数据')
+                    if time.time()-reference['observed_at']>7*86400:raise ValueError('参考报告超过7天，请重新采样')
+                    if 'downgrade' not in tests:raise ValueError('对照必须选择能力对照探针')
+                probe_config={'config':probe.config(reference),'reference':reference,'reference_id':reference_id,'reference_source':{k:ref['result'].get(k) for k in ('host','model','created')} if reference else None}
+                payload={'reference_id':reference_id,'model':model,'tests':tests,'offer':offer,'workload':workload,'credit':credit,'fx':fx}
                 rid,created=repository.create(self.owner,idem,payload)
-                if created:jobs.submit(rid,base,key,model,tests,offer,workload,credit,fx)
+                if created:jobs.submit(rid,base,key,model,tests,offer,workload,credit,fx,probe_config)
                 return self.json(202,{'id':rid,'created':created})
             match=re.fullmatch(r'/api/runs/([\w-]+)/(cancel|share|revoke|estimate)',p)
             if match:

@@ -10,12 +10,12 @@ import repository
 POOL=ThreadPoolExecutor(max_workers=2,thread_name_prefix='studio')
 LOCK=threading.Lock();CANCEL={};EVENTS={}
 
-def submit(rid,base,key,model,tests,offer,workload,credit="0",fx=None):
+def submit(rid,base,key,model,tests,offer,workload,credit="0",fx=None,probe_config=None):
     cancelled=threading.Event()
     with LOCK:CANCEL[rid]=cancelled;EVENTS[rid]=[]
-    POOL.submit(execute,rid,base,key,model,tests,offer,workload,cancelled,credit,fx)
+    POOL.submit(execute,rid,base,key,model,tests,offer,workload,cancelled,credit,fx,probe_config)
 
-def execute(rid,base,key,model,tests,offer,workload,cancelled,credit,fx):
+def execute(rid,base,key,model,tests,offer,workload,cancelled,credit,fx,probe_config):
     repository.update(rid,'running')
     collector=Collector(cancelled)
     def progress(event):
@@ -23,8 +23,9 @@ def execute(rid,base,key,model,tests,offer,workload,cancelled,credit,fx):
         item={k:event[k] for k in ('type','test','status','name_zh') if k in event}
         with LOCK:EVENTS[rid].append(item)
     try:
-        result=runner.run_benchmark(base,key,model,tests,progress,collector)
-        result['schema_version']=3
+        result=runner.run_benchmark(base,key,model,tests,progress,collector,probe_config)
+        result['schema_version']=4
+        result['probe_summary']={k:v for k,v in result.get('tests',{}).get('downgrade',{}).get('metrics',{}).get('comparison',{}).items() if k in ('status','summary','identity_verified','calibration','paired_cases','total_cases','reference_success_rate','target_success_rate','p_value')}
         result['app_revision']=os.getenv('STUDIO_RELEASE','dev')
         if offer:
             try:
