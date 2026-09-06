@@ -1,6 +1,6 @@
 # WitKit Studio 4
 
-当前入口：`/plans` 套餐周期与条件比较；`/api-cost` 官方/聚合API成本；`/probe` 接入探针；`/compare` 多报价比较；`/reports` 私有报告。旧 `/cost` 和 `/?mode=quality` 兼容。
+当前入口：`/select` 统一方案选型（共享用途、预算及候选清单，内部按固定付费或按量付费填写）；`/probe` 接入探针；`/compare` 多报价比较；`/reports` 私有报告。旧 `/plans`、`/api-cost`、`/cost` 直接打开统一选型内对应表单；`/?mode=quality` 兼容。候选仅在当前页面内存保留，不跨币种或不兼容用途自动排名。
 
 ## 探针2代
 
