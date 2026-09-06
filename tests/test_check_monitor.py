@@ -5,7 +5,7 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from daemon.alert_store import AlertStore
-from daemon.check_monitor import CheckMonitor, expected_slots, missing_slots, stamp
+from daemon.check_monitor import CheckMonitor, expected_slots, missing_slots, stamp, public_ledger
 
 
 class AlertTests(unittest.TestCase):
@@ -96,3 +96,30 @@ class ScheduleTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class PublicLedgerTests(unittest.TestCase):
+    def response(self, chunks, status=200):
+        response = Mock(status_code=status)
+        response.iter_content.return_value = chunks
+        context = Mock()
+        context.__enter__ = Mock(return_value=response)
+        context.__exit__ = Mock(return_value=False)
+        return context
+
+    @patch('daemon.check_monitor.requests.get')
+    def test_public_api_raw_without_credentials(self, get):
+        get.return_value = self.response([b'{"version":1,"runs":{},"calls":{},"history":{}}'])
+        self.assertEqual(public_ledger('example/repo')['version'], 1)
+        args, kwargs = get.call_args
+        self.assertEqual(args[0], 'https://api.github.com/repos/example/repo/contents/state.json?ref=automation-state')
+        self.assertEqual(kwargs['headers']['Accept'], 'application/vnd.github.raw+json')
+        self.assertNotIn('Authorization', kwargs['headers'])
+        self.assertFalse(kwargs['allow_redirects'])
+
+    @patch('daemon.check_monitor.requests.get')
+    def test_fail_closed(self, get):
+        for chunks, status in [([], 403), ([b'x' * 8_000_001], 200), ([b'[]'], 200), ([b'{"content":"encoded"}'], 200)]:
+            get.return_value = self.response(chunks, status)
+            with self.assertRaises((ValueError, RuntimeError)):
+                public_ledger('example/repo')
