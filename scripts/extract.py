@@ -74,12 +74,14 @@ class Provider:
     response_format_json: bool = True
 
 
-def is_beijing_off_peak() -> bool:
-    """Apply the configured Beijing execution window; this is not a pricing claim."""
-    tz_utc8 = timezone(timedelta(hours=8))
-    now_utc8 = datetime.now(tz_utc8)
-    current_time = now_utc8.time()
-    return time(0, 30) <= current_time < time(8, 30)
+def is_beijing_off_peak(now=None) -> bool:
+    """Official 2026-09-06 pricing: weekday UTC 01-04 and 06-10 are peak.
+
+    Source: https://api-docs.deepseek.com/quick_start/pricing/
+    """
+    current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    peak = current.weekday() < 5 and (1 <= current.hour < 4 or 6 <= current.hour < 10)
+    return not peak
 
 
 def load_config() -> dict:
@@ -163,6 +165,8 @@ def execute_llm_call(prov: Provider, text: str, *, max_tokens: int = 1024) -> di
         if prov.response_format_json:
             kwargs["response_format"] = {"type": "json_object"}
 
+        if prov.id == 'deepseek' and prov.model.startswith('deepseek-v4'):
+            kwargs['extra_body'] = {'thinking': {'type': 'disabled'}}
         resp = client.chat.completions.create(**kwargs)
         content = resp.choices[0].message.content or ""
         data = parse_json_safely(content)
@@ -310,6 +314,16 @@ def main() -> int:
         max_tokens = int(os.environ.get("CHECK_MAX_OUTPUT_TOKENS") or "0")
         if changed and not dry and (provider is None or not 1 <= limit <= 100 or not 1 <= max_tokens <= 4096):
             raise StateError("PROVIDER_OR_BUDGET_NOT_CONFIGURED")
+        if changed and not dry:
+            # A read-only model-list check must succeed before any paid intent.
+            try:
+                client = OpenAI(api_key=provider.api_key, base_url=provider.base_url, timeout=10.0, max_retries=0)
+                if provider.model not in {model.id for model in client.models.list().data}:
+                    raise StateError('MODEL_NOT_AVAILABLE')
+            except StateError:
+                raise
+            except Exception:
+                raise StateError('PROVIDER_PREFLIGHT_FAILED') from None
         for item in changed:
             source = digest([item["platform"], item["url"], item["hash"]])
             observation = {"source": source, "status": "pending"}
@@ -343,7 +357,7 @@ def main() -> int:
                 key = digest({"source_id": digest([slug, url]), "message": PROMPT_TEMPLATE.format(text=text[:8000]),
                               "provider": provider.id, "endpoint_hash": digest(provider.base_url), "model": provider.model,
                               "temperature": provider.temperature, "json": provider.response_format_json,
-                              "max_tokens": max_tokens, "recipe": 1})
+                              "max_tokens": max_tokens, "recipe": 2})
                 off_peak = config.get("off_peak_strategy", {})
                 saved = store.read()[1]["calls"].get(key, {}).get("status") == "result_saved"
                 if not saved and provider_id == "deepseek" and off_peak.get("enabled", True) and off_peak.get("deepseek_off_peak_only", True) and not is_beijing_off_peak():
@@ -351,7 +365,8 @@ def main() -> int:
                     continue
                 result = paid_result(store, key=key, source=source, run=run,
                                      request=lambda: execute_llm_call(provider, text, max_tokens=max_tokens),
-                                     validate=validate_extracted, limit=limit)
+                                     validate=validate_extracted, limit=limit,
+                                     history_keys=(digest([slug, url, source_hash[:12]]),), source_group=digest([slug, url]))
                 # Public candidates do not need raw source excerpts to verify hashes.
                 write_update_candidate(slug, url, source_hash, "", result, provider)
                 observation["status"] = "candidate_ready"
