@@ -19,7 +19,7 @@ function selectedTests(){return [...document.querySelectorAll('#test-list input:
 function testCount(){$('test-count').textContent=`已选 ${selectedTests().length} 项`;}
 async function run(){notice('');$('run').disabled=true;try{if(state.mode==='estimate'){const data=form();const r=await api('/api/cost/estimate',data);showEstimate(r);draft();const rid=new URLSearchParams(location.search).get('report');if(rid){await api(`/api/runs/${encodeURIComponent(rid)}/estimate`,data);notice('预算分析已保存为新版本，原评测结果未改变。');}return;}
 const body={base_url:$('base-url').value.trim(),api_key:$('api-key').value.trim(),model:$('test-model').value.trim(),tests:selectedTests(),with_cost:state.mode==='combined'};
-if(body.with_cost)Object.assign(body,quote(),{workload:workload()});
+if(body.with_cost)Object.assign(body,form());
 const signature=JSON.stringify({...body,api_key:undefined});let pending=JSON.parse(sessionStorage.getItem('studio-start')||'null');if(!pending||pending.signature!==signature)pending={signature,id:crypto.randomUUID()};sessionStorage.setItem('studio-start',JSON.stringify(pending));body.idempotency_key=pending.id;
 const result=await api('/api/runs',body);$('api-key').value='';state.run=result.id;sessionStorage.setItem('studio-active',result.id);$('live-task').hidden=false;$('task-link').href='/report/'+result.id;await poll(result.id);
 }catch(e){notice(e.message);}finally{$('run').disabled=false;}}

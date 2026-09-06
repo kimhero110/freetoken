@@ -51,7 +51,7 @@ class ServiceTests(unittest.TestCase):
         status,_,headers=self.request('/api/history');cookie=headers['Set-Cookie'].split(';')[0]
         quote={'model':'demo','currency':'USD','rates':{'input':'1','cached':'0.1','output':'8'}}
         payload={'base_url':f'http://127.0.0.1:{self.model.server_port}/v1','api_key':'private-test-key',
-                 'model':'demo','tests':['headers'],'with_cost':True,'offer':quote,
+                 'model':'demo','tests':['headers'],'with_cost':True,'offer':quote,'credit':'1',
                  'workload':{'input':'1000000','cached':'0','output':'10000000'},'idempotency_key':'test-idempotency-0001'}
         before=MockModel.calls
         status,created,_=self.request('/api/runs',payload,cookie);self.assertEqual(status,202,created);rid=created['id']
@@ -62,7 +62,7 @@ class ServiceTests(unittest.TestCase):
             time.sleep(.05)
         self.assertEqual(run['state'],'done',run);self.assertEqual(MockModel.calls-before,1)
         self.assertEqual(run['result']['benchmark_cost']['covered_calls'],1)
-        self.assertEqual(run['result']['workload_estimate']['total'],'81')
+        self.assertEqual(run['result']['workload_estimate']['total'],'80')
         self.assertEqual(self.request('/api/runs/'+rid)[0],404)
         raw=repository.DB.read_bytes();self.assertNotIn(b'private-test-key',raw)
         _,share,_=self.request('/api/runs/'+rid+'/share',{},cookie)

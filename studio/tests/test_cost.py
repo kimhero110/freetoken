@@ -58,6 +58,15 @@ class CostTests(unittest.TestCase):
             r=c.reserve('chat');c.finish(r,{'status':200,'usage':{'prompt_tokens':10,'completion_tokens':3,'prompt_tokens_details':{'cached_tokens':0}}})
         with ThreadPoolExecutor(max_workers=8) as p:list(p.map(one,range(100)))
         self.assertEqual(len(c.snapshot()),100);self.assertEqual(len({r['call_id'] for r in c.snapshot()}),100)
+    def test_inflight_request_remains_unknown_in_snapshot(self):
+        c=Collector();record=c.reserve('chat')
+        snapshot=c.snapshot()
+        self.assertEqual(len(snapshot),1)
+        self.assertIsNone(observation_cost(snapshot,offer())['total'])
+        c.finish(record,{'usage':{'prompt_tokens':10,'completion_tokens':2,'prompt_tokens_details':{'cached_tokens':0}}})
+        self.assertIsNone(snapshot[0]['usage']['input'])
+        self.assertEqual(len(c.snapshot()),1)
+
     def test_absent_cache_is_unknown(self):
         c=Collector();r=c.reserve('chat');c.finish(r,{'usage':{'prompt_tokens':10,'completion_tokens':3}})
         self.assertIsNone(c.snapshot()[0]['usage']['cached'])

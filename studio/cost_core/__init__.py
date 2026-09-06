@@ -4,7 +4,7 @@ import hashlib
 import json
 import re
 
-VERSION = '1.0.0'
+VERSION = '1.0.1'
 DIMENSIONS = ('input', 'cached', 'output')
 
 def number(value, integer=False):

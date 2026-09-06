@@ -17,7 +17,7 @@ from bench.tests import *
 from bench.registry import all_meta,TESTS
 from bench.client import Client
 from bench.guard import ssrf_guard
-from cost_core import estimate,compare
+from cost_core import estimate,compare,VERSION
 import jobs,pricing,repository
 
 ROOT=Path(__file__).parent
@@ -50,7 +50,7 @@ class Handler(BaseHTTPRequestHandler):
     def json(self,status,data):self.send(status,json.dumps(data,ensure_ascii=False,allow_nan=False))
     def do_GET(self):
         self.owner=self.session();p=urlsplit(self.path).path
-        if p=='/healthz':return self.json(200,{'ok':True,'version':'3.0','engine':'1.0.0'})
+        if p=='/healthz':return self.json(200,{'ok':True,'version':'3.0','engine':VERSION,'release':os.getenv('STUDIO_RELEASE','dev')})
         if p in ('/','/cost','/compare','/reports') or re.fullmatch(r'/(report|share)/[\w-]+',p):
             # Legacy URLs remain readable, never indexed in private history.
             if p.startswith('/report/'):
@@ -121,12 +121,13 @@ class Handler(BaseHTTPRequestHandler):
                 if not model or len(model)>200 or not isinstance(tests,list) or not tests or any(t not in TESTS for t in tests):raise ValueError('请选择模型及有效测试项目')
                 offer=pricing.select(data,model) if data.get('with_cost') else None
                 workload=data.get('workload') if data.get('with_cost') else None
-                if offer and workload:estimate(workload,offer)
+                credit=data.get('credit','0');fx=data.get('fx')
+                if offer and workload:estimate(workload,offer,credit,fx)
                 idem=data.get('idempotency_key','')
                 if not re.fullmatch(r'[\w-]{16,80}',idem):raise ValueError('缺少有效的任务幂等标识')
-                payload={'model':model,'tests':tests,'offer':offer,'workload':workload}
+                payload={'model':model,'tests':tests,'offer':offer,'workload':workload,'credit':credit,'fx':fx}
                 rid,created=repository.create(self.owner,idem,payload)
-                if created:jobs.submit(rid,base,key,model,tests,offer,workload)
+                if created:jobs.submit(rid,base,key,model,tests,offer,workload,credit,fx)
                 return self.json(202,{'id':rid,'created':created})
             match=re.fullmatch(r'/api/runs/([\w-]+)/(cancel|share|revoke|estimate)',p)
             if match:
@@ -137,7 +138,7 @@ class Handler(BaseHTTPRequestHandler):
                     if run['state'] not in ('done','cancelled','failed'):raise ValueError('任务结束后才能分享')
                     return self.json(200,{'path':'/share/'+repository.share(rid,self.owner),'expires_days':7})
                 if action=='revoke':repository.revoke(rid,self.owner);return self.json(200,{'revoked':True})
-                analysis=estimate(data.get('workload',{}),pricing.select(data),data.get('credit','0'))
+                analysis=estimate(data.get('workload',{}),pricing.select(data),data.get('credit','0'),data.get('fx'))
                 return self.json(200,{'id':repository.save_analysis(rid,self.owner,analysis),'analysis':analysis})
             return self.json(404,{'error':'接口不存在'})
         except (ValueError,TypeError,KeyError) as e:

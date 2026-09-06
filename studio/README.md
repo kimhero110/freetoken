@@ -19,7 +19,7 @@ BENCH_HOST=127.0.0.1 BENCH_PORT=8510 STUDIO_LOCAL_HTTP=1 python studio/server_be
 python -m unittest discover -s studio/tests -v
 ```
 
-生产默认只绑定100.64.0.17:8500。`BENCH_DB`指向原有reports.db；新增表，不修改遗留runs内容。新Cookie为HttpOnly/Secure/SameSite=Lax。若反代需要按真实用户IP限流，`STUDIO_TRUSTED_PROXIES`仅配置已验证的代理源IP，并要求它覆写X-Real-IP；否则按直接来源限制。
+正式服务为witkit-studio.service，配置只绑定100.64.0.17:8501，原witkit-bench.service已停止并保留用于回滚。`BENCH_DB`指向原有reports.db；新增表，不修改遗留runs内容。新Cookie为HttpOnly/Secure/SameSite=Lax。若反代需要按真实用户IP限流，`STUDIO_TRUSTED_PROXIES`仅配置已验证的代理源IP，并要求它覆写X-Real-IP；否则按直接来源限制。
 
 会话不是跨设备账号：清除Cookie会失去私有报告访问权，界面提供下载与显式分享。Key只在任务内存中存在，进程重启后的在途任务标interrupted，不自动重发；取消不会撤销已收费请求。
 
@@ -29,4 +29,4 @@ python -m unittest discover -s studio/tests -v
 
 studio/tests包含精确金额、旧加权反例、未知值、币种、缓存、并发采集、幂等任务、私有报告、分享撤销、无额外计费调用、重启语义。端到端使用本地mock，生产不得启用STUDIO_TEST_LOOPBACK。
 
-发布前备份应用、systemd配置、SQLite一致性快照及NPM配置。新版在独立目录测试后切换WorkingDirectory/ExecStart；数据库路径不变。回滚切回旧服务路径和代理配置，保留新增数据表，不用旧备份覆盖新报告。新域名先验证HTTPS与路由，旧test域名仅在GET/HEAD页面请求上转向studio；旧客户端POST不自动跨域转发凭据。
+发布前备份应用、systemd配置、SQLite一致性快照及NPM配置。新版在独立目录测试后启动独立systemd服务，再切换NPM域名代理；数据库路径不变。回滚切回旧服务路径和代理配置，保留新增数据表，不用旧备份覆盖新报告。新域名先验证HTTPS与路由，旧test域名仅在GET/HEAD页面请求上转向studio；旧客户端POST不自动跨域转发凭据。
