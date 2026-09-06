@@ -29,3 +29,21 @@ class CardPublishTests(unittest.TestCase):
         with patch('daemon.main.threading.Thread'):
             b.process_card_publish('ou_owner','oc_chat','om_card','candidate-a')
         b.gh.dispatch_workflow.assert_called_once()
+
+    def test_duplicate_reports_terminal_outcome(self):
+        for phase, kind in [('done','success'),('failed','error')]:
+            b=bot()
+            ticket=b.store.new_ticket('approve','candidate-a',owner='ou_owner')
+            ticket.phase=phase
+            with tempfile.TemporaryDirectory() as d, patch('daemon.main.threading.Thread'):
+                b.journal=Journal(Path(d)/'journal')
+                b.on_card_action(self.payload())
+                self.assertEqual(b.on_card_action(self.payload()).toast.type,kind)
+    def test_connection_check_never_dispatches_publication(self):
+        b=bot(); payload=self.payload(); payload.event.action.value={'action':'check_callback'}
+        with patch('daemon.main.threading.Thread') as thread:
+            self.assertEqual(b.on_card_action(payload).toast.type,'success')
+            thread.assert_not_called()
+        b.gh.dispatch_workflow.assert_not_called()
+        payload.event.operator.open_id='stranger'
+        self.assertEqual(b.on_card_action(payload).toast.type,'error')
