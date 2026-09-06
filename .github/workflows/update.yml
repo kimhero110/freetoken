@@ -2,9 +2,11 @@ name: 定时生成免费额度变更候选
 
 on:
   schedule:
-    # 限制在 DeepSeek 官方优惠波谷时段运行（北京时间 00:30~08:30，享五折）
+    # 按既有费用窗口排队；延迟执行仍需重新检查费用策略
     # UTC 17:30 / 20:30 / 23:30 对应北京时间 01:30 / 04:30 / 07:30
-    - cron: "30 17,20,23 * * *"
+    - cron: "30 17 * * *"
+    - cron: "30 20 * * *"
+    - cron: "30 23 * * *"
   workflow_dispatch:
     inputs:
       provider:
@@ -51,6 +53,7 @@ jobs:
   update:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Mint GitHub App token
         id: app-token
@@ -75,10 +78,17 @@ jobs:
         run: pip install --require-hashes -r scripts/requirements.lock
 
       - name: 抓取来源页面（变更检测）
+        id: fetch
+        continue-on-error: true
         run: python scripts/fetch_sources.py
 
-      - name: 调用大模型提取结构化信息 (灵活自定义模式)
+      - name: 调用大模型提取结构化信息 (持久化保护)
+        id: extract
+        continue-on-error: true
         env:
+          CHECK_PAID_ENABLED: ${{ vars.CHECK_PAID_ENABLED == 'true' && vars.CHECK_READINESS_CONFIRMED == 'true' }}
+          CHECK_MAX_CALLS: ${{ vars.CHECK_MAX_CALLS }}
+          CHECK_MAX_OUTPUT_TOKENS: ${{ vars.CHECK_MAX_OUTPUT_TOKENS }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
           MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
@@ -108,22 +118,18 @@ jobs:
           fi
           python scripts/extract.py "${ARGS[@]}"
 
-      - name: 回写待人工审核候选
+      - name: 发布成功生成的候选
+        id: publish
+        if: ${{ !cancelled() && steps.extract.outcome != 'skipped' }}
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          git config user.name "freetoken-bot[bot]"
-          git config user.email "4818224+freetoken-bot[bot]@users.noreply.github.com"
-          git add data/candidates/
-          if git diff --cached --quiet; then
-            echo "无新候选，跳过提交"
-          else
-            git commit -m "chore(data): 提交待审核额度变更候选"
-            git pull --rebase origin main
-            BRANCH="auto/extract-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-            git push origin HEAD:refs/heads/"$BRANCH"
-            gh pr create --base main --head "$BRANCH" \
-              --title "chore(data): 提交待审核额度变更候选" \
-              --body "定时额度变更候选，仅写入 data/candidates/，正式数据仍需人工审批。"
-            gh pr merge --auto --merge --delete-branch "$BRANCH"
-          fi
+        run: python -m scripts.publish_candidates --summary "$RUNNER_TEMP/publish-summary.json"
+
+      - name: 汇总真实运行结果
+        if: ${{ !cancelled() }}
+        env:
+          FETCH_OUTCOME: ${{ steps.fetch.outcome }}
+          EXTRACT_OUTCOME: ${{ steps.extract.outcome }}
+          PUBLISH_OUTCOME: ${{ steps.publish.outcome }}
+        run: python -m scripts.check_summary

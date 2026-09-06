@@ -96,7 +96,7 @@ const totalCount = platforms.length;
             </div>
 
             <div class="card-footer-action">
-              <span class="verified-date">✓ {p.last_verified || '2026-09-02'} {isEn ? 'verified' : '核验'}</span>
+              <span class="verified-date">{p.last_verified ? `${p.last_verified} ${isEn ? 'reviewed' : '审核核验'}` : (isEn ? 'Not verified' : '尚未核验')}</span>
               <span class="card-arrow-link">{isEn ? 'View Guide →' : '配置指引 →'}</span>
             </div>
           </a>

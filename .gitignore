@@ -20,3 +20,8 @@ site/.astro/
 .gstack/
 
 studio/data/
+
+.cache/changed.json
+.cache/check-run/
+
+reliability-*.log
