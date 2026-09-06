@@ -1,6 +1,7 @@
 ---
 // FreeTokens.info English Platform Detail Page
 import Base from '../../../layouts/Base.astro';
+import SourceVerification from '../../../components/SourceVerification.astro';
 import CostLink from '../../../components/CostLink.astro';
 import platforms from '../../../data/platforms.json';
 import { generateSnippet, getToolState, selectChatOperation, VERIFICATION_LABELS } from '../../../lib/operation-generator.mjs';
@@ -160,6 +161,7 @@ const requirementLabel = (value: string) => value === 'required' ? 'Required' : 
       <footer class="detail-footer-bar">
         <div class="footer-meta">
           <span>Directory data checked: {formatVerified(p.last_verified)} · {statusMap[p.status] ?? 'Unknown'} (see operation evidence above)</span>
+          <SourceVerification slug={p.slug} lang="en" />
         </div>
         <div class="footer-buttons">
           <a class="btn-register" href={p.registration.url} target="_blank" rel="noopener noreferrer">

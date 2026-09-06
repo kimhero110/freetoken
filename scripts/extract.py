@@ -312,18 +312,7 @@ def main() -> int:
         provider = available.get(provider_id)
         limit = int(os.environ.get("CHECK_MAX_CALLS") or "0")
         max_tokens = int(os.environ.get("CHECK_MAX_OUTPUT_TOKENS") or "0")
-        if changed and not dry and (provider is None or not 1 <= limit <= 100 or not 1 <= max_tokens <= 4096):
-            raise StateError("PROVIDER_OR_BUDGET_NOT_CONFIGURED")
-        if changed and not dry:
-            # A read-only model-list check must succeed before any paid intent.
-            try:
-                client = OpenAI(api_key=provider.api_key, base_url=provider.base_url, timeout=10.0, max_retries=0)
-                if provider.model not in {model.id for model in client.models.list().data}:
-                    raise StateError('MODEL_NOT_AVAILABLE')
-            except StateError:
-                raise
-            except Exception:
-                raise StateError('PROVIDER_PREFLIGHT_FAILED') from None
+        provider_checked = False
         for item in changed:
             source = digest([item["platform"], item["url"], item["hash"]])
             observation = {"source": source, "status": "pending"}
@@ -337,23 +326,57 @@ def main() -> int:
                 text = item.get("text")
                 if not isinstance(text, str) or hashlib.sha256(text.encode()).hexdigest() != source_hash:
                     raise StateError("SOURCE_SNAPSHOT_INVALID")
-                if output.exists():
-                    existing = yaml.safe_load(output.read_text(encoding="utf-8"))
-                    if existing.get("source_hash") != source_hash or existing.get("source_url") != url:
-                        raise StateError("CANDIDATE_ID_CONFLICT")
-                    observation["status"] = "pending_review"
-                    continue
                 reviewed = any(
-                    (record.get("source_hash") == source_hash and record.get("source_url") == url)
+                    (record.get("platform_slug") == slug and record.get("source_hash") == source_hash and record.get("source_url") == url)
                     for path in (ROOT / "data" / "reviews").glob("*.yaml")
                     if isinstance((record := yaml.safe_load(path.read_text(encoding="utf-8"))), dict)
                 )
                 if reviewed:
                     observation["status"] = "reviewed_version"
                     continue
+                matching = []
+                for path in CANDIDATES_DIR.glob(f"update-{slug}-*.yaml"):
+                    existing = yaml.safe_load(path.read_text(encoding="utf-8"))
+                    if existing.get("platform_slug") == slug and existing.get("status") == "pending_review" and existing.get("source_hash") == source_hash and existing.get("source_url") == url:
+                        matching.append((path, existing))
+                if matching:
+                    previous_path, existing = max(matching, key=lambda pair: pair[1].get("captured_at", ""))
+                    captured = datetime.fromisoformat(existing["captured_at"])
+                    platform_hash = build_update_candidate(entry, slug, url, source_hash, "", {}, {})['platform_hash']
+                    if captured.tzinfo and timedelta(0) <= utcnow()-captured < timedelta(hours=24) and existing.get('platform_hash') == platform_hash:
+                        observation["status"] = "pending_review"
+                        continue
+                    if dry:
+                        observation["status"] = "dry_run"
+                        continue
+                    # The full source was fetched again and matches the saved proposal's hash.
+                    # Reuse its extraction, never its old approval or card identifier.
+                    result = validate_extracted(existing.get('proposed'))
+                    if result is None:
+                        raise StateError('SAVED_CANDIDATE_INVALID')
+                    refreshed = build_update_candidate(entry, slug, url, source_hash, "", result, existing.get('extractor', {}))
+                    refreshed['supersedes'] = previous_path.stem
+                    refreshed_path = output.with_stem(output.stem + '-' + utcnow().strftime('%Y%m%d') + '-' + platform_hash[:8])
+                    if refreshed_path.exists():
+                        raise StateError('REFRESH_VERSION_CONFLICT')
+                    refreshed_path.write_text(yaml.safe_dump(refreshed, allow_unicode=True, sort_keys=False), encoding='utf-8')
+                    observation.update(status='candidate_ready', candidate_id=refreshed_path.stem)
+                    continue
                 if dry:
                     observation["status"] = "dry_run"
                     continue
+                if provider is None or not 1 <= limit <= 100 or not 1 <= max_tokens <= 4096:
+                    raise StateError('PROVIDER_OR_BUDGET_NOT_CONFIGURED')
+                if not provider_checked:
+                    try:
+                        client = OpenAI(api_key=provider.api_key, base_url=provider.base_url, timeout=10.0, max_retries=0)
+                        if provider.model not in {model.id for model in client.models.list().data}:
+                            raise StateError('MODEL_NOT_AVAILABLE')
+                    except StateError:
+                        raise
+                    except Exception:
+                        raise StateError('PROVIDER_PREFLIGHT_FAILED') from None
+                    provider_checked = True
                 key = digest({"source_id": digest([slug, url]), "message": PROMPT_TEMPLATE.format(text=text[:8000]),
                               "provider": provider.id, "endpoint_hash": digest(provider.base_url), "model": provider.model,
                               "temperature": provider.temperature, "json": provider.response_format_json,

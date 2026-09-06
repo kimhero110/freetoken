@@ -87,15 +87,32 @@ class CheckMonitor:
             if not item:
                 break
             event, payload, attempts = item
-            # Payload contains only fixed codes / locally constructed IDs, not API text.
-            card = cards.error_card('定时检查异常' if payload['active'] else '定时检查恢复',
-                                    f"{payload['incident']} · {payload['code']} · 事件 {event}",
-                                    f"请核对 https://github.com/{self.config['github_repo']}/actions 。重复事件编号表示通知重试；未自动重发模型请求。")
+            if payload.get('kind') == 'candidate':
+                card = cards._card('待审核 · ' + payload['name'], 'orange',
+                                   cards.lark_escape(payload['summary']),
+                                   buttons=[cards.publish_button(payload['candidate_id']),
+                                            cards._button('完整候选与来源', f"https://github.com/{self.config['github_repo']}/blob/main/data/candidates/{payload['candidate_id']}.yaml")])
+            else:
+                # Payload contains only fixed codes / locally constructed IDs, not API text.
+                card = cards.error_card('定时检查异常' if payload['active'] else '定时检查恢复',
+                                        f"{payload['incident']} · {payload['code']} · 事件 {event}",
+                                        f"请核对 https://github.com/{self.config['github_repo']}/actions 。重复事件编号表示通知重试；未自动重发模型请求。")
             try:
                 message_id = self.feishu.send_card(self.config['owner_open_id'], card, receive_id_type='open_id')
                 self.store.finish(event, attempts, now, message_id=message_id)
             except Exception:
                 self.store.finish(event, attempts, now, unknown=True)
+
+    def queue_candidates(self, now):
+        from .candidate_notifications import newest_candidates, source_is_current
+        candidates = [(name, data) for name, data in newest_candidates(self.gh, self.config['github_repo'], now)
+                      if source_is_current(data, getattr(self, 'source_observations', []), now)]
+        self.store.supersede_candidates({candidate_id for candidate_id, _ in candidates})
+        for candidate_id, data in candidates:
+            summary = ('自动抓取已完成；请核对以下变更后点击直接发布。旧版本批准不继承。\n'
+                       + json.dumps({'当前': data.get('current'), '建议': data.get('proposed'),
+                                     '来源': data.get('source_url'), '采集时间': data.get('captured_at')}, ensure_ascii=False))
+            self.store.enqueue_candidate(candidate_id, str(data.get('name', candidate_id)), summary, now)
 
     def sweep(self, now):
         # Bounded history: a gap longer than the API page must be visible, never silently skipped.
@@ -139,7 +156,7 @@ class CheckMonitor:
         for (stage, source), item in observations.items():
             status = item.get('status')
             bad = status in {'failed', 'fetch_failed', 'deferred'}
-            good = status in {'fetched', 'candidate_ready', 'pending_review', 'reviewed_version'}
+            good = status in {'fetched', 'candidate_ready', 'pending_review', 'reviewed_version', 'verified_unchanged', 'reviewed_rejected', 'changed', 'baseline_mismatch'}
             if bad or good:
                 self.store.transition(f'{stage}:{source[:24]}', bad, 'SOURCE_BLOCKED' if bad else 'SOURCE_STAGE_RESUMED', now)
         latest = max(summaries, key=lambda r: stamp(r['completed_at']), default={})
@@ -147,9 +164,12 @@ class CheckMonitor:
         if latest:
             self.store.transition('checks:paused', paused, 'PAID_CHECKS_PAUSED' if paused else 'CHECKS_RESUMED', now)
         fetch = latest.get('fetch', {})
+        self.source_observations = fetch.get('sources', [])
         return {'last_check_at': fetch.get('checked_at'),
                 'attempted': fetch.get('attempted'), 'succeeded': fetch.get('succeeded'),
-                'check_status': latest.get('status', 'unknown')}
+                'check_status': latest.get('status', 'unknown'),
+                'sources': [{k: item.get(k) for k in ('platform', 'checked_at', 'status', 'scope')}
+                            for item in fetch.get('sources', []) if isinstance(item, dict) and item.get('platform')]}
 
     def loop(self):
         while not self.stop.is_set():
@@ -157,6 +177,8 @@ class CheckMonitor:
             health = {'version': 1, 'updated_at': datetime.fromtimestamp(now, timezone.utc).isoformat(), 'monitoring': 'unknown'}
             try:
                 health.update(self.sweep(now))
+                if self.config.get('candidate_notifications_enabled'):
+                    self.queue_candidates(now)
                 self.store.transition('monitor:query', False, 'MONITOR_QUERY_RESTORED', now)
                 health['monitoring'] = 'ok'
             except Exception:

@@ -1,4 +1,5 @@
 ---
+import SourceVerification from './SourceVerification.astro';
 interface Props {
   platforms: any[];
   lang?: 'zh' | 'en';
@@ -97,6 +98,7 @@ const totalCount = platforms.length;
 
             <div class="card-footer-action">
               <span class="verified-date">{p.last_verified ? `${p.last_verified} ${isEn ? 'reviewed' : '审核核验'}` : (isEn ? 'Not verified' : '尚未核验')}</span>
+              <SourceVerification slug={p.slug} lang={lang} />
               <span class="card-arrow-link">{isEn ? 'View Guide →' : '配置指引 →'}</span>
             </div>
           </a>

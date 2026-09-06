@@ -10,6 +10,7 @@ import hashlib
 import json
 import sys
 import os
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -21,6 +22,9 @@ try:
     from .safe_http import get_public_text
 except ImportError:
     from safe_http import get_public_text
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from scripts.source_verification import public_observation
 
 ROOT = Path(__file__).resolve().parent.parent
 PLATFORMS_DIR = ROOT / "data" / "platforms"
@@ -43,16 +47,25 @@ def load_hashes() -> dict:
 
 def fetch_text(url: str) -> str | None:
     """抓取 URL 并提取纯文本；失败返回 None。"""
-    try:
-        body = get_public_text(url, headers={"User-Agent": UA}, timeout=TIMEOUT)
-    except (requests.RequestException, ValueError) as exc:
-        print(f"  [失败] {url}: {exc}")
-        return None
+    body = None
+    for attempt in range(3):
+        try:
+            body = get_public_text(url, headers={"User-Agent": UA}, timeout=TIMEOUT)
+            break
+        except (requests.RequestException, ValueError) as exc:
+            # Retry only read-only transport failures. Policy/URL rejection is final.
+            retryable = isinstance(exc, (requests.Timeout, requests.ConnectionError))
+            if isinstance(exc, requests.HTTPError):
+                retryable = any(f"HTTP {code}" in str(exc) for code in (429, 500, 502, 503, 504))
+            if attempt == 2 or not retryable:
+                print(f"  [失败] source fetch: {type(exc).__name__}")
+                return None
+            time.sleep(2 ** attempt)
     soup = BeautifulSoup(body, "html.parser")
     # 去掉脚本与样式，减少噪音
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
-    return soup.get_text(separator="\n", strip=True)
+    return soup.get_text(separator="\n", strip=True) or None
 
 
 def coverage_degraded(attempted: int, succeeded: int) -> bool:
@@ -65,7 +78,6 @@ def main() -> int:
     parser.add_argument('--output-dir', type=Path, default=Path(os.environ.get('RUNNER_TEMP', ROOT / '.cache' / 'check-run')))
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    hashes = load_hashes()
     changed: list[dict] = []
     attempted = 0
     succeeded = 0
@@ -80,13 +92,13 @@ def main() -> int:
         for url in entry.get("source_urls", []):
             attempted += 1
             text = fetch_text(url)
+            observation = public_observation(yf.stem, url, text, entry, ROOT, datetime.now(timezone.utc).isoformat())
+            observations.append(observation)
             if text is None:
-                observations.append({'source': hashlib.sha256((yf.stem + url).encode()).hexdigest(), 'status': 'fetch_failed'})
                 continue  # 抓取失败时保留旧哈希，下一轮重试
             succeeded += 1
             digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
-            observations.append({'source': hashlib.sha256((yf.stem + url).encode()).hexdigest(), 'status': 'fetched'})
-            if hashes.get(url) != digest:
+            if observation['status'] in {'changed', 'baseline_mismatch'}:
                 changed.append({"platform": yf.stem, "url": url, "hash": digest, "text": text})
                 print(f"  [变更] {name} - {url}")
             else:
