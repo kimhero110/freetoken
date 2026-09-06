@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "enabled": false,
+  "profile": {
+    "legal_name": null,
+    "contact_email": null,
+    "phone_secret_ref": null,
+    "country_or_region": null,
+    "account_type": "individual",
+    "organization": null,
+    "intended_use": null,
+    "locale": "zh-CN",
+    "timezone": "Asia/Shanghai"
+  },
+  "credentials": {"store": "os-vault", "namespace": "freetoken-account-pilot"},
+  "limits": {"accounts_per_provider": 1, "automatic_payment": false, "automatic_card_binding": false, "paid_probe_budget": 0, "max_probe_requests_per_day": 1},
+  "providers": [],
+  "human_handoff": {"separate_feishu_app": true, "app_credentials_ref": null, "owner_open_id_ref": null, "store_identity_documents": false}
+}

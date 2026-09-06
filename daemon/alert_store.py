@@ -50,6 +50,21 @@ class AlertStore:
             db.execute('INSERT INTO outbox(id,incident,payload,status,next) VALUES (?,?,?,?,?)',
                        (event, incident, payload, 'pending', now))
 
+    def enqueue_candidate(self, candidate_id, name, summary, now):
+        event = 'candidate:' + hashlib.sha256(candidate_id.encode()).hexdigest()[:32]
+        payload = json.dumps({'kind': 'candidate', 'candidate_id': candidate_id,
+                              'name': name[:120], 'summary': summary[:4000]})
+        with self.connect() as db:
+            db.execute("INSERT OR IGNORE INTO outbox(id,incident,payload,status,next) VALUES (?,?,?,?,?)",
+                       (event, event, payload, 'pending', now))
+
+    def supersede_candidates(self, active_ids):
+        with self.connect() as db:
+            rows = db.execute("SELECT id,payload FROM outbox WHERE incident LIKE 'candidate:%' AND status!='api_accepted'").fetchall()
+            for event, raw in rows:
+                if json.loads(raw).get('candidate_id') not in active_ids:
+                    db.execute("UPDATE outbox SET status='superseded' WHERE id=?", (event,))
+
     def claim(self, now):
         with self.connect() as db:
             db.execute('BEGIN IMMEDIATE')

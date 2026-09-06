@@ -25,3 +25,7 @@ studio/data/
 .cache/check-run/
 
 reliability-*.log
+
+# Private account profiles and browser sessions (templates remain public)
+.private-accounts/
+config/account-pilot.local.json

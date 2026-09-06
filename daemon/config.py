@@ -35,6 +35,7 @@ def load_config(env=None) -> dict:
         "confirm_max_attempts": int(env.get("CONFIRM_MAX_ATTEMPTS", "3") or 3),
         "lock_ttl_seconds": int(env.get("LOCK_TTL_SECONDS", "1800") or 1800),
         "candidate_fresh_hours": int(env.get("CANDIDATE_FRESH_HOURS", "48") or 48),
+        "candidate_notifications_enabled": env.get("CHECK_CANDIDATE_NOTIFICATIONS", "true") == "true",
         "check_monitor_enabled": env.get("CHECK_MONITOR_ENABLED") == "true",
         "check_monitor_since": env.get("CHECK_MONITOR_SINCE", ""),
         "check_alert_db": Path(env.get("CHECK_ALERT_DB", "/data/check-alerts.sqlite3")),

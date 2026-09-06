@@ -1,0 +1,19 @@
+---
+const { slug, lang = 'zh' } = Astro.props;
+---
+<small data-source-verification={slug} data-source-lang={lang} style="display:block;color:var(--text-muted);font-size:0.75rem;margin-top:0.35rem">{lang === 'en' ? 'Automatic source check: unknown' : '来源自动核验：暂无可确认记录'}</small>
+<script>
+  import { describeSourceVerification } from '../lib/source-verification.mjs';
+  async function loadSourceChecks() {
+    const nodes = document.querySelectorAll<HTMLElement>('[data-source-verification]');
+    if (!nodes.length) return;
+    try {
+      const response = await fetch('https://witkit.zone/ops/check-status.json', { cache: 'no-store', signal: AbortSignal.timeout(8000) });
+      if (!response.ok) return;
+      const health = await response.json();
+      nodes.forEach(node => { node.textContent = describeSourceVerification(health, node.dataset.sourceVerification, node.dataset.sourceLang === 'en'); });
+    } catch { /* Keep unknown; never substitute a fabricated verification date. */ }
+  }
+  loadSourceChecks();
+  document.addEventListener('astro:page-load', loadSourceChecks);
+</script>

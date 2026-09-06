@@ -1,6 +1,7 @@
 ---
 // FreeTokens.info 平台详情页 - 极简主义技术文档风格
 import Base from '../../layouts/Base.astro';
+import SourceVerification from '../../components/SourceVerification.astro';
 import CostLink from '../../components/CostLink.astro';
 import platforms from '../../data/platforms.json';
 import { generateSnippet, getToolState, selectChatOperation, VERIFICATION_LABELS } from '../../lib/operation-generator.mjs';
@@ -153,6 +154,7 @@ const requirementLabel = (value: string) => value === 'required' ? '需要' : va
       <footer class="detail-footer-bar">
         <div class="footer-meta">
           <span>目录数据检查：{formatVerified(p.last_verified)} · {statusMap[p.status] ?? '状态未知'}（操作核查等级见上方）</span>
+          <SourceVerification slug={p.slug} lang="zh" />
         </div>
         <div class="footer-buttons">
           <a class="btn-register" href={p.registration.url} target="_blank" rel="noopener noreferrer">
