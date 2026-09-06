@@ -20,7 +20,7 @@ class LarkEscapeTests(unittest.TestCase):
 class CardBuilderTests(unittest.TestCase):
     def test_candidate_card_contains_footer_and_escaped_fields(self):
         card = cards.candidate_card("#p001", "tip-x-1", "Evil<at>Co", ["+ 10 刀额度", "- 无"], ["tools=unknown"])
-        content = card["card"]["elements"][0]["text"]["content"]
+        content = next(e["text"]["content"] for e in card["card"]["elements"] if e["tag"] == "div")
         self.assertIn("&lt;at&gt;", content)
         self.assertIn("#p001", content)
         self.assertIn("tip-x-1", content)

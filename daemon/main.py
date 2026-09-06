@@ -15,6 +15,7 @@ from datetime import datetime, timedelta, timezone
 
 import lark_oapi as lark
 from lark_oapi.api.im.v1 import P2ImMessageReceiveV1
+from lark_oapi.event.callback.model.p2_card_action_trigger import P2CardActionTriggerResponse
 
 from . import auth, cards, commands
 from .config import load_config
@@ -31,6 +32,8 @@ REVIEW_WORKFLOW = "review-candidate.yml"
 PLATFORM_WORKFLOW = "feishu-platform-tip.yml"
 ARTICLE_WORKFLOW = "feishu-article-rewrite.yml"
 SELFTEST_WORKFLOW = "feishu-self-test.yml"
+CARD_EVENT_LOCK = threading.Lock()
+CARD_DISPATCH_LOCK = threading.Lock()
 FRESHNESS_KEYS = ("checked_at", "captured_at")
 
 
@@ -561,6 +564,42 @@ class Bot:
             ["候选入库后不可直接修改：拒绝后重发。若已生成候选，发 拒绝 <短号>"], "?", "", ""), reply_to=message_id)
 
     # -------------------------------------------------------------- dispatch
+    def on_card_action(self, data):
+        def toast(kind, text):
+            return P2CardActionTriggerResponse({"toast": {"type": kind, "content": text}})
+        try:
+            event = data.event
+            sender = event.operator.open_id
+            value = event.action.value or {}
+            candidate_id = value.get("candidate_id", "")
+            context = event.context
+            if not auth.is_authorized(sender, self.config["owner_open_id"]):
+                return toast("error", "仅管理员可以发布")
+            if value.get("action") != "publish_candidate" or not commands.validate_candidate_id(candidate_id):
+                return toast("error", "无效的候选按钮")
+            if not context.open_message_id or not context.open_chat_id:
+                return toast("error", "无法识别卡片会话")
+            key = f"card:publish:{context.open_message_id}:{candidate_id}"
+            with CARD_EVENT_LOCK:
+                if self.journal.seen_event(key):
+                    return toast("info", "已受理，请查看发布进度")
+                self.journal.append({"type": "feishu_event", "event_id": key, "ts": now_iso()})
+            threading.Thread(target=self.process_card_publish,
+                             args=(sender, context.open_chat_id, context.open_message_id, candidate_id),
+                             daemon=True).start()
+            return toast("success", "已受理，正在校验并发布")
+        except Exception:
+            log.error("CARD_ACTION_FAILED")
+            return toast("error", "按钮处理失败，请查看机器人消息")
+
+    def process_card_publish(self, sender, chat_id, message_id, candidate_id):
+        try:
+            with CARD_DISPATCH_LOCK:
+                self.cmd_approve(chat_id, message_id, sender, "approve", candidate_id, direct=True)
+        except Exception:
+            log.error("CARD_PUBLISH_FAILED")
+            self.card(chat_id, cards.error_card("发布未完成", "按钮任务处理失败", "请查看状态后重试"), reply_to=message_id)
+
     def on_event(self, data: P2ImMessageReceiveV1) -> None:
         extracted = extract_message(data)
         log.info("message event received; parsed=%s", bool(extracted))
@@ -640,6 +679,7 @@ class Bot:
         from lark_oapi.ws import Client as WsClient
         handler = (lark.EventDispatcherHandler.builder("", "")
                    .register_p2_im_message_receive_v1(self.on_event)
+                   .register_p2_card_action_trigger(self.on_card_action)
                    .register_p2_im_message_message_read_v1(lambda event: None)
                    .register_p2_im_chat_access_event_bot_p2p_chat_entered_v1(lambda event: None)
                    .register_p2_im_chat_member_bot_added_v1(lambda event: None).build())

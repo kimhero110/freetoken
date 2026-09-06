@@ -24,7 +24,11 @@ def lark_escape(text) -> str:
 def _card(title: str, template: str, markdown: str, buttons=None) -> dict:
     elements = [{"tag": "div", "text": {"tag": "lark_md", "content": markdown}}]
     if buttons:
-        elements.append({"tag": "action", "actions": buttons})
+        action = {"tag": "action", "actions": buttons}
+        if any("value" in button for button in buttons):
+            elements.insert(0, action)
+        else:
+            elements.append(action)
     return {
         "msg_type": "interactive",
         "card": {
@@ -42,6 +46,11 @@ def _button(text: str, url: str, style: str = "default") -> dict:
         "type": style,
         "url": url,
     }
+
+
+def publish_button(candidate_id: str) -> dict:
+    return {"tag": "button", "text": {"tag": "plain_text", "content": "直接发布"},
+            "type": "primary", "value": {"action": "publish_candidate", "candidate_id": candidate_id}}
 
 
 def ack_card(kind: str, ticket_id: str, url: str) -> dict:
@@ -89,7 +98,7 @@ def candidate_card(short_id: str, candidate_id: str, name: str, diff_lines, cave
         f"发送：`通过 {lark_escape(candidate_id)}` / `拒绝 {lark_escape(candidate_id)}`\n"
         f"直接发布（不再输入确认码）：`直接发布 {lark_escape(candidate_id)}`"
     )
-    return _card("🆕 新平台候选", "turquoise", body + footer)
+    return _card("🆕 新平台候选", "turquoise", body + footer, buttons=[publish_button(candidate_id)])
 
 
 def update_candidate_card(short_id: str, candidate_id: str, name: str, diff_lines) -> dict:
@@ -103,6 +112,7 @@ def update_candidate_card(short_id: str, candidate_id: str, name: str, diff_line
         f"**平台**：{lark_escape(name)}\n\n**字段变更**\n{diff_md}\n\n---\n"
         f"短号 `{lark_escape(short_id)}` · ID `{lark_escape(candidate_id)}`\n发送：`通过 {lark_escape(candidate_id)}` / `拒绝 {lark_escape(candidate_id)}`\n"
         f"直接发布（不再输入确认码）：`直接发布 {lark_escape(candidate_id)}`",
+        buttons=[publish_button(candidate_id)],
     )
 
 
