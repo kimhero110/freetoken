@@ -86,7 +86,8 @@ def candidate_card(short_id: str, candidate_id: str, name: str, diff_lines, cave
     )
     footer = (
         f"\n\n---\n短号 `{lark_escape(short_id)}` · ID `{lark_escape(candidate_id)}`\n"
-        "回复引用本卡片并发送：`通过` / `拒绝`"
+        f"发送：`通过 {lark_escape(candidate_id)}` / `拒绝 {lark_escape(candidate_id)}`\n"
+        f"直接发布（不再输入确认码）：`直接发布 {lark_escape(candidate_id)}`"
     )
     return _card("🆕 新平台候选", "turquoise", body + footer)
 
@@ -100,7 +101,8 @@ def update_candidate_card(short_id: str, candidate_id: str, name: str, diff_line
         "♻️ 已在库，生成更新候选",
         "turquoise",
         f"**平台**：{lark_escape(name)}\n\n**字段变更**\n{diff_md}\n\n---\n"
-        f"短号 `{lark_escape(short_id)}` · ID `{lark_escape(candidate_id)}` · 回复引用：`通过` / `拒绝`",
+        f"短号 `{lark_escape(short_id)}` · ID `{lark_escape(candidate_id)}`\n发送：`通过 {lark_escape(candidate_id)}` / `拒绝 {lark_escape(candidate_id)}`\n"
+        f"直接发布（不再输入确认码）：`直接发布 {lark_escape(candidate_id)}`",
     )
 
 
@@ -142,6 +144,7 @@ def help_card() -> dict:
         "**平台 <url> [备注]** — 提交免费 Token 平台线索，生成候选\n"
         "**文章 <url> [备注]** — 改写为本站文章草稿 PR（默认改写，可加 参数:提纲）\n"
         "**通过 / 拒绝 <短号|ID>** — 审批候选（回复引用候选卡更稳妥）\n"
+        "**直接发布 <完整ID>** — 批准该候选并发布，无需六位确认码\n"
         "**确认 <6位码>** — 完成审批确认（防误触）\n"
         "**待审** — 列出全部候选\n**状态** — 管线/PAT/版本\n**撤销** — 拒绝我最新提交的线索\n"
         "**谁我** — 查看我的 open_id\n\n"
