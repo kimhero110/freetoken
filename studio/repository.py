@@ -76,7 +76,7 @@ def shared(token):
     if data:
         # Explicit share contains conclusions, not original test evidence or business workload.
         result=data.get('result') or {}
-        data={'state':data['state'],'created':data['created'],'result':{k:result.get(k) for k in ('model','composite','benchmark_cost','elapsed_s','cost_error')}}
+        data={'state':data['state'],'created':data['created'],'result':{k:result.get(k) for k in ('model','composite','benchmark_cost','elapsed_s','cost_error','probe_summary')}}
     return data
 
 def revoke(rid,owner):

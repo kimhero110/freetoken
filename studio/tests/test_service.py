@@ -82,6 +82,32 @@ class ServiceTests(unittest.TestCase):
         rid,_=repository.create('owner','restart-test',{})
         repository.update(rid,'running');repository.recover()
         self.assertEqual(repository.get(rid,'owner')['state'],'interrupted')
+    def test_new_modules_and_subscription_api(self):
+        for path in ['/','/plans','/api-cost','/probe','/criteria']:
+            r=urllib.request.urlopen(self.base+path);self.assertEqual(r.status,200);r.close()
+        status,r,_=self.request('/api/plans/compare',{'plans':[{'name':'Test','currency':'CNY','amount':'120','months':'12'}]})
+        self.assertEqual(status,200);self.assertEqual(r['plans'][0]['monthly_equivalent'],'10')
+    def test_reference_is_private_and_reuses_challenge(self):
+        import hashlib
+        from bench import probe
+        _,_,h=self.request('/api/history');cookie=h['Set-Cookie'].split(';')[0]
+        owner=hashlib.sha256(cookie.split('=',1)[1].encode()).hexdigest()
+        cfg=probe.config();measurement={'config':cfg,'observed_at':time.time(),'rows':[]}
+        rid,_=repository.create(owner,'reference-fixture-001',{})
+        repository.update(rid,'done',{'tests':{'downgrade':{'evidence':{'measurement':measurement}}}})
+        data={'base_url':f'http://127.0.0.1:{self.model.server_port}/v1','api_key':'private-test-key','model':'demo','tests':['downgrade'],'reference_id':rid,'idempotency_key':'reference-target-001'}
+        self.assertEqual(self.request('/api/runs',data)[0],400)
+        status,created,_=self.request('/api/runs',data,cookie);self.assertEqual(status,202,created)
+        for _ in range(100):
+            _,run,_=self.request('/api/runs/'+created['id'],cookie=cookie)
+            if run['state']=='done':break
+            time.sleep(.05)
+        self.assertEqual(run['state'],'done')
+        evidence=run['result']['tests']['downgrade']['evidence']
+        self.assertEqual(evidence['measurement']['config'],cfg)
+        self.assertEqual(evidence['reference_id'],rid)
+        self.assertEqual(run['result']['tests']['downgrade']['metrics']['comparison']['status'],'insufficient_evidence')
+
     def test_private_dns_blocked_without_test_override(self):
         with patch.dict(os.environ,{'STUDIO_TEST_LOOPBACK':'0'}):
             with self.assertRaises(ValueError):resolve('https://127.0.0.1/v1')

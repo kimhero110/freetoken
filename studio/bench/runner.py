@@ -7,7 +7,7 @@ from .client import Client, redact
 from .registry import TESTS, ORDER
 
 
-def run_benchmark(base_url, api_key, model, test_ids, progress=None, collector=None):
+def run_benchmark(base_url, api_key, model, test_ids, progress=None, collector=None, probe_config=None):
     """progress(event_dict) called for start/progress/test/done. Returns run dict."""
     guard.ssrf_guard(base_url)
 
@@ -19,6 +19,7 @@ def run_benchmark(base_url, api_key, model, test_ids, progress=None, collector=N
     from . import baselines as B
     ctx = {
         "client": client,
+        "probe_config": probe_config or {},
         "model": model,
         "family": B.guess_family(model),
         "tier": B.guess_tier(model),
@@ -44,7 +45,7 @@ def run_benchmark(base_url, api_key, model, test_ids, progress=None, collector=N
             res = meta["run"](ctx)
             res.setdefault("light", "info")
         except Exception as e:
-            res = {"light": "fail", "summary_zh": "测试执行异常：" + redact(str(e), api_key),
+            res = {"light": "info", "summary_zh": "证据不足，测试执行异常：" + redact(str(e), api_key),
                    "metrics": {}, "evidence": {"error": redact(str(e), api_key)}}
         res["dim"] = meta["dim"]
         res["name_zh"] = meta["name_zh"]

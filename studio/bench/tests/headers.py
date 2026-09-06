@@ -32,8 +32,7 @@ def run(ctx):
         notes.append("server: " + server_hdr)
 
     light = "info"
-    if not ratelimit_present and not openai_version:
-        light = "warn"
+
     summary = "；".join(notes) if notes else "响应头信息有限"
     return {
         "light": light,

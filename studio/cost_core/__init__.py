@@ -4,7 +4,7 @@ import hashlib
 import json
 import re
 
-VERSION = '1.0.1'
+VERSION = '1.1.0'
 DIMENSIONS = ('input', 'cached', 'output')
 
 def number(value, integer=False):
@@ -41,9 +41,16 @@ def _estimate(workload, offer, credit, fx):
     counts = (None if i is None or c is None else i-c, c, o)
     missing, lines, subtotal = [], [], Decimal(0)
     rates = offer.get('rates', {})
+    pack=offer.get('credit_pack')
+    factor=Decimal(1)
+    if pack:
+        paid=number(pack.get('paid'));units=number(pack.get('units'))
+        if units<=0:raise ValueError('到账计费单位必须大于0')
+        factor=paid/units
+
     for dim, count in zip(DIMENSIONS, counts):
         raw = rates.get(dim)
-        rate = None if raw is None else number(raw)
+        rate = None if raw is None else number(raw)*factor
         cost = Decimal(0) if count == 0 else None if count is None or rate is None else count*rate/Decimal(1000000)
         if cost is None:
             missing.append(dim)

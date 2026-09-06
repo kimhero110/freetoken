@@ -33,15 +33,8 @@ def run(ctx):
             sims.append(ngram_sim(style_answers[i], style_answers[j]))
     avg_sim = sum(sims) / len(sims) if sims else 0.0
 
-    if len(valid) >= 3 and not math_consistent:
-        light, msg = "fail", "temperature=0 下数学答案不一致（%s）——疑似多模型混池" % " / ".join(
-            ("%.2f" % n) for n in sorted(set(valid))[:4])
-    elif avg_sim >= 0.7:
-        light, msg = "pass", "temperature=0 下 5 轮回答高度一致（相似度 %.2f）——单一后端特征" % avg_sim
-    elif avg_sim >= 0.45:
-        light, msg = "warn", "数学答案一致但文风漂移（相似度 %.2f）——可能存在多后端" % avg_sim
-    else:
-        light, msg = "fail", "temperature=0 下文风显著漂移（相似度 %.2f）——疑似多模型混池" % avg_sim
+    light = "info"
+    msg = "重复回答观察：数学有效响应 %d/5，文风相似度 %.2f；没有对照，不推断混池或身份。" % (len(valid), avg_sim)
 
     return {
         "light": light,
@@ -51,7 +44,6 @@ def run(ctx):
     }
 
 
-register("determinism", "确定性与混池检测", "authenticity",
-         "temperature=0 下同一问题重复 5 轮：数学答案应完全一致、文风应高度相似；漂移大=后端混池。",
-         "数学一致且文风相似度≥0.7=通过；≥0.45=可疑；明显漂移或数学不一致=未通过。",
-         45, True, run)
+register("determinism", "重复响应观察", "authenticity",
+         "重复问题各5次，记录一致性；相似度不能证明单一或多个模型。",
+         "仅作观察，不将漂移判定为混池。",45,False,run)

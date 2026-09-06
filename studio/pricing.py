@@ -26,8 +26,8 @@ def select(data,model=None):
         custom=data.get('offer') or {}
         if custom.get('rule', 'linear_tokens') != 'linear_tokens':
             raise ValueError('当前仅支持明确的文本按量报价，套餐等规则尚不支持')
-        offer={k:custom.get(k) for k in ('model','currency','rates')}
-        offer.update(id='custom',evidence='user_entered',rule='linear_tokens')
+        offer={k:custom.get(k) for k in ('model','currency','rates','credit_pack','label')}
+        offer.update(id=str(custom.get('label') or '自填接入')[:100],evidence='user_entered',rule='linear_tokens')
     if model and offer.get('model') != model:
         raise ValueError('报价模型与待测模型不一致；请填写该接入点的准确报价')
     return offer
