@@ -19,6 +19,7 @@ from lark_oapi.event.callback.model.p2_card_action_trigger import P2CardActionTr
 
 from . import auth, cards, commands
 from .config import load_config
+from .callback_dispatcher import CallbackDispatcher
 from .feishu_client import FeishuClient, extract_message
 from .gh_client import GhError, GitHubClient
 from .journal import Journal
@@ -575,6 +576,9 @@ class Bot:
             context = event.context
             if not auth.is_authorized(sender, self.config["owner_open_id"]):
                 return toast("error", "仅管理员可以发布")
+            if value.get("action") == "check_callback":
+                log.info("CARD_CALLBACK_CHECK_OK")
+                return toast("success", "按钮连接正常；本次没有发布内容")
             if value.get("action") != "publish_candidate" or not commands.validate_candidate_id(candidate_id):
                 return toast("error", "无效的候选按钮")
             if not context.open_message_id or not context.open_chat_id:
@@ -582,6 +586,13 @@ class Bot:
             key = f"card:publish:{context.open_message_id}:{candidate_id}"
             with CARD_EVENT_LOCK:
                 if self.journal.seen_event(key):
+                    latest = max((t for t in list(self.store.tickets.values())
+                                  if t.kind == "approve" and t.arg == candidate_id),
+                                 key=lambda t: t.created_at, default=None)
+                    if latest and latest.phase == "failed":
+                        return toast("error", "上次发布失败，请查看机器人发来的失败原因")
+                    if latest and latest.phase == "done":
+                        return toast("success", "该候选已发布完成")
                     return toast("info", "已受理，请查看发布进度")
                 self.journal.append({"type": "feishu_event", "event_id": key, "ts": now_iso()})
             threading.Thread(target=self.process_card_publish,
@@ -589,7 +600,7 @@ class Bot:
                              daemon=True).start()
             return toast("success", "已受理，正在校验并发布")
         except Exception:
-            log.error("CARD_ACTION_FAILED")
+            log.error("CARD_ACTION_FAILED", exc_info=True)
             return toast("error", "按钮处理失败，请查看机器人消息")
 
     def process_card_publish(self, sender, chat_id, message_id, candidate_id):
@@ -614,8 +625,13 @@ class Bot:
         self.journal.append({"type": "feishu_event", "event_id": message_key, "ts": now_iso()})
         if event_key:
             self.journal.append({"type": "feishu_event", "event_id": event_key, "ts": now_iso()})
+        # Never run GitHub/Feishu HTTP calls on the WebSocket event-loop thread.
+        threading.Thread(target=self.process_message, args=(sender, chat_id, message_id, text), daemon=True).start()
+
+    def process_message(self, sender, chat_id, message_id, text):
         try:
-            self.handle(sender, chat_id, message_id, text)
+            with CARD_DISPATCH_LOCK:
+                self.handle(sender, chat_id, message_id, text)
         except Exception:
             log.exception("command handling failed")
             try:
@@ -684,7 +700,7 @@ class Bot:
                    .register_p2_im_chat_access_event_bot_p2p_chat_entered_v1(lambda event: None)
                    .register_p2_im_chat_member_bot_added_v1(lambda event: None).build())
         # INFO connection logs include temporary WebSocket credentials.
-        ws = WsClient(self.config["app_id"], self.config["app_secret"], event_handler=handler, log_level=lark.LogLevel.WARNING)
+        ws = WsClient(self.config["app_id"], self.config["app_secret"], event_handler=CallbackDispatcher(handler), log_level=lark.LogLevel.WARNING)
         ws.start()
 
 
