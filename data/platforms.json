@@ -1888,14 +1888,13 @@
     "website": "https://manus.im",
     "category": "海外主流",
     "free_quota": {
-      "amount": "1万亿",
-      "unit": "Tokens 开发者总池",
-      "type": "限时/活动补贴",
+      "amount": 1000000000000,
+      "unit": "tokens",
+      "type": "限时",
       "reset_period": "活动期间",
       "conditions": [
-        "用于在 Manus 平台构建与部署 Web 应用",
-        "官方免费提供内置多模态与通用 Agent 算力",
-        "零底层 API 成本直接调用"
+        "先到先得，直到共享池用完",
+        "用于构建AI网络应用"
       ]
     },
     "free_models": [
@@ -1909,9 +1908,9 @@
     "source_urls": [
       "https://events.manus.im/zh-cn/campaign/free-tokens"
     ],
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-09-06",
     "status": "active",
-    "intro": "全球知名通用 AI Agent 平台。官方推出 1 万亿免费 AI 代币开发者激励计划，助力开发者零成本构建与部署智能 Web 应用程序。",
+    "intro": "Manus免费提供1万亿AI代币，用于构建Web应用，先到先得，用完为止。",
     "intro_en": "Leading autonomous AI Agent platform. Official 1 Trillion free AI tokens campaign for developers to build and host full-stack intelligent web apps.",
     "tags": [
       "限时",
@@ -1962,9 +1961,12 @@
     "evidence": [
       {
         "url": "https://events.manus.im/zh-cn/campaign/free-tokens",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-09-06",
+        "source_hash": "08512df982e16a5e7eeba22d8bd3fc344747300d37912c5482fe9c10fbf314eb",
+        "captured_at": "2026-09-06T08:39:42.273814+00:00"
       }
-    ]
+    ],
+    "last_checked": "2026-09-06"
   },
   {
     "schema_version": 2,
