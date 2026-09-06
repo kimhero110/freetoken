@@ -51,7 +51,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.owner=self.session();p=urlsplit(self.path).path
         if p=='/healthz':return self.json(200,{'ok':True,'version':'4.0','probe':probe.VERSION,'engine':VERSION,'release':os.getenv('STUDIO_RELEASE','dev')})
-        if p in ('/','/cost','/compare','/reports','/plans','/api-cost','/probe','/criteria') or re.fullmatch(r'/(report|share)/[\w-]+',p):
+        if p in ('/','/cost','/compare','/reports','/plans','/api-cost','/probe','/criteria','/select') or re.fullmatch(r'/(report|share)/[\w-]+',p):
             # Legacy URLs remain readable, never indexed in private history.
             if p.startswith('/report/'):
                 rid=p.rsplit('/',1)[-1]
