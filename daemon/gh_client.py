@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""GitHub API client for the intake bot PAT (Actions-only fine-grained token).
+"""GitHub API client for a repository-scoped Actions + Deployments PAT.
 
 Never grows Contents permissions: dispatch + poll + pending-deployment approval only.
 Every approval is journaled by callers; codes bound to ticket-initiated runs.
@@ -39,6 +39,8 @@ def _kind_for_status(status: int) -> str:
     if status == 401:
         return "PAT_DEAD"
     if status == 403:
+        return "PERMISSION"
+    if status == 429:
         return "RATE"
     if status == 404 or status == 422:
         return "CONTRACT"
@@ -85,7 +87,13 @@ class GitHubClient:
                 message = response.json().get("message", response.text[:200])
             except ValueError:
                 message = response.text[:200]
-            raise GhError(_kind_for_status(response.status_code), message, response.status_code)
+            kind = _kind_for_status(response.status_code)
+            if response.status_code == 403 and (
+                response.headers.get("X-RateLimit-Remaining") == "0"
+                or "rate limit" in message.lower()
+            ):
+                kind = "RATE"
+            raise GhError(kind, message, response.status_code)
         raise GhError("OTHER", "unreachable")
 
     # -- actions -------------------------------------------------------------
@@ -131,10 +139,11 @@ class GitHubClient:
             "POST",
             f"/repos/{self.repo}/actions/runs/{run_id}/pending_deployments",
             {"environment_ids": [environment_id], "state": "approved", "comment": comment[:200]},
+            retries=1,
         )
 
     def cancel_run(self, run_id: int) -> None:
-        self._request("POST", f"/repos/{self.repo}/actions/runs/{run_id}/cancel")
+        self._request("POST", f"/repos/{self.repo}/actions/runs/{run_id}/cancel", retries=1)
 
     # -- contents (read-only is allowed for any token with repo access) ------
     def list_candidates(self) -> list:

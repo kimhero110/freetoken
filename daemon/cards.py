@@ -219,4 +219,6 @@ def daily_card(pending: list, secret_coverage: str, releases: list, approvals: i
 
 
 def card_json(card: dict) -> str:
-    return json.dumps(card, ensure_ascii=False)
+    # The IM API already supplies msg_type=interactive; its content is the
+    # card object, not the webhook envelope {msg_type, card}.
+    return json.dumps(card.get("card", card), ensure_ascii=False)

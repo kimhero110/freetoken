@@ -48,7 +48,7 @@ const t = (zh: string, english: string) => en ? english : zh;
     <div id="result-values"><strong id="total">—</strong><p id="breakdown"></p><p id="converted"></p></div>
     <p class="hint">{t('预算估算，不是账单。仅含所填 token 费用，不含税费、工具调用、图片、搜索或其他附加费。报价标记为“文档记录”，不代表实测或官方身份认证。', 'Budget estimate, not an invoice. Token charges only; excludes taxes, tools, images, search and other fees. Documented rates do not imply measured billing or verified model identity.')}</p>
   </section>
-  <div class="next-links"><a href={en ? '/en/#products' : '/#products'}>{t('← 查免费额度', '← Explore free quotas')}</a><a href="https://test.witkit.zone/">{t('去评测接口质量 ↗', 'Evaluate API quality ↗')}</a></div>
+  <div class="next-links"><a href={en ? '/en/#products' : '/#products'}>{t('← 查免费额度', '← Explore free quotas')}</a><a href="https://studio.witkit.zone/">{t('去评测接口质量 ↗', 'Evaluate API quality ↗')}</a></div>
 </section>
 <script define:vars={{ book }}>document.getElementById('calculator').dataset.book = JSON.stringify(book);</script>
 <script>

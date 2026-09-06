@@ -112,7 +112,10 @@ class TicketStore:
         now = time.time()
         for ticket in self.tickets.values():
             if ticket.kind in ("approve", "reject") and ticket.arg == candidate_id:
-                if ticket.phase not in ("done", "failed", "cancelled") and ticket.locked_until > now:
+                if ticket.phase not in ("done", "failed", "cancelled") and (
+                    ticket.phase not in ("created", "awaiting_confirm")
+                    or ticket.locked_until > now or ticket.confirm_expires_at > now
+                ):
                     return ticket
         return None
 

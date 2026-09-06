@@ -1,0 +1,11 @@
+---
+const {lang='zh'}=Astro.props;
+const en=lang==='en';
+---
+<section class="entry container"><p>WITKIT STUDIO</p><h1>{en?'API costs and evaluations, together.':'成本预算与接口评测，进入同一工作台。'}</h1><p>{en?'Estimate without an API key, compare quotes, or choose to evaluate an endpoint in WitKit Studio.':'API 成本计算器已整合到 WitKit Studio。无需 Key 即可估算预算，也可以主动选择接口评测，在同一报告里查看质量与费用。'}</p><a id="studio-entry" href="https://studio.witkit.zone/cost">{en?'Open WitKit Studio →':'打开 WitKit Studio →'}</a><small>{en?'FreeToken continues to provide free-tier intelligence and setup guides.':'FreeToken 继续提供免费额度情报与接入指南。'}</small></section>
+<script>
+const params=new URLSearchParams(location.search),target=new URL('https://studio.witkit.zone/cost');
+for(const key of ['platform','offer_id']){const value=params.get(key);if(value&&/^[a-zA-Z0-9:._-]{1,160}$/.test(value))target.searchParams.set(key,value);}
+document.getElementById('studio-entry')?.setAttribute('href',target.toString());
+</script>
+<style>.entry{max-width:850px;padding:90px 24px 110px}.entry>p:first-child{color:#547347;font:700 12px monospace;letter-spacing:2px}h1{font-size:clamp(28px,4vw,46px);line-height:1.4;letter-spacing:-1px}p{line-height:1.9;color:#596f60}a{display:inline-block;background:#21593f;color:white;border-radius:8px;padding:16px 25px;margin:24px 0;text-decoration:none}small{display:block;color:#6b7f6f}</style>
