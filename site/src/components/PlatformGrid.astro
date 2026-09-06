@@ -63,7 +63,7 @@ const totalCount = platforms.length;
             data-tools={isTools ? "true" : "false"}
             data-multimodal={isMultimodal ? "true" : "false"}
             data-web3={isWeb3 ? "true" : "false"}
-            data-search={`${p.name} ${p.name_en ?? ''} ${p.slug} ${p.intro ?? ''} ${tagsStr}`.toLowerCase()}
+            data-search={`${p.name} ${p.name_en ?? ''} ${p.slug} ${p.intro ?? ''} ${p.intro_en ?? ''} ${(p.free_models ?? []).join(' ')} ${tagsStr}`.normalize('NFKC').toLowerCase()}
           >
             <div class="card-main-content">
               <div class="card-meta-top">
@@ -354,6 +354,7 @@ const totalCount = platforms.length;
   let currentSearch = '';
 
   function applyFilterAndSearch() {
+    let resultCount = 0;
     cards.forEach(card => {
       let matchFilter = false;
       if (currentFilter === 'all') matchFilter = true;
@@ -368,10 +369,20 @@ const totalCount = platforms.length;
 
       if (matchFilter && matchSearch) {
         card.style.display = 'flex';
+        if (!card.classList.contains('card-submit-new')) resultCount += 1;
       } else {
         card.style.display = 'none';
       }
     });
+    const link = document.getElementById('search-results-link');
+    const status = document.getElementById('search-results-status');
+    if (link) link.hidden = !currentSearch;
+    if (status && currentSearch) {
+      const english = status.dataset.lang === 'en';
+      status.textContent = resultCount
+        ? (english ? `${resultCount} matching platforms · View results ↓` : `找到 ${resultCount} 个平台 · 查看结果 ↓`)
+        : (english ? 'No matching platforms. Try another keyword.' : '未找到匹配平台，请尝试其他关键词。');
+    }
   }
 
   filterTabs.forEach(tab => {
@@ -384,7 +395,15 @@ const totalCount = platforms.length;
   });
 
   searchInput?.addEventListener('input', (e) => {
-    currentSearch = e.target.value.trim().toLowerCase();
+    currentSearch = e.target.value.normalize('NFKC').trim().toLowerCase();
+    currentFilter = 'all';
+    filterTabs.forEach(tab => tab.classList.toggle('active', tab.dataset.filter === 'all'));
     applyFilterAndSearch();
+  });
+  searchInput?.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      document.getElementById('products')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 </script>
