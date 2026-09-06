@@ -119,6 +119,7 @@ def run_discovery():
     targets = list(dict.fromkeys(TARGET_SEEDS))
     print(f"[INFO] Probing candidate target pool ({len(targets)} candidates)...\n")
 
+    failed = 0
     scanned = 0
     already_indexed = 0
     discovered_new = []
@@ -137,6 +138,7 @@ def run_discovery():
         print(f"  [PROBING] {url:<30} ... ", end="", flush=True)
         data = extract_page_data(url)
         if not data:
+            failed += 1
             print("Failed (Offline / Timeout)")
             continue
 
@@ -178,7 +180,7 @@ def run_discovery():
                     },
                     "verification": "邮箱/GitHub",
                     "status": "unverified",
-                    "last_verified": str(date.today()),
+                    "last_verified": None,
                     "tags": ["雷达新源", "待人工复核"],
                     "gotchas": ["由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。"],
                     "gotchas_en": ["Discovered by radar. Manual verification required."],
@@ -208,20 +210,6 @@ def run_discovery():
                     yaml.dump(draft_content, f, allow_unicode=True, sort_keys=False)
                 print(f"    -> [DRAFT] Saved candidate YAML: data/candidates/{slug_base}.yaml")
 
-            # Push Feishu interactive notification
-            try:
-                from feishu_notifier import notify_new_candidate
-                notify_new_candidate({
-                    "slug": slug_base,
-                    "name": data["title"],
-                    "url": url,
-                    "score": data["score"],
-                    "free_quota": "包含开发者免费层 / 体验额度",
-                    "tags": ["雷达新源", "待决策"],
-                    "gotchas": "已在 data/candidates 生成草稿。在终端运行 `python scripts/review_candidates.py --approve " + slug_base + "` 即可一键批准上线！"
-                })
-            except Exception as fe:
-                print(f"    -> [FEISHU WARN] Notification skipped: {fe}")
         else:
             print(f"Low relevance ({data['score']}/11)")
 
@@ -241,9 +229,11 @@ def run_discovery():
         print("-" * 75)
         print("\n💡 提示：运行 `python scripts/review_candidates.py` 即可在终端交互式决策并一键上线！")
     else:
-        print("[REPORT] All probed platforms are already 100% indexed in the database.")
+        print("[REPORT] No new candidates; this does not imply all targets were verified.")
+
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
-    run_discovery()
+    sys.exit(run_discovery())
 

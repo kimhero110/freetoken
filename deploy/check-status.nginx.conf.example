@@ -1,0 +1,11 @@
+# Include inside the existing witkit.zone HTTPS server block.
+# Bind ONLY the bot's /data/check-public read-only at the alias path below.
+# Keep this outside immutable website releases; never expose the SQLite database.
+location = /ops/check-status.json {
+    alias /var/lib/freetoken-check-public/status.json;
+    default_type application/json;
+    add_header Cache-Control "no-store" always;
+    add_header Access-Control-Allow-Origin "https://freetokens.info" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    limit_except GET { deny all; }
+}

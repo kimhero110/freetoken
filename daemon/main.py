@@ -615,6 +615,10 @@ class Bot:
     def run(self):
         self.report_interrupted()
         self.watchdog.start()
+        if self.config.get("check_monitor_enabled"):
+            from .check_monitor import CheckMonitor
+            self.check_monitor = CheckMonitor(self.gh, self.feishu, self.config)
+            self.check_monitor.start()
         threading.Thread(target=self.daily_digest, name="digest", daemon=True).start()
         log.info("intake bot starting (bootstrap=%s commit=%s)", self.config["bootstrap"], self.config["commit_sha"])
         from lark_oapi.ws import Client as WsClient

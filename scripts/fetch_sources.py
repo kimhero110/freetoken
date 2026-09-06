@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""抓取各平台来源页面，基于内容哈希做变更检测。
+"""Fetch source snapshots into a temporary directory.
 
-- 读取 data/platforms/*.yaml 中的 source_urls
-- 请求每个 URL（带 UA、超时、失败容忍）
-- 对比 .cache/hashes.json 中已成功处理的正文 SHA256 哈希
-- 仅哈希发生变化的来源会被记录到 .cache/changed.json，供 extract.py 增量处理并在成功后推进哈希
+Approved .cache/hashes.json is read-only here; only human review advances it.
+Successful snapshots survive partial fetch failure for downstream extraction.
 """
 
+import argparse
 import hashlib
 import json
 import sys
+import os
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
@@ -60,11 +61,15 @@ def coverage_degraded(attempted: int, succeeded: int) -> bool:
 
 
 def main() -> int:
-    CACHE_DIR.mkdir(exist_ok=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--output-dir', type=Path, default=Path(os.environ.get('RUNNER_TEMP', ROOT / '.cache' / 'check-run')))
+    args = parser.parse_args()
+    args.output_dir.mkdir(parents=True, exist_ok=True)
     hashes = load_hashes()
     changed: list[dict] = []
     attempted = 0
     succeeded = 0
+    observations = []
 
     yaml_files = sorted(PLATFORMS_DIR.glob("*.yaml"))
     print(f"共发现 {len(yaml_files)} 个平台条目")
@@ -76,27 +81,33 @@ def main() -> int:
             attempted += 1
             text = fetch_text(url)
             if text is None:
+                observations.append({'source': hashlib.sha256((yf.stem + url).encode()).hexdigest(), 'status': 'fetch_failed'})
                 continue  # 抓取失败时保留旧哈希，下一轮重试
             succeeded += 1
             digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
+            observations.append({'source': hashlib.sha256((yf.stem + url).encode()).hexdigest(), 'status': 'fetched'})
             if hashes.get(url) != digest:
-                hashes[url] = digest
-                changed.append({"platform": yf.stem, "url": url, "hash": digest})
+                changed.append({"platform": yf.stem, "url": url, "hash": digest, "text": text})
                 print(f"  [变更] {name} - {url}")
             else:
                 print(f"  [未变] {name} - {url}")
 
-    # hashes.json 只记录已经成功提取的来源版本。不要在此提前推进哈希，
+    # hashes.json 只记录经过人工审核的来源版本。不要在此提前推进哈希，
     # 否则后续 API 或数据校验失败时，下一轮会把该来源误判为“未变”。
-    CHANGED_FILE.write_text(
+    output = args.output_dir / 'changed.json'
+    output.write_text(
         json.dumps(changed, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    print(f"\n本轮来源覆盖率：{succeeded}/{attempted} 成功；{len(changed)} 个来源变更，已写入 {CHANGED_FILE}")
+    (args.output_dir / 'fetch-summary.json').write_text(json.dumps({
+        'checked_at': datetime.now(timezone.utc).isoformat(), 'attempted': attempted,
+        'succeeded': succeeded, 'sources': observations,
+    }), encoding='utf-8')
+    print(f"\n本轮来源覆盖率：{succeeded}/{attempted} 成功；{len(changed)} 个来源变更")
     if attempted and succeeded == 0:
         print("全部来源抓取失败，拒绝将监控失效报告为无变化")
         return 1
-    if coverage_degraded(attempted, succeeded):
-        print(f"来源成功率低于 50%（{succeeded}/{attempted}），监控已降级，拒绝静默报告成功")
+    if succeeded < attempted:
+        print('存在来源抓取失败，成功来源仍可继续处理')
         return 1
     return 0
 

@@ -2,7 +2,7 @@ name: 全球新免费 Token 平台雷达自动扫描
 
 on:
   schedule:
-    # 每 2 天一次，北京时间凌晨 02:30 (UTC 18:30) 在 DeepSeek 波谷五折期自动巡检新源
+    # 每 2 天一次，北京时间凌晨 02:30 (UTC 18:30) 巡检新源（此脚本不调用大模型）
     - cron: '30 18 */2 * *'
   workflow_dispatch: # 支持随时手动一键探测
 
@@ -17,6 +17,7 @@ jobs:
   discover:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Mint GitHub App token
         id: app-token
@@ -41,31 +42,22 @@ jobs:
         run: pip install --require-hashes -r scripts/requirements.lock
 
       - name: 启动自动发现雷达
-        env:
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
-          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
-          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+        id: discover
+        continue-on-error: true
         run: python scripts/discover_new_platforms.py
 
-      - name: 提交待审候选源至 GitHub
+      - name: 发布成功生成的候选
+        id: publish
+        if: ${{ !cancelled() && steps.discover.outcome != 'skipped' }}
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          git config user.name 'freetoken-bot[bot]'
-          git config user.email '4818224+freetoken-bot[bot]@users.noreply.github.com'
-          git add data/candidates/
-          if git diff --cached --quiet; then
-            echo '无新候选平台，跳过提交'
-          else
-            git commit -m 'feat(radar): 发现新候选平台草稿，已推送飞书并等待人工决策'
-            git pull --rebase origin main
-            BRANCH="auto/radar-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-            git push origin HEAD:refs/heads/"$BRANCH"
-            gh pr create --base main --head "$BRANCH" \
-              --title 'feat(radar): 发现新候选平台草稿' \
-              --body '雷达发现的新候选平台，仅写入 data/candidates/，正式收录仍需人工审批。'
-            gh pr merge --auto --merge --delete-branch "$BRANCH"
-          fi
+        run: python -m scripts.publish_candidates --summary "$RUNNER_TEMP/publish-summary.json"
 
+      - name: 汇总真实运行结果
+        if: ${{ !cancelled() }}
+        env:
+          FETCH_OUTCOME: ${{ steps.discover.outcome }}
+          EXTRACT_OUTCOME: success
+          PUBLISH_OUTCOME: ${{ steps.publish.outcome }}
+        run: python -m scripts.check_summary

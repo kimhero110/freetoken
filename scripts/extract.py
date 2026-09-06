@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
-"""调用大模型 API 从页面文本中结构化提取免费额度信息。
+"""Extract review candidates from captured source snapshots.
 
-- 读取 config/llm.yaml 配置，支持自由增删大模型节点与路由策略
-- 支持运行策略：
-  1. specified（单模型模式，默认）
-  2. fallback（链式回退模式）
-  3. load_balance（多模型负载均衡/轮询模式）
-- 支持 DeepSeek 官方优惠波谷保护（北京时间 00:30~08:30 五折时段）
-- 支持 CLI 参数与环境变量动态覆盖，完美适配 GitHub Actions 手动触发
-- 将提取结果写入 data/candidates/，人工批准后才更新正式数据
+Paid calls require persistent intent, explicit budgets and the configured cost
+window. Failures never trigger provider fallback. Formal data requires review.
 """
 
 import argparse
@@ -81,38 +75,21 @@ class Provider:
 
 
 def is_beijing_off_peak() -> bool:
-    """判断当前时间是否处于 DeepSeek 优惠波谷时段（北京时间 00:30 ~ 08:30）。"""
+    """Apply the configured Beijing execution window; this is not a pricing claim."""
     tz_utc8 = timezone(timedelta(hours=8))
     now_utc8 = datetime.now(tz_utc8)
     current_time = now_utc8.time()
-    return time(0, 30) <= current_time <= time(8, 30)
+    return time(0, 30) <= current_time < time(8, 30)
 
 
 def load_config() -> dict:
-    """加载 config/llm.yaml 配置文件。"""
-    if CONFIG_FILE.exists():
-        try:
-            return yaml.safe_load(CONFIG_FILE.read_text(encoding="utf-8")) or {}
-        except Exception as exc:
-            print(f"[配置警告] 读取 config/llm.yaml 失败: {exc}，使用默认配置")
-    return {
-        "strategy": "specified",
-        "active": "deepseek",
-        "off_peak_strategy": {
-            "enabled": True,
-            "deepseek_off_peak_only": True,
-            "action": "switch_to",
-            "fallback_provider": "siliconflow",
-        },
-        "providers": {
-            "deepseek": {
-                "name": "DeepSeek 官方",
-                "base_url": "https://api.deepseek.com",
-                "model": "deepseek-chat",
-                "api_key_env": "DEEPSEEK_API_KEY",
-            }
-        },
-    }
+    try:
+        config = yaml.safe_load(CONFIG_FILE.read_text(encoding="utf-8"))
+        if not isinstance(config, dict) or not isinstance(config.get("providers"), dict):
+            raise ValueError("CONFIG_INVALID")
+        return config
+    except Exception:
+        raise ValueError("CONFIG_INVALID") from None
 
 
 def resolve_providers(config: dict, target_provider_id: str | None = None, model_override: str | None = None) -> dict[str, Provider]:
@@ -171,16 +148,17 @@ def parse_json_safely(raw_content: str) -> dict | None:
     return None
 
 
-def execute_llm_call(prov: Provider, text: str) -> dict | None:
+def execute_llm_call(prov: Provider, text: str, *, max_tokens: int = 1024) -> dict | None:
     """针对单个 Provider 发起调用。"""
     print(f"  [AI 提取] 正在调用 {prov.name} (模型: {prov.model})")
     prompt = PROMPT_TEMPLATE.format(text=text[:8000])
     try:
-        client = OpenAI(api_key=prov.api_key, base_url=prov.base_url, timeout=30.0)
+        client = OpenAI(api_key=prov.api_key, base_url=prov.base_url, timeout=30.0, max_retries=0)
         kwargs = {
             "model": prov.model,
             "messages": [{"role": "user", "content": prompt}],
             "temperature": prov.temperature,
+            "max_tokens": max_tokens,
         }
         if prov.response_format_json:
             kwargs["response_format"] = {"type": "json_object"}
@@ -192,9 +170,9 @@ def execute_llm_call(prov: Provider, text: str) -> dict | None:
             print(f"  [AI 提取成功] 由 {prov.name} 完成解析")
             return data
         else:
-            print(f"  [解析警告] {prov.name} 返回无法解析为 JSON: {content[:100]}...")
+            print("  [解析警告] MODEL_JSON_INVALID")
     except Exception as exc:
-        print(f"  [调用失败] {prov.name} 报错: {exc}")
+        raise RuntimeError("MODEL_CALL_UNCERTAIN") from None
     return None
 
 
@@ -292,122 +270,111 @@ def write_update_candidate(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="灵活自定义大模型提取数据")
-    parser.add_argument("--dry-run", action="store_true", help="跳过 API 调用，仅打印计划")
-    parser.add_argument("--provider", type=str, default=None, help="覆盖激活的模型提供商 ID (如 deepseek, siliconflow, kimi)")
-    parser.add_argument("--model", type=str, default=None, help="覆盖模型名称 (如 deepseek-chat, qwen-plus)")
-    parser.add_argument("--strategy", type=str, choices=["specified", "fallback", "load_balance"], default=None, help="覆盖调用策略")
-    parser.add_argument("--ignore-off-peak", action="store_true", help="忽略 DeepSeek 波谷时段保护，强制调用")
+    # Import through the package also when invoked as scripts/extract.py.
+    sys.path.insert(0, str(ROOT))
+    from scripts.check_state import GitState, StateError, digest
+    from scripts.check_runner import paid_result, next_window, utcnow
+    parser = argparse.ArgumentParser(description="Persistent, single-attempt extraction")
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--provider")
+    parser.add_argument("--model")
+    parser.add_argument("--strategy", choices=["specified", "fallback", "load_balance"])
+    parser.add_argument("--ignore-off-peak", action="store_true")
+    parser.add_argument("--input-dir", type=Path, default=Path(os.environ.get("RUNNER_TEMP", ROOT / ".cache" / "check-run")))
     args = parser.parse_args()
-
-    if not CHANGED_FILE.exists():
-        print("未找到 .cache/changed.json，请先运行 fetch_sources.py")
-        return 0
-
-    changed = json.loads(CHANGED_FILE.read_text(encoding="utf-8"))
-    if not changed:
-        print("本轮无变更来源，跳过提取")
-        return 0
-
-    config = load_config()
-
-    # 确定调用策略与目标模型
-    strategy = args.strategy or os.environ.get("LLM_STRATEGY") or config.get("strategy", "specified")
-    active_id = args.provider or os.environ.get("LLM_ACTIVE_PROVIDER") or config.get("active", "deepseek")
-    model_override = args.model or os.environ.get("LLM_MODEL_OVERRIDE")
-    ignore_off_peak = args.ignore_off_peak or os.environ.get("IGNORE_OFF_PEAK", "").lower() in {"1", "true", "yes"}
-
-    print(f"[配置状态] 策略: {strategy} | 激活提供商: {active_id} | 模型覆盖: {model_override or '无'}")
-
-    # 波谷时段检查逻辑
-    off_peak_cfg = config.get("off_peak_strategy", {})
-    if off_peak_cfg.get("enabled", True) and active_id == "deepseek" and not ignore_off_peak:
-        if off_peak_cfg.get("deepseek_off_peak_only", True):
-            if not is_beijing_off_peak():
-                now_str = datetime.now(timezone(timedelta(hours=8))).strftime("%H:%M")
-                action = off_peak_cfg.get("action", "switch_to")
-                fallback_id = off_peak_cfg.get("fallback_provider", "siliconflow")
-                print(f"[波谷保护] 当前北京时间 {now_str} 非 DeepSeek 5折优惠时段 (00:30~08:30)")
-                if action == "switch_to":
-                    print(f"[波谷保护] 自动切换提供商至备用模型: {fallback_id}")
-                    active_id = fallback_id
-                else:
-                    print("[波谷保护] 设定为跳过调用，等待波谷期执行。")
-                    return 0
-
-    # 收集可用 Provider
-    available_providers = resolve_providers(config, target_provider_id=active_id, model_override=model_override)
-
-    if not args.dry_run:
-        if not available_providers:
-            print("错误：未找到任何可用且已配置 API Key 的模型提供商！")
+    directory = args.input_dir
+    directory.mkdir(parents=True, exist_ok=True)
+    summary = {"version": 1, "started_at": utcnow().isoformat(), "sources": [], "status": "running"}
+    # A rerun does not reset the logical run budget.
+    run = os.environ.get("GITHUB_RUN_ID", "local")
+    attempt = os.environ.get("GITHUB_RUN_ATTEMPT", "1")
+    run_key = f"{run}-{attempt}"
+    store = GitState(ROOT)
+    dry = args.dry_run or os.environ.get("CHECK_PAID_ENABLED") != "true"
+    try:
+        input_file = directory / "changed.json"
+        if not input_file.exists():
+            raise StateError("INPUT_MISSING")
+        changed = json.loads(input_file.read_text(encoding="utf-8"))
+        if not isinstance(changed, list):
+            raise StateError("INPUT_INVALID")
+        config = load_config()
+        provider_id = args.provider or config.get("active", "deepseek")
+        if (args.strategy or config.get("strategy", "specified")) != "specified":
+            raise StateError("UNSAFE_RETRY_STRATEGY")
+        if args.ignore_off_peak:
+            raise StateError("COST_WINDOW_OVERRIDE_DISABLED")
+        available = resolve_providers(config, provider_id, args.model)
+        provider = available.get(provider_id)
+        limit = int(os.environ.get("CHECK_MAX_CALLS") or "0")
+        max_tokens = int(os.environ.get("CHECK_MAX_OUTPUT_TOKENS") or "0")
+        if changed and not dry and (provider is None or not 1 <= limit <= 100 or not 1 <= max_tokens <= 4096):
+            raise StateError("PROVIDER_OR_BUDGET_NOT_CONFIGURED")
+        for item in changed:
+            source = digest([item["platform"], item["url"], item["hash"]])
+            observation = {"source": source, "status": "pending"}
+            summary["sources"].append(observation)
+            try:
+                slug, url, source_hash = item["platform"], item["url"], item["hash"]
+                output = candidate_path(slug, source_hash)
+                entry = yaml.safe_load((PLATFORMS_DIR / f"{slug}.yaml").read_text(encoding="utf-8"))
+                if url not in entry.get("source_urls", []):
+                    raise StateError("SOURCE_NOT_AUTHORIZED")
+                text = item.get("text")
+                if not isinstance(text, str) or hashlib.sha256(text.encode()).hexdigest() != source_hash:
+                    raise StateError("SOURCE_SNAPSHOT_INVALID")
+                if output.exists():
+                    existing = yaml.safe_load(output.read_text(encoding="utf-8"))
+                    if existing.get("source_hash") != source_hash or existing.get("source_url") != url:
+                        raise StateError("CANDIDATE_ID_CONFLICT")
+                    observation["status"] = "pending_review"
+                    continue
+                reviewed = any(
+                    (record.get("source_hash") == source_hash and record.get("source_url") == url)
+                    for path in (ROOT / "data" / "reviews").glob("*.yaml")
+                    if isinstance((record := yaml.safe_load(path.read_text(encoding="utf-8"))), dict)
+                )
+                if reviewed:
+                    observation["status"] = "reviewed_version"
+                    continue
+                if dry:
+                    observation["status"] = "dry_run"
+                    continue
+                key = digest({"source_id": digest([slug, url]), "message": PROMPT_TEMPLATE.format(text=text[:8000]),
+                              "provider": provider.id, "endpoint_hash": digest(provider.base_url), "model": provider.model,
+                              "temperature": provider.temperature, "json": provider.response_format_json,
+                              "max_tokens": max_tokens, "recipe": 1})
+                off_peak = config.get("off_peak_strategy", {})
+                saved = store.read()[1]["calls"].get(key, {}).get("status") == "result_saved"
+                if not saved and provider_id == "deepseek" and off_peak.get("enabled", True) and off_peak.get("deepseek_off_peak_only", True) and not is_beijing_off_peak():
+                    observation.update(status="deferred", next_eligible_at=next_window(utcnow()))
+                    continue
+                result = paid_result(store, key=key, source=source, run=run,
+                                     request=lambda: execute_llm_call(provider, text, max_tokens=max_tokens),
+                                     validate=validate_extracted, limit=limit)
+                # Public candidates do not need raw source excerpts to verify hashes.
+                write_update_candidate(slug, url, source_hash, "", result, provider)
+                observation["status"] = "candidate_ready"
+            except Exception as exc:
+                observation.update(status="failed", error=str(exc) if isinstance(exc, StateError) else "SOURCE_PROCESSING_FAILED")
+        summary["status"] = "dry_run" if dry else "completed"
+        if any(s["status"] == "failed" for s in summary["sources"]):
+            summary["status"] = "failed"
+        elif any(s["status"] == "deferred" for s in summary["sources"]):
+            summary["status"] = "deferred"
+    except Exception as exc:
+        summary.update(status="failed", error=str(exc) if isinstance(exc, StateError) else "CHECK_FAILED")
+    summary["completed_at"] = utcnow().isoformat()
+    (directory / "extract-summary.json").write_text(json.dumps(summary), encoding="utf-8")
+    print(json.dumps(summary))
+    # Dry runs must not require or initialize production state.
+    if not dry:
+        try:
+            store.update(lambda state: state["runs"].update({run_key: summary}))
+        except Exception:
+            print("STATE_SUMMARY_SAVE_FAILED")
             return 1
-        print(f"[可用提供商] 已加载: {', '.join(available_providers.keys())}")
-
-    failed = False
-
-    for item in changed:
-        slug, url = item["platform"], item["url"]
-        print(f"处理 {slug} - {url}")
-        proposal_file = candidate_path(slug, item["hash"])
-        if proposal_file.exists():
-            print(f"  [待审核] 相同来源版本已有提案: {proposal_file.name}")
-            continue
-        text = fetch_text(url)
-        if text is None:
-            failed = True
-            continue
-        current_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
-        if current_hash != item["hash"]:
-            print("  [跳过] 页面在检测后再次变化，将在下一轮重新处理")
-            failed = True
-            continue
-        if args.dry_run:
-            print(f"  [dry-run] 将发送 {len(text)} 字符文本至大模型，跳过实际调用")
-            continue
-
-        # 根据策略组织调用列表
-        candidates: list[Provider] = []
-        if strategy == "specified":
-            if active_id in available_providers:
-                candidates = [available_providers[active_id]]
-            else:
-                print(f"  [配置错误] 指定的提供商 '{active_id}' 未配置对应 API Key 环境变量")
-                failed = True
-                continue
-        elif strategy == "load_balance":
-            all_list = list(available_providers.values())
-            random.shuffle(all_list)
-            candidates = all_list
-        elif strategy == "fallback":
-            if active_id in available_providers:
-                candidates.append(available_providers[active_id])
-            for pid, prov in available_providers.items():
-                if pid != active_id:
-                    candidates.append(prov)
-
-        raw_result = None
-        selected_provider = None
-        for prov in candidates:
-            raw_result = execute_llm_call(prov, text)
-            if raw_result is not None:
-                selected_provider = prov
-                break
-
-        extracted = validate_extracted(raw_result)
-        if extracted is None:
-            print("  [校验失败] 模型输出不符合平台数据 schema")
-            failed = True
-            continue
-        write_update_candidate(
-            slug, url, item["hash"], text, extracted, selected_provider
-        )
-
-    if failed:
-        print("本轮存在失败项；正式来源哈希仅在人工批准后推进")
-        return 1
-
-    return 0
+    return 1 if summary["status"] in {"failed", "deferred"} else 0
 
 
 if __name__ == "__main__":

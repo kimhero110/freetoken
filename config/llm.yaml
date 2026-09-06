@@ -2,21 +2,21 @@
 
 # 运行策略：
 # - "specified": 仅使用 active 字段指定的模型提供商
-# - "fallback": 当指定模型调用失败时，按 providers 列表顺序自动降级重试
-# - "load_balance": 在所有已配置 Key 的可用模型中随机/轮询负载均衡
+# - 定时提取仅允许 specified；fallback/load_balance 已被可靠性保护拒绝
+
 strategy: "specified"
 
 # 默认激活的模型提供商标识（可在 GitHub Actions 界面或环境变量 LLM_ACTIVE_PROVIDER 中动态覆盖）
 active: "deepseek"
 
-# 波谷时段保护策略（DeepSeek 官方 5 折优惠时段：北京时间 00:30 ~ 08:30）
+# 既有执行时段策略：北京时间 00:30 ~ 08:30。折扣价格需另行核对。
 off_peak_strategy:
   enabled: true
   deepseek_off_peak_only: true
   # 非波谷时段触发时的行为：
   # - "switch_to": 自动切换为下方 fallback_provider 指定的模型
   # - "skip": 跳过本次调用，等待波谷期定时任务
-  action: "switch_to"
+  action: "skip"
   fallback_provider: "siliconflow"
 
 # 模型提供商列表（可根据需要自由扩展、增删修改）

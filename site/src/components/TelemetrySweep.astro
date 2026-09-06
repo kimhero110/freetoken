@@ -17,9 +17,11 @@ const latestVerified = verifiedDates.at(-1) || (isEn ? 'Not verified' : '未核�
       <span class="telemetry-label">{isEn ? 'DATABASE:' : '数据目录:'}</span>
       <span class="telemetry-status">{isEn ? `${totalNodes} tracked platforms` : `已收录 ${totalNodes} 个平台`}</span>
       <span class="telemetry-sep">|</span>
-      <span class="telemetry-time">{isEn ? `Latest verification: ${latestVerified}` : `最近核验：${latestVerified}`}</span>
+      <span class="telemetry-time">{isEn ? `Latest reviewed verification: ${latestVerified}` : `最近审核核验：${latestVerified}`}</span>
     </div>
     <div class="telemetry-right">
+      <span data-check-health data-lang={lang}>{isEn ? 'Automatic check: status unknown' : '自动检查：状态暂不可确认'}</span>
+      <a href="https://github.com/kimhero110/freetoken/actions/workflows/update.yml" target="_blank" rel="noopener noreferrer">{isEn ? 'Run history' : '运行记录'}</a>
       <span class="telemetry-item">{isEn ? 'Changes require human approval' : '数据变更需人工审核'}</span>
     </div>
   </div>
@@ -105,3 +107,25 @@ const latestVerified = verifiedDates.at(-1) || (isEn ? 'Not verified' : '未核�
     }
   }
 </style>
+
+<script>
+  import { describeCheckHealth } from '../lib/check-health.mjs';
+  async function updateHealth() {
+    const nodes = document.querySelectorAll<HTMLElement>('[data-check-health]');
+    if (!nodes.length) return;
+    try {
+      const response = await fetch('https://witkit.zone/ops/check-status.json', {
+        credentials: 'omit', cache: 'no-store', signal: AbortSignal.timeout(5000),
+      });
+      if (!response.ok) throw new Error('unavailable');
+      const text = await response.text();
+      if (text.length > 8192) throw new Error('oversized');
+      const status = JSON.parse(text);
+      for (const node of nodes) node.textContent = describeCheckHealth(status, node.dataset.lang === 'en');
+    } catch {
+      for (const node of nodes) node.textContent = node.dataset.lang === 'en' ? 'Automatic check: status unknown' : '自动检查：状态暂不可确认';
+    }
+  }
+  updateHealth();
+  window.setInterval(updateHealth, 60000);
+</script>

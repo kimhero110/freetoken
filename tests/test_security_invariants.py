@@ -41,7 +41,11 @@ class SecurityInvariantTests(unittest.TestCase):
             )
             self.assertIn("group: freetoken-main-writer", workflow)
             self.assertIn("cancel-in-progress: false", workflow)
-            self.assertIn("git pull --rebase origin main", workflow)
+            if name in {"update.yml", "discover.yml"}:
+                self.assertIn("python -m scripts.publish_candidates", workflow)
+                self.assertNotIn("git pull --rebase", workflow)
+            else:
+                self.assertIn("git pull --rebase origin main", workflow)
 
     def test_production_deploy_only_accepts_main(self):
         workflow = (ROOT / ".github" / "workflows" / "publish.yml").read_text(encoding="utf-8")
@@ -89,7 +93,7 @@ class SecurityInvariantTests(unittest.TestCase):
         workflow = (ROOT / ".github" / "workflows" / "update.yml").read_text(
             encoding="utf-8"
         )
-        self.assertIn("git add data/candidates/", workflow)
+        self.assertIn("python -m scripts.publish_candidates", workflow)
         self.assertNotIn("git add data/platforms/", workflow)
         self.assertNotIn("npm run build", workflow)
         self.assertNotIn("HEAD:deploy", workflow)
@@ -158,8 +162,11 @@ class SecurityInvariantTests(unittest.TestCase):
             workflow = (ROOT / ".github" / "workflows" / name).read_text(encoding="utf-8")
             self.assertIn("actions/create-github-app-token@", workflow, name)
             self.assertIn("token: ${{ steps.app-token.outputs.token }}", workflow, name)
-            self.assertIn("gh pr create --base main", workflow, name)
-            self.assertIn("gh pr merge", workflow, name)
+            if name in {"update.yml", "discover.yml"}:
+                self.assertIn("python -m scripts.publish_candidates", workflow)
+            else:
+                self.assertIn("gh pr create --base main", workflow, name)
+                self.assertIn("gh pr merge", workflow, name)
             self.assertNotIn("git push origin main", workflow, name)
             self.assertNotIn("[skip ci]", workflow, name)
 
