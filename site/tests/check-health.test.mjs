@@ -22,3 +22,14 @@ test('dry run and outstanding incidents stay visible', () => {
   assert.match(describeCheckHealth({...valid, check_status: 'dry_run'}, true, now), /dry run/);
   assert.match(describeCheckHealth({...valid, active_incidents: 1}, true, now), /needs attention/);
 });
+
+
+test('deployed CSP permits the exact telemetry endpoint', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const headers = await readFile(new URL('../public/_headers', import.meta.url), 'utf8');
+  const component = await readFile(new URL('../src/components/TelemetrySweep.astro', import.meta.url), 'utf8');
+  const endpoint = component.match(/fetch\('([^']+)'/)[1];
+  const connect = headers.match(/connect-src ([^;]+)/)[1].split(/\s+/);
+  assert.ok(connect.includes(endpoint));
+  assert.ok(!connect.includes('*'));
+});

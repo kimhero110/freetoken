@@ -5,7 +5,7 @@
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://analytics.witkit.zone; connect-src 'self' https://analytics.witkit.zone; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://analytics.witkit.zone; connect-src 'self' https://analytics.witkit.zone https://witkit.zone/ops/check-status.json; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'
 
 /sitemap.xml
   Content-Type: application/xml; charset=utf-8
