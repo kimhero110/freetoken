@@ -20,8 +20,13 @@ const totalCount = platforms.length;
           id="search-input"
           class="hero-search-input"
           placeholder={isEn ? `Search ${totalCount}+ platforms, models (Grok, Gemini, DeepSeek, GLM-4) or features...` : `搜索 ${totalCount}+ 家平台、模型（如 Grok, Gemini, GLM-4, DeepSeek, DeepInfra）或特性...`}
+          aria-label={isEn ? "Search platforms" : "搜索平台"}
+          aria-controls="platform-grid"
           autocomplete="off"
         />
+        <a id="search-results-link" href="#products" hidden>
+          <span id="search-results-status" role="status" aria-live="polite" data-lang={lang}></span>
+        </a>
       </div>
 
       <!-- 双轨模式切换器 -->
@@ -139,6 +144,8 @@ const totalCount = platforms.length;
     outline: none;
     transition: all 0.2s;
   }
+  #search-results-link { display: block; margin-top: 8px; font-size: 14px; color: var(--accent); }
+  #search-results-link[hidden] { display: none; }
   .hero-search-input:focus {
     border-color: var(--accent);
     background: #ffffff;
