@@ -8,6 +8,7 @@ on:
       - "data/pricing/**"
       - "content/**"
       - "site/**"
+      - "studio/**"
       - "scripts/**"
       - "tests/**"
       - "package.json"
@@ -39,6 +40,8 @@ jobs:
         run: |
           pip install --require-hashes -r scripts/requirements.lock
           python -m unittest discover -s tests -v
+          python -m unittest discover -s studio/tests -v
+          cmp data/pricing/pricebook.json studio/pricebook.json
           python scripts/compile_data.py
           git diff --exit-code -- data/platforms.json site/src/data/platforms.json site/public/sitemap.xml
 
