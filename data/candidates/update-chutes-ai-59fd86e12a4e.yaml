@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: chutes-ai
+name: Chutes AI
+source_url: https://chutes.ai
+source_hash: 59fd86e12a4ebf12957f3a78d3191646acb677cb278941ca094b6b03c07a2383
+platform_hash: d4ad402a2f89983316aba475fd585bd11de85249542c6a5f87ecc2a86c0a6746
+captured_at: '2026-09-07T20:41:02.058089+00:00'
+extractor:
+  provider: deepseek
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    amount: 免费试用额度
+    unit: Requests
+    type: 限时/免费层
+    reset_period: 注册赠送
+    conditions:
+    - 注册即享开源模型测试配额
+    - 去中心化无服务器算力
+  intro: 去中心化无服务器 AI 算力网络。提供轻量级开源大模型即开即用 API 与免费探索层，无需自建集群。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Chutes提供无服务器AI计算服务，支持多种开源模型，按需付费，无免费额度。
