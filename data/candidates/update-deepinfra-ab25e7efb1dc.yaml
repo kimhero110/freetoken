@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: deepinfra
+name: DeepInfra
+source_url: https://deepinfra.com
+source_hash: ab25e7efb1dc5e7afb198656bb8b9962de39ea04cf49465f8bae8086abd52d9a
+platform_hash: bc19a32cf30fc490dfd06749a784291d59b7f1f6c532d11451638de1015f2781
+captured_at: '2026-09-08T01:15:23.890867+00:00'
+extractor:
+  provider: deepseek
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    amount: '5'
+    unit: 美元体验金
+    type: 限时/体验金
+    reset_period: 注册赠送
+    conditions:
+    - 新用户注册赠送体验金
+    - 支持 Llama 3、DeepSeek 与 Qwen 满血版
+  intro: 极速 Serverless AI 模型推理与托管平台。注册即赠送免费体验金，超低延迟支持 Llama 3、DeepSeek-V3 满血调用。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: DeepInfra提供高性能、低成本的AI推理API，支持多种模型，按量付费，无长期合约。
