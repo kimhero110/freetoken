@@ -541,7 +541,11 @@ if (!localized) {
 
       <!-- 桌面端横排导航 (>=768px) -->
       <nav class="nav-desktop-links">
-        <a href={isEn ? '/en/' : '/'} class="nav-item">{isEn ? 'Free quotas' : '免费额度'}</a>
+        <a href={isEn ? '/en/' : '/'} class="nav-item">{isEn ? '⚡ Radar' : '⚡ 算力雷达'}</a>
+        <a href="https://quotabar.witkit.zone" target="_blank" rel="noopener" class="nav-item" style="color: #2563eb; font-weight: 700;">
+          <span>🖥️ QuotaBar</span>
+          <span style="font-size: 10px; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 1px 5px; border-radius: 4px; margin-left: 3px;">桌面端</span>
+        </a>
         <a href={isEn ? '/en/cost/' : '/cost/'} class="nav-item">{isEn ? 'Cost' : '成本计算'}</a>
         <a href="https://studio.witkit.zone/" class="nav-item">{isEn ? 'API evaluation ↗' : '接口评测 ↗'}</a>
         <a href={isEn ? '/en/articles/' : '/articles/'} class="nav-item">{isEn ? '📚 Articles' : '📚 深度文章'}</a>
@@ -590,6 +594,10 @@ if (!localized) {
         <span>⚡</span>
         <span>{isEn ? 'Radar (Home)' : '算力雷达 (首页)'}</span>
       </a>
+      <a href="https://quotabar.witkit.zone" target="_blank" rel="noopener" class="drawer-nav-item" style="border-color: #bfdbfe; background: #eff6ff; color: #1e40af;">
+        <span>🖥️</span>
+        <span>QuotaBar 桌面额度血条 ↗</span>
+      </a>
       <a href={isEn ? '/en/articles/' : '/articles/'} class="drawer-nav-item">
         <span>📚</span>
         <span>{isEn ? 'Articles Hub' : '深度文章专栏'}</span>
@@ -635,6 +643,8 @@ if (!localized) {
           <a href={isEn ? '/en/cost/' : '/cost/'}>{isEn ? 'Cost calculator' : '成本计算器'}</a>
           <a href="https://studio.witkit.zone/">{isEn ? 'API evaluation ↗' : '接口评测 ↗'}</a>
           <a href={isEn ? '/en/' : '/'}>{isEn ? 'Radar' : '算力雷达'}</a>
+          <a href="https://quotabar.witkit.zone" target="_blank" rel="noopener">🖥️ QuotaBar</a>
+          <a href="https://studio.witkit.zone" target="_blank" rel="noopener">⚡ Studio 决策中枢</a>
           <a href={isEn ? '/en/articles/' : '/articles/'}>{isEn ? 'Articles' : '深度文章'}</a>
           <a href={isEn ? '/en/guide/' : '/guide/'}>{isEn ? 'Playbook' : '接入指南'}</a>
           <a href={isEn ? '/en/about/' : '/about/'}>{isEn ? 'Philosophy' : '长期主义'}</a>
