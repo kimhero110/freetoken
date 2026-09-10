@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "openai": "7.9.0"
+    "openai": "7.10.0"
   },
   "scripts": {
     "test": "node --test *.test.mjs"
