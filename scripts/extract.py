@@ -94,6 +94,12 @@ def load_config() -> dict:
         raise ValueError("CONFIG_INVALID") from None
 
 
+# A waiting proposal holds the queue for this long before a fresh extraction is
+# allowed to replace it. Long enough that daily page churn produces nothing, short
+# enough that a platform bringing a free tier back is not invisible for a month.
+STALE_AFTER = timedelta(days=7)
+
+
 def preflight(provider: Provider) -> dict:
     """Ask the provider what it offers, and record the answer without acting on it.
 
@@ -355,15 +361,32 @@ def main() -> int:
                 if reviewed:
                     observation["status"] = "reviewed_version"
                     continue
-                matching = []
+                # A pending proposal for this platform, whatever page version produced
+                # it. Keying this on source_hash was the mistake: these sources are
+                # marketing pages that change every day, so the hash moved while the
+                # extracted conclusion did not, and every run filed the same finding
+                # again -- thirteen open candidates for deepinfra, all saying the free
+                # credit is gone, none of them reviewed.
+                waiting = []
                 for path in CANDIDATES_DIR.glob(f"update-{slug}-*.yaml"):
                     existing = yaml.safe_load(path.read_text(encoding="utf-8"))
-                    if existing.get("platform_slug") == slug and existing.get("status") == "pending_review" and existing.get("source_hash") == source_hash and existing.get("source_url") == url:
-                        matching.append((path, existing))
+                    if existing.get("platform_slug") == slug and existing.get("status") == "pending_review" and existing.get("source_url") == url:
+                        waiting.append((path, existing))
+                matching = [pair for pair in waiting if pair[1].get("source_hash") == source_hash]
+                platform_hash = build_update_candidate(entry, slug, url, source_hash, "", {}, {})['platform_hash']
+                if waiting and not matching:
+                    newest_path, newest = max(waiting, key=lambda pair: pair[1].get("captured_at", ""))
+                    captured = datetime.fromisoformat(newest["captured_at"])
+                    # The queue is blocked on a person, not on freshness. While the
+                    # official record is unchanged and a proposal is already waiting,
+                    # a second one cannot tell them anything the first does not.
+                    if (captured.tzinfo and timedelta(0) <= utcnow()-captured < STALE_AFTER
+                            and newest.get('platform_hash') == platform_hash):
+                        observation.update(status="pending_review", superseded_by=newest_path.stem)
+                        continue
                 if matching:
                     previous_path, existing = max(matching, key=lambda pair: pair[1].get("captured_at", ""))
                     captured = datetime.fromisoformat(existing["captured_at"])
-                    platform_hash = build_update_candidate(entry, slug, url, source_hash, "", {}, {})['platform_hash']
                     if captured.tzinfo and timedelta(0) <= utcnow()-captured < timedelta(hours=24) and existing.get('platform_hash') == platform_hash:
                         observation["status"] = "pending_review"
                         continue
