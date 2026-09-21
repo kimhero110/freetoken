@@ -441,20 +441,51 @@ def reject_candidate(candidate_id: str):
         return True
 
 
+def reject_many(candidate_ids: str):
+    """拒绝一批候选，逐条处理，逐条报告。
+
+    同一份结论被重复生成是常态：营销首页天天变，来源哈希跟着变，而提取结论
+    可以十几天不变。清一次积压要按十几次按钮，于是没有人清，队列继续长。
+
+    只有拒绝支持批量。批准会改动正式数据并触发构建与发布，一次一条，人才看得住。
+    """
+    ids, seen = [], set()
+    for raw in candidate_ids.split(","):
+        item = raw.strip()
+        if item and item not in seen:
+            seen.add(item)
+            ids.append(item)
+    if not ids:
+        print("[ERROR] 没有给出候选 ID")
+        return False
+    failed = []
+    for item in ids:
+        if not reject_candidate(item):
+            failed.append(item)
+    print(f"[OK] 已拒绝 {len(ids)-len(failed)}/{len(ids)} 条")
+    if failed:
+        # 逐条报告而不是中途停下：前面已经归档的不会因为后面一条打错而回滚。
+        print("[ERROR] 以下未能处理: " + ", ".join(failed))
+    return not failed
+
+
 def main():
     parser = argparse.ArgumentParser(description="FreeToken 候选平台审核与决策终端")
     parser.add_argument("--list", action="store_true", help="列出所有待审候选平台")
     parser.add_argument("--approve", type=str, help="批准候选文件 ID（不含扩展名）")
-    parser.add_argument("--reject", type=str, help="拒绝并忽略指定平台 slug")
+    parser.add_argument("--reject", type=str, help="拒绝候选，可用逗号分隔一次拒绝多条")
     args = parser.parse_args()
 
     if args.list:
         list_candidates()
         return 0
     elif args.approve:
+        if "," in args.approve:
+            print("[ERROR] 批准一次只接受一条候选：它会改动正式数据并触发构建与发布")
+            return 2
         return 0 if approve_candidate(args.approve) else 1
     elif args.reject:
-        return 0 if reject_candidate(args.reject) else 1
+        return 0 if reject_many(args.reject) else 1
     else:
         candidates = list_candidates()
         if not candidates:
