@@ -27,3 +27,9 @@ proposed:
     type: null
     conditions: []
   intro: Featherless 提供无服务器 LLM 托管，支持 40000+ 模型，按需付费，无免费额度。
+review:
+  decision: approved
+  reviewed_at: '2026-09-21T12:21:53.688314+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
+  annotation_id: ou_f3d0a
