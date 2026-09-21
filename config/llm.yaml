@@ -54,6 +54,14 @@ providers:
     temperature: 0.1
     response_format_json: false
 
+  witkit:
+    name: "Witkit 网关"
+    base_url: "https://api.witkit.zone/v1"
+    model: "deepseek-v4-flash"
+    api_key_env: "WITKIT_API_KEY"
+    temperature: 0.1
+    response_format_json: true
+
   custom_proxy:
     name: "自定义第三方 / 中转 API"
     base_url: "https://api.openai.com/v1"

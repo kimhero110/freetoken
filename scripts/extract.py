@@ -94,6 +94,27 @@ def load_config() -> dict:
         raise ValueError("CONFIG_INVALID") from None
 
 
+def preflight(provider: Provider) -> dict:
+    """Ask the provider what it offers, and record the answer without acting on it.
+
+    Recorded rather than enforced so that the next failure names something
+    actionable: which model was configured, and what the provider actually
+    listed. 'MODEL_NOT_AVAILABLE' said neither, and was wrong besides.
+    """
+    note = {"provider": provider.id, "model": provider.model, "listed": None, "matched": None}
+    try:
+        client = OpenAI(api_key=provider.api_key, base_url=provider.base_url, timeout=10.0, max_retries=0)
+        offered = sorted(model.id for model in client.models.list().data)
+    except Exception as exc:
+        # Some gateways do not implement /models at all. That is not a reason to
+        # refuse to work, only a reason to have less to say if the call fails.
+        note["error"] = type(exc).__name__
+        return note
+    note["listed"] = offered[:40]
+    note["matched"] = provider.model in offered
+    return note
+
+
 def resolve_providers(config: dict, target_provider_id: str | None = None, model_override: str | None = None) -> dict[str, Provider]:
     """解析并实例化所有配置了有效环境变量 API Key 的 Provider。"""
     providers_dict = {}
@@ -368,14 +389,15 @@ def main() -> int:
                 if provider is None or not 1 <= limit <= 100 or not 1 <= max_tokens <= 4096:
                     raise StateError('PROVIDER_OR_BUDGET_NOT_CONFIGURED')
                 if not provider_checked:
-                    try:
-                        client = OpenAI(api_key=provider.api_key, base_url=provider.base_url, timeout=10.0, max_retries=0)
-                        if provider.model not in {model.id for model in client.models.list().data}:
-                            raise StateError('MODEL_NOT_AVAILABLE')
-                    except StateError:
-                        raise
-                    except Exception:
-                        raise StateError('PROVIDER_PREFLIGHT_FAILED') from None
+                    # Advisory, not a gate. A discovery endpoint that omits a model
+                    # is not evidence the model is gone: on 2026-09-15 this repo's
+                    # own capability probe got HTTP 200 and a valid response from
+                    # deepseek-v4-flash at the same provider, with the same secret,
+                    # while /models had stopped listing it -- and this check had
+                    # already blocked every scheduled extraction for twelve days.
+                    # The execution endpoint decides; a wrong model costs one call,
+                    # bounded by CHECK_MAX_CALLS, and says so in its own words.
+                    summary['preflight'] = preflight(provider)
                     provider_checked = True
                 key = digest({"source_id": digest([slug, url]), "message": PROMPT_TEMPLATE.format(text=text[:8000]),
                               "provider": provider.id, "endpoint_hash": digest(provider.base_url), "model": provider.model,
