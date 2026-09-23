@@ -3,9 +3,9 @@ status: pending_review
 platform_slug: chutes-ai
 name: Chutes AI
 source_url: https://chutes.ai
-source_hash: 59fd86e12a4ebf12957f3a78d3191646acb677cb278941ca094b6b03c07a2383
+source_hash: 13aed1f775b83d0863b4aae16eb5f459bdd38192346f41bac102b93adcf3c9b0
 platform_hash: d4ad402a2f89983316aba475fd585bd11de85249542c6a5f87ecc2a86c0a6746
-captured_at: '2026-09-07T20:41:02.058089+00:00'
+captured_at: '2026-09-09T19:54:50.946101+00:00'
 extractor:
   provider: deepseek
   model: deepseek-v4-flash
@@ -26,4 +26,9 @@ proposed:
     unit: null
     type: null
     conditions: []
-  intro: Chutes提供无服务器AI计算服务，支持多种开源模型，按需付费，无免费额度。
+  intro: Chutes提供无服务器AI计算，支持多种开源模型，按需付费，无免费额度。
+review:
+  decision: rejected
+  reviewed_at: '2026-09-23T13:13:11.429925+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
