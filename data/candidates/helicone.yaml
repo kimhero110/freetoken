@@ -1,0 +1,58 @@
+candidate_type: new_platform
+status: pending_review
+platform_slug: helicone
+score: 3
+proposed:
+  schema_version: 2
+  slug: helicone
+  name: Helicone / AI Gateway & LLM Observability
+  name_en: Helicone
+  category: 海外探索
+  intro: Helicone / AI Gateway & LLM Observability：雷达捕获的候选源，免费额度与可用模型待人工核实。
+  intro_en: 'Helicone: discovered by radar; free tier and models unverified.'
+  website: https://helicone.ai
+  doc_url: https://helicone.ai/docs
+  api_base_url: https://api.helicone.ai/v1
+  free_models: []
+  free_quota:
+    type: 待核实
+    amount: 待核实
+    unit: Tokens
+    reset_period: 待核实
+    details: 雷达线索：页面匹配得分 3/11；https://api.helicone.ai/v1/models HTTP 200 返回模型列表。免费额度需人工核实。
+  verification: 邮箱/GitHub
+  status: unverified
+  last_verified: null
+  tags:
+  - 雷达新源
+  - 待人工复核
+  - OpenAI 兼容
+  gotchas:
+  - 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+  gotchas_en:
+  - Discovered by radar. Manual verification required.
+  registration:
+    url: https://helicone.ai
+  requirements:
+    phone: unknown
+    card: unknown
+    region: unknown
+    regions: []
+    rpm: null
+    tpm: null
+  capabilities:
+    operations: []
+    tools:
+      curl: unknown
+      openai_python: unknown
+      openai_node: unknown
+      cursor: unknown
+      openclaw: unknown
+      cherry_studio: unknown
+  evidence:
+  - url: https://helicone.ai
+    checked_at: '2026-09-23'
+  - url: https://helicone.ai/pricing
+    checked_at: '2026-09-23'
+  - url: https://api.helicone.ai/v1/models
+    checked_at: '2026-09-23'
