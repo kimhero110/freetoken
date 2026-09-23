@@ -117,6 +117,30 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertIn("continue-on-error: true", workflow)
         self.assertIn("if: steps.probe.outcome == 'failure'", workflow)
 
+    def _candidate_id_allowlist_holds(self, run_blocks):
+        """The候选 ID 会被原样拼进一条 shell 命令，所以这道校验是那条命令的边界。
+
+        以前这里比对的是正则原文。原文是实现，不是不变量：把上限从 200 提到
+        2000、让它收逗号分隔的一批，是良性改动，却会让这条测试红掉——于是
+        真正要守的东西（不许出现引号、分号、斜杠、空白、大写、路径片段）
+        反而没有人验过。现在拿真实输入去打它。
+        """
+        found = re.search(r'=~\s*(\S+)\s*\]\]', run_blocks)
+        self.assertIsNotNone(found, "候选 ID 必须经过正则校验")
+        pattern = re.compile(found.group(1))
+        for good in ("avian", "update-deepinfra-06c658818639", "a", "a-b-c"):
+            self.assertTrue(pattern.fullmatch(good), good)
+        for bad in ("../etc/passwd", "a b", "a;rm -rf /", "$(id)", "`id`", "a/b",
+                    "Avian", "a'b", 'a"b', "a\nb", "-a", "a-", "--", ""):
+            self.assertIsNone(pattern.fullmatch(bad), bad)
+        # 批量是可选的；支持的话，也只能是同一套字符加逗号，不能借此松口。
+        if pattern.fullmatch("a,b"):
+            for bad in (",a", "a,", "a,,b", "a, b", "a,../b"):
+                self.assertIsNone(pattern.fullmatch(bad), bad)
+        cap = re.search(r'\$\{#CANDIDATE_ID\}"?\s*-gt\s*(\d+)', run_blocks)
+        self.assertIsNotNone(cap, "候选 ID 必须有长度上限")
+        self.assertLessEqual(int(cap.group(1)), 4000)
+
     def test_review_workflow_is_main_only_and_passes_inputs_via_environment(self):
         workflow = (ROOT / ".github" / "workflows" / "review-candidate.yml").read_text(
             encoding="utf-8"
@@ -130,8 +154,8 @@ class SecurityInvariantTests(unittest.TestCase):
         self.assertNotIn("${{ github.actor }}", run_blocks)
         self.assertIn("GITHUB_ACTOR=\"$REVIEWER\"", run_blocks)
         self.assertIn("environment: production", workflow)
-        self.assertIn('^[a-z0-9]+(-[a-z0-9]+)*$', run_blocks)
         self.assertIn('${#CANDIDATE_ID}', run_blocks)
+        self._candidate_id_allowlist_holds(run_blocks)
         self.assertIn('--approve "$CANDIDATE_ID"', run_blocks)
         self.assertIn('--reject "$CANDIDATE_ID"', run_blocks)
         self.assertIn("Send isolated approval notification", workflow)
