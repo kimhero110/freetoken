@@ -28,3 +28,8 @@ proposed:
     conditions: []
   intro: Featherless提供服务器无LLM托管，访问数千种开源模型，定价透明，无免费额度。
 supersedes: update-featherless-ai-f3345a77f103
+review:
+  decision: rejected
+  reviewed_at: '2026-09-23T13:25:11.481686+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
