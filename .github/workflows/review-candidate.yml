@@ -84,7 +84,7 @@ jobs:
           FEISHU_APPROVER_VIA: ${{ inputs.approver_via }}
           FEISHU_APPROVER_ID: ${{ inputs.approver_id }}
         run: |
-          if [ "${#CANDIDATE_ID}" -gt 200 ] || [[ ! "$CANDIDATE_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+          if [ "${#CANDIDATE_ID}" -gt 2000 ] || [[ ! "$CANDIDATE_ID" =~ ^[a-z0-9]+(-[a-z0-9]+)*(,[a-z0-9]+(-[a-z0-9]+)*)*$ ]]; then
             echo "Invalid candidate ID" >&2
             exit 2
           fi
