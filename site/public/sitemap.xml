@@ -109,6 +109,8 @@
   <url><loc>https://freetokens.info/en/platform/xai-grok/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/xfyun-spark/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/xfyun-spark/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/platform/you/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/en/platform/you/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/zhipu-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/zhipu-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
 </urlset>
