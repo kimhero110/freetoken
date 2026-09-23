@@ -7,11 +7,12 @@ FreeToken Automated Global Resource Discovery Radar (Safe Print v2.2)
 - Safe console printing on Windows GBK environment
 """
 
+import hashlib
 import os
 import sys
 import re
 import json
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 import requests
@@ -108,6 +109,32 @@ def extract_page_data(url: str) -> dict | None:
         return None
 
 
+def record(targets):
+    """Write down what the sweep actually saw, one line per seed.
+
+    Until now the radar reported only a count, so four seed URLs that have
+    been refusing datacentre traffic for weeks looked exactly like a quiet
+    week with nothing new on the internet.
+    """
+    folder = os.environ.get('RUNNER_TEMP')
+    if not folder:
+        return
+    summary = {
+        "checked_at": datetime.now(timezone.utc).isoformat(),
+        "attempted": len(targets),
+        "succeeded": sum(1 for t in targets if t["status"] != "probe_failed"),
+        "sources": targets,
+    }
+    Path(folder, "fetch-summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False), encoding="utf-8")
+
+
+def seed_id(url):
+    # Keyed on the seed URL, not on the page: a target that has been blocked
+    # for a month keeps the same id, so it can be recognised as the same one.
+    return hashlib.sha256(url.encode("utf-8")).hexdigest()
+
+
 def run_discovery():
     print("=" * 60)
     print("[RADAR] Starting Global Free Token & API Discovery Sweep...")
@@ -123,6 +150,7 @@ def run_discovery():
     scanned = 0
     already_indexed = 0
     discovered_new = []
+    seen = []
 
     for url in targets:
         host = urlparse(url).netloc.lower()
@@ -131,6 +159,8 @@ def run_discovery():
 
         if host in existing or clean_host in existing or slug_base in existing:
             already_indexed += 1
+            seen.append({"source": seed_id(url), "url": url, "status": "indexed",
+                         "platform": slug_base})
             print(f"  [INDEXED] {url:<30} -> Already in 40-Platform Master DB")
             continue
 
@@ -139,8 +169,14 @@ def run_discovery():
         data = extract_page_data(url)
         if not data:
             failed += 1
+            seen.append({"source": seed_id(url), "url": url, "status": "probe_failed",
+                         "platform": slug_base, "error": "SEED_UNREACHABLE"})
             print("Failed (Offline / Timeout)")
             continue
+
+        seen.append({"source": seed_id(url), "url": url, "platform": slug_base,
+                     "status": "discovered" if data["score"] >= 3 else "low_relevance",
+                     "score": data["score"]})
 
         if data["score"] >= 3:
             print(f"FOUND! Match Score: {data['score']}/11 | Title: {data['title'][:25]}")
@@ -213,12 +249,18 @@ def run_discovery():
         else:
             print(f"Low relevance ({data['score']}/11)")
 
+    record(seen)
+
     print("\n" + "=" * 60)
     print(f"[RADAR SUMMARY] Radar Sweep Finished!")
     print(f"  - Verified Existing Platforms: {already_indexed}")
     print(f"  - Fresh Scanned Targets:       {scanned}")
+    print(f"  - Unreachable Seeds:           {failed}")
     print(f"  - Discovered High-Match Tiers: {len(discovered_new)}")
     print("=" * 60)
+    for item in seen:
+        if item["status"] == "probe_failed":
+            print(f"  [UNREACHABLE] {item['url']}")
 
     if discovered_new:
         print("\n[CANDIDATE DISCOVERY REPORT]")
@@ -231,7 +273,15 @@ def run_discovery():
     else:
         print("[REPORT] No new candidates; this does not imply all targets were verified.")
 
-    return 1 if failed else 0
+    # A seed that will not answer is a fact about that seed, not a broken
+    # sweep. Four of thirteen have been refusing this runner for weeks, and
+    # returning 1 for them turned every single scheduled run red -- which is
+    # why nobody noticed anything at all for ten days. The sweep has failed
+    # only when it could not reach a single thing it tried.
+    if scanned and failed == scanned:
+        print("[FAIL] Every probed target was unreachable; the sweep itself did not run.")
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
