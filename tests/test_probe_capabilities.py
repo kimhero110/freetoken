@@ -79,7 +79,8 @@ class ProbeCapabilityTests(unittest.TestCase):
             self.assertTrue(candidate["protocol_valid"])
             self.assertEqual(candidate["observed_status_code"], 200)
             self.assertEqual(candidate["evidence_url"], "https://github.com/example/repository/actions/runs/123456")
-            self.assertEqual(json.loads(captured["body"])["max_tokens"], 16)
+            self.assertEqual(json.loads(captured["body"])["max_tokens"],
+                             probe_capabilities.MAX_TOKENS)
             self.assertFalse(json.loads(captured["body"])["stream"])
             self.assertEqual(captured["calls"], 1)
             self.assertNotIn(secret, candidate_text + output.getvalue())
@@ -108,6 +109,21 @@ class ProbeCapabilityTests(unittest.TestCase):
     def test_protocol_response_requires_non_empty_assistant_content(self):
         self.assertFalse(probe_capabilities._protocol_valid({"choices": [{"message": {}}]}))
         self.assertFalse(probe_capabilities._protocol_valid({"choices": [{"message": {"role": "assistant", "content": ""}}]}))
+
+    def test_a_model_that_only_thought_out_loud_still_proves_the_protocol(self):
+        # deepseek-v4-flash 在 16 token 的预算里把话全说在推理字段里，content
+        # 空着回来。HTTP 200、协议正常，却被记成探测失败，九次里有三次。
+        thinking = {"choices": [{"message": {"role": "assistant", "content": "",
+                                             "reasoning_content": "The user wants OK."}}]}
+        self.assertTrue(probe_capabilities._protocol_valid(thinking))
+
+    def test_an_assistant_turn_with_nothing_in_any_field_is_still_a_failure(self):
+        empty = {"choices": [{"message": {"role": "assistant", "content": "",
+                                          "reasoning_content": "   "}}]}
+        self.assertFalse(probe_capabilities._protocol_valid(empty))
+
+    def test_the_budget_leaves_room_for_an_answer_after_the_thinking(self):
+        self.assertGreaterEqual(probe_capabilities.MAX_TOKENS, 128)
 
     def test_all_configured_skips_missing_credentials_and_probes_each_configured_once(self):
         with patch.dict(os.environ, {

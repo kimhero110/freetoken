@@ -37,6 +37,11 @@ ALLOWED_TOOLS = tuple(TOOL_PROBES)
 ALLOWED_OPERATIONS = ("chat_completions",)
 JSON_CONTENT_TYPES = ("application/json", "application/problem+json")
 FIXED_MESSAGE = "Reply with OK."
+# Sixteen tokens is enough for the answer and nothing else. On a model that
+# thinks first, the whole budget goes to reasoning and `content` comes back
+# empty -- HTTP 200, nothing in it, recorded as a failed probe. That is what
+# three of deepseek-v4-flash's nine probes were: not an outage, a budget.
+MAX_TOKENS = 256
 
 
 def _canonical_hash(platform):
@@ -68,14 +73,27 @@ def _load_operation(platform_slug, operation_id):
     return platform, operation
 
 
+def _said_something(message):
+    """An assistant turn that carries words, wherever the vendor puts them.
+
+    A thinking model answers in two fields and may fill only the first. The
+    question this probe asks is whether the endpoint speaks the protocol, and
+    reasoning that came back through it is an answer to that question.
+    """
+    for field in ("content", "reasoning_content", "reasoning"):
+        value = message.get(field)
+        if isinstance(value, str) and value.strip():
+            return True
+    return False
+
+
 def _protocol_valid(payload):
     choices = payload.get("choices") if isinstance(payload, dict) else None
     return bool(
         isinstance(choices, list) and choices and isinstance(choices[0], dict)
         and isinstance(choices[0].get("message"), dict)
         and choices[0]["message"].get("role") == "assistant"
-        and isinstance(choices[0]["message"].get("content"), str)
-        and choices[0]["message"]["content"].strip()
+        and _said_something(choices[0]["message"])
     )
 
 
@@ -108,7 +126,7 @@ def _write_candidate(candidate):
 def _raw_http_probe(config, api_key):
     payload = json.dumps({
         "model": config["model"], "messages": [{"role": "user", "content": FIXED_MESSAGE}],
-        "max_tokens": 16, "stream": False,
+        "max_tokens": MAX_TOKENS, "stream": False,
     }, separators=(",", ":")).encode("utf-8")
     response = pinned_public_https_request(
         config["endpoint_url"], method="POST",
@@ -140,7 +158,7 @@ def _python_sdk_probe(config, api_key):
             )
             response = client.chat.completions.create(
                 model=config["model"], messages=[{"role": "user", "content": FIXED_MESSAGE}],
-                max_tokens=16, stream=False,
+                max_tokens=MAX_TOKENS, stream=False,
             )
         status = 200
         payload = response.model_dump(mode="json")
