@@ -98,6 +98,56 @@ if __name__ == '__main__':
     unittest.main()
 
 
+class StaleSourceTests(unittest.TestCase):
+    """抓取来源的 id 是当天那一版页面的哈希，页面一变它就再也不会出现。"""
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.path = Path(self.temp.name) / 'alerts.sqlite'
+
+    def monitor(self):
+        config = {'check_monitor_since': '2026-09-06T00:00:00Z',
+                  'check_status_path': str(Path(self.temp.name) / 'health.json'),
+                  'check_alert_db': str(self.path), 'owner_open_id': 'test',
+                  'github_repo': 'example/repo'}
+        gh = Mock()
+        gh.list_runs.return_value = []
+        return CheckMonitor(gh, Mock(), config)
+
+    def ledger(self, completed, status, error=None):
+        source = 'a' * 64
+        return {'calls': {}, 'runs': {'1': {
+            'completed_at': completed, 'workflow_file': 'update.yml', 'status': 'completed',
+            'fetch': {'sources': []},
+            'extract': {'sources': [{'source': source, 'status': status, 'error': error}]}}}}
+
+    def states(self, ledger, now):
+        monitor = self.monitor()
+        with patch('daemon.check_monitor.public_ledger', return_value=ledger):
+            monitor.sweep(now)
+        with monitor.store.connect() as db:
+            return {r[0]: (r[1], r[2]) for r in db.execute('SELECT id,active,code FROM incidents')
+                    if r[0].startswith('extract:')}
+
+    def test_a_failure_from_last_week_is_not_todays_problem(self):
+        # 09-08 到 09-21 那 59 个 MODEL_NOT_AVAILABLE，在原因修好之后
+        # 还在每天早上被报一遍，因为它们的 id 永远不会再出现一次健康状态。
+        ledger = self.ledger('2026-09-10T01:12:00Z', 'failed', 'MODEL_NOT_AVAILABLE')
+        states = self.states(ledger, stamp('2026-09-23T01:00:00Z'))
+        self.assertEqual(states, {})
+
+    def test_a_failure_from_this_morning_still_is(self):
+        ledger = self.ledger('2026-09-23T01:12:00Z', 'failed', 'MODEL_NOT_AVAILABLE')
+        states = self.states(ledger, stamp('2026-09-23T09:00:00Z'))
+        self.assertEqual(states['extract:' + 'a' * 24], (1, 'SOURCE_BLOCKED'))
+
+    def test_waiting_for_the_cheap_window_is_not_a_blocked_source(self):
+        # deferred 是费用策略在起作用，不是来源读不到。
+        ledger = self.ledger('2026-09-23T01:12:00Z', 'deferred')
+        self.assertEqual(self.states(ledger, stamp('2026-09-23T09:00:00Z')), {})
+
+
 class PublicLedgerTests(unittest.TestCase):
     def response(self, chunks, status=200):
         response = Mock(status_code=status)
