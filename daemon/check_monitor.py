@@ -40,6 +40,11 @@ def missing_slots(workflow, runs, start, now):
             if not any(slot <= stamp(r['created_at']) < slot + 10800 for r in scheduled)]
 
 
+# 抓取来源的 id 是当天那一版页面的哈希。页面一变，这个 id 再也不会出现，
+# 所以记在它头上的失败永远等不到一次「恢复」。三天没再出现就是消失了，不是卡住了。
+STALE_SOURCE = 3*86400
+
+
 def public_ledger(repo):
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repo):
         raise ValueError('REPO_INVALID')
@@ -148,17 +153,28 @@ class CheckMonitor:
         summaries = [r for r in ledger['runs'].values() if r.get('completed_at') and r.get('workflow_file') == 'update.yml']
         observations = {}
         for summary in sorted(summaries, key=lambda r: stamp(r['completed_at'])):
+            seen = stamp(summary['completed_at'])
             for stage in ('fetch', 'extract'):
                 for item in summary.get(stage, {}).get('sources', []):
                     if not re.fullmatch('[a-f0-9]{64}', item.get('source', '')):
                         raise ValueError('SOURCE_ID_INVALID')
-                    observations[(stage, item['source'])] = item
-        for (stage, source), item in observations.items():
+                    observations[(stage, item['source'])] = (item, seen)
+        for (stage, source), (item, seen) in observations.items():
             status = item.get('status')
-            bad = status in {'failed', 'fetch_failed', 'deferred'}
-            good = status in {'fetched', 'candidate_ready', 'pending_review', 'reviewed_version', 'verified_unchanged', 'reviewed_rejected', 'changed', 'baseline_mismatch'}
+            # A source id hashes the page as it was that day. When the page
+            # changes the id never recurs, so a failure recorded against it can
+            # never be observed healthy again: 59 sources that failed with
+            # MODEL_NOT_AVAILABLE between 09-08 and 09-21 were still being
+            # reported every morning after the cause was fixed on 09-21.
+            # Not seen for three days means gone, not blocked.
+            stale = now - seen > STALE_SOURCE
+            # deferred is the off-peak window deciding to wait. That is the
+            # cost rule working, not a source that cannot be read.
+            bad = not stale and status in {'failed', 'fetch_failed'}
+            good = stale or status in {'fetched', 'candidate_ready', 'pending_review', 'deferred', 'reviewed_version', 'verified_unchanged', 'reviewed_rejected', 'changed', 'baseline_mismatch'}
             if bad or good:
-                self.store.transition(f'{stage}:{source[:24]}', bad, 'SOURCE_BLOCKED' if bad else 'SOURCE_STAGE_RESUMED', now)
+                self.store.transition(f'{stage}:{source[:24]}', bad,
+                                      'SOURCE_BLOCKED' if bad else ('SOURCE_STAGE_GONE' if stale else 'SOURCE_STAGE_RESUMED'), now)
         latest = max(summaries, key=lambda r: stamp(r['completed_at']), default={})
         paused = latest.get('status') == 'dry_run'
         if latest:
