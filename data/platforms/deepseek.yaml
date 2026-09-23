@@ -55,8 +55,8 @@ capabilities:
       env_var: DEEPSEEK_API_KEY
     verification:
       status: live
-      checked_at: '2026-09-03'
-      evidence_url: https://github.com/kimhero110/freetoken/actions/runs/33766507785
+      checked_at: '2026-09-22'
+      evidence_url: https://github.com/kimhero110/freetoken/actions/runs/35705935046
   tools:
     curl: live
     openai_python: live
