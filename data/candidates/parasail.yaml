@@ -1,0 +1,56 @@
+candidate_type: new_platform
+status: pending_review
+platform_slug: parasail
+score: 2
+proposed:
+  schema_version: 2
+  slug: parasail
+  name: Parasail   The Inference Cloud for AI-native start
+  name_en: Parasail
+  category: 海外探索
+  intro: Parasail   The Inference Cloud for AI-native start：雷达捕获的候选源，免费额度与可用模型待人工核实。
+  intro_en: 'Parasail: discovered by radar; free tier and models unverified.'
+  website: https://parasail.io
+  doc_url: https://parasail.io/docs
+  api_base_url: https://api.parasail.io/v1
+  free_models: []
+  free_quota:
+    type: 待核实
+    amount: 待核实
+    unit: Tokens
+    reset_period: 待核实
+    details: 雷达线索：页面匹配得分 2/11；https://api.parasail.io/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
+  verification: 邮箱/GitHub
+  status: unverified
+  last_verified: null
+  tags:
+  - 雷达新源
+  - 待人工复核
+  - OpenAI 兼容
+  gotchas:
+  - 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+  gotchas_en:
+  - Discovered by radar. Manual verification required.
+  registration:
+    url: https://parasail.io
+  requirements:
+    phone: unknown
+    card: unknown
+    region: unknown
+    regions: []
+    rpm: null
+    tpm: null
+  capabilities:
+    operations: []
+    tools:
+      curl: unknown
+      openai_python: unknown
+      openai_node: unknown
+      cursor: unknown
+      openclaw: unknown
+      cherry_studio: unknown
+  evidence:
+  - url: https://parasail.io
+    checked_at: '2026-09-23'
+  - url: https://api.parasail.io/v1/models
+    checked_at: '2026-09-23'
