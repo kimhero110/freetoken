@@ -21,9 +21,9 @@ register_url: https://featherless.ai
 docs_url: https://featherless.ai/docs
 source_urls:
 - https://featherless.ai
-last_verified: '2026-09-21'
+last_verified: '2026-09-23'
 status: active
-intro: Featherless 提供无服务器 LLM 托管，支持 40000+ 模型，按需付费，无免费额度。
+intro: Featherless 提供无服务器 LLM 托管，一个 API 密钥即可访问 4 万多个开源模型，支持按 token 计费与可预测的订阅定价。
 intro_en: Serverless inference cloud with 1,000+ open-source LLMs. Free trial credits
   included with drop-in OpenAI protocol compatibility.
 tags:
@@ -67,7 +67,7 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://featherless.ai
-  checked_at: '2026-09-21'
-  source_hash: 14a24ec50752b84b134c1f2cf15f733aec9edb3e47c8247efe6e7e623a7a2118
-  captured_at: '2026-09-21T12:04:46.849883+00:00'
-last_checked: '2026-09-21'
+  checked_at: '2026-09-23'
+  source_hash: 28e708ae89557da30e089841cdd9ffb3fb1af8fd1bdbb6e4e9d8541619053e49
+  captured_at: '2026-09-22T01:39:20.970472+00:00'
+last_checked: '2026-09-23'
