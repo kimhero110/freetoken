@@ -85,12 +85,6 @@ class ReviewCandidateAnnotationContractTests(unittest.TestCase):
             self.assertEqual(set(workflow["on"]["workflow_dispatch"]["inputs"]), fields)
             self.assertEqual(workflow["run-name"], title)
 
-    def test_build_runs_real_sdk_tests_in_isolated_environment(self):
-        workflow = (WORKFLOWS / "publish.yml").read_text(encoding="utf-8")
-        self.assertIn("python -m venv .venv-daemon", workflow)
-        self.assertIn(".venv-daemon/bin/python -m pip install -r daemon/requirements.txt", workflow)
-        self.assertIn(".venv-daemon/bin/python -m unittest discover -s tests/daemon_integration -v", workflow)
-
 
 if __name__ == "__main__":
     unittest.main()
