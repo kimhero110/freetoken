@@ -27,3 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: Featherless 提供无服务器 LLM 托管，一个 API 密钥即可访问 4 万多个开源模型，支持按 token 计费与可预测的订阅定价。
+review:
+  decision: rejected
+  reviewed_at: '2026-09-23T16:54:02.671261+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
