@@ -3,9 +3,9 @@ status: pending_review
 platform_slug: deepinfra
 name: DeepInfra
 source_url: https://deepinfra.com
-source_hash: 87bc86929579f4cebc2e2d734ac00e33516132507acbfaf29ccf183abf92871b
+source_hash: b23c096483e0febe03d9aca196a77f372edda1869813216e40a288a6c814af72
 platform_hash: bc19a32cf30fc490dfd06749a784291d59b7f1f6c532d11451638de1015f2781
-captured_at: '2026-09-08T22:54:55.666664+00:00'
+captured_at: '2026-09-08T19:59:58.406643+00:00'
 extractor:
   provider: deepseek
   model: deepseek-v4-flash
@@ -27,3 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: DeepInfra提供高性能、低成本的AI推理API，支持多种模型，按量付费，无长期合约。
+review:
+  decision: rejected
+  reviewed_at: '2026-09-23T13:14:46.713691+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
