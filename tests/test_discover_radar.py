@@ -27,7 +27,10 @@ class RadarTests(unittest.TestCase):
         env.start(); self.addCleanup(env.stop)
 
     def sweep(self, seeds, pages, existing=()):
-        with patch.object(radar, 'TARGET_SEEDS', list(seeds)), \
+        # ROOT 也要挪开：一个高分命中会把候选 YAML 写进真正的
+        # data/candidates，跑一次测试就往仓库里丢一份假平台。
+        with patch.object(radar, 'ROOT', Path(self.tmp.name)), \
+             patch.object(radar, 'TARGET_SEEDS', list(seeds)), \
              patch.object(radar, 'get_existing_domains', lambda: set(existing)), \
              patch.object(radar, 'extract_page_data', lambda url: pages.get(url)):
             code = radar.run_discovery()
@@ -75,9 +78,15 @@ class RadarTests(unittest.TestCase):
         second = self.sweep(['https://down.example'], {})[1]['sources'][0]['source']
         self.assertEqual(first, second)
 
+    def test_a_high_scoring_hit_is_written_as_a_candidate(self):
+        self.sweep(['https://up.example'], {'https://up.example': page(5)})
+        written = list((Path(self.tmp.name)/'data'/'candidates').glob('*.yaml'))
+        self.assertEqual([p.name for p in written], ['up.yaml'])
+
     def test_a_missing_runner_temp_does_not_break_the_sweep(self):
         with patch.dict('os.environ', {}, clear=True):
-            with patch.object(radar, 'TARGET_SEEDS', ['https://up.example']), \
+            with patch.object(radar, 'ROOT', Path(self.tmp.name)), \
+                 patch.object(radar, 'TARGET_SEEDS', ['https://up.example']), \
                  patch.object(radar, 'get_existing_domains', lambda: set()), \
                  patch.object(radar, 'extract_page_data', lambda url: page(1)):
                 self.assertEqual(radar.run_discovery(), 0)
