@@ -29,12 +29,16 @@ try {
   const response = await client.chat.completions.create({
     model: provider.model,
     messages: [{ role: 'user', content: 'Reply with OK.' }],
-    max_tokens: 16,
+    max_tokens: 256,
     stream: false,
   });
   result.observed_status_code = 200;
-  result.protocol_valid = response?.choices?.[0]?.message?.role === 'assistant' &&
-    typeof response.choices[0].message.content === 'string' && response.choices[0].message.content.trim().length > 0;
+  const message = response?.choices?.[0]?.message;
+  // Same rule as the Python side: a thinking model may answer only in the
+  // reasoning field, and the protocol still worked.
+  const said = ['content', 'reasoning_content', 'reasoning'].some(
+    (field) => typeof message?.[field] === 'string' && message[field].trim().length > 0);
+  result.protocol_valid = message?.role === 'assistant' && said;
   result.decision = result.protocol_valid ? 'live' : 'failed';
 } catch (error) {
   if (Number.isInteger(error?.status) && error.status >= 100 && error.status <= 599) {
