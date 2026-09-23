@@ -27,3 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: Chutes提供无服务器AI计算服务，支持多种开源模型，按需付费，无免费额度。
+review:
+  decision: rejected
+  reviewed_at: '2026-09-23T13:14:46.686987+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu

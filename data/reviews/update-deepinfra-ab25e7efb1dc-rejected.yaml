@@ -27,3 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: DeepInfra提供高性能、低成本的AI推理API，支持多种模型，按量付费，无长期合约。
+review:
+  decision: rejected
+  reviewed_at: '2026-09-23T13:14:46.709804+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu

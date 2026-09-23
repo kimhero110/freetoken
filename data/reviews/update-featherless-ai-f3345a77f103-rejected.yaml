@@ -3,9 +3,9 @@ status: pending_review
 platform_slug: featherless-ai
 name: Featherless AI
 source_url: https://featherless.ai
-source_hash: 9c3391394d574c9e971bc41b13dbf4a7f9779a98d26e6f3c4b94918b086df88f
+source_hash: f3345a77f1032f0eeb848bc811f1e2ebff1209ccb985c76841145b081b087b76
 platform_hash: c1b0766c8906f29331ebae1d118dbb2fa95fb08bc6a94f925fe4bba05c2b6f2e
-captured_at: '2026-09-07T20:41:12.838910+00:00'
+captured_at: '2026-09-08T19:59:59.393960+00:00'
 extractor:
   provider: deepseek
   model: deepseek-v4-flash
@@ -27,3 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: Featherless提供服务器无LLM托管，访问数千种开源模型，定价透明，无免费额度。
+review:
+  decision: rejected
+  reviewed_at: '2026-09-23T13:14:46.726407+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
