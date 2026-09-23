@@ -53,3 +53,8 @@ proposed:
     checked_at: '2026-09-23'
   - url: https://requesty.ai/pricing
     checked_at: '2026-09-23'
+review:
+  decision: approved
+  reviewed_at: '2026-09-23T12:31:40.210060+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
