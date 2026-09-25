@@ -1,0 +1,56 @@
+candidate_type: new_platform
+status: pending_review
+platform_slug: llm7
+score: 0
+proposed:
+  schema_version: 2
+  slug: llm7
+  name: LLM7.io | One LLM API. Your Gateway to AI Innovati
+  name_en: Llm7
+  category: 海外探索
+  intro: LLM7.io | One LLM API. Your Gateway to AI Innovati：雷达捕获的候选源，免费额度与可用模型待人工核实。
+  intro_en: 'Llm7: discovered by radar; free tier and models unverified.'
+  website: https://llm7.io
+  doc_url: https://llm7.io/docs
+  api_base_url: https://api.llm7.io/v1
+  free_models: []
+  free_quota:
+    type: 待核实
+    amount: 待核实
+    unit: Tokens
+    reset_period: 待核实
+    details: 雷达线索：页面匹配得分 0/11；https://api.llm7.io/v1/models HTTP 200 返回模型列表。免费额度需人工核实。
+  verification: 邮箱/GitHub
+  status: unverified
+  last_verified: null
+  tags:
+  - 雷达新源
+  - 待人工复核
+  - OpenAI 兼容
+  gotchas:
+  - 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+  gotchas_en:
+  - Discovered by radar. Manual verification required.
+  registration:
+    url: https://llm7.io
+  requirements:
+    phone: unknown
+    card: unknown
+    region: unknown
+    regions: []
+    rpm: null
+    tpm: null
+  capabilities:
+    operations: []
+    tools:
+      curl: unknown
+      openai_python: unknown
+      openai_node: unknown
+      cursor: unknown
+      openclaw: unknown
+      cherry_studio: unknown
+  evidence:
+  - url: https://llm7.io
+    checked_at: '2026-09-25'
+  - url: https://api.llm7.io/v1/models
+    checked_at: '2026-09-25'
