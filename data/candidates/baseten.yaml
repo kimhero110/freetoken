@@ -1,0 +1,55 @@
+candidate_type: new_platform
+status: pending_review
+platform_slug: baseten
+score: 3
+proposed:
+  schema_version: 2
+  slug: baseten
+  name: 'Inference Platform: Deploy AI models in production'
+  name_en: Baseten
+  category: 海外探索
+  intro: 'Inference Platform: Deploy AI models in production：雷达捕获的候选源，免费额度与可用模型待人工核实。'
+  intro_en: 'Baseten: discovered by radar; free tier and models unverified.'
+  website: https://baseten.co
+  doc_url: https://baseten.co/docs
+  api_base_url: https://baseten.co/v1
+  free_models: []
+  free_quota:
+    type: 待核实
+    amount: 待核实
+    unit: Tokens
+    reset_period: 待核实
+    details: 雷达线索：页面匹配得分 3/11。免费额度需人工核实。
+  verification: 邮箱/GitHub
+  status: unverified
+  last_verified: null
+  tags:
+  - 雷达新源
+  - 待人工复核
+  gotchas:
+  - 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+  gotchas_en:
+  - Discovered by radar. Manual verification required.
+  registration:
+    url: https://baseten.co
+  requirements:
+    phone: unknown
+    card: unknown
+    region: unknown
+    regions: []
+    rpm: null
+    tpm: null
+  capabilities:
+    operations: []
+    tools:
+      curl: unknown
+      openai_python: unknown
+      openai_node: unknown
+      cursor: unknown
+      openclaw: unknown
+      cherry_studio: unknown
+  evidence:
+  - url: https://baseten.co
+    checked_at: '2026-09-25'
+  - url: https://baseten.co/pricing
+    checked_at: '2026-09-25'
