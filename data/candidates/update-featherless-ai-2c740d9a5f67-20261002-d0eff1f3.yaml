@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: featherless-ai
+name: Featherless AI
+source_url: https://featherless.ai
+source_hash: 2c740d9a5f67d7b731fbdfd75f777255dce4bedf5caa2827a525bce00513efeb
+platform_hash: d0eff1f31fc1b663ee9c9cabfa4a09648284dd80157a58d5e1ba3f8a7460c446
+captured_at: '2026-10-02T02:20:30.129770+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    amount: 免费试用配额
+    unit: Tokens
+    type: 限时/免费层
+    reset_period: 注册赠送
+    conditions:
+    - 注册即享免费测试额度
+    - 1000+ 开源模型免部署即用
+  intro: Featherless 提供无服务器 LLM 托管，一个 API 密钥即可访问 4 万多个开源模型，支持按 token 计费与可预测的订阅定价。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Featherless 是无服务器 LLM 托管平台，提供单一 API 访问数万个开源模型，支持按量计费，暂无免费额度信息。
+supersedes: update-featherless-ai-2c740d9a5f67-20261001-d0eff1f3
