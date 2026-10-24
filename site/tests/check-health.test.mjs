@@ -7,11 +7,15 @@ const valid = {version: 1, monitoring: 'ok', updated_at: '2026-09-06T09:59:00Z',
   last_check_at: '2026-09-06T09:00:00Z', attempted: 4, succeeded: 4,
   active_incidents: 0, check_status: 'completed'};
 test('stale, future, missing and invalid status cannot claim health', () => {
-  for (const input of [null, {}, {...valid, updated_at: '2026-09-06T09:00:00Z'},
+  for (const input of [null, {}, {...valid, updated_at: '2026-09-06T01:00:00Z'},
     {...valid, monitoring: 'unknown'}, {...valid, succeeded: 5},
     {...valid, updated_at: '2026-09-07T10:00:00Z'}]) {
     assert.match(describeCheckHealth(input, true, now), /status unknown/);
   }
+});
+test('a heartbeat several hours old still describes the latest check', () => {
+  const text = describeCheckHealth({...valid, updated_at: '2026-09-06T04:00:00Z'}, true, now);
+  assert.match(text, /4\/4 sources fetched/);
 });
 test('coverage is not entire directory verification', () => {
   const text = describeCheckHealth(valid, true, now);

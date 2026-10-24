@@ -1,7 +1,9 @@
+import { HEARTBEAT_MAX_AGE_MS } from './check-health.mjs';
+
 export function describeSourceVerification(health, slug, english = false, now = Date.now()) {
   const unknown = english ? 'Automatic source check: unknown' : '来源自动核验：暂无可确认记录';
   const heartbeat = Date.parse(health?.updated_at);
-  if (health?.monitoring !== 'ok' || health?.version !== 1 || !Number.isFinite(heartbeat) || now - heartbeat > 900000 || heartbeat > now + 60000) return unknown;
+  if (health?.monitoring !== 'ok' || health?.version !== 1 || !Number.isFinite(heartbeat) || now - heartbeat > HEARTBEAT_MAX_AGE_MS || heartbeat > now + 60000) return unknown;
   const sources = Array.isArray(health.sources) ? health.sources.filter(s => s.platform === slug) : [];
   if (!sources.length) return unknown;
   const stamps = sources.map(s => Date.parse(s.checked_at));

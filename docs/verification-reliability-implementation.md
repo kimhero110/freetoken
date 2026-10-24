@@ -126,3 +126,11 @@ python -m scripts.check_admin abandon --key <64位调用键> --actor <GitHub用�
 已按 [DeepSeek 当前价格页](https://api-docs.deepseek.com/quick_start/pricing/) 修正时段：周一至周五 UTC 01:00–04:00、06:00–10:00 为高峰，其他时段（包括周末）为优惠时段。更新提取模型为 deepseek-v4-flash，关闭 thinking，SDK 不重试；模型列表预检通过后才允许建立收费 intent。恢复验收限制每运行最多 4 次请求，每次最多 1024 输出 token，页面输入仍限制为 8000 字符。
 
 新增 check-monitor.yml：GitHub 独立主机每 5 分钟检查业务服务器心跳，复用现有发布通知 webhook，不复制机器人凭据到其他服务器。异常和恢复事件写入持久账本，最多 4 次发送尝试；联调事件与真实事件隔离。此方案能在业务服务器停机时发送告警，但不承诺 GitHub 和飞书同时失效时仍能通过飞书通知。
+
+## 2026-10-24 心跳发布者迁移
+
+2026-09-23 下线飞书入口机器人时，`daemon/check_monitor.py` 一并删除，容器也不再运行。它是唯一写入 `/data/check-public/status.json` 的进程。Nginx 仍以 `https://witkit.zone/ops/check-status.json` 提供最后一份文件（`updated_at` 为 2026-09-23T04:34:36Z，`monitoring` 仍是 ok）。独立心跳只因年龄超过窗口而失败，日志里几乎没有原因。
+
+发布改由 `scripts/check_status.py` 在 `check-monitor.yml` 里完成：读取 update/discover 运行和公开的 `automation-state` 账本，把同一份公开摘要快进到 `monitor-status` 分支的 `check-status.json`。页面和 `scripts/check_heartbeat.py` 改读这个地址。部署账号不能改 Nginx 别名指向的宿主机文件，所以 witkit.zone 上的旧文件保持冻结，不再作为探针。
+
+GitHub 对 `*/5` 的实际启动常常晚数小时。新鲜度窗口从 15 分钟调整为 8 小时，避免健康发布被调度延迟判失败；超过 8 小时仍视为发布者停摆。`active_incidents` 继续单独展示，心跳成功不表示没有待处理的来源故障。通知失败次数只统计已删除的机器人 outbox，现为 0；外部心跳自己的飞书发送仍由工作流退出码和最多 4 次重试负责。

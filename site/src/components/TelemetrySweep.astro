@@ -114,7 +114,7 @@ const latestVerified = verifiedDates.at(-1) || (isEn ? 'Not verified' : '未核�
     const nodes = document.querySelectorAll<HTMLElement>('[data-check-health]');
     if (!nodes.length) return;
     try {
-      const response = await fetch('https://witkit.zone/ops/check-status.json', {
+      const response = await fetch('https://raw.githubusercontent.com/kimhero110/freetoken/monitor-status/check-status.json', {
         credentials: 'omit', cache: 'no-store', signal: AbortSignal.timeout(5000),
       });
       if (!response.ok) throw new Error('unavailable');
