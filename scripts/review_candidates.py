@@ -7,6 +7,9 @@ FreeToken Candidate Platform Review & Decision Terminal
 - Approval pushes to main; CI then triggers the verified production publish
   workflow, which announces the release after dual-node verification
 - Rejections archive the candidate and record the reviewed source version
+- Rejecting a candidate whose rejected archive already exists is idempotent:
+  the same payload is removed as a duplicate, and a changed payload is archived
+  beside the original record instead of raising
 """
 
 import sys
@@ -97,12 +100,96 @@ def _platform_hash(platform: dict) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
-def _archive_candidate(target_file: Path, decision: str) -> None:
+def _without_review(data: dict) -> dict:
+    if not isinstance(data, dict):
+        return {}
+    return {key: value for key, value in data.items() if key != "review"}
+
+
+def _canonical_payload(data: dict) -> str:
+    """Stable identity of a candidate, ignoring who reviewed it and when."""
+    return json.dumps(
+        _without_review(data),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        default=str,
+    )
+
+
+def _payload_token(data: dict) -> str:
+    return hashlib.sha256(_canonical_payload(data).encode("utf-8")).hexdigest()[:12]
+
+
+def _same_payload(left: dict, right: dict) -> bool:
+    return _canonical_payload(left) == _canonical_payload(right)
+
+
+def _load_mapping(path: Path) -> dict:
+    loaded = yaml.safe_load(path.read_text(encoding="utf-8"))
+    return loaded if isinstance(loaded, dict) else {}
+
+
+def _rejected_archive_paths(stem: str) -> list[Path]:
+    """Review files that record a rejection of this exact candidate id."""
+    if not REVIEWS_DIR.exists():
+        return []
+    primary = REVIEWS_DIR / f"{stem}-rejected.yaml"
+    paths = [primary] if primary.is_file() else []
+    pattern = re.compile(rf"^{re.escape(stem)}-rejected-[a-f0-9]{{12}}(?:-\d+)?\.yaml$")
+    for path in sorted(REVIEWS_DIR.glob(f"{stem}-rejected-*.yaml")):
+        if path.is_file() and pattern.fullmatch(path.name):
+            paths.append(path)
+    return paths
+
+
+def _matching_rejected_archive(stem: str, data: dict) -> Path | None:
+    for path in _rejected_archive_paths(stem):
+        if _same_payload(_load_mapping(path), data):
+            return path
+    return None
+
+
+def _unique_rejected_destination(stem: str, data: dict) -> Path:
+    token = _payload_token(data)
+    path = REVIEWS_DIR / f"{stem}-rejected-{token}.yaml"
+    if not path.exists() or _same_payload(_load_mapping(path), data):
+        return path
+    for index in range(2, 100):
+        alternate = REVIEWS_DIR / f"{stem}-rejected-{token}-{index}.yaml"
+        if not alternate.exists() or _same_payload(_load_mapping(alternate), data):
+            return alternate
+    raise ValueError(f"审核记录已存在: {stem}-rejected.yaml")
+
+
+def _archive_candidate(target_file: Path, decision: str) -> str:
+    """Move a reviewed candidate into data/reviews.
+
+    Returns "archived" when a new review file is written, or "already_rejected"
+    when an equivalent rejection already exists and the duplicate pending file
+    was removed.
+
+    Radar republishes a rejected discovery under the same filename. Raising here
+    aborts the whole reject batch, which is how every October review run died
+    on the first ``*-rejected.yaml``. An identical payload keeps the original
+    audit record. A changed payload is stored beside it. An existing approval
+    is still refused, so a repeat approve cannot overwrite that record.
+    """
     REVIEWS_DIR.mkdir(parents=True, exist_ok=True)
     destination = REVIEWS_DIR / f"{target_file.stem}-{decision}.yaml"
     if destination.exists():
-        raise ValueError(f"审核记录已存在: {destination.name}")
+        if decision != "rejected":
+            raise ValueError(f"审核记录已存在: {destination.name}")
+        incoming = _load_mapping(target_file)
+        if _matching_rejected_archive(target_file.stem, incoming) is not None:
+            target_file.unlink()
+            return "already_rejected"
+        destination = _unique_rejected_destination(target_file.stem, incoming)
+        if destination.exists() and _same_payload(_load_mapping(destination), incoming):
+            target_file.unlink()
+            return "already_rejected"
     target_file.replace(destination)
+    return "archived"
 
 
 def _mark_candidate_reviewed(target_file: Path, data: dict, decision: str) -> None:
@@ -434,10 +521,21 @@ def reject_candidate(candidate_id: str):
             data = yaml.safe_load(target_file.read_text(encoding="utf-8")) or {}
         else:
             data = json.loads(target_file.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
+            raise ValueError(f"候选内容无效: {target_file.name}")
+        # 同一份内容已经拒绝过：清掉雷达再次送入的副本，保留原审核记录。
+        if _matching_rejected_archive(target_file.stem, data) is not None:
+            _record_reviewed_source_hash(data)
+            target_file.unlink()
+            print(f"[SKIP] 拒绝记录已存在，已移除重复候选: {target_file.name}")
+            return True
         _mark_candidate_reviewed(target_file, data, "rejected")
         _record_reviewed_source_hash(data)
-        _archive_candidate(target_file, "rejected")
-        print(f"[OK] 已拒绝并归档候选源: {target_file.name}")
+        outcome = _archive_candidate(target_file, "rejected")
+        if outcome == "already_rejected":
+            print(f"[SKIP] 拒绝记录已存在，已移除重复候选: {target_file.name}")
+        else:
+            print(f"[OK] 已拒绝并归档候选源: {target_file.name}")
         return True
 
 

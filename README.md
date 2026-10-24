@@ -80,6 +80,38 @@ Windows PowerShell 激活虚拟环境时使用：
 python scripts/review_candidates.py --reject <candidate-id>
 ```
 
+同一条命令可以用逗号一次拒绝多条。批准仍然一次只接受一条：它会改正式数据并触发构建与发布。
+
+雷达会把已经拒绝过的发现以同一个文件名再送进 `data/candidates/`。再次拒绝对 `data/reviews/<candidate-id>-rejected.yaml` 是幂等的，不再抛出 `审核记录已存在`：
+
+- 待审内容和已有拒绝记录一致（忽略 `review` 块）时，保留原来的审核记录，并删除这条重复候选。
+- 内容已经变化时，在原记录旁边另存 `data/reviews/<candidate-id>-rejected-<token>.yaml`，原文件不动。
+- 已有的 `*-approved.yaml` 仍然拒绝覆盖。不要把积压改成批量批准。
+
+### 修复合入后重跑 Review candidate
+
+`.github/workflows/review-candidate.yml` 只在 `main` 上由 `workflow_dispatch` 触发，并且要进入 `production` Environment。2026-10 的四次运行全部失败在批次里的第一个已拒绝 ID（`aimlapi-rejected.yaml`），后面的候选没有被处理；上一次成功是 2026-09-23。把本修复合并到 `main` 之后，用 **reject** 重跑，不要改成 approve。
+
+1. 确认本修复已经在 `main` 上。
+2. 打开 Actions → **Review candidate** → Run workflow，分支选择 `main`。
+3. `decision` 选 `reject`。`candidate_id` 填待拒绝的 ID，多个用逗号分隔，不要带 `.yaml` / `.json`。可以沿用失败那次的列表，也可以先在仓库里列出当前待审文件名。
+4. `production` Environment 如果要求审核人，先通过这次运行。工作流自己会开 PR 并合并；重复候选从 `data/candidates/` 消失，原来的 `*-rejected.yaml` 保持不变，尚未归档的候选进入 `data/reviews/`。
+5. 等价的命令：
+
+```bash
+gh workflow run review-candidate.yml --ref main \
+  -f decision=reject \
+  -f candidate_id='id-one,id-two'
+```
+
+当前待审 ID 可以这样拼出来，再按需要删掉还不该拒绝的项：
+
+```bash
+python scripts/review_candidates.py --list
+```
+
+候选已经不在 `data/candidates/` 时，脚本会报告未找到并以失败退出。那表示这批已经清完，不必再跑。批准继续一次一条，单独 dispatch，`decision=approve`。
+
 ### 能力探测与审核
 
 仓库管理员可在 GitHub Actions 的 **Capability probe candidates** 工作流中手动选择一个固定提供商和 `raw_http`、`openai_python`、`openai_node` 客户端，也可选择 `all`。工作流每周二 `03:17 UTC` 自动运行，并在 Job Summary 报告固定十项允许列表的 Secret 覆盖率；缺少凭据的项会明确列为跳过且不生成失败候选。每个 provider/tool 组合只发送一次可能计费的 API POST，SDK 自动重试被禁用，请在启用 Secret 前确认额度和成本。
