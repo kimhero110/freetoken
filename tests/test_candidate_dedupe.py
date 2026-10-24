@@ -81,6 +81,84 @@ class DedupeTests(unittest.TestCase):
         # 不再在查重这一步被挡掉。
         self.assertEqual(observed['error'], 'PROVIDER_OR_BUDGET_NOT_CONFIGURED')
 
+    def test_expired_saved_result_keeps_the_open_proposal(self):
+        # 七天之后会尝试重新提取。提示词没变时账本里已有结果，48 小时后既不复用
+        # 也不许再付费。这不是提取失败：待审提案说的就是这个结论。
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            platforms, candidates = root / 'platforms', root / 'candidates'
+            platforms.mkdir()
+            candidates.mkdir()
+            (platforms / 'demo.yaml').write_text(yaml.safe_dump(ENTRY))
+            first = extract.hashlib.sha256('第一版页面'.encode()).hexdigest()
+            waiting = extract.build_update_candidate(
+                ENTRY, 'demo', 'https://example.com', first, '', PROPOSED, {})
+            waiting['captured_at'] = (datetime.now(timezone.utc) - timedelta(days=9)).isoformat()
+            held = candidates / ('update-demo-%s.yaml' % first[:12])
+            held.write_text(yaml.safe_dump(waiting))
+            page = '第二版页面，前缀之外才有变化'
+            second = extract.hashlib.sha256(page.encode()).hexdigest()
+            (root / 'changed.json').write_text(json.dumps(
+                [{'platform': 'demo', 'url': 'https://example.com', 'hash': second, 'text': page}]))
+            provider = extract.Provider(
+                id='witkit', name='Witkit', base_url='https://example.invalid',
+                model='deepseek-v4-flash', api_key='test-key')
+            from scripts.check_state import StateError
+            with patch.object(extract, 'PLATFORMS_DIR', platforms), \
+                 patch.object(extract, 'CANDIDATES_DIR', candidates), \
+                 patch.object(sys, 'argv', ['extract', '--input-dir', directory]), \
+                 patch.dict(os.environ, {'CHECK_PAID_ENABLED': 'true', 'CHECK_MAX_CALLS': '4',
+                                         'CHECK_MAX_OUTPUT_TOKENS': '1024'}), \
+                 patch('scripts.check_state.GitState'), \
+                 patch.object(extract, 'resolve_providers', return_value={'witkit': provider}), \
+                 patch.object(extract, 'preflight', return_value={'provider': 'witkit', 'matched': True}), \
+                 patch.object(extract, 'execute_llm_call') as paid_call, \
+                 patch('scripts.check_runner.paid_result', side_effect=StateError('RESULT_EXPIRED')) as paid:
+                code = extract.main()
+            summary = json.loads((root / 'extract-summary.json').read_text())
+            observed = summary['sources'][0]
+            self.assertEqual(code, 0)
+            self.assertEqual(summary['status'], 'completed')
+            self.assertEqual(observed['status'], 'pending_review')
+            self.assertEqual(observed['superseded_by'], held.stem)
+            self.assertNotIn('error', observed)
+            self.assertEqual([held], list(candidates.glob('*.yaml')))
+            paid.assert_called_once()
+            paid_call.assert_not_called()
+
+    def test_expired_saved_result_still_fails_when_nothing_is_waiting(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            platforms, candidates = root / 'platforms', root / 'candidates'
+            platforms.mkdir()
+            candidates.mkdir()
+            (platforms / 'demo.yaml').write_text(yaml.safe_dump(ENTRY))
+            page = '没有待审提案的新页面'
+            digest = extract.hashlib.sha256(page.encode()).hexdigest()
+            (root / 'changed.json').write_text(json.dumps(
+                [{'platform': 'demo', 'url': 'https://example.com', 'hash': digest, 'text': page}]))
+            provider = extract.Provider(
+                id='witkit', name='Witkit', base_url='https://example.invalid',
+                model='deepseek-v4-flash', api_key='test-key')
+            from scripts.check_state import StateError
+            with patch.object(extract, 'PLATFORMS_DIR', platforms), \
+                 patch.object(extract, 'CANDIDATES_DIR', candidates), \
+                 patch.object(sys, 'argv', ['extract', '--input-dir', directory]), \
+                 patch.dict(os.environ, {'CHECK_PAID_ENABLED': 'true', 'CHECK_MAX_CALLS': '4',
+                                         'CHECK_MAX_OUTPUT_TOKENS': '1024'}), \
+                 patch('scripts.check_state.GitState'), \
+                 patch.object(extract, 'resolve_providers', return_value={'witkit': provider}), \
+                 patch.object(extract, 'preflight', return_value={'provider': 'witkit', 'matched': True}), \
+                 patch.object(extract, 'execute_llm_call') as paid_call, \
+                 patch('scripts.check_runner.paid_result', side_effect=StateError('RESULT_EXPIRED')):
+                code = extract.main()
+            summary = json.loads((root / 'extract-summary.json').read_text())
+            self.assertEqual(code, 1)
+            self.assertEqual(summary['status'], 'failed')
+            self.assertEqual(summary['sources'][0]['error'], 'RESULT_EXPIRED')
+            self.assertEqual(list(candidates.glob('*.yaml')), [])
+            paid_call.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main()

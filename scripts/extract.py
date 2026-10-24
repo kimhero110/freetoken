@@ -431,10 +431,23 @@ def main() -> int:
                 if not saved and provider_id == "deepseek" and off_peak.get("enabled", True) and off_peak.get("deepseek_off_peak_only", True) and not is_beijing_off_peak():
                     observation.update(status="deferred", next_eligible_at=next_window(utcnow()))
                     continue
-                result = paid_result(store, key=key, source=source, run=run,
-                                     request=lambda: execute_llm_call(provider, text, max_tokens=max_tokens),
-                                     validate=validate_extracted, limit=limit,
-                                     history_keys=(digest([slug, url, source_hash[:12]]),), source_group=digest([slug, url]))
+                try:
+                    result = paid_result(store, key=key, source=source, run=run,
+                                         request=lambda: execute_llm_call(provider, text, max_tokens=max_tokens),
+                                         validate=validate_extracted, limit=limit,
+                                         history_keys=(digest([slug, url, source_hash[:12]]),), source_group=digest([slug, url]))
+                except StateError as exc:
+                    # The call key is the prompt, and the prompt is only the first
+                    # 8000 characters. A newer page hash with that same prefix still
+                    # finds the old result_saved. Past 48 hours paid_result refuses
+                    # to reuse it and also refuses a second automatic call, so the
+                    # refusal cannot produce a fresher answer. An open proposal
+                    # already states that answer; failing the run does not.
+                    if str(exc) != "RESULT_EXPIRED" or not waiting:
+                        raise
+                    newest_path = max(waiting, key=lambda pair: pair[1].get("captured_at", ""))[0]
+                    observation.update(status="pending_review", superseded_by=newest_path.stem)
+                    continue
                 # Public candidates do not need raw source excerpts to verify hashes.
                 write_update_candidate(slug, url, source_hash, "", result, provider)
                 observation["status"] = "candidate_ready"
