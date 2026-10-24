@@ -5,7 +5,7 @@ from unittest.mock import Mock
 
 from scripts.check_state import empty_state, StateError
 from scripts.check_runner import paid_result, next_window
-from scripts.check_external_monitor import run
+from scripts.check_external_monitor import ALERT_KEY, actionable_incidents, execute, notify_incidents, run
 from scripts.extract import is_beijing_off_peak
 
 
@@ -83,6 +83,76 @@ class RestorationTests(unittest.TestCase):
         run(store, False, send, now=0)
         run(store, True, send, now=1, exercise=True)
         self.assertFalse(store.state['history']['external_heartbeat']['healthy'])
+
+    def test_actionable_incidents_skip_pending_review_dry_run_and_discover(self):
+        incident = 'extract:' + ('ab' * 12)
+        self.assertEqual(actionable_incidents([
+            incident, 'checks:paused', 'pending_review', 'workflow:discover.yml:execution',
+            'extract:' + ('g' * 24), 'workflow:update.yml:execution',
+        ]), ['extract:' + ('ab' * 12), 'workflow:update.yml:execution'])
+
+    def test_extract_incident_alerts_once_until_the_id_clears(self):
+        store, send = Store(), Mock(return_value=True)
+        incident = 'extract:' + ('ab' * 12)
+        self.assertEqual(notify_incidents(
+            store, [incident, 'checks:paused', 'pending_review'], send, now=0), 0)
+        self.assertEqual(notify_incidents(store, [incident], send, now=1000), 0)
+        self.assertEqual(send.call_count, 1)
+        body = send.call_args.args[0]['card']['elements'][0]['text']['content']
+        title = send.call_args.args[0]['card']['header']['title']['content']
+        self.assertEqual(title, 'FreeToken 检查失败')
+        self.assertIn(incident, body)
+        self.assertNotIn('checks:paused', body)
+        self.assertNotIn('workflow:discover', body)
+        self.assertTrue(store.state['history'][ALERT_KEY]['open'][incident]['accepted'])
+        self.assertNotIn('external_heartbeat', store.state['history'])
+        notify_incidents(store, [], send, now=1001)
+        notify_incidents(store, [incident], send, now=1002)
+        self.assertEqual(send.call_count, 2)
+
+    def test_extract_incident_send_retries_are_bounded(self):
+        store, send = Store(), Mock(return_value=False)
+        incident = 'fetch:' + ('cd' * 12)
+        codes = [notify_incidents(store, [incident], send, now=now) for now in (0, 900, 1800, 2700, 3600)]
+        self.assertEqual(send.call_count, 4)
+        self.assertEqual(codes, [1, 1, 1, 1, 0])
+        self.assertFalse(store.state['history'][ALERT_KEY]['open'][incident]['accepted'])
+
+    def test_a_new_incident_alerts_while_an_accepted_one_stays_quiet(self):
+        store, send = Store(), Mock(return_value=True)
+        first = 'workflow:update.yml:execution'
+        second = 'call:' + ('ef' * 12)
+        notify_incidents(store, [first], send, now=0)
+        notify_incidents(store, [first, second], send, now=1)
+        self.assertEqual(send.call_count, 2)
+        body = send.call_args.args[0]['card']['elements'][0]['text']['content']
+        self.assertIn(second, body)
+        self.assertNotIn(first, body)
+
+    def test_healthy_monitor_pages_a_new_extract_failure_once(self):
+        store, send = Store(), Mock(return_value=True)
+        incident = 'extract:' + ('12' * 12)
+
+        def refresh():
+            return True, 'CHECK_MONITOR_OK active_incidents=1', [incident, 'checks:paused']
+
+        self.assertEqual(execute(store, exercise='none', refresh=refresh, send=send, now=0), 0)
+        self.assertEqual(execute(store, exercise='none', refresh=refresh, send=send, now=10), 0)
+        self.assertEqual(send.call_count, 1)
+        self.assertIn('FreeToken 检查失败', send.call_args.args[0]['card']['header']['title']['content'])
+        self.assertTrue(store.state['history']['external_heartbeat']['healthy'])
+
+    def test_exercise_does_not_page_extract_incidents(self):
+        store, send = Store(), Mock(return_value=True)
+
+        def refresh():
+            raise AssertionError('exercise must not read incidents')
+
+        code = execute(store, exercise='failure', refresh=refresh, send=send, now=0)
+        self.assertEqual(code, 0)
+        self.assertEqual(send.call_count, 1)
+        self.assertIn('联调', send.call_args.args[0]['card']['header']['title']['content'])
+        self.assertNotIn(ALERT_KEY, store.state['history'])
 
 
 if __name__ == '__main__':
