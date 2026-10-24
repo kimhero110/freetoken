@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: manus
+name: Manus
+source_url: https://events.manus.im/zh-cn/campaign/free-tokens
+source_hash: 0006b10f0d04dcab84221ab5fb6aa217588ffca0a0619e2b8ee26080f964b4bf
+platform_hash: 7bb2dc395797c5e86e982e23d15acebfdbae79c3b9f2f3025499c46f99d76234
+captured_at: '2026-10-24T01:43:58.010762+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    amount: 1000000000000
+    unit: tokens
+    type: 限时
+    reset_period: 活动期间
+    conditions:
+    - 先到先得，直到共享池用完
+    - 用于构建AI网络应用
+  intro: Manus免费提供1万亿AI代币，用于构建Web应用，先到先得，用完为止。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Manus AI 官网未明确免费API额度，仅提供价格与API入口，具体配额需访问相关页面或联系官方获取。
+supersedes: update-manus-0006b10f0d04-20261023-7bb2dc39
