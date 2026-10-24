@@ -2,6 +2,7 @@ import copy
 import subprocess
 import tempfile
 import unittest
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -40,6 +41,15 @@ class PaidCallTests(unittest.TestCase):
         self.call()
         self.call(run='2')
         self.assertEqual(self.request.call_count, 1)
+
+    def test_saved_result_past_freshness_window_is_not_replayed(self):
+        self.call()
+        record = self.store.state['calls']['a' * 64]
+        record['saved_at'] = (datetime.now(timezone.utc) - timedelta(hours=49)).isoformat()
+        with self.assertRaisesRegex(StateError, 'RESULT_EXPIRED'):
+            self.call(run='2')
+        self.assertEqual(self.request.call_count, 1)
+        self.assertEqual(self.store.state['calls']['a' * 64]['status'], 'result_saved')
 
     def test_state_unavailable_makes_no_request(self):
         with patch.object(self.store, 'update', side_effect=StateError('offline')):

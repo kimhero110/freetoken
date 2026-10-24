@@ -74,7 +74,8 @@ python -m scripts.check_heartbeat
 | STATE_NOT_INITIALIZED / HISTORY_AUDIT_REQUIRED | 不收费；完成历史审计及初始化 |
 | STATE_CONTENTION / GIT_OPERATION_FAILED | 不绕过账本；恢复 Git 后先核对远端状态 |
 | CALL_UNCERTAIN / UNCERTAIN | 不自动重发；确认旧运行停止，找到可信结果或明确放弃 |
-| RESULT_EXPIRED / SOURCE_ALREADY_ATTEMPTED | 保留收费事实，停止自动调用；需要另行审查刷新方案 |
+| RESULT_EXPIRED | 同一收费键的结果已超过 48 小时。不自动重发，也不把过期结果写成新候选。该平台若已有待审提案，记 pending_review，运行不因此失败；没有待审提案时仍失败，留给人工审查刷新方案 |
+| SOURCE_ALREADY_ATTEMPTED | 保留收费事实，停止自动调用；需要另行审查刷新方案 |
 | PROVIDER_OR_BUDGET_NOT_CONFIGURED | 修复配置；不要新增未知费用备用供应商 |
 | deferred | 等待下一允许时段，下一计划运行重新评估；监控保留阻塞提示 |
 | CANDIDATE_PUBLISH_FAILED | 重试发布步骤，或重跑流程复用已保存结果；不要删账本 |
