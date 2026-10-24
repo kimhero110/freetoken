@@ -9,6 +9,10 @@ site/node_modules/
 scripts/node/node_modules/
 site/dist/
 site/.astro/
+# 根目录 dist/ 是 2026-09-02 的旧构建快照，发布工作流只用 site/dist。
+/dist/
+# Wrangler 本地缓存，不是部署配置。
+.wrangler/
 
 # 环境变量与密钥
 .env
