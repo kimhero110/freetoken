@@ -141,3 +141,18 @@ GitHub 对 `*/5` 的实际启动常常晚数小时。新鲜度窗口从 15 分�
 心跳只在监控文件不健康时发飞书。提取失败会记进账本并让 `active_incidents` 增加，但 `scripts/check_heartbeat.py` 的健康判断不看这个数字，所以来源故障可以一直只出现在状态页和 Actions 日志里。2026-10-23 的 `update.yml` 运行 39885349806 因 `RESULT_EXPIRED` 失败；次日来源版本没有被再次观察到，公开状态在 `monitoring=ok`、`check_status=completed` 时仍有 `extract:d8dec560b69e3347c428c67c`。`pending_review` 本来就不是故障编号。
 
 告警加在现有的 `check-monitor.yml` 上，仍调用 `send_feishu_card`，密钥仍是 `FEISHU_WEBHOOK_URL` 与 `FEISHU_SECRET`。只对 `extract:`、`fetch:`、`call:` 和 `workflow:update.yml:` 的新编号发一张卡片，接受记录写在账本 `history.extract_incident_alerts`，同一编号消失前不重复。发送失败沿用心跳的 4 次、15 分钟间隔。`pending_review`、`deferred`、未付费干跑（`checks:paused`）和 `discover.yml` 不发这张卡片。干跑和发现流程的问题继续只在状态页展示。
+
+## 2026-10-24 告警策略
+
+`#135` 按编号去重之后，噪声来自“每个新来源摘要都算一条新故障”。截至 2026-10-24 的 `automation-state` 账本里，提取/抓取失败 105 次：99 次 `MODEL_NOT_AVAILABLE`，6 次 `RESULT_EXPIRED`。若当时就按编号各发一次，会有 64 个来源编号、36 张卡片；其中 51 个编号只失败过一次。2026-09-10 至 09-21 是同一场模型不可用，`update.yml` 连续失败 35 次，但来源哈希每次都变，所以同一场故障被拆成许多编号。`workflow:update.yml:execution` 对这场故障只需要一张卡片。
+
+2026-09-08 与 2026-09-09 各有一次账本状态为 `failed` 的运行，提取阶段其实是 `deferred`（高峰时段暂停），没有来源失败。这种暂停不能发工作流失败卡片。
+
+2026-09-22 之后只新增一个来源故障：`extract:d8dec560b69e3347c428c67c`，`RESULT_EXPIRED` 连续 4 次（2026-10-22 01:39Z 至 2026-10-23 01:41Z）。工作流在 2026-10-23 20:33Z 已恢复，这个编号仍是唯一打开的故障（未超过 3 天过期）。连续 2 次的门槛盖得住它，不会把它藏起来。`check-monitor.yml` 在 `#132` 之前的失败是心跳文件过期，不是故障卡片；`#135` 合并时最近一次心跳（运行 40104068610）已经成功，新策略还没有在生产发过卡片。
+
+因此即时卡片保持 `#135` 的一次去重，并加上两条收窄：
+
+- `extract` / `fetch` 默认连续失败 2 次才发第一张。只失败一次的编号留在状态页，并进入日报。`INCIDENT_ALERT_MIN_STREAK=1` 恢复为看到就发。
+- 最新一次 `update.yml` 若是没有来源失败的延期暂停，不发 `workflow:update.yml:execution`。`call:`、运行超时和缺调度仍看到就发。
+
+另加一张 UTC 日日报（`INCIDENT_DIGEST`，默认 `on`）。当天有打开的可告警编号才发，包括还没达到连续次数的来源；没有就不发。同一天不重复，发送失败仍是 4 次、15 分钟。记录在同一本账的 `history.extract_incident_alerts.digest`，仍走原来的 webhook。`pending_review`、`deferred`、`checks:paused` 和 `discover.yml` 两张卡片都不进。

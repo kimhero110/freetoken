@@ -255,6 +255,70 @@ def ledger_problems(ledger, now):
     return problems, summary
 
 
+def _update_runs(ledger):
+    if not isinstance(ledger, dict):
+        return []
+    runs = ledger.get('runs')
+    if not isinstance(runs, dict):
+        return []
+    return [run for run in runs.values()
+            if isinstance(run, dict) and run.get('completed_at') and run.get('workflow_file') == 'update.yml']
+
+
+def source_failure_streaks(ledger, now):
+    """Trailing failed observations for extract/fetch ids that are still open.
+
+    A later non-failure status resets the count. A source that stops appearing
+    keeps the streak from its last observation until that observation is stale.
+    """
+    history = {}
+    for summary in sorted(_update_runs(ledger), key=lambda run: stamp(run['completed_at'])):
+        seen = stamp(summary['completed_at'])
+        for stage in ('fetch', 'extract'):
+            block = summary.get(stage) if isinstance(summary.get(stage), dict) else {}
+            for item in block.get('sources') or []:
+                if not isinstance(item, dict) or not re.fullmatch(r'[a-f0-9]{64}', str(item.get('source', ''))):
+                    continue
+                key = (stage, item['source'])
+                streak = history.get(key, {}).get('streak', 0)
+                status = item.get('status')
+                streak = streak + 1 if status in {'failed', 'fetch_failed'} else 0
+                history[key] = {'streak': streak, 'seen': seen, 'status': status}
+    found = {}
+    for (stage, source), record in history.items():
+        if record['status'] in {'failed', 'fetch_failed'} and now - record['seen'] <= STALE_SOURCE:
+            found[f'{stage}:{source[:24]}'] = record['streak']
+    return found
+
+
+def update_workflow_deferred(ledger):
+    """True when the latest update.yml run is a deferred pause with no source failure.
+
+    Deferred runs exit non-zero, so the workflow conclusion is failure. That
+    pause is not an outage and must not page workflow:update.yml:execution.
+    """
+    summaries = _update_runs(ledger)
+    if not summaries:
+        return False
+    try:
+        latest = max(summaries, key=lambda run: stamp(run['completed_at']))
+    except (TypeError, ValueError):
+        return False
+    extract = latest.get('extract') if isinstance(latest.get('extract'), dict) else {}
+    if latest.get('status') != 'deferred' and extract.get('status') != 'deferred':
+        return False
+    for stage in ('fetch', 'extract'):
+        block = latest.get(stage) if isinstance(latest.get(stage), dict) else {}
+        for item in block.get('sources') or []:
+            if isinstance(item, dict) and item.get('status') in {'failed', 'fetch_failed'}:
+                return False
+    return True
+
+
+def empty_alert_context():
+    return {'streaks': {}, 'workflow_deferred': False}
+
+
 def _unknown_document(now):
     updated = now.astimezone(timezone.utc).isoformat()
     return {
@@ -282,7 +346,12 @@ def _summary_displayable(summary):
 
 
 def build_status(repo_name, now, *, token='', opener=None):
-    """Return (document, active incident ids). Query failures publish monitoring=unknown."""
+    """Return (document, active incident ids, alert context).
+
+    Query failures publish monitoring=unknown. Alert context is separate from
+    the public document: streaks count consecutive failed observations, and
+    workflow_deferred marks a pause that must not page.
+    """
     if now.tzinfo is None:
         raise StatusError('TIMEZONE_REQUIRED')
     unknown = _unknown_document(now)
@@ -300,16 +369,23 @@ def build_status(repo_name, now, *, token='', opener=None):
         ledger_ids, summary = ledger_problems(ledger, now.timestamp())
         problems.extend(ledger_ids)
         if not _summary_displayable(summary):
-            return unknown, []
+            return unknown, [], empty_alert_context()
+        try:
+            context = {
+                'streaks': source_failure_streaks(ledger, now.timestamp()),
+                'workflow_deferred': update_workflow_deferred(ledger),
+            }
+        except (TypeError, ValueError, KeyError):
+            context = empty_alert_context()
         document = _unknown_document(now)
         document.update(summary)
         document['monitoring'] = 'ok'
         document['notification_failures'] = 0
         document['active_incidents'] = len(problems)
         canonical_payload(document)
-        return document, problems
+        return document, problems, context
     except (StatusError, ValueError, KeyError, TypeError):
-        return unknown, []
+        return unknown, [], empty_alert_context()
 
 
 def _reject_secrets(text):
@@ -432,8 +508,9 @@ def refresh_public_status(repo, *, now=None, repo_name=None, opener=None, remote
     now = now or datetime.now(timezone.utc)
     token = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN') or ''
     incidents = []
+    context = empty_alert_context()
     try:
-        document, incidents = build_status(repo_name, now, token=token, opener=opener)
+        document, incidents, context = build_status(repo_name, now, token=token, opener=opener)
         push_status(Path(repo), document, remote=remote)
         published = None
         for attempt in range(3):
@@ -451,6 +528,6 @@ def refresh_public_status(repo, *, now=None, repo_name=None, opener=None, remote
         line = explain(published, now) + ' url=' + status_raw_url(repo_name)
         if incidents:
             line += ' incidents=' + ','.join(str(item) for item in incidents[:5])
-        return healthy(published, now), line, list(incidents)
+        return healthy(published, now), line, list(incidents), context
     except StatusError as exc:
-        return False, 'CHECK_MONITOR_UNAVAILABLE reason=' + exc.code, list(incidents)
+        return False, 'CHECK_MONITOR_UNAVAILABLE reason=' + exc.code, list(incidents), context

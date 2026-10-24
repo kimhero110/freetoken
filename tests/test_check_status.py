@@ -12,8 +12,10 @@ from scripts.check_status import (
     ledger_problems,
     missing_slots,
     refresh_public_status,
+    source_failure_streaks,
     stamp,
     status_raw_url,
+    update_workflow_deferred,
 )
 
 
@@ -112,6 +114,44 @@ class ScheduleAndLedgerTests(unittest.TestCase):
         problems, _summary = ledger_problems(ledger, NOW.timestamp())
         self.assertEqual(problems, ['fetch:' + source[:24]])
 
+    def test_streak_counts_consecutive_failures_and_resets(self):
+        source = 'b' * 64
+        other = 'c' * 64
+
+        def run(stamp, source, status):
+            return {
+                'completed_at': stamp, 'workflow_file': 'update.yml', 'status': 'failed',
+                'fetch': {'sources': [{'source': other, 'status': 'fetch_failed'}]},
+                'extract': {'sources': [{'source': source, 'status': status}]},
+            }
+
+        ledger = {'version': 1, 'calls': {}, 'history': {}, 'runs': {
+            '1': run('2026-10-22T01:00:00Z', source, 'failed'),
+            '2': run('2026-10-22T20:00:00Z', source, 'failed'),
+            '3': run('2026-10-23T01:00:00Z', source, 'pending_review'),
+            '4': run('2026-10-23T20:00:00Z', source, 'failed'),
+        }}
+        streaks = source_failure_streaks(ledger, NOW.timestamp())
+        self.assertEqual(streaks['extract:' + source[:24]], 1)
+        self.assertEqual(streaks['fetch:' + other[:24]], 4)
+        ledger['runs']['3']['extract']['sources'][0]['status'] = 'failed'
+        streaks = source_failure_streaks(ledger, NOW.timestamp())
+        self.assertEqual(streaks['extract:' + source[:24]], 4)
+        self.assertEqual(source_failure_streaks(ledger, (NOW + timedelta(days=4)).timestamp()), {})
+
+    def test_deferred_pause_is_not_a_workflow_outage(self):
+        source = 'e' * 64
+        ledger = {'version': 1, 'calls': {}, 'history': {}, 'runs': {'1': {
+            'completed_at': '2026-10-24T01:15:00Z', 'workflow_file': 'update.yml', 'status': 'failed',
+            'fetch': {'sources': [{'source': source, 'status': 'changed'}]},
+            'extract': {'status': 'deferred', 'sources': [
+                {'source': source, 'status': 'deferred'},
+                {'source': 'f' * 64, 'status': 'pending_review'},
+            ]}}}}
+        self.assertTrue(update_workflow_deferred(ledger))
+        ledger['runs']['1']['extract']['sources'].append({'source': 'a' * 64, 'status': 'failed'})
+        self.assertFalse(update_workflow_deferred(ledger))
+
     def test_secret_material_is_not_publishable(self):
         document = {
             'version': 1, 'updated_at': NOW.isoformat(), 'monitoring': 'ok', 'notification_failures': 0,
@@ -172,10 +212,12 @@ class PublishTests(unittest.TestCase):
         return Response(json.dumps(body))
 
     def test_refresh_publishes_without_touching_main_and_keeps_real_incidents(self):
-        ok, detail, incidents = refresh_public_status(
+        ok, detail, incidents, context = refresh_public_status(
             self.repo, now=NOW, repo_name='example/repo', opener=self.opener, pause=lambda _seconds: None)
         self.assertTrue(ok)
         self.assertEqual(incidents, ['extract:' + ('b' * 24)])
+        self.assertEqual(context['streaks'], {'extract:' + ('b' * 24): 1})
+        self.assertFalse(context['workflow_deferred'])
         self.assertIn('CHECK_MONITOR_OK', detail)
         self.assertIn('active_incidents=1', detail)
         self.assertIn('incidents=extract:' + ('b' * 24), detail)
@@ -204,7 +246,11 @@ class PublishTests(unittest.TestCase):
         self.assertIn('FEISHU_WEBHOOK_URL', workflow)
         self.assertIn('FEISHU_SECRET', workflow)
         self.assertIn('python -m scripts.check_external_monitor', workflow)
-        self.assertIn('notify_incidents', (ROOT / 'scripts/check_external_monitor.py').read_text(encoding='utf-8'))
+        self.assertIn('INCIDENT_ALERT_MIN_STREAK', workflow)
+        self.assertIn('INCIDENT_DIGEST', workflow)
+        monitor = (ROOT / 'scripts/check_external_monitor.py').read_text(encoding='utf-8')
+        self.assertIn('notify_incidents', monitor)
+        self.assertIn('notify_digest', monitor)
 
 
 if __name__ == '__main__':

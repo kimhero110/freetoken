@@ -141,16 +141,19 @@ python scripts/review_candidates.py --list
 
 ### 提取 / 检查失败告警
 
-`check-monitor.yml` 在两类情况发飞书，都复用上面两个密钥，不新增通知服务：
+`check-monitor.yml` 在三类情况发飞书，都复用上面两个密钥，不新增通知服务：
 
 - 监控文件本身不健康（发布停摆、`monitoring` 不是 ok）。
 - `update.yml` 的提取或检查出现新的持续故障。编号只接受 `extract:` / `fetch:` / `call:` 加 24 位摘要，以及 `workflow:update.yml:execution|running|schedule`。
+- 每个 UTC 日最多一张日报，汇总当时仍打开的上述编号。
 
-同一编号在从公开状态消失之前只发一次。飞书发送失败最多再试 4 次，间隔 15 分钟，尝试记在 `automation-state` 的 `history.extract_incident_alerts`。编号消失后再次出现会重新告警。
+即时卡片的去重没变：同一编号在从公开状态消失之前只发一次，消失后再次出现会重新告警。`extract` / `fetch` 还要同一来源连续失败满 `INCIDENT_ALERT_MIN_STREAK` 次（默认 2，允许 1–20）才发第一张。只失败一次的来源留在状态页上，并进入日报，不单独响铃。`call:` 和 `workflow:update.yml:` 看到就发，不受这个次数限制。
 
-不会发这张卡片的情况：`pending_review`（已有待审提案）、`deferred`（等到下一允许时段）、`checks:paused`（未打开付费提取时的干跑）。这三项仍可以出现在状态页的 `active_incidents` 或来源摘要里。`discover.yml` 的运行问题也只留在状态页。
+日报由 `INCIDENT_DIGEST` 控制，默认 `on`。设为 `off` 就停掉日报，不影响即时卡片。当天没有可列入的编号时不发。已经响过铃的编号当天再出现在日报里，不会因此再响一次。飞书发送失败时，即时卡片和日报各自最多再试 4 次，间隔 15 分钟，记在 `automation-state` 的 `history.extract_incident_alerts`（`open` 与 `digest`）。
 
-密钥留空时卡片发不出去，检查监控作业会在这 4 次尝试内失败，日志为 `INCIDENT_ALERT retry`。本地验证不访问飞书：
+不会发这两张卡片的情况：`pending_review`（已有待审提案）、`deferred`（等到下一允许时段）、`checks:paused`（未打开付费提取时的干跑）。延期会让 `update.yml` 以失败退出；这种暂停不发 `workflow:update.yml:execution`。这三项仍可以出现在状态页的 `active_incidents` 或来源摘要里。`discover.yml` 的运行问题也只留在状态页。
+
+连续次数和日报开关都是仓库 Variables，不设就用默认值。密钥留空时卡片发不出去，检查监控作业会在各自 4 次尝试内失败，日志为 `INCIDENT_ALERT retry` 或 `INCIDENT_DIGEST retry`。本地验证不访问飞书：
 
 ```bash
 python -m unittest tests.test_check_restoration tests.test_check_status -v
