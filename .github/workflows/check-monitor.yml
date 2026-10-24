@@ -1,10 +1,12 @@
 name: 独立检查监控心跳
 # Rewrites monitor-status/check-status.json from workflow runs and the public
-# ledger. Alerts when that document is unhealthy, and sends one Feishu card
-# for each new update.yml extract/check incident (not pending_review).
-# Both use FEISHU_WEBHOOK_URL and FEISHU_SECRET. The nginx file at
-# https://witkit.zone/ops/check-status.json froze when the intake daemon was
-# removed and is not the probe target.
+# ledger. Alerts when that document is unhealthy. Pages once per actionable
+# incident after INCIDENT_ALERT_MIN_STREAK consecutive extract/fetch failures
+# (default 2). Sends at most one UTC-day digest (INCIDENT_DIGEST, default on)
+# of incidents that are still open. Both use FEISHU_WEBHOOK_URL and
+# FEISHU_SECRET. Deferred pauses, pending_review, and dry runs are not paged.
+# The nginx file at https://witkit.zone/ops/check-status.json froze when the
+# intake daemon was removed and is not the probe target.
 on:
   schedule:
     - cron: '*/5 * * * *'
@@ -41,4 +43,6 @@ jobs:
           FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           EXERCISE: ${{ inputs.exercise || 'none' }}
+          INCIDENT_ALERT_MIN_STREAK: ${{ vars.INCIDENT_ALERT_MIN_STREAK || '2' }}
+          INCIDENT_DIGEST: ${{ vars.INCIDENT_DIGEST || 'on' }}
         run: python -m scripts.check_external_monitor --exercise "$EXERCISE"
