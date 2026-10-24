@@ -1,27 +1,14 @@
 """Independent heartbeat with durable, bounded notification attempts."""
 import argparse
-import json
 import time
 import uuid
-from datetime import datetime, timezone
 from pathlib import Path
-from urllib.request import Request, urlopen
-from .check_heartbeat import healthy
 from .check_state import GitState
+from .check_status import refresh_public_status
 from .feishu_notifier import send_feishu_card
 
 
-def probe():
-    try:
-        req = Request('https://witkit.zone/ops/check-status.json', headers={'Cache-Control': 'no-cache', 'User-Agent': 'FreeToken-External-Monitor/1'})
-        with urlopen(req, timeout=15) as response:
-            raw = response.read(8193)
-        return len(raw) <= 8192 and healthy(json.loads(raw), datetime.now(timezone.utc))
-    except Exception:
-        return False
-
-
-def run(store, is_healthy, send, *, now=None, exercise=False):
+def run(store, is_healthy, send, *, now=None, exercise=False, detail=''):
     now = time.time() if now is None else now
     key = 'external_heartbeat_test' if exercise else 'external_heartbeat'
     owner = uuid.uuid4().hex
@@ -40,9 +27,11 @@ def run(store, is_healthy, send, *, now=None, exercise=False):
     record = store.update(reserve)
     if record:
         title = 'FreeToken 外部心跳' + ('联调' if exercise else '') + ('恢复' if is_healthy else '异常')
+        content = '检查主监控可达性、心跳新鲜度和通知健康。事件：' + record['event']
+        if detail:
+            content += '\n' + detail.replace('\n', ' ')[:400]
         payload = {'msg_type': 'interactive', 'card': {'header': {'title': {'tag': 'plain_text', 'content': title}},
-                   'elements': [{'tag': 'div', 'text': {'tag': 'plain_text', 'content':
-                       '检查主监控可达性、心跳新鲜度和通知健康。事件：' + record['event']}}]}}
+                   'elements': [{'tag': 'div', 'text': {'tag': 'plain_text', 'content': content}}]}}
         try:
             accepted = bool(send(payload))
         except Exception:
@@ -62,8 +51,13 @@ def main():
     parser.add_argument('--exercise', choices=['none', 'failure', 'recovery'], default='none')
     args = parser.parse_args()
     state = GitState(Path(__file__).resolve().parents[1])
-    ok = probe() if args.exercise == 'none' else args.exercise == 'recovery'
-    return run(state, ok, send_feishu_card, exercise=args.exercise != 'none')
+    detail = ''
+    if args.exercise == 'none':
+        ok, detail = refresh_public_status(state.repo)
+        print(detail)
+    else:
+        ok = args.exercise == 'recovery'
+    return run(state, ok, send_feishu_card, exercise=args.exercise != 'none', detail=detail)
 
 
 if __name__ == '__main__':

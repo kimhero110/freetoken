@@ -4,7 +4,8 @@ import {describeSourceVerification as describe} from '../src/lib/source-verifica
 const now=Date.parse('2026-09-06T10:00:00Z');
 const health={version:1,monitoring:'ok',updated_at:new Date(now).toISOString(),sources:[{platform:'demo',checked_at:new Date(now-1000).toISOString(),status:'verified_unchanged'}]};
 test('approved source result is explicitly not an API test',()=>assert.match(describe(health,'demo',false,now),/非 API 实测/));
-test('old heartbeat never displays verified',()=>assert.match(describe(health,'demo',false,now+3600000),/暂无/));
+test('old heartbeat never displays verified',()=>assert.match(describe(health,'demo',false,now+9*3600000),/暂无/));
+test('heartbeat inside the publisher window still displays',()=>assert.match(describe(health,'demo',false,now+6*3600000),/非 API 实测/));
 test('partial failures cannot pass as verified',()=>assert.match(describe({...health,sources:[...health.sources,{...health.sources[0],status:'fetch_failed'}]},'demo',false,now),/暂无法核验/));
 test('unknown platform remains unknown',()=>assert.match(describe(health,'other',false,now),/暂无/));
 test('rejection is not approval',()=>assert.match(describe({...health,sources:[{...health.sources[0],status:'reviewed_rejected'}]},'demo',false,now),/已拒绝/));

@@ -1,4 +1,8 @@
 name: 独立检查监控心跳
+# Rewrites monitor-status/check-status.json from workflow runs and the public
+# ledger, then alerts only when that document is unhealthy. The nginx file at
+# https://witkit.zone/ops/check-status.json froze when the intake daemon was
+# removed and is not the probe target.
 on:
   schedule:
     - cron: '*/5 * * * *'
@@ -33,5 +37,6 @@ jobs:
         env:
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
           FEISHU_SECRET: ${{ secrets.FEISHU_SECRET }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           EXERCISE: ${{ inputs.exercise || 'none' }}
         run: python -m scripts.check_external_monitor --exercise "$EXERCISE"

@@ -1,9 +1,14 @@
+// Keep in sync with scripts/check_heartbeat.py HEARTBEAT_MAX_AGE.
+// The publisher is a GitHub Actions schedule, which often runs hours after
+// the */5 cron rather than every five minutes.
+export const HEARTBEAT_MAX_AGE_MS = 8 * 60 * 60 * 1000;
+
 export function describeCheckHealth(value, english = false, now = Date.now()) {
   const unknown = english ? 'Automatic check: status unknown' : '自动检查：状态暂不可确认';
   if (!value || typeof value !== 'object') return unknown;
   const s = value;
   const updated = typeof s.updated_at === 'string' ? Date.parse(s.updated_at) : NaN;
-  if (s.version !== 1 || s.monitoring !== 'ok' || !Number.isFinite(updated) || now - updated > 900000 || updated - now > 60000) return unknown;
+  if (s.version !== 1 || s.monitoring !== 'ok' || !Number.isFinite(updated) || now - updated > HEARTBEAT_MAX_AGE_MS || updated - now > 60000) return unknown;
   const checked = typeof s.last_check_at === 'string' ? Date.parse(s.last_check_at) : NaN;
   if (!Number.isFinite(checked) || checked > now + 60000 || !Number.isInteger(s.attempted) || !Number.isInteger(s.succeeded)) return unknown;
   const attempted = s.attempted, succeeded = s.succeeded;
