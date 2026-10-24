@@ -2,6 +2,8 @@
 
 日期：2026-09-06。范围：现有检查、候选发布、通知及页面日期。本轮工作在本地进行；没有推送、部署、改远端变量、启动收费调用或发送通知。
 
+现行状态（2026-10-24）：`config/check-history.json` 的 `audit_complete` 已是 true。飞书入口机器人和 `daemon/check_monitor.py` 已于 2026-09-23 删除，下文「部署步骤」B 不再对应现网进程。心跳由 `check-monitor.yml` 写入 `monitor-status` 分支；提取和检查告警见文末 2026-10-24 三节，以及 README「提取 / 检查失败告警」。9 月 6 日的清单保留为当时记录。
+
 ## 已实现的代码
 
 - `scripts/check_state.py`：专用状态分支、版本检查、Git fast-forward 并发写入、确认丢失协调。复用 CI 现有 App 权限，不扩权机器人 PAT。

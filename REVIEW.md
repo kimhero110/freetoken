@@ -2,9 +2,7 @@
 
 审查日期：2026-09-05。版本：`558b386f19efe7971457983ce2359bf4e0b925fb`。
 
-修复状态：下文保留原始审查证据；F1–F6 已随本次变更修复，生产部署状态以发布流水线为准。回归测试包含真实 SDK 消息解析、精确运行关联、waiting 状态、平台参数契约、更新候选生成到批准归档以及主动通知接收者。运行方式见 README，具体用例位于 `tests/daemon_integration/test_intake.py`、`tests/test_platform_tip.py` 和 `tests/test_workflow_contracts.py`。旧 `review_repro.py` 针对原始版本，修复后请使用回归测试验证。
-
-原始审查发现飞书入口、平台提交和自动审批存在阻断问题；下文为原始证据，当前修复已通过回归测试。
+状态：本文件是 2026-09-05 的审查记录。F1–F6 针对当时的飞书入口机器人。该机器人、`daemon/`、`review_repro.py` 和 `tests/daemon_integration/` 已于 2026-09-23 删除（`450abe6`），下文里的路径不再对应仓库里的文件，也不能再按那些用例做回归。仍在的相关测试是 `tests/test_platform_tip.py` 和 `tests/test_workflow_contracts.py`。飞书工作流文件还在；这次清理没有改它们的启用状态。下文保留原始证据。
 
 ## 范围与方法
 

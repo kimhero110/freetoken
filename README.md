@@ -1,4 +1,4 @@
-﻿# FreeToken · 免费 Token 情报局
+# FreeToken · 免费 Token 情报局
 
 > 用免费 Token 做工具，也提醒自己保持思考。
 
@@ -6,7 +6,7 @@
 [![GitHub Stars](https://img.shields.io/github/stars/kimhero110/freetoken?style=flat-square&color=18181b)](https://github.com/kimhero110/freetoken)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
-FreeToken 收录全球大模型和开发者平台的免费额度、官方入口、核验来源与接入方式。当前收录 44 个平台。自动抓取与 LLM 提取只生成候选变更，正式数据必须经过人工批准。
+FreeToken 收录全球大模型和开发者平台的免费额度、官方入口、核验来源与接入方式。当前收录 49 个平台（`data/platforms/*.yaml`，与 `data/platforms.json` 一致）。自动抓取与 LLM 提取只生成候选变更，正式数据必须经过人工批准。
 
 ## 核心原则
 
@@ -88,15 +88,14 @@ python scripts/review_candidates.py --reject <candidate-id>
 - 内容已经变化时，在原记录旁边另存 `data/reviews/<candidate-id>-rejected-<token>.yaml`，原文件不动。
 - 已有的 `*-approved.yaml` 仍然拒绝覆盖。不要把积压改成批量批准。
 
-### 修复合入后重跑 Review candidate
+### 重跑尚未成功的 Review candidate
 
-`.github/workflows/review-candidate.yml` 只在 `main` 上由 `workflow_dispatch` 触发，并且要进入 `production` Environment。2026-10 的四次运行全部失败在批次里的第一个已拒绝 ID（`aimlapi-rejected.yaml`），后面的候选没有被处理；上一次成功是 2026-09-23。把本修复合并到 `main` 之后，用 **reject** 重跑，不要改成 approve。
+幂等拒绝已经在 `main`（#133）。`.github/workflows/review-candidate.yml` 只在 `main` 上由 `workflow_dispatch` 触发，并且要进入 `production` Environment。截至 2026-10-24，这次修复之后还没有成功的 Review candidate 运行。2026-10 的四次运行全部失败在批次里的第一个已拒绝 ID（`aimlapi-rejected.yaml`），后面的候选没有被处理；上一次成功仍是 2026-09-23。补跑只用 **reject**，不要改成 approve。
 
-1. 确认本修复已经在 `main` 上。
-2. 打开 Actions → **Review candidate** → Run workflow，分支选择 `main`。
-3. `decision` 选 `reject`。`candidate_id` 填待拒绝的 ID，多个用逗号分隔，不要带 `.yaml` / `.json`。可以沿用失败那次的列表，也可以先在仓库里列出当前待审文件名。
-4. `production` Environment 如果要求审核人，先通过这次运行。工作流自己会开 PR 并合并；重复候选从 `data/candidates/` 消失，原来的 `*-rejected.yaml` 保持不变，尚未归档的候选进入 `data/reviews/`。
-5. 等价的命令：
+1. 打开 Actions → **Review candidate** → Run workflow，分支选择 `main`。
+2. `decision` 选 `reject`。`candidate_id` 填仍在 `data/candidates/` 里的 ID，多个用逗号分隔，不要带 `.yaml` / `.json`。先用下面的 `--list` 取出当前文件名。不要把已经不在目录里的 ID 和仍在的 ID 放进同一次运行：脚本对缺失 ID 以失败退出，Actions 会在 `git commit` 之前停下，这次已经处理的拒绝不会被提交。
+3. `production` Environment 如果要求审核人，先通过这次运行。工作流自己会开 PR 并合并；重复候选从 `data/candidates/` 消失，原来的 `*-rejected.yaml` 保持不变，尚未归档的候选进入 `data/reviews/`。
+4. 等价的命令：
 
 ```bash
 gh workflow run review-candidate.yml --ref main \
@@ -110,13 +109,13 @@ gh workflow run review-candidate.yml --ref main \
 python scripts/review_candidates.py --list
 ```
 
-候选已经不在 `data/candidates/` 时，脚本会报告未找到并以失败退出。那表示这批已经清完，不必再跑。批准继续一次一条，单独 dispatch，`decision=approve`。
+候选全部不在 `data/candidates/` 时，脚本会报告未找到并以失败退出。那表示这批已经清完，不必再跑。批准继续一次一条，单独 dispatch，`decision=approve`。
 
 ### 能力探测与审核
 
 仓库管理员可在 GitHub Actions 的 **Capability probe candidates** 工作流中手动选择一个固定提供商和 `raw_http`、`openai_python`、`openai_node` 客户端，也可选择 `all`。工作流每周二 `03:17 UTC` 自动运行，并在 Job Summary 报告固定十项允许列表的 Secret 覆盖率；缺少凭据的项会明确列为跳过且不生成失败候选。每个 provider/tool 组合只发送一次可能计费的 API POST，SDK 自动重试被禁用，请在启用 Secret 前确认额度和成本。
 
-探测只写入 `data/candidates/`，不会直接修改正式平台数据。每个候选只证明并提升一个工具，不能用 HTTP 探测替代 SDK 证明。人工核对候选后，在 `main` 分支运行 **Review candidate**，填写候选文件名（不含扩展名）并选择 `approve` 或 `reject`。批准成功的 live 探测会更新正式 YAML、连同已审核来源哈希（`.cache/hashes.json`）一并重新编译并提交；推送成功后工作流自动触发 `publish.yml` 生产发布，只有双节点公网 `release-id.txt` 核验通过后才会发送飞书上线通知（审批阶段的通知只声明“发布已触发”）。拒绝候选同样会归档审核记录，并记录该来源版本已审，避免同一来源反复入队；已批准与已拒绝的候选都会带上 `github.actor` 审核记录并移入 `data/reviews/`。
+探测只写入 `data/candidates/`，不会直接修改正式平台数据。每个候选只证明并提升一个工具，不能用 HTTP 探测替代 SDK 证明。人工核对候选后，在 `main` 分支运行 **Review candidate**，填写候选文件名（不含扩展名）并选择 `approve` 或 `reject`。批准成功的 live 探测会更新正式 YAML、连同已审核来源哈希（`.cache/hashes.json`）一并重新编译并提交；推送成功后工作流自动触发 `publish.yml` 生产发布，只有双节点公网 `release-id.txt` 核验通过后才会发送飞书上线通知。审批通过时的飞书卡片只说明生产发布已经触发，上线通知是另一张、在公网核验通过之后才发。拒绝候选同样会归档审核记录，并记录该来源版本已审，避免同一来源反复入队；已批准与已拒绝的候选都会带上 `github.actor` 审核记录并移入 `data/reviews/`。
 
 能力状态含义：`claimed` 表示平台声称支持但尚无已核验证据；`documented` 表示官方文档已核验；`live` 表示一次真实 API 请求成功且协议响应有效。定时探测结果在人工批准前始终只是候选，不改变这些正式状态。
 
