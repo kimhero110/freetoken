@@ -100,6 +100,18 @@ class ScheduleAndLedgerTests(unittest.TestCase):
         problems, _summary = ledger_problems(ledger, NOW.timestamp())
         self.assertEqual(problems, ['extract:' + fresh[:24]])
 
+    def test_pending_review_is_not_an_incident(self):
+        source = 'd' * 64
+        ledger = {'version': 1, 'calls': {}, 'history': {}, 'runs': {'1': {
+            'completed_at': '2026-10-24T11:00:00Z', 'workflow_file': 'update.yml', 'status': 'completed',
+            'fetch': {'checked_at': '2026-10-24T11:00:00Z', 'attempted': 1, 'succeeded': 1, 'sources': [
+                {'source': source, 'status': 'fetch_failed'}]},
+            'extract': {'sources': [
+                {'source': 'e' * 64, 'status': 'pending_review'},
+                {'source': 'f' * 64, 'status': 'deferred'}]}}}}
+        problems, _summary = ledger_problems(ledger, NOW.timestamp())
+        self.assertEqual(problems, ['fetch:' + source[:24]])
+
     def test_secret_material_is_not_publishable(self):
         document = {
             'version': 1, 'updated_at': NOW.isoformat(), 'monitoring': 'ok', 'notification_failures': 0,
@@ -160,9 +172,10 @@ class PublishTests(unittest.TestCase):
         return Response(json.dumps(body))
 
     def test_refresh_publishes_without_touching_main_and_keeps_real_incidents(self):
-        ok, detail = refresh_public_status(
+        ok, detail, incidents = refresh_public_status(
             self.repo, now=NOW, repo_name='example/repo', opener=self.opener, pause=lambda _seconds: None)
         self.assertTrue(ok)
+        self.assertEqual(incidents, ['extract:' + ('b' * 24)])
         self.assertIn('CHECK_MONITOR_OK', detail)
         self.assertIn('active_incidents=1', detail)
         self.assertIn('incidents=extract:' + ('b' * 24), detail)
@@ -188,7 +201,10 @@ class PublishTests(unittest.TestCase):
                          (ROOT / 'scripts/check_external_monitor.py').read_text(encoding='utf-8'))
         workflow = (ROOT / '.github/workflows/check-monitor.yml').read_text(encoding='utf-8')
         self.assertIn('GH_TOKEN: ${{ steps.app-token.outputs.token }}', workflow)
+        self.assertIn('FEISHU_WEBHOOK_URL', workflow)
+        self.assertIn('FEISHU_SECRET', workflow)
         self.assertIn('python -m scripts.check_external_monitor', workflow)
+        self.assertIn('notify_incidents', (ROOT / 'scripts/check_external_monitor.py').read_text(encoding='utf-8'))
 
 
 if __name__ == '__main__':

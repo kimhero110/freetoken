@@ -139,6 +139,23 @@ python scripts/review_candidates.py --list
 - `FEISHU_WEBHOOK_URL`
 - `FEISHU_SECRET`
 
+### 提取 / 检查失败告警
+
+`check-monitor.yml` 在两类情况发飞书，都复用上面两个密钥，不新增通知服务：
+
+- 监控文件本身不健康（发布停摆、`monitoring` 不是 ok）。
+- `update.yml` 的提取或检查出现新的持续故障。编号只接受 `extract:` / `fetch:` / `call:` 加 24 位摘要，以及 `workflow:update.yml:execution|running|schedule`。
+
+同一编号在从公开状态消失之前只发一次。飞书发送失败最多再试 4 次，间隔 15 分钟，尝试记在 `automation-state` 的 `history.extract_incident_alerts`。编号消失后再次出现会重新告警。
+
+不会发这张卡片的情况：`pending_review`（已有待审提案）、`deferred`（等到下一允许时段）、`checks:paused`（未打开付费提取时的干跑）。这三项仍可以出现在状态页的 `active_incidents` 或来源摘要里。`discover.yml` 的运行问题也只留在状态页。
+
+密钥留空时卡片发不出去，检查监控作业会在这 4 次尝试内失败，日志为 `INCIDENT_ALERT retry`。本地验证不访问飞书：
+
+```bash
+python -m unittest tests.test_check_restoration tests.test_check_status -v
+```
+
 腾讯云部署还需要：
 
 - `FREETOKEN_SSH_KEY`

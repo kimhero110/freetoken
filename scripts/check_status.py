@@ -431,6 +431,7 @@ def refresh_public_status(repo, *, now=None, repo_name=None, opener=None, remote
     repo_name = repo_name or default_repo()
     now = now or datetime.now(timezone.utc)
     token = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN') or ''
+    incidents = []
     try:
         document, incidents = build_status(repo_name, now, token=token, opener=opener)
         push_status(Path(repo), document, remote=remote)
@@ -450,6 +451,6 @@ def refresh_public_status(repo, *, now=None, repo_name=None, opener=None, remote
         line = explain(published, now) + ' url=' + status_raw_url(repo_name)
         if incidents:
             line += ' incidents=' + ','.join(str(item) for item in incidents[:5])
-        return healthy(published, now), line
+        return healthy(published, now), line, list(incidents)
     except StatusError as exc:
-        return False, 'CHECK_MONITOR_UNAVAILABLE reason=' + exc.code
+        return False, 'CHECK_MONITOR_UNAVAILABLE reason=' + exc.code, list(incidents)

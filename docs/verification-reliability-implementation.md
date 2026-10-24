@@ -135,3 +135,9 @@ python -m scripts.check_admin abandon --key <64位调用键> --actor <GitHub用�
 发布改由 `scripts/check_status.py` 在 `check-monitor.yml` 里完成：读取 update/discover 运行和公开的 `automation-state` 账本，把同一份公开摘要快进到 `monitor-status` 分支的 `check-status.json`。页面和 `scripts/check_heartbeat.py` 改读这个地址。部署账号不能改 Nginx 别名指向的宿主机文件，所以 witkit.zone 上的旧文件保持冻结，不再作为探针。
 
 GitHub 对 `*/5` 的实际启动常常晚数小时。新鲜度窗口从 15 分钟调整为 8 小时，避免健康发布被调度延迟判失败；超过 8 小时仍视为发布者停摆。`active_incidents` 继续单独展示，心跳成功不表示没有待处理的来源故障。通知失败次数只统计已删除的机器人 outbox，现为 0；外部心跳自己的飞书发送仍由工作流退出码和最多 4 次重试负责。
+
+## 2026-10-24 提取 / 检查失败告警
+
+心跳只在监控文件不健康时发飞书。提取失败会记进账本并让 `active_incidents` 增加，但 `scripts/check_heartbeat.py` 的健康判断不看这个数字，所以来源故障可以一直只出现在状态页和 Actions 日志里。2026-10-23 的 `update.yml` 运行 39885349806 因 `RESULT_EXPIRED` 失败；次日来源版本没有被再次观察到，公开状态在 `monitoring=ok`、`check_status=completed` 时仍有 `extract:d8dec560b69e3347c428c67c`。`pending_review` 本来就不是故障编号。
+
+告警加在现有的 `check-monitor.yml` 上，仍调用 `send_feishu_card`，密钥仍是 `FEISHU_WEBHOOK_URL` 与 `FEISHU_SECRET`。只对 `extract:`、`fetch:`、`call:` 和 `workflow:update.yml:` 的新编号发一张卡片，接受记录写在账本 `history.extract_incident_alerts`，同一编号消失前不重复。发送失败沿用心跳的 4 次、15 分钟间隔。`pending_review`、`deferred`、未付费干跑（`checks:paused`）和 `discover.yml` 不发这张卡片。干跑和发现流程的问题继续只在状态页展示。

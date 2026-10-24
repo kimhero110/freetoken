@@ -1,6 +1,8 @@
 name: 独立检查监控心跳
 # Rewrites monitor-status/check-status.json from workflow runs and the public
-# ledger, then alerts only when that document is unhealthy. The nginx file at
+# ledger. Alerts when that document is unhealthy, and sends one Feishu card
+# for each new update.yml extract/check incident (not pending_review).
+# Both use FEISHU_WEBHOOK_URL and FEISHU_SECRET. The nginx file at
 # https://witkit.zone/ops/check-status.json froze when the intake daemon was
 # removed and is not the probe target.
 on:
