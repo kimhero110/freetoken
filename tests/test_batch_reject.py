@@ -1,4 +1,6 @@
 """清积压不该按十几次按钮，否则没有人会去清。"""
+import contextlib
+import io
 import json
 import tempfile
 import unittest
@@ -199,6 +201,104 @@ class RepeatRejectionTests(unittest.TestCase):
 
         self.assertTrue(path.exists())
         self.assertFalse((self.reviews / "demo-rejected.yaml").exists())
+
+    def test_missing_candidate_with_reject_archive_is_a_skip(self):
+        payload = {"candidate_type": "new_platform", "platform_slug": "aimlapi", "status": "pending_review"}
+        archive = self.reviews / "aimlapi-rejected.yaml"
+        archive.write_text(
+            yaml.safe_dump({**payload, "review": {"decision": "rejected", "reviewer": "kimhero110"}}, allow_unicode=True),
+            encoding="utf-8",
+        )
+        original = archive.read_bytes()
+        before = sorted(path.name for path in self.reviews.iterdir())
+
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertTrue(review_candidates.reject_candidate("aimlapi"))
+
+        self.assertIn("[SKIP]", output.getvalue())
+        self.assertIn("aimlapi", output.getvalue())
+        self.assertNotIn("未找到候选源", output.getvalue())
+        self.assertEqual(archive.read_bytes(), original)
+        self.assertEqual(sorted(path.name for path in self.reviews.iterdir()), before)
+        self.assertFalse((self.candidates / "aimlapi.yaml").exists())
+
+    def test_sibling_reject_archive_counts_when_the_pending_file_is_gone(self):
+        (self.reviews / f"demo-rejected-{'ab' * 6}.yaml").write_text(
+            yaml.safe_dump({"platform_slug": "demo", "review": {"decision": "rejected"}}, allow_unicode=True),
+            encoding="utf-8",
+        )
+
+        self.assertTrue(review_candidates.reject_candidate("demo"))
+        self.assertEqual(
+            sorted(path.name for path in self.reviews.glob("demo-rejected*.yaml")),
+            ["demo-rejected-abababababab.yaml"],
+        )
+
+    def test_missing_candidate_without_reject_archive_still_fails(self):
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertFalse(review_candidates.reject_candidate("aimlapi"))
+        self.assertIn("未找到候选源", output.getvalue())
+        self.assertEqual(list(self.reviews.iterdir()), [])
+
+    def test_missing_candidate_with_only_an_approval_record_still_fails(self):
+        (self.reviews / "aimlapi-approved.yaml").write_text("candidate_type: new_platform\n", encoding="utf-8")
+        self.assertFalse(review_candidates.reject_candidate("aimlapi"))
+        self.assertFalse((self.reviews / "aimlapi-rejected.yaml").exists())
+
+    def test_a_longer_rejected_id_does_not_skip_a_missing_shorter_id(self):
+        (self.reviews / "portkey-rejected.yaml").write_text(
+            yaml.safe_dump({"platform_slug": "portkey", "review": {"decision": "rejected"}}, allow_unicode=True),
+            encoding="utf-8",
+        )
+        self.assertFalse(review_candidates.reject_candidate("port"))
+        self.assertFalse((self.reviews / "port-rejected.yaml").exists())
+
+    def test_unrelated_review_filename_does_not_count_as_a_reject_record(self):
+        (self.reviews / "aimlapi-rejected-notes.yaml").write_text("nope: true\n", encoding="utf-8")
+        self.assertFalse(review_candidates.reject_candidate("aimlapi"))
+
+    def test_batch_of_already_archived_ids_succeeds_without_writing(self):
+        before = {}
+        for stem in ("aimlapi", "avian"):
+            path = self.reviews / f"{stem}-rejected.yaml"
+            path.write_text(
+                yaml.safe_dump({"platform_slug": stem, "review": {"decision": "rejected"}}, allow_unicode=True),
+                encoding="utf-8",
+            )
+            before[path.name] = path.read_bytes()
+
+        self.assertTrue(review_candidates.reject_many("aimlapi,avian"))
+
+        self.assertEqual({path.name: path.read_bytes() for path in self.reviews.iterdir()}, before)
+        self.assertEqual(list(self.candidates.iterdir()), [])
+
+    def test_already_archived_id_does_not_abort_a_new_reject_in_the_same_batch(self):
+        (self.reviews / "aimlapi-rejected.yaml").write_text(
+            yaml.safe_dump({"platform_slug": "aimlapi", "review": {"decision": "rejected"}}, allow_unicode=True),
+            encoding="utf-8",
+        )
+        self.write_candidate("upstage", {
+            "candidate_type": "new_platform",
+            "platform_slug": "upstage",
+            "status": "pending_review",
+        })
+
+        self.assertTrue(review_candidates.reject_many("aimlapi,upstage"))
+
+        archived = yaml.safe_load((self.reviews / "upstage-rejected.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(archived["review"]["decision"], "rejected")
+        self.assertFalse((self.candidates / "upstage.yaml").exists())
+
+    def test_cli_reject_of_a_gone_candidate_exits_zero(self):
+        (self.reviews / "aimlapi-rejected.yaml").write_text(
+            yaml.safe_dump({"platform_slug": "aimlapi", "review": {"decision": "rejected"}}, allow_unicode=True),
+            encoding="utf-8",
+        )
+        with patch("sys.argv", ["review_candidates.py", "--reject", "aimlapi"]):
+            code = review_candidates.main()
+        self.assertEqual(code, 0)
 
     def test_a_longer_id_is_not_the_same_rejection(self):
         payload = {"candidate_type": "new_platform", "platform_slug": "port", "status": "pending_review"}
