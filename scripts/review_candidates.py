@@ -9,7 +9,8 @@ FreeToken Candidate Platform Review & Decision Terminal
 - Rejections archive the candidate and record the reviewed source version
 - Rejecting a candidate whose rejected archive already exists is idempotent:
   the same payload is removed as a duplicate, and a changed payload is archived
-  beside the original record instead of raising
+  beside the original record instead of raising. Rejecting an id whose pending
+  file is already gone is the same no-op when a matching rejected archive exists.
 """
 
 import sys
@@ -515,6 +516,11 @@ def reject_candidate(candidate_id: str):
     with _approval_lock():
         target_file = _candidate_file(candidate_id)
         if not target_file:
+            # 上一次拒绝已经把候选移出队列，审核记录还在。再拒绝同一次决定
+            # 不是「找不到」。没有对应的拒绝记录，才是真的没有这条候选。
+            if _rejected_archive_paths(candidate_id):
+                print(f"[SKIP] 拒绝记录已存在，候选源已不在队列: {candidate_id}")
+                return True
             print(f"[ERROR] 未找到候选源: {candidate_id}")
             return False
         if target_file.suffix == ".yaml":

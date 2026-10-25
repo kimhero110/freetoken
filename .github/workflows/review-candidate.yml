@@ -77,6 +77,7 @@ jobs:
         run: npm ci --prefix site
 
       - name: Apply and preserve the human decision
+        id: apply
         env:
           CANDIDATE_ID: ${{ inputs.candidate_id }}
           DECISION: ${{ inputs.decision }}
@@ -101,12 +102,14 @@ jobs:
           git config user.email "4818224+freetoken-bot[bot]@users.noreply.github.com"
           git add --all -- data/platforms data/platforms.json site/src/data/platforms.json data/reviews data/candidates .cache/hashes.json site/public/sitemap.xml
           if git diff --cached --quiet; then
-            echo "Review produced no repository changes" >&2
-            exit 1
+            echo "Review completed with no repository changes (idempotent no-op)"
+            echo "noop=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
           git commit -m "chore(data): record candidate review"
 
       - name: Merge the reviewed change through a gated pull request
+        if: ${{ success() && steps.apply.outputs.noop != 'true' }}
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           CANDIDATE_ID: ${{ inputs.candidate_id }}

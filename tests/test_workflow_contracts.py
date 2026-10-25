@@ -63,6 +63,33 @@ class ArticleRewriteWorkflowContractTests(unittest.TestCase):
         self.assertNotIn("${{ inputs.", run_blocks(self.workflow))
 
 
+class ReviewCandidateNoopContractTests(unittest.TestCase):
+    def test_empty_index_after_a_successful_review_is_an_idempotent_noop(self):
+        import yaml
+
+        workflow = (WORKFLOWS / "review-candidate.yml").read_text(encoding="utf-8")
+        loaded = yaml.load(workflow, Loader=yaml.BaseLoader)
+        job = loaded["jobs"]["review"]
+        self.assertEqual(job["environment"], "production")
+        self.assertEqual(job["if"], "github.ref == 'refs/heads/main'")
+        self.assertEqual(loaded["permissions"]["contents"], "read")
+
+        apply_step = next(step for step in job["steps"] if step["name"] == "Apply and preserve the human decision")
+        self.assertEqual(apply_step["id"], "apply")
+        quiet_branch = apply_step["run"].split("git diff --cached --quiet", 1)[1].split("git commit", 1)[0]
+        self.assertIn("idempotent no-op", quiet_branch)
+        self.assertIn("exit 0", quiet_branch)
+        self.assertNotIn("exit 1", quiet_branch)
+        self.assertIn('echo "noop=true" >> "$GITHUB_OUTPUT"', quiet_branch)
+
+        merge_step = next(step for step in job["steps"] if step["name"] == "Merge the reviewed change through a gated pull request")
+        self.assertEqual(merge_step["if"], "${{ success() && steps.apply.outputs.noop != 'true' }}")
+        self.assertIn("git pull --rebase origin main", merge_step["run"])
+        self.assertIn('gh pr create --base main --head "$BRANCH"', merge_step["run"])
+        self.assertIn('gh pr checks "$BRANCH" --watch --interval 10', merge_step["run"])
+        self.assertIn('gh pr merge "$BRANCH" --merge --delete-branch', merge_step["run"])
+
+
 class ReviewCandidateAnnotationContractTests(unittest.TestCase):
     def test_annotated_approval_inputs_exist_but_actor_stays_authoritative(self):
         workflow = (WORKFLOWS / "review-candidate.yml").read_text(encoding="utf-8")
