@@ -28,3 +28,7 @@ proposed:
     conditions: []
   intro: Featherless 是无服务器 LLM 托管平台，提供单一 API 访问数万个开源模型，支持按量计费，暂无免费额度信息。
 supersedes: update-featherless-ai-2c740d9a5f67-20261005-d0eff1f3
+review:
+  decision: rejected
+  reviewed_at: '2026-10-25T16:44:45.438207+00:00'
+  reviewer: kimhero110
