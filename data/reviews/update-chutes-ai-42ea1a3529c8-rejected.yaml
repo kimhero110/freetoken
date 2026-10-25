@@ -27,3 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: Chutes提供高性能无服务器AI推理，支持多种开源模型，按需付费，无免费额度。
+review:
+  decision: rejected
+  reviewed_at: '2026-10-25T16:30:01.286941+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
