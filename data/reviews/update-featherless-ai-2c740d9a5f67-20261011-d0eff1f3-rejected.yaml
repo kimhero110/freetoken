@@ -5,7 +5,7 @@ name: Featherless AI
 source_url: https://featherless.ai
 source_hash: 2c740d9a5f67d7b731fbdfd75f777255dce4bedf5caa2827a525bce00513efeb
 platform_hash: d0eff1f31fc1b663ee9c9cabfa4a09648284dd80157a58d5e1ba3f8a7460c446
-captured_at: '2026-10-13T23:49:02.240804+00:00'
+captured_at: '2026-10-11T21:00:56.102392+00:00'
 extractor:
   provider: witkit
   model: deepseek-v4-flash
@@ -27,4 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: Featherless 是无服务器 LLM 托管平台，提供单一 API 访问数万个开源模型，支持按量计费，暂无免费额度信息。
-supersedes: update-featherless-ai-2c740d9a5f67-20261012-d0eff1f3
+supersedes: update-featherless-ai-2c740d9a5f67-20261010-d0eff1f3
+review:
+  decision: rejected
+  reviewed_at: '2026-10-25T16:44:45.456783+00:00'
+  reviewer: kimhero110
