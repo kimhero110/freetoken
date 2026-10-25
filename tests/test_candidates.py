@@ -19,7 +19,10 @@ class CandidateWorkflowTests(unittest.TestCase):
                 "api_key_env": "DEMO_API_KEY", "endpoint_url": "https://api.example.com/v1/chat/completions",
                 "model": "demo-model",
             }},
-            "tools": {"raw_http": {"promotion_target": "curl", "client": "freetoken-safe-http", "client_version": "1"}},
+            "tools": {
+                "raw_http": {"promotion_target": "curl", "client": "freetoken-safe-http", "client_version": "1"},
+                "openai_python": {"promotion_target": "openai_python", "client": "openai", "client_version": "1.109.1"},
+            },
         })
         self.probe_config_patch.start()
 
@@ -429,6 +432,141 @@ class CandidateWorkflowTests(unittest.TestCase):
                     item.stop()
             audit = yaml.safe_load((root / "reviews" / "probe-demo-chat-completions-rejected.yaml").read_text(encoding="utf-8"))
             self.assertEqual(audit["review"]["decision"], "rejected")
+
+    def test_null_amount_update_explicitly_sets_no_free_quota_and_keeps_active(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            candidates, platforms, cache = root / "candidates", root / "platforms", root / "cache"
+            candidates.mkdir(); platforms.mkdir(); cache.mkdir()
+            platform = self.platform(amount="500 万")
+            platform["free_quota"].update({
+                "unit": "Tokens",
+                "reset_period": "注册赠送",
+                "details": "注册即送 500 万 Tokens",
+                "conditions": ["新用户赠送"],
+            })
+            platform_path = platforms / "demo.yaml"
+            platform_path.write_text(yaml.safe_dump(platform, allow_unicode=True), encoding="utf-8")
+            candidate = candidates / "update-demo-noquota.yaml"
+            candidate.write_text(yaml.safe_dump({
+                "candidate_type": "platform_update",
+                "platform_slug": "demo",
+                "source_url": "https://example.com/source",
+                "source_hash": "a" * 64,
+                "platform_hash": review_candidates._platform_hash(platform),
+                "current": {"intro": "Old", "free_quota": platform["free_quota"]},
+                "proposed": {
+                    "intro": "按量付费平台，当前无免费额度。",
+                    "free_quota": {"amount": None, "unit": None, "type": None, "conditions": []},
+                },
+            }, allow_unicode=True), encoding="utf-8")
+
+            with patch.object(review_candidates, "CANDIDATES_DIR", candidates), patch.object(
+                review_candidates, "PLATFORMS_DIR", platforms
+            ), patch.object(review_candidates, "HASHES_FILE", cache / "hashes.json"), patch.object(
+                review_candidates, "GENERATED_FILES", ()
+            ), patch.object(review_candidates, "LOCK_FILE", cache / "review.lock"), patch.object(
+                review_candidates, "REVIEWS_DIR", root / "reviews"
+            ), patch.object(review_candidates, "_source_hash", return_value="b" * 64), patch.object(
+                review_candidates.subprocess, "run"
+            ):
+                self.assertTrue(review_candidates.approve_candidate(candidate.stem))
+
+            updated = yaml.safe_load(platform_path.read_text(encoding="utf-8"))
+            self.assertEqual(updated["status"], "active")
+            self.assertEqual(updated["free_quota"]["amount"], "无免费额度")
+            self.assertEqual(updated["free_quota"]["type"], "无免费层")
+            self.assertIsNone(updated["free_quota"]["unit"])
+            self.assertIsNone(updated["free_quota"]["reset_period"])
+            self.assertEqual(updated["free_quota"]["conditions"], [])
+            self.assertIn("未提供免费额度", updated["free_quota"]["details"])
+            self.assertEqual(updated["intro"], "按量付费平台，当前无免费额度。")
+            archived = yaml.safe_load((root / "reviews" / "update-demo-noquota-approved.yaml").read_text(encoding="utf-8"))
+            self.assertEqual(archived["review"]["approved_source_hash"], "a" * 64)
+            self.assertEqual(archived["review"]["live_source_hash"], "b" * 64)
+            self.assertTrue(archived["review"]["source_hash_drifted"])
+            hashes = json.loads((cache / "hashes.json").read_text(encoding="utf-8"))
+            self.assertEqual(hashes["https://example.com/source"], "a" * 64)
+
+    def test_repeat_approve_is_idempotent_skip(self):
+        import contextlib
+        import io
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            candidates, platforms, cache, reviews = root / "candidates", root / "platforms", root / "cache", root / "reviews"
+            candidates.mkdir(); platforms.mkdir(); cache.mkdir()
+            payload = {
+                "candidate_type": "new_platform",
+                "status": "pending_review",
+                "platform_slug": "demo",
+                "proposed": self.platform(),
+            }
+            candidate = candidates / "demo.yaml"
+            candidate.write_text(yaml.safe_dump(payload, allow_unicode=True), encoding="utf-8")
+
+            with patch.object(review_candidates, "CANDIDATES_DIR", candidates), patch.object(
+                review_candidates, "PLATFORMS_DIR", platforms
+            ), patch.object(review_candidates, "HASHES_FILE", cache / "hashes.json"), patch.object(
+                review_candidates, "GENERATED_FILES", ()
+            ), patch.object(review_candidates, "LOCK_FILE", cache / "review.lock"), patch.object(
+                review_candidates, "REVIEWS_DIR", reviews
+            ), patch.object(review_candidates.subprocess, "run") as build:
+                self.assertTrue(review_candidates.approve_candidate("demo"))
+                self.assertEqual(build.call_count, 2)
+                archive_bytes = (reviews / "demo-approved.yaml").read_bytes()
+
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    self.assertTrue(review_candidates.approve_candidate("demo"))
+                self.assertIn("[SKIP]", buf.getvalue())
+                self.assertEqual(build.call_count, 2)
+                self.assertEqual((reviews / "demo-approved.yaml").read_bytes(), archive_bytes)
+
+                candidate.write_text(yaml.safe_dump(payload, allow_unicode=True), encoding="utf-8")
+                buf2 = io.StringIO()
+                with contextlib.redirect_stdout(buf2):
+                    self.assertTrue(review_candidates.approve_candidate("demo"))
+                self.assertIn("[SKIP]", buf2.getvalue())
+                self.assertFalse(candidate.exists())
+                self.assertEqual(build.call_count, 2)
+
+    def test_sequential_multi_tool_probe_approvals_rebase_sibling_platform_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            candidates, platforms, cache = root / "candidates", root / "platforms", root / "cache"
+            candidates.mkdir(); platforms.mkdir(); cache.mkdir()
+            platform = self.capability_platform()
+            platform_path = platforms / "demo.yaml"
+            platform_path.write_text(yaml.safe_dump(platform), encoding="utf-8")
+
+            probe_http = self.probe_candidate(platform)
+            probe_py = {
+                **self.probe_candidate(platform),
+                "tool": "openai_python",
+                "promotion_target": "openai_python",
+                "client": "openai",
+                "client_version": "1.109.1",
+            }
+            cand_http = candidates / "probe-demo-chat-completions-raw-http.yaml"
+            cand_py = candidates / "probe-demo-chat-completions-openai-python.yaml"
+            cand_http.write_text(yaml.safe_dump(probe_http), encoding="utf-8")
+            cand_py.write_text(yaml.safe_dump(probe_py), encoding="utf-8")
+
+            with patch.object(review_candidates, "CANDIDATES_DIR", candidates), patch.object(
+                review_candidates, "PLATFORMS_DIR", platforms
+            ), patch.object(review_candidates, "HASHES_FILE", cache / "hashes.json"), patch.object(
+                review_candidates, "GENERATED_FILES", ()
+            ), patch.object(review_candidates, "LOCK_FILE", cache / "review.lock"), patch.object(
+                review_candidates, "REVIEWS_DIR", root / "reviews"
+            ), patch.object(review_candidates.subprocess, "run"):
+                self.assertTrue(review_candidates.approve_candidate(cand_http.stem))
+                self.assertTrue(cand_py.exists())
+                self.assertTrue(review_candidates.approve_candidate(cand_py.stem))
+
+            updated = yaml.safe_load(platform_path.read_text(encoding="utf-8"))
+            self.assertEqual(updated["capabilities"]["tools"]["curl"], "live")
+            self.assertEqual(updated["capabilities"]["tools"]["openai_python"], "live")
 
 
 if __name__ == "__main__":

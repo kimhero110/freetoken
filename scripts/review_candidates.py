@@ -22,6 +22,7 @@ import re
 from contextlib import contextmanager
 from datetime import date, datetime, timezone
 from pathlib import Path
+import requests
 import yaml
 import subprocess
 from bs4 import BeautifulSoup
@@ -40,6 +41,10 @@ GENERATED_FILES = (
     ROOT / "site" / "public" / "sitemap.xml",
 )
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+NO_FREE_QUOTA_AMOUNT = "无免费额度"
+NO_FREE_QUOTA_TYPE = "无免费层"
+NO_FREE_QUOTA_DETAILS = "官方页面当前未提供免费额度，按量计费。"
+NO_FREE_QUOTA_DETAILS_EN = "No free quota currently offered (pay-as-you-go)."
 CAPABILITY_PROBE_KEYS = {
     "candidate_type", "candidate_version", "platform_slug", "platform_hash", "operation_id",
     "tool", "promotion_target", "client", "client_version", "probe_config_hash",
@@ -131,6 +136,16 @@ def _load_mapping(path: Path) -> dict:
     return loaded if isinstance(loaded, dict) else {}
 
 
+def _approved_archive_path(stem: str) -> Path | None:
+    """Review file that records a prior approval of this exact candidate id."""
+    if not REVIEWS_DIR.exists():
+        return None
+    primary = (REVIEWS_DIR / f"{stem}-approved.yaml").resolve()
+    if primary.parent != REVIEWS_DIR.resolve():
+        raise ValueError("候选路径越界")
+    return primary if primary.is_file() else None
+
+
 def _rejected_archive_paths(stem: str) -> list[Path]:
     """Review files that record a rejection of this exact candidate id."""
     if not REVIEWS_DIR.exists():
@@ -193,6 +208,15 @@ def _archive_candidate(target_file: Path, decision: str) -> str:
     return "archived"
 
 
+def _persist_candidate_data(target_file: Path, data: dict) -> None:
+    temporary = target_file.with_suffix(target_file.suffix + ".tmp")
+    if target_file.suffix == ".json":
+        temporary.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    else:
+        temporary.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    temporary.replace(target_file)
+
+
 def _mark_candidate_reviewed(target_file: Path, data: dict, decision: str) -> None:
     review = {
         "decision": decision,
@@ -207,19 +231,17 @@ def _mark_candidate_reviewed(target_file: Path, data: dict, decision: str) -> No
         if approver_id and re.fullmatch(r"[\w-]{1,64}", approver_id):
             review["annotation_id"] = approver_id
     data["review"] = review
-    temporary = target_file.with_suffix(target_file.suffix + ".tmp")
-    temporary.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    temporary.replace(target_file)
+    _persist_candidate_data(target_file, data)
 
 
 def list_candidates():
-    candidates = list(CANDIDATES_DIR.glob("*.yaml")) + list(CANDIDATES_DIR.glob("*.json"))
+    candidates = sorted(CANDIDATES_DIR.glob("*.yaml")) + sorted(CANDIDATES_DIR.glob("*.json"))
     if not candidates:
         print("[INFO] 目前没有待审候选源 (No pending candidates in data/candidates/).")
         return []
 
     print("\n" + "=" * 60)
-    print(f"📋 【待审候选新源列表】 共 {len(candidates)} 个待决策平台")
+    print(f"📋 【待审候选列表】 共 {len(candidates)} 条待决策候选")
     print("=" * 60)
     data_list = []
     for f in candidates:
@@ -227,14 +249,20 @@ def list_candidates():
             if f.suffix == ".yaml":
                 d = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
             else:
-                import json
                 d = json.loads(f.read_text(encoding="utf-8"))
-            proposed = d.get("proposed") if isinstance(d.get("proposed"), dict) else {}
-            slug = d.get("platform_slug") or proposed.get("slug") or f.stem
-            name = d.get("name") or proposed.get("name") or slug
-            url = d.get("source_url") or proposed.get("website") or ""
-            score = d.get("score", "-")
-            print(f"  • [{slug:<15}] {name:<20} | 得分: {score} | 官网: {url}")
+            if d.get("candidate_type") == "capability_probe":
+                slug = d.get("platform_slug", "-")
+                tool = d.get("tool", "-")
+                decision = d.get("decision", "-")
+                checked = str(d.get("checked_at", ""))[:10]
+                print(f"  • [{f.stem}] probe {slug}/{tool} -> {decision} ({checked})")
+            else:
+                proposed = d.get("proposed") if isinstance(d.get("proposed"), dict) else {}
+                slug = d.get("platform_slug") or proposed.get("slug") or f.stem
+                name = d.get("name") or proposed.get("name") or slug
+                url = d.get("source_url") or proposed.get("website") or ""
+                score = d.get("score", "-")
+                print(f"  • [{f.stem:<28}] {name:<20} | 得分: {score} | 来源: {url}")
             data_list.append((f, d))
         except Exception as e:
             print(f"  • [ERROR] 无法读取 {f.name}: {e}")
@@ -289,8 +317,21 @@ def _apply_update_candidate(data: dict) -> tuple[Path, str]:
     current = data.get("current")
     if not isinstance(current, dict) or any(platform.get(key) != value for key, value in current.items()):
         raise ValueError("正式数据已在候选生成后变更，请重新提取候选")
-    if _source_hash(source_url) != source_hash:
-        raise ValueError("来源页面已在候选生成后变更，请重新提取候选")
+    try:
+        live_source_hash = _source_hash(source_url)
+    except requests.RequestException:
+        live_source_hash = None
+    drifted = None if live_source_hash is None else (live_source_hash != source_hash)
+    review_meta = data.setdefault("review", {})
+    if isinstance(review_meta, dict):
+        review_meta["approved_source_hash"] = source_hash
+        review_meta["live_source_hash"] = live_source_hash
+        review_meta["source_hash_drifted"] = drifted
+    if drifted:
+        print(
+            f"[WARN] 来源页面实时哈希已变化 ({source_hash[:12]} -> {live_source_hash[:12]})，"
+            "记录审计字段后按人工已核验结论通过"
+        )
     quota = proposed.get("free_quota")
     quota_errors = validate_quota(quota, "proposed.free_quota")
     if quota_errors:
@@ -299,6 +340,18 @@ def _apply_update_candidate(data: dict) -> tuple[Path, str]:
         platform.setdefault("free_quota", {}).update(
             {key: value for key, value in quota.items() if value is not None}
         )
+    else:
+        conditions = quota.get("conditions") if isinstance(quota.get("conditions"), list) else []
+        platform["free_quota"] = {
+            "type": (quota.get("type") or "").strip() or NO_FREE_QUOTA_TYPE,
+            "amount": NO_FREE_QUOTA_AMOUNT,
+            "unit": None,
+            "reset_period": None,
+            "details": (quota.get("details") or "").strip() or NO_FREE_QUOTA_DETAILS,
+            "details_en": (quota.get("details_en") or "").strip() or NO_FREE_QUOTA_DETAILS_EN,
+            "conditions": conditions,
+        }
+        platform["status"] = "active"
     if isinstance(proposed.get("intro"), str) and proposed["intro"].strip():
         platform["intro"] = proposed["intro"].strip()
     platform["last_checked"] = date.today().isoformat()
@@ -416,6 +469,54 @@ def _apply_capability_probe(data: dict) -> tuple[Path, str]:
     return path, data["platform_slug"]
 
 
+def _rebase_sibling_probe_candidates(
+    final_slug: str,
+    old_platform_hash: str,
+    updated_platform: dict,
+    *,
+    exclude: Path,
+) -> dict[Path, bytes]:
+    """Keep sibling pending capability probes reviewable when canonical metadata advances."""
+    new_platform_hash = _platform_hash(updated_platform)
+    if new_platform_hash == old_platform_hash or not CANDIDATES_DIR.exists():
+        return {}
+    backups: dict[Path, bytes] = {}
+    operations = updated_platform.get("capabilities", {}).get("operations", [])
+    for sibling in sorted(CANDIDATES_DIR.glob("*.yaml")):
+        if sibling.resolve() == exclude.resolve():
+            continue
+        try:
+            sibling_data = yaml.safe_load(sibling.read_text(encoding="utf-8"))
+        except (OSError, yaml.YAMLError):
+            continue
+        if not isinstance(sibling_data, dict) or "review" in sibling_data:
+            continue
+        if sibling_data.get("candidate_type") != "capability_probe":
+            continue
+        if sibling_data.get("platform_slug") != final_slug:
+            continue
+        if sibling_data.get("platform_hash") != old_platform_hash:
+            continue
+        matched_ops = [op for op in operations if isinstance(op, dict) and op.get("id") == sibling_data.get("operation_id")]
+        if len(matched_ops) != 1:
+            continue
+        operation = matched_ops[0]
+        endpoint = operation.get("endpoint_url")
+        model = sibling_data.get("model")
+        if (
+            not isinstance(endpoint, str)
+            or endpoint != sibling_data.get("endpoint_url")
+            or model not in operation.get("models", [])
+            or operation.get("protocol") != "openai"
+            or sibling_data.get("probe_config_hash") != probe_config_hash(final_slug, operation, model)
+        ):
+            continue
+        backups[sibling] = sibling.read_bytes()
+        sibling_data["platform_hash"] = new_platform_hash
+        _persist_candidate_data(sibling, sibling_data)
+    return backups
+
+
 def approve_candidate(candidate_id: str):
     with _approval_lock():
         return _approve_candidate_locked(candidate_id)
@@ -425,6 +526,9 @@ def _approve_candidate_locked(candidate_id: str):
     target_file = _candidate_file(candidate_id)
 
     if not target_file:
+        if _approved_archive_path(candidate_id) is not None:
+            print(f"[SKIP] 批准记录已存在，候选源已不在队列: {candidate_id}")
+            return True
         print(f"[ERROR] 未找到代号为 '{candidate_id}' 的待审候选源。请使用 --list 查看待审列表。")
         return False
 
@@ -432,6 +536,12 @@ def _approve_candidate_locked(candidate_id: str):
         data = yaml.safe_load(target_file.read_text(encoding="utf-8")) or {}
     else:
         data = json.loads(target_file.read_text(encoding="utf-8"))
+
+    approved_archive = _approved_archive_path(target_file.stem)
+    if approved_archive is not None and _same_payload(_load_mapping(approved_archive), data):
+        target_file.unlink()
+        print(f"[SKIP] 批准记录已存在，已移除重复候选: {target_file.name}")
+        return True
 
     if data.get("candidate_type") == "source_note":
         raise ValueError("来源备注不能直接更新正式数据；核实并授权来源后重新提交，或拒绝归档此备注")
@@ -444,16 +554,33 @@ def _approve_candidate_locked(candidate_id: str):
         final_slug = _safe_slug(data.get("platform_slug", ""))
     dest_yaml = PLATFORMS_DIR / f"{final_slug}.yaml"
     dest_backup = dest_yaml.read_bytes() if dest_yaml.exists() else None
+    old_platform_hash = (
+        _platform_hash(yaml.safe_load(dest_backup.decode("utf-8")) or {})
+        if dest_backup is not None
+        else None
+    )
     hashes_backup = HASHES_FILE.read_bytes() if HASHES_FILE.exists() else None
     generated_backups = {path: path.read_bytes() if path.exists() else None for path in GENERATED_FILES}
     candidate_backup = target_file.read_bytes()
+    sibling_backups: dict[Path, bytes] = {}
 
     try:
         _mark_candidate_reviewed(target_file, data, "approved")
         if data.get("candidate_type") == "platform_update":
             _apply_update_candidate(data)
+            _persist_candidate_data(target_file, data)
+            if old_platform_hash is not None:
+                updated_platform = yaml.safe_load(dest_yaml.read_text(encoding="utf-8")) or {}
+                sibling_backups = _rebase_sibling_probe_candidates(
+                    final_slug, old_platform_hash, updated_platform, exclude=target_file
+                )
         elif data.get("candidate_type") == "capability_probe":
             _apply_capability_probe(data)
+            if old_platform_hash is not None:
+                updated_platform = yaml.safe_load(dest_yaml.read_text(encoding="utf-8")) or {}
+                sibling_backups = _rebase_sibling_probe_candidates(
+                    final_slug, old_platform_hash, updated_platform, exclude=target_file
+                )
         else:
             if dest_backup is not None:
                 raise ValueError(f"正式平台已存在，拒绝覆盖: {final_slug}")
@@ -484,6 +611,8 @@ def _approve_candidate_locked(candidate_id: str):
                 path.unlink(missing_ok=True)
             else:
                 path.write_bytes(backup)
+        for sibling_path, sibling_backup in sibling_backups.items():
+            sibling_path.write_bytes(sibling_backup)
         if target_file.exists():
             target_file.write_bytes(candidate_backup)
         raise

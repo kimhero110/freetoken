@@ -13,7 +13,7 @@ import sys
 import re
 import json
 from concurrent.futures import ThreadPoolExecutor
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 import requests
@@ -25,8 +25,11 @@ try:
 except ImportError:
     from safe_http import get_public_text, pinned_public_https_request
 
-ROOT = Path(__file__).resolve().parent.parent
+_DEFAULT_ROOT = Path(__file__).resolve().parent.parent
+ROOT = _DEFAULT_ROOT
 PLATFORMS_DIR = ROOT / "data" / "platforms"
+REVIEWS_DIR = ROOT / "data" / "reviews"
+REJECT_COOLDOWN_DAYS = 90
 PLATFORMS_DIR.mkdir(parents=True, exist_ok=True)
 
 UA = (
@@ -177,21 +180,117 @@ def sanitize_str(s: str) -> str:
     return re.sub(r'[^\x20-\x7E\u4e00-\u9fa5]', ' ', s).strip()
 
 
+_GENERIC_HOST_LABELS = {
+    "www", "docs", "doc", "api", "api-docs", "platform", "console", "cloud",
+    "help", "developers", "developer", "build", "open", "ai", "app", "chat",
+    "events", "inference-docs",
+}
+_TLD_LABELS = {
+    "com", "cn", "co", "org", "net", "io", "ai", "dev", "xyz", "ac", "gov",
+    "edu", "so", "tech", "cloud", "audio", "ht", "im",
+}
+_REJECT_ARCHIVE_RE = re.compile(r"^.+-rejected(?:-[a-f0-9]{12}(?:-\d+)?)?\.yaml$")
+
+
+def _platforms_dir() -> Path:
+    if PLATFORMS_DIR != _DEFAULT_ROOT / "data" / "platforms":
+        return PLATFORMS_DIR
+    return ROOT / "data" / "platforms"
+
+
+def _reviews_dir() -> Path:
+    if REVIEWS_DIR != _DEFAULT_ROOT / "data" / "reviews":
+        return REVIEWS_DIR
+    return ROOT / "data" / "reviews"
+
+
+def _add_url_domains(domains: set[str], url: object) -> None:
+    if not isinstance(url, str) or not url.strip():
+        return
+    host = (urlparse(url.strip()).hostname or "").lower()
+    if not host:
+        return
+    domains.add(host)
+    clean = re.sub(r"^www\.", "", host)
+    domains.add(clean)
+    parts = clean.split(".")
+    if parts[0] not in _GENERIC_HOST_LABELS:
+        domains.add(parts[0])
+    elif len(parts) >= 3 and parts[1] not in _GENERIC_HOST_LABELS and parts[1] not in _TLD_LABELS:
+        domains.add(parts[1])
+
+
+def _collect_entry_domains(domains: set[str], data: dict) -> None:
+    for key in ("website", "doc_url", "api_base_url"):
+        _add_url_domains(domains, data.get(key))
+    registration = data.get("registration")
+    if isinstance(registration, dict):
+        _add_url_domains(domains, registration.get("url"))
+
+
 def get_existing_domains() -> set[str]:
-    domains = set()
-    for yf in PLATFORMS_DIR.glob("*.yaml"):
+    domains: set[str] = set()
+    platforms_dir = _platforms_dir()
+    if not platforms_dir.exists():
+        return domains
+    for yf in platforms_dir.glob("*.yaml"):
         domains.add(yf.stem.lower())
         try:
             data = yaml.safe_load(yf.read_text(encoding="utf-8")) or {}
-            for key in ("website", "register_url", "docs_url", "api_base_url"):
-                if url := data.get(key):
-                    if host := urlparse(url).netloc.lower():
-                        domains.add(host)
-                        domains.add(re.sub(r"^www\.", "", host))
-                        domains.add(host.split(".")[0])
+            if not isinstance(data, dict):
+                continue
+            if isinstance(data.get("slug"), str) and data["slug"].strip():
+                domains.add(data["slug"].strip().lower())
+            _collect_entry_domains(domains, data)
         except Exception:
             pass
     return domains
+
+
+def get_rejected_domains(
+    now: datetime | None = None,
+    cooldown_days: int = REJECT_COOLDOWN_DAYS,
+) -> set[str]:
+    """Return slugs and domains of rejected discovery candidates still within cooldown."""
+    rejected: set[str] = set()
+    reviews_dir = _reviews_dir()
+    if not reviews_dir.exists():
+        return rejected
+    now = now or datetime.now(timezone.utc)
+    for rf in reviews_dir.glob("*-rejected*.yaml"):
+        if not rf.is_file() or not _REJECT_ARCHIVE_RE.fullmatch(rf.name):
+            continue
+        try:
+            data = yaml.safe_load(rf.read_text(encoding="utf-8")) or {}
+        except Exception:
+            continue
+        if not isinstance(data, dict):
+            continue
+        if data.get("candidate_type") in {"platform_update", "capability_probe", "source_note"}:
+            continue
+        review = data.get("review") if isinstance(data.get("review"), dict) else {}
+        if review.get("decision") not in {None, "rejected"}:
+            continue
+        reviewed_at_raw = review.get("reviewed_at")
+        if isinstance(reviewed_at_raw, str) and reviewed_at_raw.strip():
+            try:
+                reviewed_at = datetime.fromisoformat(reviewed_at_raw.strip().replace("Z", "+00:00"))
+                if reviewed_at.tzinfo is None:
+                    reviewed_at = reviewed_at.replace(tzinfo=timezone.utc)
+                if cooldown_days >= 0 and (now - reviewed_at) > timedelta(days=cooldown_days):
+                    continue
+            except ValueError:
+                pass
+        slug = data.get("platform_slug")
+        if isinstance(slug, str) and slug.strip():
+            rejected.add(slug.strip().lower())
+        proposed = data.get("proposed")
+        if isinstance(proposed, dict):
+            if isinstance(proposed.get("slug"), str) and proposed["slug"].strip():
+                rejected.add(proposed["slug"].strip().lower())
+            _collect_entry_domains(rejected, proposed)
+        _add_url_domains(rejected, data.get("source_url"))
+    return rejected
 
 
 # A landing page is not the whole site, and for most of these it is the least
@@ -388,13 +487,17 @@ def run_discovery():
     print("=" * 60)
 
     existing = get_existing_domains()
+    rejected = get_rejected_domains()
     print(f"[INFO] Existing indexed entities & domains: {len(existing)}")
+    if rejected:
+        print(f"[INFO] Rejected cooldown entities & domains ({REJECT_COOLDOWN_DAYS}d): {len(rejected)}")
 
     targets = list(dict.fromkeys(TARGET_SEEDS))
     print(f"[INFO] Probing candidate target pool ({len(targets)} candidates)...\n")
 
     fresh = []
     already_indexed = 0
+    skipped_rejected = 0
     seen = []
     for url in targets:
         host = urlparse(url).netloc.lower()
@@ -405,6 +508,12 @@ def run_discovery():
             seen.append({"source": seed_id(url), "url": url, "status": "indexed",
                          "platform": slug_base})
             print(f"  [INDEXED] {url:<30} -> Already in master DB")
+            continue
+        if host in rejected or clean_host in rejected or slug_base in rejected:
+            skipped_rejected += 1
+            seen.append({"source": seed_id(url), "url": url, "status": "rejected_cooldown",
+                         "platform": slug_base})
+            print(f"  [REJECTED] {url:<30} -> Skipped ({REJECT_COOLDOWN_DAYS}d cooldown)")
             continue
         fresh.append((url, host, slug_base))
 
@@ -447,7 +556,7 @@ def run_discovery():
     candidates_dir = ROOT / "data" / "candidates"
     for item in qualified:
         path = candidates_dir / f"{item['slug']}.yaml"
-        if path.exists():
+        if path.exists() or item["slug"] in rejected:
             continue
         if len(written) >= CANDIDATE_LIMIT:
             held.append(item)

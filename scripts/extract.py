@@ -305,6 +305,7 @@ def main() -> int:
     sys.path.insert(0, str(ROOT))
     from scripts.check_state import GitState, StateError, digest
     from scripts.check_runner import paid_result, next_window, utcnow
+    from scripts.source_verification import authorized_source_urls
     parser = argparse.ArgumentParser(description="Persistent, single-attempt extraction")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--provider")
@@ -341,14 +342,15 @@ def main() -> int:
         max_tokens = int(os.environ.get("CHECK_MAX_OUTPUT_TOKENS") or "0")
         provider_checked = False
         for item in changed:
-            source = digest([item["platform"], item["url"], item["hash"]])
+            source = digest([item["platform"], item["url"]])
             observation = {"source": source, "status": "pending"}
             summary["sources"].append(observation)
             try:
                 slug, url, source_hash = item["platform"], item["url"], item["hash"]
+                source_version = digest([slug, url, source_hash])
                 output = candidate_path(slug, source_hash)
                 entry = yaml.safe_load((PLATFORMS_DIR / f"{slug}.yaml").read_text(encoding="utf-8"))
-                if url not in entry.get("source_urls", []):
+                if url not in authorized_source_urls(entry):
                     raise StateError("SOURCE_NOT_AUTHORIZED")
                 text = item.get("text")
                 if not isinstance(text, str) or hashlib.sha256(text.encode()).hexdigest() != source_hash:
@@ -386,15 +388,15 @@ def main() -> int:
                         continue
                 if matching:
                     previous_path, existing = max(matching, key=lambda pair: pair[1].get("captured_at", ""))
-                    captured = datetime.fromisoformat(existing["captured_at"])
-                    if captured.tzinfo and timedelta(0) <= utcnow()-captured < timedelta(hours=24) and existing.get('platform_hash') == platform_hash:
-                        observation["status"] = "pending_review"
+                    if existing.get('platform_hash') == platform_hash:
+                        observation.update(status="pending_review", superseded_by=previous_path.stem)
                         continue
                     if dry:
                         observation["status"] = "dry_run"
                         continue
-                    # The full source was fetched again and matches the saved proposal's hash.
-                    # Reuse its extraction, never its old approval or card identifier.
+                    # The full source was fetched again and matches the saved proposal's hash,
+                    # while canonical platform data changed. Reuse its extraction, never its
+                    # old approval or card identifier, and remove superseded matching files.
                     result = validate_extracted(existing.get('proposed'))
                     if result is None:
                         raise StateError('SAVED_CANDIDATE_INVALID')
@@ -404,6 +406,9 @@ def main() -> int:
                     if refreshed_path.exists():
                         raise StateError('REFRESH_VERSION_CONFLICT')
                     refreshed_path.write_text(yaml.safe_dump(refreshed, allow_unicode=True, sort_keys=False), encoding='utf-8')
+                    for stale_path, _ in matching:
+                        if stale_path != refreshed_path:
+                            stale_path.unlink(missing_ok=True)
                     observation.update(status='candidate_ready', candidate_id=refreshed_path.stem)
                     continue
                 if dry:
@@ -432,10 +437,10 @@ def main() -> int:
                     observation.update(status="deferred", next_eligible_at=next_window(utcnow()))
                     continue
                 try:
-                    result = paid_result(store, key=key, source=source, run=run,
+                    result = paid_result(store, key=key, source=source_version, run=run,
                                          request=lambda: execute_llm_call(provider, text, max_tokens=max_tokens),
                                          validate=validate_extracted, limit=limit,
-                                         history_keys=(digest([slug, url, source_hash[:12]]),), source_group=digest([slug, url]))
+                                         history_keys=(digest([slug, url, source_hash[:12]]),), source_group=source)
                 except StateError as exc:
                     # The call key is the prompt, and the prompt is only the first
                     # 8000 characters. A newer page hash with that same prefix still

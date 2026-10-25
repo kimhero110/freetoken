@@ -99,7 +99,7 @@ class UpdateIntakeTests(unittest.TestCase):
     def test_generated_update_can_be_approved_and_archived(self):
         self._roundtrip()
 
-    def test_generated_update_rejects_changed_source_and_preserves_candidate(self):
+    def test_generated_update_allows_drifted_live_source_with_audit_fields(self):
         self._roundtrip(changed_source=True)
 
     def _roundtrip(self, changed_source=False):
@@ -132,20 +132,19 @@ class UpdateIntakeTests(unittest.TestCase):
             self.assertEqual(len(proposed["platform_hash"]), 64)
             stack.enter_context(patch.object(review_candidates, "get_public_text", return_value=html + ("changed" if changed_source else "")))
             build = stack.enter_context(patch.object(review_candidates.subprocess, "run"))
+            self.assertTrue(review_candidates.approve_candidate(candidate_file.stem))
+            updated = yaml.safe_load(platform_file.read_text(encoding="utf-8"))
+            self.assertEqual(updated["free_quota"]["amount"], 2)
+            self.assertEqual(updated["intro"], "Updated quota")
+            self.assertFalse(candidate_file.exists())
+            archived = yaml.safe_load((root / "reviews" / f"{candidate_file.stem}-approved.yaml").read_text(encoding="utf-8"))
+            self.assertEqual(archived["review"]["approved_source_hash"], proposed["source_hash"])
+            self.assertEqual(archived["review"]["source_hash_drifted"], changed_source)
             if changed_source:
-                with self.assertRaisesRegex(ValueError, "来源页面已"):
-                    review_candidates.approve_candidate(candidate_file.stem)
-                self.assertTrue(candidate_file.exists())
-                self.assertEqual(platform_file.read_text(encoding="utf-8"), original)
-                build.assert_not_called()
+                self.assertNotEqual(archived["review"]["live_source_hash"], proposed["source_hash"])
             else:
-                self.assertTrue(review_candidates.approve_candidate(candidate_file.stem))
-                updated = yaml.safe_load(platform_file.read_text(encoding="utf-8"))
-                self.assertEqual(updated["free_quota"]["amount"], 2)
-                self.assertEqual(updated["intro"], "Updated quota")
-                self.assertFalse(candidate_file.exists())
-                self.assertTrue((root / "reviews" / f"{candidate_file.stem}-approved.yaml").exists())
-                self.assertEqual(build.call_count, 2)
+                self.assertEqual(archived["review"]["live_source_hash"], proposed["source_hash"])
+            self.assertEqual(build.call_count, 2)
 
     def test_invalid_extraction_does_not_create_update(self):
         with tempfile.TemporaryDirectory() as directory:

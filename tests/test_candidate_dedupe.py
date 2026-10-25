@@ -66,11 +66,49 @@ class DedupeTests(unittest.TestCase):
         paid.assert_not_called()
 
     def test_the_run_says_which_proposal_is_holding_the_queue(self):
+        from scripts.check_state import digest
         with tempfile.TemporaryDirectory() as directory:
             _, held, _, _, _, summary = self.run_extract(directory, pending_age_days=3)
         observed = summary['sources'][0]
+        self.assertEqual(observed['source'], digest(['demo', 'https://example.com']))
         self.assertEqual(observed['status'], 'pending_review')
         self.assertEqual(observed['superseded_by'], held.stem)
+
+    def test_evidence_url_authorizes_extraction_when_source_urls_is_absent(self):
+        from scripts.check_state import digest
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            platforms, candidates = root / 'platforms', root / 'candidates'
+            platforms.mkdir()
+            candidates.mkdir()
+            entry_no_source_urls = {
+                'name': 'Demo',
+                'evidence': [
+                    {'url': 'https://docs.example.com/pricing'},
+                    {'url': 'https://api.example.com/v1/models'},
+                ],
+                'free_quota': {'amount': 1},
+                'intro': 'old',
+            }
+            (platforms / 'demo.yaml').write_text(yaml.safe_dump(entry_no_source_urls))
+            page = 'Official pricing page'
+            h = extract.hashlib.sha256(page.encode()).hexdigest()
+            (root / 'changed.json').write_text(json.dumps([
+                {'platform': 'demo', 'url': 'https://docs.example.com/pricing', 'hash': h, 'text': page},
+                {'platform': 'demo', 'url': 'https://api.example.com/v1/models', 'hash': h, 'text': page},
+            ]))
+            with patch.object(extract, 'PLATFORMS_DIR', platforms), \
+                 patch.object(extract, 'CANDIDATES_DIR', candidates), \
+                 patch.object(sys, 'argv', ['extract', '--dry-run', '--input-dir', directory]):
+                code = extract.main()
+            summary = json.loads((root / 'extract-summary.json').read_text())
+            self.assertEqual(code, 1)
+            self.assertEqual(summary['sources'][0], {
+                'source': digest(['demo', 'https://docs.example.com/pricing']),
+                'status': 'dry_run',
+            })
+            self.assertEqual(summary['sources'][1]['source'], digest(['demo', 'https://api.example.com/v1/models']))
+            self.assertEqual(summary['sources'][1]['error'], 'SOURCE_NOT_AUTHORIZED')
 
     def test_a_proposal_nobody_looked_at_for_a_week_stops_holding_it(self):
         # 否则一个没人管的候选会把这个平台永远挡住，免费额度回来了也看不见。
