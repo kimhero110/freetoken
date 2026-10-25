@@ -27,3 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: DeepInfra 是高性能低成本 AI 推理平台，按量计费，提供主流开源模型 API，无长期合约，适合开发者与企业。
+review:
+  decision: rejected
+  reviewed_at: '2026-10-25T16:30:01.291722+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu

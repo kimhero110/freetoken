@@ -27,3 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: Featherless 是无服务器 LLM 托管平台，提供单一 API 访问数万个开源模型，支持按量计费，暂无免费额度信息。
+review:
+  decision: rejected
+  reviewed_at: '2026-10-25T16:30:01.296314+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
