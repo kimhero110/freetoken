@@ -57,3 +57,7 @@ proposed:
     checked_at: '2026-09-25'
   - url: https://exa.ai/pricing
     checked_at: '2026-09-25'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T13:57:20.165849+00:00'
+  reviewer: kimhero110

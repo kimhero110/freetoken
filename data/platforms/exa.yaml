@@ -1,0 +1,52 @@
+schema_version: 2
+slug: exa
+name: Exa
+name_en: Exa
+category: 海外探索
+intro: Exa：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+intro_en: 'Exa: developer API platform; see free_quota (radar intake, details to verify).'
+website: https://exa.ai
+doc_url: https://exa.ai/docs
+api_base_url: https://exa.ai/v1
+free_models: []
+free_quota:
+  type: 月度额度
+  amount: $10/月 + $10 入门
+  unit: USD
+  reset_period: 每月
+  details: 官方 Starter：每月 $10 credits 另加 onboarding bonus；无需支付方式。以 exa.ai/pricing 为准。
+  details_en: 'Exa Starter: $10 credits every month plus onboarding bonus; no payment
+    method required.'
+verification: 邮箱/GitHub
+status: unverified
+last_verified: null
+tags:
+- 雷达新源
+- 待人工复核
+gotchas:
+- 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+gotchas_en:
+- Discovered by radar. Manual verification required.
+registration:
+  url: https://exa.ai
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations: []
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://exa.ai
+  checked_at: '2026-09-25'
+- url: https://exa.ai/pricing
+  checked_at: '2026-09-25'
