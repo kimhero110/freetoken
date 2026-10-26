@@ -60,3 +60,9 @@ proposed:
     checked_at: '2026-10-26'
   - url: https://api.scaleway.com/v1/models
     checked_at: '2026-10-26'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T14:46:10.933779+00:00'
+  reviewer: kimhero110
+  annotation_via: agent
+  annotation_id: growth-batch2
