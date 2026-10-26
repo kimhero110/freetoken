@@ -43,6 +43,8 @@
   <url><loc>https://freetokens.info/en/platform/deepseek/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/elevenlabs/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/elevenlabs/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/platform/fal/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/en/platform/fal/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/featherless-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/featherless-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/firecrawl/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
