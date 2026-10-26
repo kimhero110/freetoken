@@ -56,3 +56,7 @@ proposed:
     checked_at: '2026-10-21'
   - url: https://elevenlabs.io/docs
     checked_at: '2026-10-21'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T13:55:44.691909+00:00'
+  reviewer: kimhero110
