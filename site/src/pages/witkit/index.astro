@@ -1,6 +1,11 @@
 ---
+import platforms from '../../data/platforms.json';
+
 // Emit the brand document unchanged. Astro's HTML compactor would rewrite
 // the markup nginx serves as https://witkit.zone/.
+// Live catalog size, synced with platforms.json at build time.
+const totalCount = platforms.length;
+
 const html = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -293,12 +298,12 @@ const html = `<!DOCTYPE html>
       <a class="card" href="https://freetokens.info/">
         <div class="card-header">
           <small>01 / DISCOVER</small>
-          <span class="tag tag-free">44+ 平台</span>
+          <span class="tag tag-free">${totalCount}+ 平台</span>
         </div>
         <h2>FreeToken <span>↗</span></h2>
         <div class="subhead">免费算力情报局</div>
         <p class="detail">
-          持续追踪全球 44+ 主流大模型与云平台免费 API 配额与申领条件。剔除噱头与套路，提供透明规则与 10 秒即用代码。
+          持续追踪全球 ${totalCount}+ 主流大模型与云平台免费 API 配额与申领条件。剔除噱头与套路，提供透明规则与 10 秒即用代码。
         </p>
         <strong>寻找免费额度 →</strong>
       </a>

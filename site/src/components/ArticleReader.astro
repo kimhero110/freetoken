@@ -1,5 +1,6 @@
 ---
 import { renderSafeMarkdown } from '../lib/markdown.mjs';
+import platforms from '../data/platforms.json';
 
 interface Props {
   article: any;
@@ -9,6 +10,7 @@ interface Props {
 
 const { article, relatedArticles = [], lang = 'zh' } = Astro.props;
 const isEn = lang === 'en';
+const totalCount = platforms.length;
 
 const { html: htmlContent, toc } = renderSafeMarkdown(article.content_md);
 ---
@@ -132,7 +134,7 @@ const { html: htmlContent, toc } = renderSafeMarkdown(article.content_md);
 
         <div class="sidebar-action-card">
           <h4>⚡ {isEn ? 'Compute Generator' : '算力调度实验室'}</h4>
-          <p>{isEn ? '10-second drop-in OpenAI compatible configuration code.' : '10 秒生成 44+ 家平台 OpenAI 兼容配置代码。'}</p>
+          <p>{isEn ? '10-second drop-in OpenAI compatible configuration code.' : `10 秒生成 ${totalCount}+ 家平台 OpenAI 兼容配置代码。`}</p>
           <a href={isEn ? "/en/guide/" : "/guide/"} class="btn-sidebar-guide">{isEn ? 'Generate Config ↗' : '立即生成配置 ↗'}</a>
         </div>
       </div>
