@@ -5,21 +5,24 @@ score: 3
 proposed:
   schema_version: 2
   slug: elevenlabs
-  name: 'Free AI Voice Generator & Voice Agents Platform | '
-  name_en: Elevenlabs
+  name: ElevenLabs
+  name_en: ElevenLabs
   category: 海外探索
-  intro: Free AI Voice Generator & Voice Agents Platform | ：雷达捕获的候选源，免费额度与可用模型待人工核实。
-  intro_en: 'Elevenlabs: discovered by radar; free tier and models unverified.'
+  intro: ElevenLabs：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+  intro_en: 'ElevenLabs: developer API platform; see free_quota (radar intake, details
+    to verify).'
   website: https://elevenlabs.io
   doc_url: https://elevenlabs.io/docs
   api_base_url: https://elevenlabs.io/v1
   free_models: []
   free_quota:
-    type: 待核实
-    amount: 待核实
-    unit: Tokens
-    reset_period: 待核实
-    details: 雷达线索：页面匹配得分 3/11。免费额度需人工核实。
+    type: 月度额度
+    amount: 10000 credits/月
+    unit: Credits
+    reset_period: 每月
+    details: 官方 Free Plan：每月约 10,000 credits，可申请 API Key；以 elevenlabs.io 定价为准。
+    details_en: ElevenLabs Free plan includes about 10,000 credits per month with
+      API key access.
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null
