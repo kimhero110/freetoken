@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: anyapi
+name: AnyAPI.ai
+source_url: https://anyapi.ai
+source_hash: 9d309a4c5403b5d95908eb4225701a72a27c1458c672153140ea7a264378403a
+platform_hash: 484183041910b8fddfe23bcb4140c5ebb6ac0bb8685f5eded18233063f161e22
+captured_at: '2026-10-26T21:46:02.127025+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 待核实
+    amount: Free plan 试用额度
+    unit: Credits
+    reset_period: 待核实
+    details: 官网 FAQ：Free plan 可无绑卡试用关键功能与多模型；具体 credits/RPM 以 anyapi.ai 定价为准，待复核。
+    details_en: 'AnyAPI FAQ: Free plan lets you try key features without a card; exact
+      credits TBD on anyapi.ai.'
+  intro: AnyAPI.ai：统一 OpenAI 兼容网关，覆盖 400+ 模型；免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: AnyAPI 聚合 400+ AI 模型，免费套餐无需信用卡即可测试核心功能并体验不同模型，快速开始构建。

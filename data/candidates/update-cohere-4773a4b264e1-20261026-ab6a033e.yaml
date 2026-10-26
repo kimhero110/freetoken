@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: cohere
+name: Cohere (Command & Rerank)
+source_url: https://docs.cohere.com/
+source_hash: 4773a4b264e17785fd91cf7dbbca4a356b65c6cfdbe719ed8f5ec7582dcbbc76
+platform_hash: ab6a033e060da140a3392adb4abb08147fd214d0fcde2ee19e4ce0c86479b09a
+captured_at: '2026-10-26T21:47:00.563490+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: Trial Key
+    unit: 1000次/月 (10-20 RPM)
+    reset_period: 每月刷新
+    details: 开发者可创建永久免费的 Trial API Key，调用 Command R+ 与业界最强 Rerank 模型。
+    details_en: Free trial key allows 10-20 RPM for evaluation and prototyping.
+  intro: 顶尖企业级大模型与 Rerank 重排序引擎，Trial 试用 Key 永久免费提供基础额度，RAG 开发必备。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Cohere 官方文档提供 API 参考、指南与示例，帮助开发者快速集成自然语言处理与生成能力。
+supersedes: update-cohere-4773a4b264e1

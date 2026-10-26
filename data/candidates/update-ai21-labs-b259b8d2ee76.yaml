@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: ai21-labs
+name: AI21 Labs (Jamba)
+source_url: https://docs.ai21.com/
+source_hash: b259b8d2ee767131e43c126574df95a9de0cf0242c971ef4bdc6ed256011b146
+platform_hash: adc91a77f64b38ae6a459482c767d63eedfad7047612972841cc90d8ba370de5
+captured_at: '2026-10-26T21:45:50.887556+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 10 美元
+    unit: USD Credits (3个月有效)
+    reset_period: 一次性
+    details: 注册开发者发放 10 美元 API 免费额度，支持 Jamba 混合架构模型极速推理。
+    details_en: $10 trial credit valid for 3 months upon sign-up.
+  intro: Mamba-Transformer 混合架构创新大模型平台，注册即送 10 美元体验金，超高吞吐量与 256K 超长上下文。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: AI21 Labs 提供 Maestro 与 Jamba 系列模型的开发文档与 API 参考，帮助开发者快速构建 AI 解决方案。
