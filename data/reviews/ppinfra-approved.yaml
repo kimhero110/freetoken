@@ -55,3 +55,9 @@ proposed:
   evidence:
   - url: https://ppinfra.com
     checked_at: '2026-09-27'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T14:44:17.375002+00:00'
+  reviewer: kimhero110
+  annotation_via: agent
+  annotation_id: growth-batch2
