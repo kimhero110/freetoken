@@ -1,0 +1,32 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: tencent-hunyuan
+name: 腾讯混元大模型
+source_url: https://cloud.tencent.com/product/tclm
+source_hash: f695e5f55e8df224a93a2401ad061ec9fc8669a76575df35fc0b4edeb3bebc48
+platform_hash: d70dac95ae4ac9accafac98dcefc80f7ad1e72622cce28135a2fcd0ba9dff719
+captured_at: '2026-10-26T07:48:54.053919+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 100 万
+    unit: Tokens
+    reset_period: 一次性
+    details: 新用户实名开通即可领取混元模型免费体验资源包。
+    details_en: 1,000,000 free tokens for new verified Tencent Cloud accounts.
+  intro: 腾讯官方大模型开放平台，新注册用户赠送 10 万-100 万 Tokens 免费体验金，多模态与企微生态深度整合。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 腾讯混元大模型是腾讯全链路自研的多模态大模型，覆盖文本、图像、视频、语音、3D等，提供企业级AI服务。
+verification_conclusion: no_free_tier
+verification_reasons:
+- candidate:update-tencent-hunyuan-f695e5f55e8d
+- null_quota_without_free_hints
