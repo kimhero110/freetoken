@@ -7,6 +7,26 @@ from pathlib import Path
 from .check_state import GitState
 
 
+def stage_failed(result):
+    """Return true only for fatal stage outcomes, not useful partial work."""
+    stages = result['stages']
+    publish_failed = stages['publish'] != 'success'
+    fetch = result.get('fetch')
+    if stages['fetch'] != 'success':
+        if not isinstance(fetch, dict):
+            return True
+        attempted, succeeded = fetch.get('attempted'), fetch.get('succeeded')
+        if not isinstance(attempted, int) or not isinstance(succeeded, int):
+            return True
+        if attempted > 0 and succeeded * 2 < attempted:
+            return True
+    extract = result.get('extract')
+    if stages['extract'] != 'success':
+        if not isinstance(extract, dict) or extract.get('status') not in {'completed', 'deferred', 'dry_run'}:
+            return True
+    return publish_failed
+
+
 def main():
     folder = Path(os.environ['RUNNER_TEMP'])
     result = {"version": 1, "completed_at": datetime.now(timezone.utc).isoformat(),
@@ -17,7 +37,7 @@ def main():
         path = folder / (stage + '-summary.json')
         if path.exists():
             result[stage] = json.loads(path.read_text(encoding='utf-8'))
-    failed = any(outcome != 'success' for outcome in result['stages'].values())
+    failed = stage_failed(result)
     result['status'] = 'failed' if failed else 'completed'
     if not failed and result.get('extract', {}).get('status') == 'dry_run':
         result['status'] = 'dry_run'

@@ -95,6 +95,7 @@ def main() -> int:
             observation = public_observation(yf.stem, url, text, entry, ROOT, datetime.now(timezone.utc).isoformat())
             observations.append(observation)
             if text is None:
+                observation['error'] = 'SOURCE_FETCH_FAILED'
                 continue  # 抓取失败时保留旧哈希，下一轮重试
             succeeded += 1
             digest = hashlib.sha256(text.encode("utf-8")).hexdigest()
@@ -115,12 +116,11 @@ def main() -> int:
         'succeeded': succeeded, 'sources': observations,
     }), encoding='utf-8')
     print(f"\n本轮来源覆盖率：{succeeded}/{attempted} 成功；{len(changed)} 个来源变更")
-    if attempted and succeeded == 0:
-        print("全部来源抓取失败，拒绝将监控失效报告为无变化")
+    if coverage_degraded(attempted, succeeded):
+        print("来源抓取覆盖率低于 50%，监控严重降级")
         return 1
     if succeeded < attempted:
         print('存在来源抓取失败，成功来源仍可继续处理')
-        return 1
     return 0
 
 
