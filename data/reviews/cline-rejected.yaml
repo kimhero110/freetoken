@@ -1,25 +1,25 @@
 candidate_type: new_platform
 status: pending_review
-platform_slug: verdent
+platform_slug: cline
 score: 3
 proposed:
   schema_version: 2
-  slug: verdent
-  name: Verdent AI Agentic Coding with Multiple Parallel A
-  name_en: Verdent
+  slug: cline
+  name: Cline - AI Coding, Open Source and Open Choice
+  name_en: Cline
   category: 海外探索
-  intro: Verdent AI Agentic Coding with Multiple Parallel A：雷达捕获的候选源，免费额度与可用模型待人工核实。
-  intro_en: 'Verdent: discovered by radar; free tier and models unverified.'
-  website: https://verdent.ai
-  doc_url: https://verdent.ai/docs
-  api_base_url: https://api.verdent.ai/v1
+  intro: Cline - AI Coding, Open Source and Open Choice：雷达捕获的候选源，免费额度与可用模型待人工核实。
+  intro_en: 'Cline: discovered by radar; free tier and models unverified.'
+  website: https://cline.bot
+  doc_url: https://cline.bot/docs
+  api_base_url: https://api.cline.bot/v1
   free_models: []
   free_quota:
     type: 待核实
     amount: 待核实
     unit: Tokens
     reset_period: 待核实
-    details: 雷达线索：页面匹配得分 3/11；https://api.verdent.ai/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
+    details: 雷达线索：页面匹配得分 3/11；https://api.cline.bot/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null
@@ -32,7 +32,7 @@ proposed:
   gotchas_en:
   - Discovered by radar. Manual verification required.
   registration:
-    url: https://verdent.ai
+    url: https://cline.bot
   requirements:
     phone: unknown
     card: unknown
@@ -50,7 +50,15 @@ proposed:
       openclaw: unknown
       cherry_studio: unknown
   evidence:
-  - url: https://verdent.ai
+  - url: https://cline.bot
     checked_at: '2026-10-26'
-  - url: https://api.verdent.ai/v1/models
+  - url: https://cline.bot/pricing
     checked_at: '2026-10-26'
+  - url: https://api.cline.bot/v1/models
+    checked_at: '2026-10-26'
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T14:32:09.045999+00:00'
+  reviewer: kimhero110
+  annotation_via: agent
+  annotation_id: growth-batch2

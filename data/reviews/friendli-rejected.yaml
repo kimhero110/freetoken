@@ -53,3 +53,9 @@ proposed:
     checked_at: '2026-09-25'
   - url: https://friendli.ai/pricing
     checked_at: '2026-09-25'
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T14:32:09.052644+00:00'
+  reviewer: kimhero110
+  annotation_via: agent
+  annotation_id: growth-batch2
