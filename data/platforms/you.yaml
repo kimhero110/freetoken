@@ -3,21 +3,23 @@ slug: you
 name: The Leading Web Search APIs for AI | You.com
 name_en: You
 category: 海外探索
-intro: The Leading Web Search APIs for AI | You.com：雷达捕获的候选源，免费额度与可用模型待人工核实。
+intro: You.com 提供面向 AI 的搜索与推理 API，支持多模型路由、实时网页搜索，并免费获取 API Key。
 intro_en: 'You: discovered by radar; free tier and models unverified.'
 website: https://you.com
 doc_url: https://you.com/docs
 api_base_url: https://api.you.com/v1
 free_models: []
 free_quota:
-  type: 待核实
-  amount: 待核实
-  unit: Tokens
-  reset_period: 待核实
-  details: 雷达线索：页面匹配得分 4/11；https://api.you.com/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
+  type: 无免费层
+  amount: 无免费额度
+  unit: null
+  reset_period: null
+  details: 官方页面当前未提供免费额度，按量计费。
+  details_en: No free quota currently offered (pay-as-you-go).
+  conditions: []
 verification: 邮箱/GitHub
-status: unverified
-last_verified: null
+status: active
+last_verified: '2026-10-26'
 tags:
 - 雷达新源
 - 待人工复核
@@ -46,6 +48,9 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://you.com
-  checked_at: '2026-09-23'
+  checked_at: '2026-10-26'
+  source_hash: 7bdf17d6c27a17bd8275591fd8c26330a76ea70c77c85bff373acbe199c9d6a5
+  captured_at: '2026-10-26T07:49:03.481150+00:00'
 - url: https://api.you.com/v1/models
   checked_at: '2026-09-23'
+last_checked: '2026-10-26'
