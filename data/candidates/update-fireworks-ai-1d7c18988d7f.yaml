@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: fireworks-ai
+name: Fireworks AI
+source_url: https://docs.fireworks.ai/
+source_hash: 1d7c18988d7ff6d9e4a74907bea96003aa96ab52dc6f7075809ccf6010b4546b
+platform_hash: 03bb2c7c159fa9ed88aa53bd3f65e6b4f51d4dd1af6a5799c503f3dbfc5a2d1e
+captured_at: '2026-10-26T05:42:06.133561+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 1 美元
+    unit: USD Credit (约500万Tokens)
+    reset_period: 一次性
+    details: 注册送 1 美元试用余额，极速推理 DeepSeek R1、Qwen 2.5、Llama 3.3 等前沿大模型。
+    details_en: $1 trial credit upon registration (~5M tokens).
+  intro: 全球顶尖高性能开源大模型推理加速云平台，新注册开发者发放 1 美元试用金（约 500 万 Tokens）！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Fireworks AI提供开源模型的高速推理与训练，支持Serverless API、专用部署和微调，按量计费，适合原型验证与生产部署。

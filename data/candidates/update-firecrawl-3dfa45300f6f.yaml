@@ -1,0 +1,27 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: firecrawl
+name: Firecrawl - The web data API to search, scrape, an
+source_url: https://firecrawl.dev
+source_hash: 3dfa45300f6fb75e7592da378425c8b600ce71e22ea3b6391b1cfdb2a6dc10a1
+platform_hash: 012da414528f116cebd2ef66f2f510441d942376401102c67be16fdf22c4ccb9
+captured_at: '2026-10-26T05:41:57.077532+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 待核实
+    amount: 待核实
+    unit: Tokens
+    reset_period: 待核实
+    details: 雷达线索：页面匹配得分 6/11。免费额度需人工核实。
+  intro: Firecrawl - The web data API to search, scrape, an：雷达捕获的候选源，免费额度与可用模型待人工核实。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Firecrawl是面向AI代理的网页数据API，提供搜索、抓取、地图和爬虫功能，性能高效且开源，助力智能体获取实时网络数据。
