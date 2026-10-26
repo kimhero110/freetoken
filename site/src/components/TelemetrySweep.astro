@@ -119,7 +119,7 @@ const latestVerified = verifiedDates.at(-1) || (isEn ? 'Not verified' : '未核�
       });
       if (!response.ok) throw new Error('unavailable');
       const text = await response.text();
-      if (text.length > 8192) throw new Error('oversized');
+      if (text.length > 65536) throw new Error('oversized');
       const status = JSON.parse(text);
       for (const node of nodes) node.textContent = describeCheckHealth(status, node.dataset.lang === 'en');
     } catch {

@@ -7,8 +7,11 @@ from pathlib import Path
 
 from scripts.check_heartbeat import HEARTBEAT_MAX_AGE, explain, healthy
 from scripts.check_status import (
+    MAX_SOURCES,
+    MAX_STATUS_BYTES,
     StatusError,
     canonical_payload,
+    fetch_published,
     ledger_problems,
     missing_slots,
     refresh_public_status,
@@ -161,6 +164,61 @@ class ScheduleAndLedgerTests(unittest.TestCase):
         with self.assertRaises(StatusError) as caught:
             canonical_payload(document)
         self.assertEqual(caught.exception.code, 'STATUS_SECRET')
+
+    def test_status_supports_up_to_200_sources_and_64kb_payload(self):
+        self.assertEqual(MAX_SOURCES, 200)
+        self.assertEqual(MAX_STATUS_BYTES, 65536)
+        sources_in_ledger = [
+            {
+                'source': f'{index:064x}',
+                'platform': f'platform-{index:03d}',
+                'checked_at': NOW.isoformat(),
+                'status': 'verified_unchanged',
+                'scope': 'public_source',
+            }
+            for index in range(205)
+        ]
+        ledger = {
+            'version': 1, 'calls': {}, 'history': {},
+            'runs': {'1': {
+                'completed_at': NOW.isoformat(),
+                'workflow_file': 'update.yml',
+                'status': 'completed',
+                'fetch': {
+                    'checked_at': NOW.isoformat(),
+                    'attempted': 205,
+                    'succeeded': 205,
+                    'sources': sources_in_ledger,
+                },
+                'extract': {'sources': []},
+            }},
+        }
+        problems, summary = ledger_problems(ledger, NOW.timestamp())
+        self.assertEqual(problems, [])
+        self.assertEqual(len(summary['sources']), 200)
+        document = {
+            'version': 1,
+            'updated_at': NOW.isoformat(),
+            'monitoring': 'ok',
+            'notification_failures': 0,
+            'active_incidents': 0,
+            **summary,
+        }
+        payload = canonical_payload(document)
+        self.assertGreater(len(payload.encode()), 8192)
+        self.assertLessEqual(len(payload.encode()), MAX_STATUS_BYTES)
+
+        fetched = fetch_published('example/repo', opener=lambda _req, timeout=30: Response(payload))
+        self.assertEqual(len(fetched['sources']), 200)
+
+        too_many = {**document, 'sources': summary['sources'] + [summary['sources'][0]]}
+        with self.assertRaises(StatusError) as schema_err:
+            canonical_payload(too_many)
+        self.assertEqual(schema_err.exception.code, 'STATUS_SCHEMA')
+
+        telemetry = (ROOT / 'site/src/components/TelemetrySweep.astro').read_text(encoding='utf-8')
+        self.assertIn(f'text.length > {MAX_STATUS_BYTES}', telemetry)
+        self.assertNotIn('text.length > 8192', telemetry)
 
 
 class PublishTests(unittest.TestCase):

@@ -125,7 +125,7 @@ jobs:
           gh pr merge "$BRANCH" --merge --delete-branch
 
       - name: Send isolated approval notification
-        if: inputs.decision == 'approve'
+        if: ${{ success() && inputs.decision == 'approve' && steps.apply.outputs.noop != 'true' }}
         env:
           CANDIDATE_ID: ${{ inputs.candidate_id }}
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}

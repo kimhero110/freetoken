@@ -190,6 +190,69 @@ class ProbeCapabilityTests(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 probe_capabilities._write_candidate(candidate)
 
+    def test_writing_new_probe_prunes_older_same_dimension_and_expired_zombies(self):
+        from datetime import datetime, timedelta, timezone
+
+        now = datetime.now(timezone.utc)
+        old_same_tool = {
+            "candidate_type": "capability_probe",
+            "checked_at": (now - timedelta(days=3)).isoformat(),
+            "operation_id": "chat_completions",
+            "platform_slug": "deepseek",
+            "tool": "raw_http",
+        }
+        expired_other_tool = {
+            "candidate_type": "capability_probe",
+            "checked_at": (now - timedelta(days=10)).isoformat(),
+            "operation_id": "chat_completions",
+            "platform_slug": "deepseek",
+            "tool": "openai_node",
+        }
+        fresh_other_tool = {
+            "candidate_type": "capability_probe",
+            "checked_at": (now - timedelta(days=2)).isoformat(),
+            "operation_id": "chat_completions",
+            "platform_slug": "deepseek",
+            "tool": "openai_python",
+        }
+        fresh_other_provider = {
+            "candidate_type": "capability_probe",
+            "checked_at": (now - timedelta(days=2)).isoformat(),
+            "operation_id": "chat_completions",
+            "platform_slug": "groq",
+            "tool": "raw_http",
+        }
+        newest_same_tool = {
+            "candidate_type": "capability_probe",
+            "checked_at": now.isoformat(),
+            "operation_id": "chat_completions",
+            "platform_slug": "deepseek",
+            "tool": "raw_http",
+        }
+        with tempfile.TemporaryDirectory() as directory, patch.object(
+            probe_capabilities, "CANDIDATES_DIR", Path(directory)
+        ):
+            p_old = probe_capabilities._write_candidate(old_same_tool)
+            p_expired = probe_capabilities._write_candidate(expired_other_tool)
+            p_other_tool = probe_capabilities._write_candidate(fresh_other_tool)
+            p_other_provider = probe_capabilities._write_candidate(fresh_other_provider)
+            p_newest = probe_capabilities._write_candidate(newest_same_tool)
+
+            self.assertFalse(p_old.exists())
+            self.assertFalse(p_expired.exists())
+            self.assertTrue(p_other_tool.exists())
+            self.assertTrue(p_other_provider.exists())
+            self.assertTrue(p_newest.exists())
+
+    def test_repository_has_at_most_one_unreviewed_probe_per_dimension(self):
+        root = Path(__file__).resolve().parents[1]
+        seen = set()
+        for path in sorted((root / "data" / "candidates").glob("probe-*.yaml")):
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
+            key = (data["platform_slug"], data["operation_id"], data["tool"])
+            self.assertNotIn(key, seen, f"duplicate pending probe candidate for {key}: {path.name}")
+            seen.add(key)
+
 
 if __name__ == "__main__":
     unittest.main()

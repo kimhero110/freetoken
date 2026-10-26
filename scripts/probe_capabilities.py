@@ -29,6 +29,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PLATFORMS_DIR = ROOT / "data" / "platforms"
 CANDIDATES_DIR = ROOT / "data" / "candidates"
 CANDIDATE_VERSION = 2
+PROBE_EXPIRY_DAYS = 7
 CONFIG = load_probe_config()
 PROVIDER_PROBES = CONFIG["providers"]
 TOOL_PROBES = CONFIG["tools"]
@@ -106,6 +107,41 @@ def _run_evidence_url():
     return None
 
 
+def _prune_stale_probe_candidates(candidate, *, keep: Path, now: datetime | None = None) -> list[Path]:
+    """Remove older unreviewed probes for the same (slug, operation, tool) and expired (>7d) probes."""
+    now = now or datetime.now(timezone.utc)
+    removed: list[Path] = []
+    for path in sorted(CANDIDATES_DIR.glob("probe-*.yaml")):
+        if path == keep:
+            continue
+        try:
+            existing = yaml.safe_load(path.read_text(encoding="utf-8"))
+        except (OSError, yaml.YAMLError):
+            continue
+        if not isinstance(existing, dict) or existing.get("review"):
+            continue
+        if existing.get("candidate_type") not in {None, "capability_probe"}:
+            continue
+        same_dimension = (
+            existing.get("platform_slug") == candidate.get("platform_slug")
+            and existing.get("operation_id") == candidate.get("operation_id")
+            and existing.get("tool") == candidate.get("tool")
+        )
+        expired = False
+        raw_checked_at = existing.get("checked_at")
+        if isinstance(raw_checked_at, str):
+            try:
+                checked_at = datetime.fromisoformat(raw_checked_at)
+                if checked_at.tzinfo is not None:
+                    expired = (now - checked_at).days > PROBE_EXPIRY_DAYS
+            except ValueError:
+                pass
+        if same_dimension or expired:
+            path.unlink(missing_ok=True)
+            removed.append(path)
+    return removed
+
+
 def _write_candidate(candidate):
     CANDIDATES_DIR.mkdir(parents=True, exist_ok=True)
     stamp = candidate["checked_at"].replace("-", "").replace(":", "").replace(".", "").replace("+", "")
@@ -120,6 +156,7 @@ def _write_candidate(candidate):
         os.link(temporary, destination)
     finally:
         temporary.unlink(missing_ok=True)
+    _prune_stale_probe_candidates(candidate, keep=destination)
     return destination
 
 

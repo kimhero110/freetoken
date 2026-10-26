@@ -229,5 +229,110 @@ class PageReadingTests(unittest.TestCase):
             self.assertIsNone(radar.extract_page_data('https://x.example'))
 
 
+class DeduplicationAndCooldownTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        (self.root / 'data' / 'platforms').mkdir(parents=True)
+        (self.root / 'data' / 'reviews').mkdir(parents=True)
+
+    def test_get_existing_domains_reads_schema_v2_doc_url_and_registration_url(self):
+        (self.root / 'data' / 'platforms' / 'vendor-one.yaml').write_text(yaml.safe_dump({
+            'schema_version': 2,
+            'slug': 'vendor-one',
+            'website': 'https://www.vendorone.ai',
+            'doc_url': 'https://docs.vendorone-docs.io/guide',
+            'registration': {'url': 'https://console.vendorone-auth.com/signup'},
+            'api_base_url': 'https://api.vendorone.ai/v1',
+        }), encoding='utf-8')
+        (self.root / 'data' / 'platforms' / 'baidu-qianfan.yaml').write_text(yaml.safe_dump({
+            'schema_version': 2,
+            'slug': 'baidu-qianfan',
+            'website': 'https://cloud.baidu.com/product/wenxinworkshop',
+            'doc_url': 'https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html',
+            'registration': {'url': 'https://console.bce.baidu.com/'},
+        }), encoding='utf-8')
+
+        with patch.object(radar, 'ROOT', self.root):
+            domains = radar.get_existing_domains()
+
+        self.assertIn('vendorone.ai', domains)
+        self.assertIn('docs.vendorone-docs.io', domains)
+        self.assertIn('vendorone-docs', domains)
+        self.assertIn('console.vendorone-auth.com', domains)
+        self.assertIn('vendorone-auth', domains)
+        self.assertIn('cloud.baidu.com', domains)
+        self.assertNotIn('cloud', domains)
+        self.assertNotIn('docs', domains)
+        self.assertNotIn('console', domains)
+
+    def test_rejected_reviews_are_skipped_within_90_day_cooldown_and_reopen_after(self):
+        from datetime import datetime, timedelta, timezone
+
+        now = datetime(2026, 10, 25, 12, 0, tzinfo=timezone.utc)
+        reviews = self.root / 'data' / 'reviews'
+        (reviews / 'aimlapi-rejected.yaml').write_text(yaml.safe_dump({
+            'candidate_type': 'new_platform',
+            'platform_slug': 'aimlapi',
+            'proposed': {
+                'slug': 'aimlapi',
+                'website': 'https://aimlapi.com',
+                'doc_url': 'https://aimlapi.com/docs',
+                'registration': {'url': 'https://aimlapi.com/signup'},
+            },
+            'review': {
+                'decision': 'rejected',
+                'reviewed_at': (now - timedelta(days=30)).isoformat(),
+            },
+        }), encoding='utf-8')
+        (reviews / 'oldseed-rejected.yaml').write_text(yaml.safe_dump({
+            'candidate_type': 'new_platform',
+            'platform_slug': 'oldseed',
+            'proposed': {
+                'slug': 'oldseed',
+                'website': 'https://oldseed.example',
+            },
+            'review': {
+                'decision': 'rejected',
+                'reviewed_at': (now - timedelta(days=95)).isoformat(),
+            },
+        }), encoding='utf-8')
+        (reviews / 'update-featherless-ai-2c740d9a5f67-rejected.yaml').write_text(yaml.safe_dump({
+            'candidate_type': 'platform_update',
+            'platform_slug': 'featherless-ai',
+            'source_url': 'https://featherless.ai',
+            'review': {
+                'decision': 'rejected',
+                'reviewed_at': (now - timedelta(days=5)).isoformat(),
+            },
+        }), encoding='utf-8')
+
+        with patch.object(radar, 'ROOT', self.root):
+            rejected = radar.get_rejected_domains(now=now)
+        self.assertIn('aimlapi', rejected)
+        self.assertIn('aimlapi.com', rejected)
+        self.assertNotIn('oldseed', rejected)
+        self.assertNotIn('featherless.ai', rejected)
+
+        with patch.dict('os.environ', {'RUNNER_TEMP': self.tmp.name}), \
+             patch.object(radar, 'ROOT', self.root), \
+             patch.object(radar, 'TARGET_SEEDS', ['https://aimlapi.com', 'https://fresh.example']), \
+             patch.object(radar, 'get_rejected_domains', lambda: rejected), \
+             patch.object(radar, 'api_signature', lambda url: None), \
+             patch.object(radar, 'extract_page_data', lambda url: page(5)):
+            code = radar.run_discovery()
+
+        self.assertEqual(code, 0)
+        summary = json.loads((self.root / 'fetch-summary.json').read_text(encoding='utf-8'))
+        by_url = {item['url']: item['status'] for item in summary['sources']}
+        self.assertEqual(by_url, {
+            'https://aimlapi.com': 'rejected_cooldown',
+            'https://fresh.example': 'discovered',
+        })
+        written = [p.name for p in (self.root / 'data' / 'candidates').glob('*.yaml')]
+        self.assertEqual(written, ['fresh.yaml'])
+
+
 if __name__ == '__main__':
     unittest.main()

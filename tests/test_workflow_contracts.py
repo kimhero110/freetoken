@@ -89,6 +89,10 @@ class ReviewCandidateNoopContractTests(unittest.TestCase):
         self.assertIn('gh pr checks "$BRANCH" --watch --interval 10', merge_step["run"])
         self.assertIn('gh pr merge "$BRANCH" --merge --delete-branch', merge_step["run"])
 
+        notify_step = next(step for step in job["steps"] if step["name"] == "Send isolated approval notification")
+        self.assertIn("steps.apply.outputs.noop != 'true'", notify_step["if"])
+        self.assertIn("inputs.decision == 'approve'", notify_step["if"])
+
 
 class ReviewCandidateAnnotationContractTests(unittest.TestCase):
     def test_annotated_approval_inputs_exist_but_actor_stays_authoritative(self):

@@ -24,7 +24,7 @@ except ImportError:
     from safe_http import get_public_text
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from scripts.source_verification import public_observation
+from scripts.source_verification import authorized_source_urls, public_observation
 
 ROOT = Path(__file__).resolve().parent.parent
 PLATFORMS_DIR = ROOT / "data" / "platforms"
@@ -89,7 +89,7 @@ def main() -> int:
     for yf in yaml_files:
         entry = yaml.safe_load(yf.read_text(encoding="utf-8"))
         name = entry.get("name", yf.stem)
-        for url in entry.get("source_urls", []):
+        for url in authorized_source_urls(entry):
             attempted += 1
             text = fetch_text(url)
             observation = public_observation(yf.stem, url, text, entry, ROOT, datetime.now(timezone.utc).isoformat())

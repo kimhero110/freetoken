@@ -21,6 +21,8 @@ from .check_heartbeat import explain, healthy
 
 BRANCH = 'monitor-status'
 STATUS_FILE = 'check-status.json'
+MAX_SOURCES = 200
+MAX_STATUS_BYTES = 65536
 STALE_SOURCE = 3 * 86400
 MONITOR_SINCE = datetime(2026, 9, 6, tzinfo=timezone.utc)
 WORKFLOWS = ('update.yml', 'discover.yml')
@@ -250,7 +252,7 @@ def ledger_problems(ledger, now):
         'attempted': fetch.get('attempted') if isinstance(fetch.get('attempted'), int) else -1,
         'succeeded': fetch.get('succeeded') if isinstance(fetch.get('succeeded'), int) else -1,
         'check_status': status if status in {'completed', 'failed', 'dry_run'} else 'unknown',
-        'sources': sources[:40],
+        'sources': sources[:MAX_SOURCES],
     }
     return problems, summary
 
@@ -419,7 +421,7 @@ def canonical_payload(document):
     if not isinstance(attempted, int) or not isinstance(succeeded, int) or not 0 <= succeeded <= attempted <= 10000:
         raise StatusError('STATUS_SCHEMA')
     sources = document.get('sources')
-    if not isinstance(sources, list) or len(sources) > 40:
+    if not isinstance(sources, list) or len(sources) > MAX_SOURCES:
         raise StatusError('STATUS_SCHEMA')
     for item in sources:
         if not isinstance(item, dict) or not item or set(item) - set(SOURCE_KEYS) or 'platform' not in item:
@@ -428,7 +430,7 @@ def canonical_payload(document):
             if not isinstance(value, str) or not value or len(value) > 80 or any(char in value for char in '\n\r'):
                 raise StatusError('STATUS_SCHEMA')
     text = json.dumps(document, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
-    if len(text.encode()) > 8192:
+    if len(text.encode()) > MAX_STATUS_BYTES:
         raise StatusError('STATUS_TOO_LARGE')
     _reject_secrets(text)
     return text
@@ -500,7 +502,7 @@ def push_status(repo, document, remote='origin'):
 
 def fetch_published(repo_name, *, token='', opener=None):
     return github_json(status_api_url(repo_name), token=token,
-                       accept='application/vnd.github.raw+json', limit=8192, opener=opener)
+                       accept='application/vnd.github.raw+json', limit=MAX_STATUS_BYTES, opener=opener)
 
 
 def refresh_public_status(repo, *, now=None, repo_name=None, opener=None, remote='origin', pause=time.sleep):
