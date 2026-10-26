@@ -172,6 +172,191 @@ TARGET_SEEDS = [
 ]
 
 
+# Repo-configured directories / awesome-lists that yield extra probe origins.
+# Hardcoded TARGET_SEEDS stay as the offline bootstrap; expanders can surface
+# domains that were never typed into that list.
+SEED_SOURCES_CONFIG = ROOT / "config" / "discovery-seed-sources.yaml"
+EXPANDER_ORIGIN_CAP = 80
+_MARKDOWN_LINK_RE = re.compile(r"\[[^\]]*\]\((https://[^)\s]+)\)")
+_BARE_HTTPS_RE = re.compile(r"https://[a-zA-Z0-9][a-zA-Z0-9._~:/?#\[\]@!$&'()*+,;=%-]*")
+_EXPANDER_BLOCKED_HOST_SUFFIXES = (
+    "github.com", "githubusercontent.com", "gitlab.com", "bitbucket.org",
+    "twitter.com", "x.com", "facebook.com", "linkedin.com", "youtube.com",
+    "youtu.be", "medium.com", "reddit.com", "t.me", "telegram.me",
+    "discord.com", "discord.gg", "instagram.com", "threads.net", "threads.com",
+    "tiktok.com", "wikipedia.org", "google.com", "googleapis.com",
+    "microsoft.com", "apple.com", "amazon.com", "cloudflare.com",
+    "npmjs.com", "pypi.org", "docker.com", "stackoverflow.com",
+    "aifree.dev", "awesome.re", "shields.io", "star-history.com",
+    "rentry.co", "git.io", "imgur.com", "giphy.com", "jsdelivr.net",
+    "cloudfront.net", "raw.githack.com",
+)
+
+
+def _seed_sources_path() -> Path:
+    if SEED_SOURCES_CONFIG != _DEFAULT_ROOT / "config" / "discovery-seed-sources.yaml":
+        return SEED_SOURCES_CONFIG
+    return ROOT / "config" / "discovery-seed-sources.yaml"
+
+
+def load_expander_entries() -> list[dict]:
+    """Read enabled expander rows from config. Missing/invalid file -> []."""
+    path = _seed_sources_path()
+    if not path.is_file():
+        return []
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except Exception as exc:
+        print(f"[WARN] Could not read seed-source config {path}: {exc}")
+        return []
+    if not isinstance(data, dict):
+        return []
+    rows = data.get("expanders")
+    if not isinstance(rows, list):
+        return []
+    out = []
+    for row in rows:
+        if not isinstance(row, dict) or row.get("enabled") is False:
+            continue
+        url = row.get("url")
+        if not isinstance(url, str) or not url.startswith("https://"):
+            continue
+        try:
+            max_origins = int(row.get("max_origins") or 40)
+        except (TypeError, ValueError):
+            max_origins = 40
+        max_origins = max(1, min(max_origins, EXPANDER_ORIGIN_CAP))
+        out.append({
+            "id": str(row.get("id") or urlparse(url).netloc or "expander"),
+            "url": url.strip(),
+            "max_origins": max_origins,
+        })
+    return out
+
+
+def normalize_seed_origin(url: str) -> str | None:
+    """Reduce any https URL to a stable https://host origin for probing."""
+    if not isinstance(url, str) or not url.strip():
+        return None
+    raw = url.strip().rstrip(").,;\"'")
+    try:
+        parsed = urlparse(raw)
+    except Exception:
+        return None
+    if parsed.scheme != "https" or not parsed.hostname:
+        return None
+    host = parsed.hostname.lower()
+    if host.startswith("www."):
+        host = host[4:]
+    if not host or "." not in host:
+        return None
+    return f"https://{host}"
+
+
+def _expander_host_blocked(host: str, expander_host: str | None) -> bool:
+    host = host.lower()
+    if expander_host and (host == expander_host or host.endswith("." + expander_host)):
+        return True
+    for suffix in _EXPANDER_BLOCKED_HOST_SUFFIXES:
+        if host == suffix or host.endswith("." + suffix):
+            return True
+    return False
+
+
+def extract_origins_from_document(body: str, base_url: str, max_origins: int) -> list[str]:
+    """Pull unique https origins out of HTML or Markdown, newest-first capped."""
+    if not body or max_origins <= 0:
+        return []
+    expander_host = (urlparse(base_url).hostname or "").lower()
+    if expander_host.startswith("www."):
+        expander_host = expander_host[4:]
+
+    found: list[str] = []
+    seen: set[str] = set()
+
+    def consider(raw: str) -> None:
+        origin = normalize_seed_origin(raw)
+        if not origin or origin in seen:
+            return
+        host = urlparse(origin).hostname or ""
+        if _expander_host_blocked(host, expander_host or None):
+            return
+        seen.add(origin)
+        found.append(origin)
+
+    # HTML anchors first when the page is markup.
+    try:
+        soup = BeautifulSoup(body, "html.parser")
+        for tag in soup.find_all("a", href=True):
+            href = tag.get("href")
+            if isinstance(href, str):
+                consider(href if href.startswith("http") else
+                         f"{base_url.rstrip('/')}/{href.lstrip('/')}")
+            if len(found) >= max_origins:
+                return found
+    except Exception:
+        pass
+
+    for match in _MARKDOWN_LINK_RE.finditer(body):
+        consider(match.group(1))
+        if len(found) >= max_origins:
+            return found
+
+    # Bare https fallback for plain lists that skip Markdown link syntax.
+    for match in _BARE_HTTPS_RE.finditer(body):
+        consider(match.group(0))
+        if len(found) >= max_origins:
+            return found
+    return found
+
+
+def fetch_expander_origins(entry: dict) -> list[str]:
+    """Fetch one expander; network/parse failure returns [] and logs."""
+    url = entry["url"]
+    try:
+        body = get_public_text(url, headers={"User-Agent": UA}, timeout=12)
+    except Exception as exc:
+        print(f"[WARN] Expander {entry.get('id')} unreachable ({url}): {exc}")
+        return []
+    try:
+        return extract_origins_from_document(body, url, entry["max_origins"])
+    except Exception as exc:
+        print(f"[WARN] Expander {entry.get('id')} parse failed ({url}): {exc}")
+        return []
+
+
+def load_expander_origins() -> list[str]:
+    """All expander-derived origins, deduped, hard-capped."""
+    origins: list[str] = []
+    seen: set[str] = set()
+    for entry in load_expander_entries():
+        for origin in fetch_expander_origins(entry):
+            if origin in seen:
+                continue
+            seen.add(origin)
+            origins.append(origin)
+            if len(origins) >= EXPANDER_ORIGIN_CAP:
+                return origins
+    return origins
+
+
+def load_seed_targets() -> list[str]:
+    """Bootstrap TARGET_SEEDS plus any origins harvested from expanders."""
+    targets = list(dict.fromkeys(TARGET_SEEDS))
+    known = set(targets)
+    extra = load_expander_origins()
+    added = 0
+    for origin in extra:
+        if origin in known:
+            continue
+        known.add(origin)
+        targets.append(origin)
+        added += 1
+    if added:
+        print(f"[INFO] Expanders contributed {added} origins beyond TARGET_SEEDS")
+    return targets
+
+
 def sanitize_str(s: str) -> str:
     """Strip characters that cannot be encoded in GBK."""
     if not s:
@@ -492,7 +677,7 @@ def run_discovery():
     if rejected:
         print(f"[INFO] Rejected cooldown entities & domains ({REJECT_COOLDOWN_DAYS}d): {len(rejected)}")
 
-    targets = list(dict.fromkeys(TARGET_SEEDS))
+    targets = load_seed_targets()
     print(f"[INFO] Probing candidate target pool ({len(targets)} candidates)...\n")
 
     fresh = []

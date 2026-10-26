@@ -334,5 +334,109 @@ class DeduplicationAndCooldownTests(unittest.TestCase):
         self.assertEqual(written, ['fresh.yaml'])
 
 
+
+class ExpanderSeedTests(unittest.TestCase):
+    """目录页里长出来的域名，才是雷达真正的生长点。"""
+
+    def setUp(self):
+        self.tmp = TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        (self.root / 'config').mkdir(parents=True)
+        (self.root / 'data' / 'platforms').mkdir(parents=True)
+        (self.root / 'data' / 'reviews').mkdir(parents=True)
+        (self.root / 'data' / 'candidates').mkdir(parents=True)
+
+    def _write_config(self, rows):
+        payload = {'expanders': rows}
+        (self.root / 'config' / 'discovery-seed-sources.yaml').write_text(
+            yaml.safe_dump(payload, allow_unicode=True), encoding='utf-8')
+
+    def test_expanders_contribute_origins_absent_from_target_seeds(self):
+        self._write_config([{
+            'id': 'demo',
+            'url': 'https://lists.example/free.md',
+            'enabled': True,
+            'max_origins': 10,
+        }])
+        body = (
+            '# Free APIs\n'
+            '- [Brand New](https://aifree.dev/offer/x) · [official](https://brand-new-llm.example/pricing)\n'
+            '- [Also](https://also-fresh.example/docs)\n'
+        )
+        with patch.object(radar, 'ROOT', self.root), \
+             patch.object(radar, 'TARGET_SEEDS', ['https://already.example']), \
+             patch.object(radar, 'get_public_text', lambda url, **kw: body):
+            targets = radar.load_seed_targets()
+        self.assertIn('https://already.example', targets)
+        self.assertIn('https://brand-new-llm.example', targets)
+        self.assertIn('https://also-fresh.example', targets)
+        # Still not in the hardcoded bootstrap — that is the growth claim.
+        self.assertNotIn('https://brand-new-llm.example', radar.TARGET_SEEDS)
+
+    def test_malformed_and_same_host_and_blocked_links_are_ignored(self):
+        html = """
+        <html><body>
+          <a href="http://insecure.example">no</a>
+          <a href="mailto:hi@x.example">mail</a>
+          <a href="/relative">rel</a>
+          <a href="https://lists.example/other">same host</a>
+          <a href="https://github.com/foo/bar">social</a>
+          <a href="https://twitter.com/x">social</a>
+          <a href="https://keep-me.example/path?q=1">yes</a>
+        </body></html>
+        """
+        got = radar.extract_origins_from_document(html, 'https://lists.example/free', 20)
+        self.assertEqual(got, ['https://keep-me.example'])
+
+    def test_expander_fetch_failure_does_not_break_seed_loading(self):
+        self._write_config([{
+            'id': 'broken',
+            'url': 'https://lists.example/down.md',
+            'enabled': True,
+            'max_origins': 5,
+        }])
+        def boom(url, **kw):
+            raise RuntimeError('blocked')
+        with patch.object(radar, 'ROOT', self.root), \
+             patch.object(radar, 'TARGET_SEEDS', ['https://seed.example']), \
+             patch.object(radar, 'get_public_text', boom):
+            targets = radar.load_seed_targets()
+        self.assertEqual(targets, ['https://seed.example'])
+
+    def test_expanded_origin_still_respects_existing_and_reject_cooldown(self):
+        self._write_config([{
+            'id': 'demo',
+            'url': 'https://lists.example/free.md',
+            'enabled': True,
+            'max_origins': 10,
+        }])
+        body = (
+            '[official](https://indexed.example/pricing)\n'
+            '[official](https://rejected.example/pricing)\n'
+            '[official](https://fresh-from-list.example/pricing)\n'
+        )
+        env = patch.dict('os.environ', {'RUNNER_TEMP': self.tmp.name})
+        env.start(); self.addCleanup(env.stop)
+        with patch.object(radar, 'ROOT', self.root), \
+             patch.object(radar, 'TARGET_SEEDS', []), \
+             patch.object(radar, 'get_public_text', lambda url, **kw: body), \
+             patch.object(radar, 'get_existing_domains', lambda: {'indexed.example', 'indexed'}), \
+             patch.object(radar, 'get_rejected_domains', lambda: {'rejected.example', 'rejected'}), \
+             patch.object(radar, 'api_signature', lambda url: None), \
+             patch.object(radar, 'extract_page_data',
+                          lambda url: page(5) if 'fresh-from-list' in url else None):
+            code = radar.run_discovery()
+        self.assertEqual(code, 0)
+        summary = json.loads((self.root / 'fetch-summary.json').read_text(encoding='utf-8'))
+        by_url = {item['url']: item['status'] for item in summary['sources']}
+        self.assertEqual(by_url['https://indexed.example'], 'indexed')
+        self.assertEqual(by_url['https://rejected.example'], 'rejected_cooldown')
+        self.assertEqual(by_url['https://fresh-from-list.example'], 'discovered')
+        written = [p.name for p in (self.root / 'data' / 'candidates').glob('*.yaml')]
+        self.assertEqual(written, ['fresh-from-list.yaml'])
+
+
+
 if __name__ == '__main__':
     unittest.main()

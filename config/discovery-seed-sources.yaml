@@ -1,0 +1,28 @@
+# Secondary seed expanders for FreeToken discovery radar.
+#
+# Each enabled expander is a public HTTPS page (HTML or Markdown). The radar
+# fetches it with the same safe_http helpers as everything else, extracts
+# outbound https origins, and merges them into the probe pool AFTER the
+# hardcoded TARGET_SEEDS bootstrap. Being listed here is not an endorsement;
+# it only means the page is worth reading as a lead source.
+#
+# Format:
+#   expanders:
+#     - id: short-id
+#       url: https://...
+#       enabled: true
+#       max_origins: 40   # cap per expander; noisy pages stop early
+#
+# Overall expansion is also capped by scripts/discover_new_platforms.py
+# (EXPANDER_ORIGIN_CAP) so one wild directory cannot flood the queue.
+
+expanders:
+  - id: awesome-free-ai-credits
+    url: https://raw.githubusercontent.com/aifree-dev/awesome-free-ai-credits/main/README.md
+    enabled: true
+    max_origins: 60
+  # High noise (badge CDNs, playground mirrors). Kept disabled as a template.
+  - id: cool-ai-stuff
+    url: https://raw.githubusercontent.com/zukixa/cool-ai-stuff/main/README.md
+    enabled: false
+    max_origins: 40
