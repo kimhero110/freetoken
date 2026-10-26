@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: cerebras
+name: Cerebras Inference
+source_url: https://inference-docs.cerebras.ai/
+source_hash: 3d2ac39154ed0497eb2188a3b5ff476dbf7de42199dc42a312514af78e0eb00a
+platform_hash: 1a61bb63b5ab32186277a4dccd53dcb0753dd62a5e15b00005f803dac7c5740a
+captured_at: '2026-10-26T05:17:00.609181+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每日刷新
+    amount: 100 万
+    unit: Tokens / 天
+    reset_period: 每日刷新
+    details: 每日免费刷新 100 万 Tokens，推理速度高达 1800+ tokens/秒，极客体验极佳。
+    details_en: 1,000,000 free daily tokens across LLaMA 3.1 models.
+  intro: 全球最快 AI 芯片晶圆级推理引擎，生成速度超 1800+ tokens/秒，每天免费提供 100 万 Tokens！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Cerebras Inference 提供全球最快 AI 推理服务，支持多种模型与开发工具，助力实时 AI 应用。

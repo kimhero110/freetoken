@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: cloudflare-workers-ai
+name: Cloudflare Workers AI
+source_url: https://developers.cloudflare.com/workers-ai/
+source_hash: 7ee0eb81ace8250115d6f18e4fd2fbf627dca60db884f21e69da66e33de1a921
+platform_hash: 11a86a19552e5462cd4e54e5a4c187ef782f5f5b085b52ac72c773a26da8c41f
+captured_at: '2026-10-26T05:17:10.268556+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每日刷新
+    amount: 10,000
+    unit: Neurons / 天 (约数十万Tokens)
+    reset_period: 每日刷新
+    details: 每天提供 10,000 神经元计算额度，覆盖数百款前沿开源模型与多模态生图。
+    details_en: 10,000 Neurons per day (~100-300K tokens) free tier across global
+      edge network.
+  intro: 全球最大边缘网络官方 AI 推理平台，每天免费提供 10,000 次神经元（Neurons）计算额度！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Cloudflare Workers AI 面向 Free 与 Paid 计划，提供 50+ 开源模型，按用量付费，支持 Workers、Pages
+    或 Cloudflare API 调用。
