@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: deepseek
+name: DeepSeek (深度求索)
+source_url: https://api-docs.deepseek.com/
+source_hash: b0ab168e23cc9c2f459f3ee75e0776ecd7cd5d84a95327e4355dc7436f51ddd8
+platform_hash: c5087897fae9dc9d7bc35d269d10bf4143fa856affd203714d73c0bd59cbeb55
+captured_at: '2026-10-26T05:17:25.718162+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 500 万
+    unit: Tokens (或 10 元代金券)
+    reset_period: 一次性
+    details: 注册发放 500 万 Tokens 免费体验额度，全面支持 DeepSeek V3 与 R1 深度推理。
+    details_en: 5,000,000 free tokens for new accounts.
+  intro: 全球大模型性价比天花板，新用户注册即送 500 万 Tokens（或 10 元代金券），支持 V3 与 R1 满血版！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: DeepSeek API 提供兼容 OpenAI/Anthropic 的接口，支持快速调用 deepseek 模型，适合开发者集成与测试。
