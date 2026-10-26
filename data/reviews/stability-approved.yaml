@@ -57,3 +57,7 @@ proposed:
     checked_at: '2026-09-25'
   - url: https://api.stability.ai/v1/models
     checked_at: '2026-09-25'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T14:04:39.251216+00:00'
+  reviewer: kimhero110
