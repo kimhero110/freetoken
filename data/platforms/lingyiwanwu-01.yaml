@@ -22,7 +22,7 @@ free_quota:
   details_en: 20 RMB promotional voucher upon sign-up.
 verification: 手机号注册
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 限时
 - 国产直连
@@ -43,22 +43,22 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://api.01.ai/v1/chat/completions
-      models:
-      - yi-lightning
-      - yi-large
-      - yi-medium
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: LINGYIWANWU_01_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://api.01.ai/v1/chat/completions
+    models:
+    - yi-lightning
+    - yi-large
+    - yi-medium
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: LINGYIWANWU_01_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -68,4 +68,7 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://platform.01.ai/docs
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'
+  source_hash: 54d59feabbc3c9cb21ae4cb949a0b999983d08bc1fd22b4e3c1a7bd8a05b2a72
+  captured_at: '2026-10-26T08:49:16.924313+00:00'
+last_checked: '2026-10-26'
