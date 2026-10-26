@@ -2382,7 +2382,7 @@
     },
     "verification": "魔搭/淘宝账号",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "国产直连",
@@ -2442,9 +2442,12 @@
     "evidence": [
       {
         "url": "https://modelscope.cn/docs/InferenceAPI",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26",
+        "source_hash": "250dcd2d07a55c6d473f1d5e55639b237c5685d00b6f4355d60d079c6edf5d40",
+        "captured_at": "2026-10-26T08:49:18.312686+00:00"
       }
-    ]
+    ],
+    "last_checked": "2026-10-26"
   },
   {
     "schema_version": 2,

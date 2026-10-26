@@ -22,7 +22,7 @@ free_quota:
   details_en: Free Serverless API access across hosted open models.
 verification: 魔搭/淘宝账号
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 永久
 - 国产直连
@@ -43,22 +43,22 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://api-inference.modelscope.cn/v1/chat/completions
-      models:
-      - Qwen/Qwen2.5-72B-Instruct
-      - deepseek-ai/DeepSeek-R1
-      - meta-llama/Llama-3.3-70B-Instruct
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: MODELSCOPE_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://api-inference.modelscope.cn/v1/chat/completions
+    models:
+    - Qwen/Qwen2.5-72B-Instruct
+    - deepseek-ai/DeepSeek-R1
+    - meta-llama/Llama-3.3-70B-Instruct
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: MODELSCOPE_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -68,4 +68,7 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://modelscope.cn/docs/InferenceAPI
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'
+  source_hash: 250dcd2d07a55c6d473f1d5e55639b237c5685d00b6f4355d60d079c6edf5d40
+  captured_at: '2026-10-26T08:49:18.312686+00:00'
+last_checked: '2026-10-26'
