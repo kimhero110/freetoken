@@ -1,0 +1,31 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: atlascloud
+name: Overview | Atlas Cloud Docs
+source_url: https://www.atlascloud.ai/docs
+source_hash: 937643f4c30587e393d163b7733263899ea3a24fc4412d32853cc2f648f13f87
+platform_hash: 6d858337994d185f81ff7e0ad43900d2a6548e11118454ac0b5953482f9baac3
+captured_at: '2026-10-26T07:57:10.534963+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 待核实
+    amount: 待核实
+    unit: Tokens
+    reset_period: 待核实
+    details: 雷达线索：页面匹配得分 3/11；https://api.atlascloud.ai/v1/models HTTP 200 返回模型列表。免费额度需人工核实。
+  intro: Overview | Atlas Cloud Docs：雷达捕获的候选源，免费额度与可用模型待人工核实。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Atlas Cloud是AI API聚合平台，统一接入400+模型，支持文本、图像、视频生成，提供OpenAI兼容接口。
+verification_conclusion: no_free_tier
+verification_reasons:
+- candidate:update-atlascloud-937643f4c305
+- null_quota_without_free_hints
