@@ -145,6 +145,8 @@
   <url><loc>https://freetokens.info/en/platform/together-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/tokenpony/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/tokenpony/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/platform/vercel/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/en/platform/vercel/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/volcengine/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/volcengine/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/xai-grok/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>

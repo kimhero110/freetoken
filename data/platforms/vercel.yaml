@@ -1,0 +1,53 @@
+schema_version: 2
+slug: vercel
+name: Vercel AI Gateway
+name_en: Vercel AI Gateway
+category: 海外探索
+intro: Vercel AI Gateway：统一多模型网关，免费额度见 free_quota（雷达入库，细节待复核）。
+intro_en: 'Vercel AI Gateway: multi-model gateway; see free_quota (radar intake).'
+website: https://vercel.com/ai-gateway
+doc_url: https://vercel.com/docs/ai-gateway
+api_base_url: https://ai-gateway.vercel.sh/v1
+free_models: []
+free_quota:
+  type: 月度额度
+  amount: $5 / 30 天
+  unit: USD
+  reset_period: 每月
+  details: 官方 AI Gateway：团队账户约每 30 天 $5 free credits（首次请求后起算）；购买 credits 后通常不再享免费档。以
+    vercel.com/docs/ai-gateway/pricing 为准。
+  details_en: 'Vercel AI Gateway: about $5 free credits every 30 days until you purchase
+    credits.'
+verification: 邮箱/GitHub
+status: unverified
+last_verified: null
+tags:
+- 雷达新源
+- 待人工复核
+gotchas:
+- 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+gotchas_en:
+- Discovered by radar. Manual verification required.
+registration:
+  url: https://vercel.com
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations: []
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://vercel.com
+  checked_at: '2026-09-25'
+- url: https://vercel.com/pricing
+  checked_at: '2026-09-25'
