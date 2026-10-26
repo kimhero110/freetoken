@@ -602,7 +602,7 @@
     "name": "Cloudflare Workers AI",
     "name_en": "Cloudflare Workers AI",
     "category": "大厂云服务",
-    "intro": "全球最大边缘网络官方 AI 推理平台，每天免费提供 10,000 次神经元（Neurons）计算额度！",
+    "intro": "全球最大边缘网络官方 AI 推理平台，每天免费提供 10,000 次神经元（Neurons）计算额度（2026-10-26 复核）。",
     "intro_en": "Serverless GPU inference at the edge. 10,000 free Neurons daily (~100K-300K tokens).",
     "website": "https://ai.cloudflare.com/",
     "doc_url": "https://developers.cloudflare.com/workers-ai/",
@@ -621,7 +621,7 @@
     },
     "verification": "邮箱验证",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "每日",
       "大厂基座",
@@ -682,7 +682,8 @@
         "url": "https://developers.cloudflare.com/workers-ai/",
         "checked_at": "2026-09-02"
       }
-    ]
+    ],
+    "last_checked": "2026-10-26"
   },
   {
     "schema_version": 2,
