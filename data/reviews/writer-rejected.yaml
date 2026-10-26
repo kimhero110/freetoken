@@ -1,25 +1,25 @@
 candidate_type: new_platform
 status: pending_review
-platform_slug: modelbest
+platform_slug: writer
 score: 2
 proposed:
   schema_version: 2
-  slug: modelbest
-  name: 面壁智能
-  name_en: Modelbest
+  slug: writer
+  name: WRITER - The enterprise AI platform for agentic wo
+  name_en: Writer
   category: 海外探索
-  intro: 面壁智能：雷达捕获的候选源，免费额度与可用模型待人工核实。
-  intro_en: 'Modelbest: discovered by radar; free tier and models unverified.'
-  website: https://modelbest.cn
-  doc_url: https://modelbest.cn/docs
-  api_base_url: https://api.modelbest.cn/v1
+  intro: WRITER - The enterprise AI platform for agentic wo：雷达捕获的候选源，免费额度与可用模型待人工核实。
+  intro_en: 'Writer: discovered by radar; free tier and models unverified.'
+  website: https://writer.com
+  doc_url: https://writer.com/docs
+  api_base_url: https://api.writer.com/v1
   free_models: []
   free_quota:
     type: 待核实
     amount: 待核实
     unit: Tokens
     reset_period: 待核实
-    details: 雷达线索：页面匹配得分 2/11；https://api.modelbest.cn/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
+    details: 雷达线索：页面匹配得分 2/11；https://api.writer.com/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null
@@ -32,7 +32,7 @@ proposed:
   gotchas_en:
   - Discovered by radar. Manual verification required.
   registration:
-    url: https://modelbest.cn
+    url: https://writer.com
   requirements:
     phone: unknown
     card: unknown
@@ -50,7 +50,13 @@ proposed:
       openclaw: unknown
       cherry_studio: unknown
   evidence:
-  - url: https://modelbest.cn
+  - url: https://writer.com
     checked_at: '2026-09-23'
-  - url: https://api.modelbest.cn/v1/models
+  - url: https://writer.com/pricing
     checked_at: '2026-09-23'
+  - url: https://api.writer.com/v1/models
+    checked_at: '2026-09-23'
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T13:44:33.151775+00:00'
+  reviewer: kimhero110
