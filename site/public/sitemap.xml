@@ -69,6 +69,8 @@
   <url><loc>https://freetokens.info/en/platform/minimax/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/mistral-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/mistral-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/platform/modal/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/en/platform/modal/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/modelscope/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/modelscope/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/moonshot-kimi/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
