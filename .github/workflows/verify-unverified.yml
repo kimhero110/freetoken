@@ -1,0 +1,145 @@
+name: 自动核验未核实平台免费额度
+
+on:
+  schedule:
+    # 每周一 UTC 18:30 = 北京时间周二 02:30，贴近既有费用窗口
+    # （update.yml 的 UTC 17:30 / 20:30 / 23:30）；延迟执行仍需重新检查费用策略
+    - cron: "30 18 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: freetoken-main-writer
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Mint GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: 检出仓库
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: 安装 Python 3.11
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: scripts/requirements.lock
+
+      - name: 安装 Python 依赖
+        run: pip install --require-hashes -r scripts/requirements.lock
+
+      - name: 列出本轮自动核验目标
+        run: python scripts/verify_unverified.py --list-only
+
+      - name: 抓取授权来源并分类（不改动正式数据）
+        id: verify
+        continue-on-error: true
+        env:
+          CHECK_PAID_ENABLED: ${{ vars.CHECK_PAID_ENABLED == 'true' && vars.CHECK_READINESS_CONFIRMED == 'true' }}
+          VERIFY_DIR: ${{ runner.temp }}/verify-run
+        run: |
+          mkdir -p "$VERIFY_DIR"
+          python scripts/verify_unverified.py \
+            --input-dir "$VERIFY_DIR" \
+            --output-dir "$VERIFY_DIR" \
+            --limit 20 \
+            --stale-days 45
+
+      - name: 调用大模型提取结构化信息 (持久化保护)
+        id: extract
+        if: ${{ steps.verify.outputs.extract_needed == 'true' }}
+        continue-on-error: true
+        env:
+          CHECK_PAID_ENABLED: ${{ vars.CHECK_PAID_ENABLED == 'true' && vars.CHECK_READINESS_CONFIRMED == 'true' }}
+          CHECK_MAX_CALLS: ${{ vars.CHECK_MAX_CALLS }}
+          CHECK_MAX_OUTPUT_TOKENS: ${{ vars.CHECK_MAX_OUTPUT_TOKENS }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          WITKIT_API_KEY: ${{ secrets.WITKIT_API_KEY }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+          MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
+          DASHSCOPE_API_KEY: ${{ secrets.DASHSCOPE_API_KEY }}
+          CUSTOM_LLM_KEY: ${{ secrets.CUSTOM_LLM_KEY }}
+          VERIFY_DIR: ${{ runner.temp }}/verify-run
+        run: python scripts/extract.py --input-dir "$VERIFY_DIR"
+
+      - name: 完成核验结论（finalize）
+        id: finalize
+        if: ${{ !cancelled() && (steps.extract.outcome == 'success' || steps.extract.outcome == 'failure') }}
+        continue-on-error: true
+        env:
+          CHECK_PAID_ENABLED: ${{ vars.CHECK_PAID_ENABLED == 'true' && vars.CHECK_READINESS_CONFIRMED == 'true' }}
+          VERIFY_DIR: ${{ runner.temp }}/verify-run
+        run: |
+          python scripts/verify_unverified.py --finalize \
+            --input-dir "$VERIFY_DIR" \
+            --output-dir "$VERIFY_DIR" \
+            --limit 20 \
+            --stale-days 45
+
+      - name: 发布新生成的候选
+        id: publish
+        if: ${{ !cancelled() && (steps.extract.outcome == 'success' || steps.extract.outcome == 'failure') }}
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: python -m scripts.publish_candidates --summary "$RUNNER_TEMP/publish-summary.json"
+
+      - name: 汇总真实运行结果
+        if: ${{ !cancelled() }}
+        env:
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+          EXTRACT_OUTCOME: ${{ steps.extract.outcome }}
+          FINALIZE_OUTCOME: ${{ steps.finalize.outcome }}
+          PUBLISH_OUTCOME: ${{ steps.publish.outcome }}
+          VERIFY_DIR: ${{ runner.temp }}/verify-run
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          work = Path(os.environ["VERIFY_DIR"])
+          lines = ["## Auto-verify unverified platforms", ""]
+          lines.append("| step | outcome |")
+          lines.append("| --- | --- |")
+          for step in ("verify", "extract", "finalize", "publish"):
+              lines.append(f"| {step} | {os.environ.get(step.upper() + '_OUTCOME', 'missing')} |")
+          summary_path = work / "verify-summary.json"
+          if summary_path.exists():
+              summary = json.loads(summary_path.read_text(encoding="utf-8"))
+              lines.append("")
+              lines.append(
+                  f"mode: `{summary['mode']}` · selected: **{summary['selected']}** · "
+                  f"has_free_tier: **{summary['counts']['has_free_tier']}** · "
+                  f"no_free_tier: **{summary['counts']['no_free_tier']}** · "
+                  f"unclear: **{summary['counts']['unclear']}**"
+              )
+              lines.append("")
+              lines.append("| platform | conclusion | reasons |")
+              lines.append("| --- | --- | --- |")
+              for platform in summary["platforms"]:
+                  reasons = "; ".join(platform["reasons"])
+                  lines.append(f"| {platform['slug']} | {platform['conclusion']} | {reasons} |")
+          else:
+              lines.append("")
+              lines.append("verify-summary.json 缺失：核验步骤未产出结果。")
+          output = os.environ.get("GITHUB_STEP_SUMMARY")
+          if output:
+              with open(output, "a", encoding="utf-8") as handle:
+                  handle.write("\n".join(lines) + "\n")
+          print("\n".join(lines))
+          PY
