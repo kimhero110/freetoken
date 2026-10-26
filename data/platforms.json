@@ -3611,7 +3611,7 @@
     },
     "verification": "腾讯云实名",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "大厂基座",
@@ -3671,9 +3671,12 @@
     "evidence": [
       {
         "url": "https://cloud.tencent.com/product/tclm",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26",
+        "source_hash": "f695e5f55e8df224a93a2401ad061ec9fc8669a76575df35fc0b4edeb3bebc48",
+        "captured_at": "2026-10-26T08:49:19.238505+00:00"
       }
-    ]
+    ],
+    "last_checked": "2026-10-26"
   },
   {
     "schema_version": 2,
