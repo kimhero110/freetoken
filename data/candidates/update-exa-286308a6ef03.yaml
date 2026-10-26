@@ -1,0 +1,34 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: exa
+name: Exa
+source_url: https://exa.ai
+source_hash: 286308a6ef03b27eef5c5ecbd8fe274b2d81ad888048decd82ef01a8c429cc06
+platform_hash: 076fa063bf5f851a4c9cb002076996d161288816f4d4293d144ab149f4e13a9b
+captured_at: '2026-10-26T22:49:16.886237+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 月度额度
+    amount: $10/月 + $10 入门
+    unit: USD
+    reset_period: 每月
+    details: 官方 Starter：每月 $10 credits 另加 onboarding bonus；无需支付方式。以 exa.ai/pricing
+      为准。
+    details_en: 'Exa Starter: $10 credits every month plus onboarding bonus; no payment
+      method required.'
+  intro: Exa：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Exa搜索API为AI智能体提供实时网页数据检索，支持快速精准搜索，适合构建智能应用，欢迎免费试用。
+verification_conclusion: no_free_tier
+verification_reasons:
+- candidate:update-exa-286308a6ef03
+- null_quota_without_free_hints

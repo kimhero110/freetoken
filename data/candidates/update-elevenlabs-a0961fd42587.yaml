@@ -1,0 +1,33 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: elevenlabs
+name: ElevenLabs
+source_url: https://elevenlabs.io/docs
+source_hash: a0961fd425873e1530cea4ce3ebe79a32f5c3b182f14d2a98efe78290c0866f7
+platform_hash: 3d5f089e0e53dcdb14e3d1357be22d1886191c5fa86ec3f0176ea53350109903
+captured_at: '2026-10-26T22:49:07.749913+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 月度额度
+    amount: 10000 credits/月
+    unit: Credits
+    reset_period: 每月
+    details: 官方 Free Plan：每月约 10,000 credits，可申请 API Key；以 elevenlabs.io 定价为准。
+    details_en: ElevenLabs Free plan includes about 10,000 credits per month with
+      API key access.
+  intro: ElevenLabs：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: ElevenLabs提供AI语音API，支持文本转语音、语音克隆与语音代理，具备低延迟、多语言及灵活计费模式。
+verification_conclusion: no_free_tier
+verification_reasons:
+- candidate:update-elevenlabs-a0961fd42587
+- null_quota_without_free_hints
