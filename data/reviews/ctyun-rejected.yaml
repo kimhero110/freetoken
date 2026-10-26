@@ -1,38 +1,37 @@
 candidate_type: new_platform
 status: pending_review
-platform_slug: perplexity
-score: 0
+platform_slug: ctyun
+score: 3
 proposed:
   schema_version: 2
-  slug: perplexity
-  name: Perplexity
-  name_en: Perplexity
-  category: 海外探索
-  intro: Perplexity：雷达捕获的候选源，免费额度与可用模型待人工核实。
-  intro_en: 'Perplexity: discovered by radar; free tier and models unverified.'
-  website: https://perplexity.ai
-  doc_url: https://perplexity.ai/docs
-  api_base_url: https://api.perplexity.ai/v1
+  slug: ctyun
+  name: 中国电信-天翼云,云网融合,安全可信,专享定制
+  name_en: Ctyun
+  category: 国内主流
+  intro: 中国电信-天翼云,云网融合,安全可信,专享定制：雷达捕获的候选源，免费额度与可用模型待人工核实。
+  intro_en: 'Ctyun: discovered by radar; free tier and models unverified.'
+  website: https://ctyun.cn
+  doc_url: https://ctyun.cn/docs
+  api_base_url: https://ctyun.cn/v1
   free_models: []
   free_quota:
     type: 待核实
     amount: 待核实
     unit: Tokens
     reset_period: 待核实
-    details: 雷达线索：页面匹配得分 0/11；https://api.perplexity.ai/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
+    details: 雷达线索：页面匹配得分 3/11。免费额度需人工核实。
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null
   tags:
   - 雷达新源
   - 待人工复核
-  - OpenAI 兼容
   gotchas:
   - 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
   gotchas_en:
   - Discovered by radar. Manual verification required.
   registration:
-    url: https://perplexity.ai
+    url: https://ctyun.cn
   requirements:
     phone: unknown
     card: unknown
@@ -50,7 +49,9 @@ proposed:
       openclaw: unknown
       cherry_studio: unknown
   evidence:
-  - url: https://perplexity.ai
+  - url: https://ctyun.cn
     checked_at: '2026-09-27'
-  - url: https://api.perplexity.ai/v1/models
-    checked_at: '2026-09-27'
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T13:44:33.135378+00:00'
+  reviewer: kimhero110
