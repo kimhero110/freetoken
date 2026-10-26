@@ -30,3 +30,8 @@ verification_conclusion: no_free_tier
 verification_reasons:
 - candidate:update-tencent-hunyuan-f695e5f55e8d
 - null_quota_without_free_hints
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T07:52:23.887969+00:00'
+  reviewer: kimhero110
+  annotation_via: grokbot
