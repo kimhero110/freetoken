@@ -2361,6 +2361,72 @@
   },
   {
     "schema_version": 2,
+    "slug": "modal",
+    "name": "Modal",
+    "name_en": "Modal",
+    "category": "海外探索",
+    "intro": "Modal：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。",
+    "intro_en": "Modal: developer API platform; see free_quota (radar intake, details to verify).",
+    "website": "https://modal.com",
+    "doc_url": "https://modal.com/docs",
+    "api_base_url": "https://modal.com/v1",
+    "free_models": [],
+    "free_quota": {
+      "type": "月度额度",
+      "amount": "$30/月",
+      "unit": "USD",
+      "reset_period": "每月",
+      "details": "官方称 Starter 工作区每月有免费算力配额（约 $30/月量级）；以 Modal Pricing / docs 为准，待人工复核精确条款。",
+      "details_en": "Modal documents a free monthly compute allotment for workspaces (~$30/mo class); confirm exact terms on Modal pricing."
+    },
+    "verification": "邮箱/GitHub",
+    "status": "unverified",
+    "last_verified": null,
+    "tags": [
+      "雷达新源",
+      "待人工复核"
+    ],
+    "gotchas": [
+      "由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。"
+    ],
+    "gotchas_en": [
+      "Discovered by radar. Manual verification required."
+    ],
+    "registration": {
+      "url": "https://modal.com"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://modal.com",
+        "checked_at": "2026-10-01"
+      },
+      {
+        "url": "https://modal.com/pricing",
+        "checked_at": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
     "slug": "modelscope",
     "name": "魔搭社区 (ModelScope)",
     "name_en": "ModelScope (Alibaba)",

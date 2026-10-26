@@ -56,3 +56,7 @@ proposed:
     checked_at: '2026-10-01'
   - url: https://modal.com/pricing
     checked_at: '2026-10-01'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T13:50:38.924552+00:00'
+  reviewer: kimhero110
