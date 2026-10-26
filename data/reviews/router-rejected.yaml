@@ -54,3 +54,7 @@ proposed:
     checked_at: '2026-10-26'
   - url: https://router.bynara.id/v1/models
     checked_at: '2026-10-26'
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T14:15:22.069585+00:00'
+  reviewer: kimhero110
