@@ -341,6 +341,7 @@ def main() -> int:
         limit = int(os.environ.get("CHECK_MAX_CALLS") or "0")
         max_tokens = int(os.environ.get("CHECK_MAX_OUTPUT_TOKENS") or "0")
         provider_checked = False
+        budget_exhausted = False
         for item in changed:
             source = digest([item["platform"], item["url"]])
             observation = {"source": source, "status": "pending"}
@@ -414,6 +415,13 @@ def main() -> int:
                 if dry:
                     observation["status"] = "dry_run"
                     continue
+                # paid_result persists the number of claims made by this logical
+                # run.  Once it refuses a claim, every later source would receive
+                # the same answer.  Stop spending and leave the approved hash
+                # untouched so fetch_sources queues these sources again next run.
+                if budget_exhausted:
+                    observation.update(status="skipped_budget", error="RUN_BUDGET_EXHAUSTED")
+                    continue
                 if provider is None or not 1 <= limit <= 100 or not 1 <= max_tokens <= 4096:
                     raise StateError('PROVIDER_OR_BUDGET_NOT_CONFIGURED')
                 if not provider_checked:
@@ -442,6 +450,10 @@ def main() -> int:
                                          validate=validate_extracted, limit=limit,
                                          history_keys=(digest([slug, url, source_hash[:12]]),), source_group=source)
                 except StateError as exc:
+                    if str(exc) == "RUN_BUDGET_EXHAUSTED":
+                        budget_exhausted = True
+                        observation.update(status="skipped_budget", error=str(exc))
+                        continue
                     # The call key is the prompt, and the prompt is only the first
                     # 8000 characters. A newer page hash with that same prefix still
                     # finds the old result_saved. Past 48 hours paid_result refuses
@@ -461,8 +473,12 @@ def main() -> int:
         summary["status"] = "dry_run" if dry else "completed"
         if any(s["status"] == "failed" for s in summary["sources"]):
             summary["status"] = "failed"
-        elif any(s["status"] == "deferred" for s in summary["sources"]):
+        elif any(s["status"] in {"deferred", "skipped_budget"} for s in summary["sources"]):
             summary["status"] = "deferred"
+        summary["counts"] = {
+            status: sum(item["status"] == status for item in summary["sources"])
+            for status in sorted({item["status"] for item in summary["sources"]})
+        }
     except Exception as exc:
         summary.update(status="failed", error=str(exc) if isinstance(exc, StateError) else "CHECK_FAILED")
     summary["completed_at"] = utcnow().isoformat()
@@ -475,7 +491,9 @@ def main() -> int:
         except Exception:
             print("STATE_SUMMARY_SAVE_FAILED")
             return 1
-    return 1 if summary["status"] in {"failed", "deferred"} else 0
+    # A deferral is bounded flow control, not a failed extraction. Because the
+    # reviewed baseline is not advanced, every deferred source is rediscovered.
+    return 1 if summary["status"] == "failed" else 0
 
 
 if __name__ == "__main__":

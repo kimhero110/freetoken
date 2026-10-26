@@ -25,6 +25,9 @@ class MemoryState:
         self.state = state
         return result
 
+    def read(self):
+        return 'memory', copy.deepcopy(self.state)
+
 
 class PaidCallTests(unittest.TestCase):
     def setUp(self):
@@ -216,6 +219,57 @@ class ExtractionEntryTests(unittest.TestCase):
             with patch.object(extract, 'execute_llm_call') as request:
                 self.assertEqual(extract.main(), 0)
                 request.assert_not_called()
+
+    def test_budget_exhaustion_defers_remaining_sources_and_exits_zero(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            input_dir = root / 'run'
+            platforms = root / 'data' / 'platforms'
+            candidates = root / 'data' / 'candidates'
+            platforms.mkdir(parents=True)
+            candidates.mkdir(parents=True)
+            (root / 'data' / 'reviews').mkdir()
+            changed = []
+            for index in range(3):
+                slug = f'demo-{index}'
+                url = f'https://example.com/{index}'
+                text = f'page {index}'
+                source_hash = extract.hashlib.sha256(text.encode()).hexdigest()
+                (platforms / f'{slug}.yaml').write_text(yaml.safe_dump({
+                    'name': slug, 'source_urls': [url], 'intro': 'old',
+                    'free_quota': None,
+                }))
+                changed.append({'platform': slug, 'url': url,
+                                'hash': source_hash, 'text': text})
+            input_dir.mkdir()
+            (input_dir / 'changed.json').write_text(json.dumps(changed))
+            provider = extract.Provider('test', 'Test', 'https://example.com', 'model', 'key')
+            proposed = {'free_quota': {'amount': 1, 'unit': '次/天',
+                                       'type': '每日', 'conditions': []},
+                        'intro': 'new'}
+            store = MemoryState()
+            paid = Mock(side_effect=[proposed, StateError('RUN_BUDGET_EXHAUSTED')])
+            env = {'CHECK_PAID_ENABLED': 'true', 'CHECK_MAX_CALLS': '1',
+                   'CHECK_MAX_OUTPUT_TOKENS': '128', 'GITHUB_RUN_ID': '42',
+                   'GITHUB_RUN_ATTEMPT': '1'}
+            with patch.object(sys, 'argv', ['extract', '--input-dir', str(input_dir)]), \
+                 patch.dict(os.environ, env, clear=False), \
+                 patch.object(extract, 'ROOT', root), \
+                 patch.object(extract, 'PLATFORMS_DIR', platforms), \
+                 patch.object(extract, 'CANDIDATES_DIR', candidates), \
+                 patch.object(extract, 'load_config', return_value={'active': 'test'}), \
+                 patch.object(extract, 'resolve_providers', return_value={'test': provider}), \
+                 patch.object(extract, 'preflight', return_value={'provider': 'test'}), \
+                 patch('scripts.check_state.GitState', return_value=store), \
+                 patch('scripts.check_runner.paid_result', paid):
+                # GitState is imported inside main, so patch its defining module.
+                self.assertEqual(extract.main(), 0)
+            summary = json.loads((input_dir / 'extract-summary.json').read_text())
+            self.assertEqual(summary['status'], 'deferred')
+            self.assertEqual([item['status'] for item in summary['sources']],
+                             ['candidate_ready', 'skipped_budget', 'skipped_budget'])
+            self.assertEqual(summary['counts']['skipped_budget'], 2)
+            self.assertEqual(paid.call_count, 2)
 
 
 if __name__ == '__main__':
