@@ -57,3 +57,9 @@ proposed:
     checked_at: '2026-10-26'
   - url: https://thesmartoken.com/api/v1/models
     checked_at: '2026-10-26'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T14:47:53.011865+00:00'
+  reviewer: kimhero110
+  annotation_via: agent
+  annotation_id: growth-batch2
