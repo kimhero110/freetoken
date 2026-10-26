@@ -117,5 +117,39 @@ class ReviewCandidateAnnotationContractTests(unittest.TestCase):
             self.assertEqual(workflow["run-name"], title)
 
 
+class VerifyUnverifiedWorkflowContractTests(unittest.TestCase):
+    def setUp(self):
+        self.workflow = (WORKFLOWS / "verify-unverified.yml").read_text(encoding="utf-8")
+
+    def test_dispatch_and_weekly_cost_window_schedule(self):
+        self.assertIn("workflow_dispatch:", self.workflow)
+        self.assertIn('cron: "30 18 * * 1"', self.workflow)
+        self.assertIn("if: github.ref == 'refs/heads/main'", self.workflow)
+        self.assertEqual(self.workflow.count("workflow_dispatch:"), 1)
+
+    def test_never_touches_canonical_platforms_or_approves(self):
+        self.assertNotIn("git add data/platforms", self.workflow)
+        self.assertNotIn("--approve", self.workflow)
+        self.assertNotIn("review_candidates --approve", self.workflow)
+        self.assertNotIn("last_verified", self.workflow)
+
+    def test_app_token_concurrency_and_hash_locked_deps(self):
+        self.assertIn(
+            "actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1",
+            self.workflow,
+        )
+        self.assertIn("token: ${{ steps.app-token.outputs.token }}", self.workflow)
+        self.assertIn("group: freetoken-main-writer", self.workflow)
+        self.assertIn("cancel-in-progress: false", self.workflow)
+        self.assertIn("pip install --require-hashes -r scripts/requirements.lock", self.workflow)
+
+    def test_publishes_candidates_but_never_deploys(self):
+        self.assertIn("python -m scripts.publish_candidates", self.workflow)
+        self.assertIn("python scripts/verify_unverified.py --list-only", self.workflow)
+        self.assertIn("--finalize", self.workflow)
+        self.assertNotIn("npm run build", self.workflow)
+        self.assertNotIn("git push origin main", self.workflow)
+
+
 if __name__ == "__main__":
     unittest.main()

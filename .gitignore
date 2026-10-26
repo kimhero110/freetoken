@@ -27,6 +27,7 @@ studio/data/
 
 .cache/changed.json
 .cache/check-run/
+.cache/verify-run/
 
 reliability-*.log
 

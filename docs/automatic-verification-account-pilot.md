@@ -67,3 +67,18 @@
 ## 验收
 
 先用模拟服务商验证注册幂等、暂停恢复、人工任务过期、消息失败、账号封禁、余额未知、API 失败与免费额度耗尽。再在单一白名单服务商进行真实联调；成功后逐站扩展，不做通用批量自动注册。
+
+## 公共来源自动核验（非账号试点）
+
+与本试点并行但独立：`.github/workflows/verify-unverified.yml` + `scripts/verify_unverified.py`
+只针对公共授权来源做免费额度核验，不注册账号、不提交资料。
+
+- 目标选择：正式条目标记 `unverified`、免费额度 `待核实`、带 `待人工复核`/`雷达新源` 标签，
+  或从未有过 `last_verified` 记录；候选规则见 `needs_verification`。
+- 抓取复用 `fetch_sources.fetch_text`；结论分类 `has_free_tier | no_free_tier | unclear`，
+  全部结论写入 `verify-summary.json`，不改动 `data/platforms/*.yaml`，
+  `last_verified` 仍只由人工审批 `review_candidates.py` 盖章。
+- `unclear` 只出报告不出候选（避免空额度候选一经批准即盖章“无免费额度”）；
+  `has_free_tier`/`no_free_tier` 依赖已存在的待审候选或经 `extract.py` 付费提取后生成。
+- 付费提取沿用 `extract.py` 的强制 changed.json 入口与既有预算/费用窗口保护，
+  账号适配器接入前公共来源路径即可独立运行。
