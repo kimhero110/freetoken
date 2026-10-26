@@ -171,11 +171,48 @@ def merge_conclusions(source_conclusions: list[str]) -> str:
     return "unclear"
 
 
+def is_renew_keep_current(candidate: dict) -> bool:
+    """Whether this pending candidate is a rejected-null-wipe renewal.
+
+    extract.write_keep_current_candidate stamps both markers; accept either so
+    finalize still recognizes a hand-edited or partially rewritten renewal.
+    """
+    if not isinstance(candidate, dict):
+        return False
+    if candidate.get("verification_conclusion") == "renew_keep_current":
+        return True
+    extractor = candidate.get("extractor")
+    return isinstance(extractor, dict) and extractor.get("type") == "reviewed_rejection_renewal"
+
+
+def renew_keep_current_payload(proposed: object) -> dict | None:
+    """Accept canonical free_quota/intro shapes that validate_extracted rejects.
+
+    Renewals copy live platform YAML, which may use string amounts such as
+    ``1500 万``. Those are intentional keep-current payloads, not LLM output.
+    """
+    if not isinstance(proposed, dict):
+        return None
+    quota = proposed.get("free_quota")
+    intro = proposed.get("intro")
+    if not isinstance(quota, dict) or not isinstance(intro, str) or not intro.strip():
+        return None
+    amount = quota.get("amount")
+    if amount is None or amount == "无免费额度":
+        return None
+    return {
+        "free_quota": dict(quota),
+        "intro": intro.strip(),
+    }
+
+
 def load_pending_extraction(candidates_dir, slug: str, url: str):
     """Latest pending platform_update candidate for this slug+URL, validated.
 
-    Returns (path, raw_candidate, validated_extraction) or None. Candidates
-    whose proposed payload fails validate_extracted cannot be classified.
+    Returns (path, raw_candidate, validated_extraction) or None. Ordinary
+    candidates whose proposed payload fails validate_extracted cannot be
+    classified. ``renew_keep_current`` renewals are accepted without the
+    numeric LLM schema so string quotas like ``1500 万`` still finalize.
     """
     best = None
     for path in sorted(Path(candidates_dir).glob(f"update-{slug}-*.yaml")):
@@ -191,7 +228,10 @@ def load_pending_extraction(candidates_dir, slug: str, url: str):
             continue
         if data.get("status") != "pending_review":
             continue
-        validated = validate_extracted(data.get("proposed"))
+        if is_renew_keep_current(data):
+            validated = renew_keep_current_payload(data.get("proposed"))
+        else:
+            validated = validate_extracted(data.get("proposed"))
         if validated is None:
             continue
         if best is None or data.get("captured_at", "") >= best[1].get("captured_at", ""):
@@ -223,27 +263,38 @@ def _source_record(url, fetched, text, candidates_dir, slug, extract_allowed, an
     if pending is not None:
         candidate_path, _raw, validated = pending
         candidate_stem = candidate_path.stem
-        conclusion = classify_verification(text, validated)
         reasons.append(f"candidate:{candidate_stem}")
-        if not fetched:
-            reasons.append("fetch_failed")
-        quota = validated["free_quota"]
-        if conclusion == "has_free_tier":
-            reasons.append("extracted_positive_quota")
-        elif conclusion == "no_free_tier":
-            reasons.append("null_quota_without_free_hints")
-        elif (
-            quota.get("amount") is None
-            and quota.get("unit") is None
-            and quota.get("type") is None
-            and fetched
-            and FREE_TIER_HINT_RE.search(text.casefold())
-        ):
-            reasons.append("free_tier_hints_present")
-        elif conclusion == "unclear" and fetched:
-            reasons.append("extraction_inconclusive")
-        if annotate:
-            annotate_candidate(candidate_path, conclusion, reasons)
+        if is_renew_keep_current(_raw):
+            # Preserve a real free tier after a rejected null wipe. Summary uses
+            # has_free_tier so counts stay in the existing contract; the candidate
+            # file keeps renew_keep_current so review still sees the renewal.
+            conclusion = "has_free_tier"
+            reasons.append("renew_keep_current")
+            if not fetched:
+                reasons.append("fetch_failed")
+            if annotate:
+                annotate_candidate(candidate_path, "renew_keep_current", reasons)
+        else:
+            conclusion = classify_verification(text, validated)
+            if not fetched:
+                reasons.append("fetch_failed")
+            quota = validated["free_quota"]
+            if conclusion == "has_free_tier":
+                reasons.append("extracted_positive_quota")
+            elif conclusion == "no_free_tier":
+                reasons.append("null_quota_without_free_hints")
+            elif (
+                quota.get("amount") is None
+                and quota.get("unit") is None
+                and quota.get("type") is None
+                and fetched
+                and FREE_TIER_HINT_RE.search(text.casefold())
+            ):
+                reasons.append("free_tier_hints_present")
+            elif conclusion == "unclear" and fetched:
+                reasons.append("extraction_inconclusive")
+            if annotate:
+                annotate_candidate(candidate_path, conclusion, reasons)
     elif not fetched:
         conclusion = "unclear"
         reasons.append("fetch_failed")

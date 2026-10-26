@@ -11,6 +11,8 @@ from unittest.mock import patch
 
 from scripts.verify_unverified import (
     classify_verification,
+    is_renew_keep_current,
+    load_pending_extraction,
     main,
     needs_verification,
     select_verification_targets,
@@ -304,6 +306,78 @@ class CliTests(unittest.TestCase):
         summary = self.summary()
         self.assertEqual(summary["mode"], "collect_skip_extract")
         self.assertEqual(summary["counts"]["unclear"], 1)
+
+
+    def test_renew_keep_current_string_quota_finalizes_as_has_free_tier(self):
+        """String amounts like 1500 万 fail validate_extracted but must finalize."""
+        candidate = {
+            "candidate_type": "platform_update",
+            "status": "pending_review",
+            "platform_slug": "demo",
+            "source_url": "https://example.com/docs",
+            "source_hash": hashlib.sha256(b"renew").hexdigest(),
+            "captured_at": "2026-10-26T02:00:00+00:00",
+            "verification_conclusion": "renew_keep_current",
+            "extractor": {"type": "reviewed_rejection_renewal"},
+            "proposed": {
+                "free_quota": {
+                    "amount": "1500 万",
+                    "unit": "Tokens",
+                    "type": "永久",
+                    "details": "新用户注册赠送",
+                },
+                "intro": "平台提供真实免费额度。",
+            },
+        }
+        cand_path = self.candidates / "update-demo-renewkeep001.yaml"
+        cand_path.write_text(yaml.safe_dump(candidate, allow_unicode=True), encoding="utf-8")
+
+        loaded = load_pending_extraction(self.candidates, "demo", "https://example.com/docs")
+        self.assertIsNotNone(loaded)
+        self.assertTrue(is_renew_keep_current(loaded[1]))
+
+        text = "official pricing page"
+        with patch("scripts.verify_unverified.fetch_text", return_value=text), \
+                patch.dict("os.environ", {}, clear=True):
+            code, _ = self.run_cli(self.base_args())
+        self.assertEqual(code, 0)
+        summary = self.summary()
+        self.assertEqual(summary["counts"]["has_free_tier"], 1)
+        self.assertEqual(summary["counts"]["unclear"], 0)
+        record = summary["platforms"][0]
+        self.assertEqual(record["conclusion"], "has_free_tier")
+        self.assertIn("renew_keep_current", record["reasons"])
+        self.assertNotIn("needs_extract", record["reasons"])
+        annotated = yaml.safe_load(cand_path.read_text(encoding="utf-8"))
+        self.assertEqual(annotated["verification_conclusion"], "renew_keep_current")
+        self.assertIn("renew_keep_current", annotated["verification_reasons"])
+
+    def test_renew_keep_current_via_extractor_type_alone(self):
+        candidate = {
+            "candidate_type": "platform_update",
+            "status": "pending_review",
+            "platform_slug": "demo",
+            "source_url": "https://example.com/docs",
+            "source_hash": hashlib.sha256(b"renew-type").hexdigest(),
+            "captured_at": "2026-10-26T03:00:00+00:00",
+            "extractor": {"type": "reviewed_rejection_renewal"},
+            "proposed": {
+                "free_quota": {"amount": "免费试用", "unit": None, "type": "限时"},
+                "intro": "保留现有额度续期。",
+            },
+        }
+        (self.candidates / "update-demo-renewtype002.yaml").write_text(
+            yaml.safe_dump(candidate, allow_unicode=True), encoding="utf-8"
+        )
+        with patch("scripts.verify_unverified.fetch_text", return_value="docs"), \
+                patch.dict("os.environ", {}, clear=True):
+            code, _ = self.run_cli(self.base_args())
+        self.assertEqual(code, 0)
+        summary = self.summary()
+        self.assertEqual(summary["counts"]["has_free_tier"], 1)
+        self.assertIn("renew_keep_current", summary["platforms"][0]["reasons"])
+        self.assertNotIn("needs_extract", summary["platforms"][0]["reasons"])
+
 
 
 if __name__ == "__main__":
