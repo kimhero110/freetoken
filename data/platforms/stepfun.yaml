@@ -7,7 +7,7 @@ intro: 国内领先自研千亿大模型开放平台，新用户注册赠送 15 
 intro_en: Leading Chinese Foundation Model provider. 15 RMB free voucher on registration
   for Step-2 series models.
 website: https://platform.stepfun.com/
-doc_url: https://platform.stepfun.com/docs/llm/text
+doc_url: https://platform.stepfun.com/docs/zh/welcome
 api_base_url: https://api.stepfun.com/v1
 free_models:
 - step-2-16k
@@ -69,5 +69,5 @@ capabilities:
     openclaw: unknown
     cherry_studio: unknown
 evidence:
-- url: https://platform.stepfun.com/docs/llm/text
+- url: https://platform.stepfun.com/docs/zh/welcome
   checked_at: '2026-09-02'

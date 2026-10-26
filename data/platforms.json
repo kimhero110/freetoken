@@ -95,7 +95,7 @@
     "intro": "阿里云官方大模型服务平台，聚合通义千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。",
     "intro_en": "Alibaba Cloud enterprise platform offering Qwen 2.5, Qwen-Max, and Wanx multimodal models with free credits.",
     "website": "https://bailian.console.aliyun.com/",
-    "doc_url": "https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio",
+    "doc_url": "https://help.aliyun.com/zh/model-studio/new-free-quota",
     "api_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
     "free_models": [
       "qwen-turbo",
@@ -171,7 +171,7 @@
     },
     "evidence": [
       {
-        "url": "https://help.aliyun.com/zh/model-studio/developer-reference/what-is-model-studio",
+        "url": "https://help.aliyun.com/zh/model-studio/new-free-quota",
         "checked_at": "2026-09-02"
       }
     ]
@@ -185,7 +185,7 @@
     "intro": "Overview | Atlas Cloud Docs：雷达捕获的候选源，免费额度与可用模型待人工核实。",
     "intro_en": "Atlascloud: discovered by radar; free tier and models unverified.",
     "website": "https://atlascloud.ai",
-    "doc_url": "https://atlascloud.ai/docs",
+    "doc_url": "https://www.atlascloud.ai/docs",
     "api_base_url": "https://api.atlascloud.ai/v1",
     "free_models": [],
     "free_quota": {
@@ -233,11 +233,7 @@
     },
     "evidence": [
       {
-        "url": "https://atlascloud.ai",
-        "checked_at": "2026-09-23"
-      },
-      {
-        "url": "https://atlascloud.ai/docs",
+        "url": "https://www.atlascloud.ai/docs",
         "checked_at": "2026-09-23"
       },
       {
@@ -1723,8 +1719,8 @@
     "category": "海外主流",
     "intro": "高性能去中心化 GPU 算力网络，注册即送 10 美元体验金，支持 DeepSeek R1 满血版 671B 极速推理！",
     "intro_en": "Decentralized GPU cloud. $10 free developer credits for DeepSeek R1 671B full-parameter inference.",
-    "website": "https://hyperbolic.xyz/",
-    "doc_url": "https://docs.hyperbolic.xyz/",
+    "website": "https://www.hyperbolic.ai/",
+    "doc_url": "https://www.hyperbolic.ai/docs/overview/overview",
     "api_base_url": "https://api.hyperbolic.xyz/v1",
     "free_models": [
       "deepseek-ai/DeepSeek-R1",
@@ -1753,7 +1749,7 @@
       "Credits valid for 30 days."
     ],
     "registration": {
-      "url": "https://hyperbolic.xyz/"
+      "url": "https://www.hyperbolic.ai/"
     },
     "requirements": {
       "phone": "unknown",
@@ -1797,7 +1793,7 @@
     },
     "evidence": [
       {
-        "url": "https://docs.hyperbolic.xyz/",
+        "url": "https://www.hyperbolic.ai/docs/overview/overview",
         "checked_at": "2026-09-02"
       }
     ]
@@ -2890,7 +2886,7 @@
     "intro": "完全开源、零门槛、免注册、免 API Key 的多模态生图与大模型对话服务，直接 GET/POST 即可调用！",
     "intro_en": "Completely free, open-source, keyless multimodal generation API for images and text.",
     "website": "https://pollinations.ai/",
-    "doc_url": "https://pollinations.github.io/docs/",
+    "doc_url": "https://gen.pollinations.ai/docs",
     "api_base_url": "https://text.pollinations.ai/openai",
     "free_models": [
       "openai",
@@ -2962,7 +2958,7 @@
     },
     "evidence": [
       {
-        "url": "https://pollinations.github.io/docs/",
+        "url": "https://gen.pollinations.ai/llms.txt",
         "checked_at": "2026-09-02"
       }
     ]
@@ -3394,7 +3390,7 @@
     "intro": "国内领先自研千亿大模型开放平台，新用户注册赠送 15 元代金券，支持 Step-2/Step-1 系列模型，中文语义理解强劲且无过度拦截。",
     "intro_en": "Leading Chinese Foundation Model provider. 15 RMB free voucher on registration for Step-2 series models.",
     "website": "https://platform.stepfun.com/",
-    "doc_url": "https://platform.stepfun.com/docs/llm/text",
+    "doc_url": "https://platform.stepfun.com/docs/zh/welcome",
     "api_base_url": "https://api.stepfun.com/v1",
     "free_models": [
       "step-2-16k",
@@ -3472,7 +3468,7 @@
     },
     "evidence": [
       {
-        "url": "https://platform.stepfun.com/docs/llm/text",
+        "url": "https://platform.stepfun.com/docs/zh/welcome",
         "checked_at": "2026-09-02"
       }
     ]
@@ -3576,8 +3572,8 @@
     "category": "大厂云服务",
     "intro": "腾讯官方大模型开放平台，新注册用户赠送 10 万-100 万 Tokens 免费体验金，多模态与企微生态深度整合。",
     "intro_en": "Tencent's foundation model service. Free credits for new accounts with strong multi-turn WeChat reasoning.",
-    "website": "https://cloud.tencent.com/product/hunyuan",
-    "doc_url": "https://cloud.tencent.com/document/product/1729",
+    "website": "https://cloud.tencent.com/product/tclm",
+    "doc_url": "https://cloud.tencent.com/product/tclm",
     "api_base_url": "https://api.hunyuan.cloud.tencent.com/v1",
     "free_models": [
       "hunyuan-standard",
@@ -3608,7 +3604,7 @@
       "Switches to post-paid after promotional package expires."
     ],
     "registration": {
-      "url": "https://cloud.tencent.com/product/hunyuan"
+      "url": "https://cloud.tencent.com/product/tclm"
     },
     "requirements": {
       "phone": "unknown",
@@ -3653,7 +3649,7 @@
     },
     "evidence": [
       {
-        "url": "https://cloud.tencent.com/document/product/1729",
+        "url": "https://cloud.tencent.com/product/tclm",
         "checked_at": "2026-09-02"
       }
     ]
@@ -3756,7 +3752,7 @@
     "intro": "基于 H200 与华为昇腾国产算力集群的极速大模型平台，注册送 200万-500万 Tokens，支持 1024K 超长上下文！",
     "intro_en": "High-throughput cloud powered by H200 and Ascend clusters. 2M-5M tokens on sign-up with 1024K context.",
     "website": "https://www.tokenpony.cn/",
-    "doc_url": "https://www.tokenpony.cn/docs",
+    "doc_url": "https://docs.tokenpony.cn/",
     "api_base_url": "https://api.tokenpony.cn/v1",
     "free_models": [
       "deepseek-r1",
@@ -3833,7 +3829,7 @@
     },
     "evidence": [
       {
-        "url": "https://www.tokenpony.cn/docs",
+        "url": "https://docs.tokenpony.cn/README.md",
         "checked_at": "2026-09-02"
       }
     ]
@@ -3847,7 +3843,7 @@
     "intro": "字节跳动旗下大模型服务平台，推出「千亿协同计划」，每天免费提供 200 万 Tokens（折合 6000 万/月）！",
     "intro_en": "ByteDance cloud platform. 2,000,000 free tokens daily (60M/month) for Doubao and DeepSeek via Ark program.",
     "website": "https://www.volcengine.com/product/ark",
-    "doc_url": "https://www.volcengine.com/docs/82379",
+    "doc_url": "https://www.volcengine.com/activity/ark",
     "api_base_url": "https://ark.cn-beijing.volces.com/api/v3",
     "free_models": [
       "doubao-pro-32k",
@@ -3923,7 +3919,7 @@
     },
     "evidence": [
       {
-        "url": "https://www.volcengine.com/docs/82379",
+        "url": "https://www.volcengine.com/activity/ark",
         "checked_at": "2026-09-02"
       }
     ]

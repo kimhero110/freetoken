@@ -7,7 +7,7 @@ intro: 基于 H200 与华为昇腾国产算力集群的极速大模型平台，�
 intro_en: High-throughput cloud powered by H200 and Ascend clusters. 2M-5M tokens
   on sign-up with 1024K context.
 website: https://www.tokenpony.cn/
-doc_url: https://www.tokenpony.cn/docs
+doc_url: https://docs.tokenpony.cn/
 api_base_url: https://api.tokenpony.cn/v1
 free_models:
 - deepseek-r1
@@ -68,5 +68,5 @@ capabilities:
     openclaw: unknown
     cherry_studio: unknown
 evidence:
-- url: https://www.tokenpony.cn/docs
+- url: https://docs.tokenpony.cn/README.md
   checked_at: '2026-09-02'
