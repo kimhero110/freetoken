@@ -3918,6 +3918,68 @@
   },
   {
     "schema_version": 2,
+    "slug": "ppinfra",
+    "name": "PPIO 派欧云 (ppinfra)",
+    "name_en": "PPIO / ppinfra",
+    "category": "国内主流",
+    "intro": "PPIO 派欧云：国内分布式算力与模型 API，免费额度见 free_quota（雷达入库，细节待复核）。",
+    "intro_en": "PPIO (ppinfra): China distributed compute and model APIs; see free_quota (radar intake).",
+    "website": "https://ppinfra.com",
+    "doc_url": "https://ppio.com/docs",
+    "api_base_url": "https://api.ppio.com/openai",
+    "free_models": [],
+    "free_quota": {
+      "type": "一次性额度",
+      "amount": "约 ¥5 注册代金券",
+      "unit": "CNY",
+      "reset_period": "一次性",
+      "details": "公开注册页宣传新用户约 ¥5 免费额度（量级约数百万 DeepSeek tokens）；另有个别模型标「免费」。以 ppinfra.com / ppio.com 为准，待复核。",
+      "details_en": "PPIO marketing: ~¥5 signup voucher for new users; some models tagged free — verify on ppinfra/ppio."
+    },
+    "verification": "邮箱/GitHub",
+    "status": "unverified",
+    "last_verified": null,
+    "tags": [
+      "雷达新源",
+      "待人工复核"
+    ],
+    "gotchas": [
+      "由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。"
+    ],
+    "gotchas_en": [
+      "Discovered by radar. Manual verification required."
+    ],
+    "registration": {
+      "url": "https://ppinfra.com"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://ppinfra.com",
+        "checked_at": "2026-09-27"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
     "slug": "requesty",
     "name": "Requesty: AI Gateway & LLM Router for 600+ Models",
     "name_en": "Requesty",
