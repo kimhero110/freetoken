@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: baichuan-ai
+name: 百川智能开放平台
+source_url: https://platform.baichuan-ai.com/docs/api
+source_hash: cfadea662be1d30b0f190e6b2b3780776985718a7352730d103de7ea3a76bba9
+platform_hash: be459089403efdc4f62e2b4ffd8dcad6b9dba102894a0eff7ff79f5adfb6b3d1
+captured_at: '2026-10-26T21:46:20.418938+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 1000 万
+    unit: Tokens
+    reset_period: 一次性
+    details: 新用户注册实名认证即送 1000 万 Tokens 免费额度，支持 Baichuan4 与 3-Turbo 模型。
+    details_en: 10,000,000 free tokens for Baichuan4 upon registration.
+  intro: 王小川创立的百川智能大模型，注册即送千万 Tokens 体验额度，擅长中文语义理解与医疗行业知识。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 百川大模型提供M3Plus API免费使用，可申请加入海纳百川计划，快速体验AI能力。
+supersedes: update-baichuan-ai-cfadea662be1

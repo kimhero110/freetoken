@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: assemblyai
+name: AssemblyAI
+source_url: https://assemblyai.com/pricing
+source_hash: 4a62ca7c6795b2ff719a56ba405397fd8e6e3cad287887aec04e79982469c951
+platform_hash: 184fad815835d266b623c52410eac10f33625a37ea01ac82a2682366d5e149bb
+captured_at: '2026-10-26T21:46:19.625954+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: $50
+    unit: USD
+    reset_period: 一次性
+    details: 官方定价页：注册赠送 $50 免费额度，无需绑卡；用尽后需升级。以 assemblyai.com/pricing 为准。
+    details_en: 'AssemblyAI pricing: $50 free credits on signup, no card required.'
+  intro: AssemblyAI：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: AssemblyAI提供语音转文本API，支持免费试用，按量付费，无需承诺，助您快速构建语音AI应用。
