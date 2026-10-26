@@ -54,3 +54,9 @@ proposed:
   evidence:
   - url: https://context.dev
     checked_at: '2026-10-26'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T14:36:59.000228+00:00'
+  reviewer: kimhero110
+  annotation_via: agent
+  annotation_id: growth-batch2
