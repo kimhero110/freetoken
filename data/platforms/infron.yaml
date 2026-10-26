@@ -1,0 +1,57 @@
+schema_version: 2
+slug: infron
+name: Infron
+name_en: Infron
+category: 海外探索
+intro: Infron：多模型推理网关，含 :free 免费模型；免费额度见 free_quota（雷达入库，细节待复核）。
+intro_en: 'Infron: multi-model inference gateway with :free models; see free_quota
+  (radar intake).'
+website: https://infron.ai
+doc_url: https://infron.ai/docs
+api_base_url: https://api.infron.ai/v1
+free_models: []
+free_quota:
+  type: 日额度
+  amount: :free 模型约 1000 req/日
+  unit: Requests
+  reset_period: 每日
+  details: 官方 Free Models 文档：带 :free 后缀模型按 $0 计费；标准免费档约需账户余额 ≥$5，合计约 1000 req/日（UTC
+    重置）。以 infron.ai/docs 为准。
+  details_en: Infron :free models are $0; standard free tier ~1000 req/day and may
+    require ≥$5 balance.
+verification: 邮箱/GitHub
+status: unverified
+last_verified: null
+tags:
+- 雷达新源
+- 待人工复核
+- OpenAI 兼容
+gotchas:
+- 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+gotchas_en:
+- Discovered by radar. Manual verification required.
+registration:
+  url: https://infron.ai
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations: []
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://infron.ai
+  checked_at: '2026-10-26'
+- url: https://infron.ai/docs
+  checked_at: '2026-10-26'
+- url: https://api.infron.ai/v1/models
+  checked_at: '2026-10-26'
