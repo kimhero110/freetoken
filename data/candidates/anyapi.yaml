@@ -5,21 +5,24 @@ score: 5
 proposed:
   schema_version: 2
   slug: anyapi
-  name: AnyAPI   One API for 400+ AI Models | AnyAPI.ai
-  name_en: Anyapi
+  name: AnyAPI.ai
+  name_en: AnyAPI.ai
   category: 海外探索
-  intro: AnyAPI   One API for 400+ AI Models | AnyAPI.ai：雷达捕获的候选源，免费额度与可用模型待人工核实。
-  intro_en: 'Anyapi: discovered by radar; free tier and models unverified.'
+  intro: AnyAPI.ai：统一 OpenAI 兼容网关，覆盖 400+ 模型；免费额度见 free_quota（雷达入库，细节待复核）。
+  intro_en: 'AnyAPI.ai: OpenAI-compatible gateway to 400+ models; see free_quota (radar
+    intake).'
   website: https://anyapi.ai
   doc_url: https://anyapi.ai/docs
   api_base_url: https://api.anyapi.ai/v1
   free_models: []
   free_quota:
     type: 待核实
-    amount: 待核实
-    unit: Tokens
+    amount: Free plan 试用额度
+    unit: Credits
     reset_period: 待核实
-    details: 雷达线索：页面匹配得分 5/11；https://api.anyapi.ai/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
+    details: 官网 FAQ：Free plan 可无绑卡试用关键功能与多模型；具体 credits/RPM 以 anyapi.ai 定价为准，待复核。
+    details_en: 'AnyAPI FAQ: Free plan lets you try key features without a card; exact
+      credits TBD on anyapi.ai.'
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null
