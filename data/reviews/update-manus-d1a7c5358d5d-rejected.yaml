@@ -27,3 +27,8 @@ proposed:
     type: null
     conditions: []
   intro: Manus 智能体平台提供网页应用、AI 设计、图像生成与 API 等功能，具体免费额度详见官方定价页面。
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T05:18:54.980190+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu

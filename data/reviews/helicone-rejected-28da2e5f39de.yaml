@@ -1,25 +1,25 @@
 candidate_type: new_platform
 status: pending_review
-platform_slug: upstage
-score: 2
+platform_slug: helicone
+score: 3
 proposed:
   schema_version: 2
-  slug: upstage
-  name: 'Upstage AI - Building intelligence for the future '
-  name_en: Upstage
+  slug: helicone
+  name: Helicone / AI Gateway & LLM Observability
+  name_en: Helicone
   category: 海外探索
-  intro: Upstage AI - Building intelligence for the future ：雷达捕获的候选源，免费额度与可用模型待人工核实。
-  intro_en: 'Upstage: discovered by radar; free tier and models unverified.'
-  website: https://upstage.ai
-  doc_url: https://upstage.ai/docs
-  api_base_url: https://api.upstage.ai/v1
+  intro: Helicone / AI Gateway & LLM Observability：雷达捕获的候选源，免费额度与可用模型待人工核实。
+  intro_en: 'Helicone: discovered by radar; free tier and models unverified.'
+  website: https://helicone.ai
+  doc_url: https://helicone.ai/docs
+  api_base_url: https://api.helicone.ai/v1
   free_models: []
   free_quota:
     type: 待核实
     amount: 待核实
     unit: Tokens
     reset_period: 待核实
-    details: 雷达线索：页面匹配得分 2/11；https://api.upstage.ai/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
+    details: 雷达线索：页面匹配得分 3/11；https://api.helicone.ai/v1/models HTTP 200 返回模型列表。免费额度需人工核实。
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null
@@ -32,7 +32,7 @@ proposed:
   gotchas_en:
   - Discovered by radar. Manual verification required.
   registration:
-    url: https://upstage.ai
+    url: https://helicone.ai
   requirements:
     phone: unknown
     card: unknown
@@ -50,9 +50,14 @@ proposed:
       openclaw: unknown
       cherry_studio: unknown
   evidence:
-  - url: https://upstage.ai
+  - url: https://helicone.ai
     checked_at: '2026-10-25'
-  - url: https://upstage.ai/pricing
+  - url: https://helicone.ai/pricing
     checked_at: '2026-10-25'
-  - url: https://api.upstage.ai/v1/models
+  - url: https://api.helicone.ai/v1/models
     checked_at: '2026-10-25'
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T05:18:54.864625+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu

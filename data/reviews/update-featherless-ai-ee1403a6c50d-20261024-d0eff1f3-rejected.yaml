@@ -28,3 +28,8 @@ proposed:
     conditions: []
   intro: Featherless提供Serverless LLM托管与统一API，可访问数万开源模型，无免费额度，按订阅或用量付费。
 supersedes: update-featherless-ai-ee1403a6c50d
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T05:18:54.950873+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
