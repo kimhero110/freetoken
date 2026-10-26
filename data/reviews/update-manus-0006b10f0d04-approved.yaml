@@ -33,3 +33,12 @@ verification_conclusion: has_free_tier
 verification_reasons:
 - candidate:update-manus-0006b10f0d04
 - extracted_positive_quota
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T09:00:54.484181+00:00'
+  reviewer: kimhero110
+  annotation_via: grokbot
+  annotation_id: kimhero110
+  approved_source_hash: 0006b10f0d04dcab84221ab5fb6aa217588ffca0a0619e2b8ee26080f964b4bf
+  live_source_hash: 0006b10f0d04dcab84221ab5fb6aa217588ffca0a0619e2b8ee26080f964b4bf
+  source_hash_drifted: false
