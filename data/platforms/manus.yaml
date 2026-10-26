@@ -21,7 +21,7 @@ register_url: https://events.manus.im/zh-cn/campaign/free-tokens
 docs_url: https://manus.im/docs
 source_urls:
 - https://events.manus.im/zh-cn/campaign/free-tokens
-last_verified: '2026-09-06'
+last_verified: '2026-10-26'
 status: active
 intro: Manus免费提供1万亿AI代币，用于构建Web应用，先到先得，用完为止。
 intro_en: Leading autonomous AI Agent platform. Official 1 Trillion free AI tokens
@@ -64,7 +64,7 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://events.manus.im/zh-cn/campaign/free-tokens
-  checked_at: '2026-09-06'
-  source_hash: 08512df982e16a5e7eeba22d8bd3fc344747300d37912c5482fe9c10fbf314eb
-  captured_at: '2026-09-06T08:39:42.273814+00:00'
-last_checked: '2026-09-06'
+  checked_at: '2026-10-26'
+  source_hash: 0006b10f0d04dcab84221ab5fb6aa217588ffca0a0619e2b8ee26080f964b4bf
+  captured_at: '2026-10-26T08:49:17.392190+00:00'
+last_checked: '2026-10-26'
