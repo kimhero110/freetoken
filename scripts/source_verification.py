@@ -110,7 +110,8 @@ def _quota_matches_platform(quota: dict, platform: dict) -> bool:
     return all(current.get(k) == v for k, v in quota.items() if v is not None)
 
 
-def reviewed_status(root, slug, url, source_hash, platform):
+def latest_review(root, slug, url):
+    """Return the latest decided platform-update review for a source."""
     records = []
     for path in (Path(root) / 'data/reviews').glob('*.yaml'):
         data = yaml.safe_load(path.read_text(encoding='utf-8'))
@@ -121,7 +122,11 @@ def reviewed_status(root, slug, url, source_hash, platform):
         review = data.get('review', {})
         if review.get('decision') in {'approved', 'rejected'}:
             records.append(data)
-    latest = max(records, key=lambda d: d['review'].get('reviewed_at', ''), default=None)
+    return max(records, key=lambda d: d['review'].get('reviewed_at', ''), default=None)
+
+
+def reviewed_status(root, slug, url, source_hash, platform):
+    latest = latest_review(root, slug, url)
     if latest is None or latest.get('source_hash') != source_hash:
         return 'changed'
     if latest['review']['decision'] == 'rejected':

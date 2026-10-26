@@ -6,6 +6,7 @@ window. Failures never trigger provider fallback. Formal data requires review.
 """
 
 import argparse
+import copy
 import hashlib
 import json
 import math
@@ -300,12 +301,58 @@ def write_update_candidate(
     return output
 
 
+def rejected_null_wipe_of_real_quota(review: dict | None, entry: dict, source_hash: str) -> bool:
+    """Whether a rejection protected an existing free tier from a null wipe."""
+    if not isinstance(review, dict) or review.get("source_hash") != source_hash:
+        return False
+    review_meta = review.get("review")
+    if not isinstance(review_meta, dict) or review_meta.get("decision") != "rejected":
+        return False
+    proposed = review.get("proposed")
+    proposed_quota = proposed.get("free_quota") if isinstance(proposed, dict) else None
+    null_fields = {"amount", "unit", "type"}
+    if not isinstance(proposed_quota, dict) or not null_fields.issubset(proposed_quota) or any(
+        proposed_quota.get(field) is not None for field in ("amount", "unit", "type")
+    ):
+        return False
+    current_quota = entry.get("free_quota")
+    return (
+        isinstance(current_quota, dict)
+        and current_quota.get("amount") is not None
+        and current_quota.get("amount") != "无免费额度"
+    )
+
+
+def write_keep_current_candidate(entry: dict, slug: str, source_url: str, source_hash: str) -> Path:
+    """Create a reviewable verification renewal without changing canonical data."""
+    proposed = {
+        "free_quota": copy.deepcopy(entry.get("free_quota")),
+        "intro": entry.get("intro"),
+    }
+    proposal = build_update_candidate(
+        entry, slug, source_url, source_hash, "", proposed,
+        {"type": "reviewed_rejection_renewal"},
+    )
+    proposal["verification_conclusion"] = "renew_keep_current"
+    proposal["verification_reasons"] = [
+        "latest_same_hash_review_rejected_null_wipe",
+        "current_free_quota_preserved",
+    ]
+    CANDIDATES_DIR.mkdir(parents=True, exist_ok=True)
+    output = candidate_path(slug, source_hash)
+    output.write_text(
+        yaml.safe_dump(proposal, allow_unicode=True, sort_keys=False), encoding="utf-8"
+    )
+    print(f"  [待人工审核] {output}")
+    return output
+
+
 def main() -> int:
     # Import through the package also when invoked as scripts/extract.py.
     sys.path.insert(0, str(ROOT))
     from scripts.check_state import GitState, StateError, digest
     from scripts.check_runner import paid_result, next_window, utcnow
-    from scripts.source_verification import authorized_source_urls
+    from scripts.source_verification import authorized_source_urls, latest_review, reviewed_status
     parser = argparse.ArgumentParser(description="Persistent, single-attempt extraction")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--provider")
@@ -356,14 +403,15 @@ def main() -> int:
                 text = item.get("text")
                 if not isinstance(text, str) or hashlib.sha256(text.encode()).hexdigest() != source_hash:
                     raise StateError("SOURCE_SNAPSHOT_INVALID")
-                reviewed = any(
-                    (record.get("platform_slug") == slug and record.get("source_hash") == source_hash and record.get("source_url") == url)
-                    for path in (ROOT / "data" / "reviews").glob("*.yaml")
-                    if isinstance((record := yaml.safe_load(path.read_text(encoding="utf-8"))), dict)
-                )
-                if reviewed:
-                    observation["status"] = "reviewed_version"
+                review_status = reviewed_status(ROOT, slug, url, source_hash, entry)
+                if review_status == "verified_unchanged":
+                    observation["status"] = "verified_unchanged"
                     continue
+                reviewed = latest_review(ROOT, slug, url)
+                renew_keep_current = (
+                    review_status == "reviewed_rejected"
+                    and rejected_null_wipe_of_real_quota(reviewed, entry, source_hash)
+                )
                 # A pending proposal for this platform, whatever page version produced
                 # it. Keying this on source_hash was the mistake: these sources are
                 # marketing pages that change every day, so the hash moved while the
@@ -377,6 +425,10 @@ def main() -> int:
                         waiting.append((path, existing))
                 matching = [pair for pair in waiting if pair[1].get("source_hash") == source_hash]
                 platform_hash = build_update_candidate(entry, slug, url, source_hash, "", {}, {})['platform_hash']
+                if renew_keep_current and matching:
+                    previous_path, _ = max(matching, key=lambda pair: pair[1].get("captured_at", ""))
+                    observation.update(status="pending_review", superseded_by=previous_path.stem)
+                    continue
                 if waiting and not matching:
                     newest_path, newest = max(waiting, key=lambda pair: pair[1].get("captured_at", ""))
                     captured = datetime.fromisoformat(newest["captured_at"])
@@ -414,6 +466,10 @@ def main() -> int:
                     continue
                 if dry:
                     observation["status"] = "dry_run"
+                    continue
+                if renew_keep_current:
+                    renewal = write_keep_current_candidate(entry, slug, url, source_hash)
+                    observation.update(status="candidate_ready", candidate_id=renewal.stem)
                     continue
                 # paid_result persists the number of claims made by this logical
                 # run.  Once it refuses a claim, every later source would receive
