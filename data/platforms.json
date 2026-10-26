@@ -2201,7 +2201,7 @@
     },
     "verification": "手机号注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "国产直连",
@@ -2260,9 +2260,12 @@
     "evidence": [
       {
         "url": "https://platform.minimaxi.com/document/guides",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26",
+        "source_hash": "fd0c08b27742b4ed4098d0ed956b33fd8395b6d3a07965d03f3f292d31117450",
+        "captured_at": "2026-10-26T08:49:17.852101+00:00"
       }
-    ]
+    ],
+    "last_checked": "2026-10-26"
   },
   {
     "schema_version": 2,
