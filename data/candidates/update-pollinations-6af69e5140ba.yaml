@@ -1,0 +1,33 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: pollinations
+name: Pollinations AI (免Key生图与对话)
+source_url: https://gen.pollinations.ai/llms.txt
+source_hash: 6af69e5140ba2cb26a1dc4e8c759f5cfea4635e308e2488794fed8eaa191893b
+platform_hash: 40218da60b2f4207cbd1e8631200c4723e72dcf11e6d02ead2b07da995d90ddb
+captured_at: '2026-10-26T07:37:22.959016+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 完全免费
+    unit: 免注册 / 免 API Key
+    reset_period: 永久
+    details: 无需注册账号或创建 API Key，直接向接口发起请求即可生成文本或 FLUX 图像。
+    details_en: Completely free and keyless access for text and image generation.
+  intro: 完全开源、零门槛、免注册、免 API Key 的多模态生图与大模型对话服务，直接 GET/POST 即可调用！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Pollinations 提供文本、图像、音频、视频、3D 与向量生成 API，支持 CLI、SDK 和 MCP 服务，方便开发者快速集成多模态
+    AI 能力。
+verification_conclusion: no_free_tier
+verification_reasons:
+- candidate:update-pollinations-6af69e5140ba
+- null_quota_without_free_hints
