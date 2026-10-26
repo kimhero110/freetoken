@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .box { fill: #1e293b; stroke: #334155; stroke-width: 1.5; rx: 12; }
+      .box-accent { fill: rgba(56, 189, 248, 0.1); stroke: #38bdf8; stroke-width: 1.5; rx: 12; }
+      .box-orange { fill: rgba(249, 115, 22, 0.1); stroke: #f97316; stroke-width: 1.5; rx: 12; }
+      .text-title { font-family: -apple-system, sans-serif; font-weight: 800; font-size: 16px; fill: #ffffff; }
+      .text-sub { font-family: -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; }
+      .text-accent { font-family: -apple-system, sans-serif; font-weight: 700; font-size: 14px; fill: #38bdf8; }
+      .arrow { stroke: #64748b; stroke-width: 1.5; stroke-dasharray: 4,4; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <polygon points="0 0, 6 3, 0 6" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" rx="16" />
+
+  <!-- 标题 -->
+  <text x="40" y="45" class="text-title" font-size="20">⚡ FreeToken 智能生态架构全景 (Architecture)</text>
+  <text x="40" y="70" class="text-sub">全球免费 API 探测雷达 + 内容分发矩阵 + MaaS 聚合分发网关</text>
+
+  <!-- 1. 雷达层 -->
+  <g transform="translate(40, 100)">
+    <rect width="210" height="270" class="box" />
+    <text x="20" y="35" class="text-title">🛰️ 全网雷达层</text>
+    <text x="20" y="55" class="text-sub">每 2 天自动扫描全球新源</text>
+    <rect x="15" y="75" width="180" height="42" class="box-accent" />
+    <text x="25" y="100" class="text-accent" font-size="12">开源生态 (Awesome Lists)</text>
+    <rect x="15" y="125" width="180" height="42" class="box-accent" />
+    <text x="25" y="150" class="text-accent" font-size="12">社区动态 (Reddit / V2EX)</text>
+    <rect x="15" y="175" width="180" height="42" class="box-accent" />
+    <text x="25" y="200" class="text-accent" font-size="12">DeepSeek AI 智能清洗入库</text>
+  </g>
+
+  <!-- 2. 内容与聚合站 -->
+  <g transform="translate(295, 100)">
+    <rect width="210" height="270" class="box-accent" />
+    <text x="20" y="35" class="text-title" fill="#38bdf8">💻 核心门户与矩阵</text>
+    <text x="20" y="55" class="text-sub">实时监控 29+ 精选平台</text>
+    <rect x="15" y="75" width="180" height="50" class="box" />
+    <text x="25" y="98" class="text-title" font-size="13">freetokens.info</text>
+    <text x="25" y="115" class="text-sub">即时搜索 / 一键复制代码</text>
+    <rect x="15" y="135" width="180" height="50" class="box-orange" />
+    <text x="25" y="158" class="text-title" font-size="13" fill="#fb923c">📱 免费Token情报局</text>
+    <text x="25" y="175" class="text-sub">微信公众号突发羊毛推送</text>
+    <rect x="15" y="195" width="180" height="50" class="box" />
+    <text x="25" y="218" class="text-title" font-size="13">📕 小红书知识卡片</text>
+    <text x="25" y="235" class="text-sub">3:4 视觉图文矩阵传播</text>
+  </g>
+
+  <!-- 3. MaaS 聚合网关 -->
+  <g transform="translate(550, 100)">
+    <rect width="210" height="270" class="box" />
+    <text x="20" y="35" class="text-title">🚀 终局 MaaS 网关</text>
+    <text x="20" y="55" class="text-sub">One API / New API 分发</text>
+    <rect x="15" y="75" width="180" height="42" class="box-accent" />
+    <text x="25" y="100" class="text-accent" font-size="12">上游免费渠道池化</text>
+    <rect x="15" y="125" width="180" height="42" class="box-accent" />
+    <text x="25" y="150" class="text-accent" font-size="12">单 Key 畅调全系大模型</text>
+    <rect x="15" y="175" width="180" height="42" class="box-accent" />
+    <text x="25" y="200" class="text-accent" font-size="12">商业化充值与付费闭环</text>
+  </g>
+</svg>
