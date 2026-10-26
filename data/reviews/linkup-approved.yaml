@@ -55,3 +55,7 @@ proposed:
     checked_at: '2026-09-27'
   - url: https://linkup.so/pricing
     checked_at: '2026-09-27'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T14:03:07.641553+00:00'
+  reviewer: kimhero110
