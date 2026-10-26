@@ -1,0 +1,52 @@
+schema_version: 2
+slug: inceptionlabs
+name: Inception Labs (Mercury)
+name_en: Inception Labs
+category: 海外探索
+intro: Inception Labs：Mercury 扩散 LLM API，免费额度见 free_quota（雷达入库，细节待复核）。
+intro_en: 'Inception Labs: Mercury diffusion LLM API; see free_quota (radar intake).'
+website: https://inceptionlabs.ai
+doc_url: https://docs.inceptionlabs.ai
+api_base_url: https://api.inceptionlabs.ai/v1
+free_models: []
+free_quota:
+  type: 一次性额度
+  amount: 1亿 tokens
+  unit: Tokens
+  reset_period: 一次性
+  details: 官方文档 FAQ：新账户共享约 1 亿 free tokens 起步额度；用尽后需绑卡。以 docs.inceptionlabs.ai 为准。
+  details_en: New Inception accounts share ~100M free-token credit to start.
+verification: 邮箱/GitHub
+status: unverified
+last_verified: null
+tags:
+- 雷达新源
+- 待人工复核
+- OpenAI 兼容
+gotchas:
+- 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+gotchas_en:
+- Discovered by radar. Manual verification required.
+registration:
+  url: https://inceptionlabs.ai
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations: []
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://inceptionlabs.ai
+  checked_at: '2026-10-26'
+- url: https://api.inceptionlabs.ai/v1/models
+  checked_at: '2026-10-26'

@@ -73,6 +73,8 @@
   <url><loc>https://freetokens.info/en/platform/huggingface-inference/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/hyperbolic/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/hyperbolic/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/platform/inceptionlabs/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://freetokens.info/en/platform/inceptionlabs/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/infini-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/en/platform/infini-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://freetokens.info/platform/jina-ai/</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
