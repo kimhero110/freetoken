@@ -3577,6 +3577,68 @@
   },
   {
     "schema_version": 2,
+    "slug": "serper",
+    "name": "Serper",
+    "name_en": "Serper",
+    "category": "海外探索",
+    "intro": "Serper：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。",
+    "intro_en": "Serper: developer API platform; see free_quota (radar intake, details to verify).",
+    "website": "https://serper.dev",
+    "doc_url": "https://serper.dev/docs",
+    "api_base_url": "https://serper.dev/v1",
+    "free_models": [],
+    "free_quota": {
+      "type": "一次性额度",
+      "amount": "2500 queries",
+      "unit": "Requests",
+      "reset_period": "一次性",
+      "details": "公开资料称新用户约 2,500 次免费 Google Search API 查询；以 serper.dev 控制台/定价为准，待复核。",
+      "details_en": "Public listings cite ~2,500 free Serper search queries for new accounts; confirm on serper.dev."
+    },
+    "verification": "邮箱/GitHub",
+    "status": "unverified",
+    "last_verified": null,
+    "tags": [
+      "雷达新源",
+      "待人工复核"
+    ],
+    "gotchas": [
+      "由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。"
+    ],
+    "gotchas_en": [
+      "Discovered by radar. Manual verification required."
+    ],
+    "registration": {
+      "url": "https://serper.dev"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://serper.dev",
+        "checked_at": "2026-09-27"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
     "slug": "siliconflow",
     "name": "硅基流动 (SiliconFlow)",
     "name_en": "SiliconFlow",
