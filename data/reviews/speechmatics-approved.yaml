@@ -53,3 +53,7 @@ proposed:
   evidence:
   - url: https://speechmatics.com
     checked_at: '2026-09-27'
+review:
+  decision: approved
+  reviewed_at: '2026-10-26T13:59:57.517786+00:00'
+  reviewer: kimhero110
