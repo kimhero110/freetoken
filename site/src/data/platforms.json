@@ -2918,7 +2918,7 @@
     },
     "verification": "无需注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "免注册",
@@ -2973,9 +2973,12 @@
     "evidence": [
       {
         "url": "https://gen.pollinations.ai/llms.txt",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26",
+        "source_hash": "6af69e5140ba2cb26a1dc4e8c759f5cfea4635e308e2488794fed8eaa191893b",
+        "captured_at": "2026-10-26T08:49:18.773560+00:00"
       }
-    ]
+    ],
+    "last_checked": "2026-10-26"
   },
   {
     "schema_version": 2,

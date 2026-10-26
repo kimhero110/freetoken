@@ -23,7 +23,7 @@ free_quota:
   details_en: Completely free and keyless access for text and image generation.
 verification: 无需注册
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 永久
 - 免注册
@@ -43,19 +43,19 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: image_generation
-      protocol: rest
-      endpoint_url: null
-      models: []
-      auth:
-        type: none
-        header: null
-        query_param: null
-        env_var: null
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: image_generation
+    protocol: rest
+    endpoint_url: null
+    models: []
+    auth:
+      type: none
+      header: null
+      query_param: null
+      env_var: null
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: unknown
     openai_python: unknown
@@ -65,4 +65,7 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://gen.pollinations.ai/llms.txt
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'
+  source_hash: 6af69e5140ba2cb26a1dc4e8c759f5cfea4635e308e2488794fed8eaa191893b
+  captured_at: '2026-10-26T08:49:18.773560+00:00'
+last_checked: '2026-10-26'
