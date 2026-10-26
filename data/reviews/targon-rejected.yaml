@@ -51,3 +51,9 @@ proposed:
   evidence:
   - url: https://targon.com
     checked_at: '2026-10-09'
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T14:32:09.062974+00:00'
+  reviewer: kimhero110
+  annotation_via: agent
+  annotation_id: growth-batch2
