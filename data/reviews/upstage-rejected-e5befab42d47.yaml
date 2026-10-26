@@ -1,25 +1,25 @@
 candidate_type: new_platform
 status: pending_review
-platform_slug: parasail
+platform_slug: upstage
 score: 2
 proposed:
   schema_version: 2
-  slug: parasail
-  name: Parasail   The Inference Cloud for AI-native start
-  name_en: Parasail
+  slug: upstage
+  name: 'Upstage AI - Building intelligence for the future '
+  name_en: Upstage
   category: 海外探索
-  intro: Parasail   The Inference Cloud for AI-native start：雷达捕获的候选源，免费额度与可用模型待人工核实。
-  intro_en: 'Parasail: discovered by radar; free tier and models unverified.'
-  website: https://parasail.io
-  doc_url: https://parasail.io/docs
-  api_base_url: https://api.parasail.io/v1
+  intro: Upstage AI - Building intelligence for the future ：雷达捕获的候选源，免费额度与可用模型待人工核实。
+  intro_en: 'Upstage: discovered by radar; free tier and models unverified.'
+  website: https://upstage.ai
+  doc_url: https://upstage.ai/docs
+  api_base_url: https://api.upstage.ai/v1
   free_models: []
   free_quota:
     type: 待核实
     amount: 待核实
     unit: Tokens
     reset_period: 待核实
-    details: 雷达线索：页面匹配得分 2/11；https://api.parasail.io/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
+    details: 雷达线索：页面匹配得分 2/11；https://api.upstage.ai/v1/models HTTP 401 需要鉴权。免费额度需人工核实。
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null
@@ -32,7 +32,7 @@ proposed:
   gotchas_en:
   - Discovered by radar. Manual verification required.
   registration:
-    url: https://parasail.io
+    url: https://upstage.ai
   requirements:
     phone: unknown
     card: unknown
@@ -50,7 +50,14 @@ proposed:
       openclaw: unknown
       cherry_studio: unknown
   evidence:
-  - url: https://parasail.io
+  - url: https://upstage.ai
     checked_at: '2026-10-25'
-  - url: https://api.parasail.io/v1/models
+  - url: https://upstage.ai/pricing
     checked_at: '2026-10-25'
+  - url: https://api.upstage.ai/v1/models
+    checked_at: '2026-10-25'
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T05:18:54.985397+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu

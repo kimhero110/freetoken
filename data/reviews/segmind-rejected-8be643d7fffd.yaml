@@ -54,3 +54,8 @@ proposed:
     checked_at: '2026-10-25'
   - url: https://api.segmind.com/v1/models
     checked_at: '2026-10-25'
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T05:18:54.892042+00:00'
+  reviewer: kimhero110
+  annotation_via: feishu
