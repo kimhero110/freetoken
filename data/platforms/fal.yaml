@@ -1,0 +1,53 @@
+schema_version: 2
+slug: fal
+name: fal.ai
+name_en: fal.ai
+category: 海外探索
+intro: fal.ai：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+intro_en: 'fal.ai: developer API platform; see free_quota (radar intake, details to
+  verify).'
+website: https://fal.ai
+doc_url: https://fal.ai/docs
+api_base_url: https://fal.ai/v1
+free_models: []
+free_quota:
+  type: 日额度
+  amount: 有限免费日生成
+  unit: Requests
+  reset_period: 每日
+  details: 公开索引提到部分模型有每日免费生成次数；fal 主体多为按量计费。免费层范围待人工复核，勿当作无限免费推理。
+  details_en: Public indexes mention limited free daily generations on some fal models;
+    treat the free surface as limited and verify.
+verification: 邮箱/GitHub
+status: unverified
+last_verified: null
+tags:
+- 雷达新源
+- 待人工复核
+gotchas:
+- 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+gotchas_en:
+- Discovered by radar. Manual verification required.
+registration:
+  url: https://fal.ai
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations: []
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://fal.ai
+  checked_at: '2026-10-23'
+- url: https://fal.ai/pricing
+  checked_at: '2026-10-23'
