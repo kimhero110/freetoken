@@ -5,21 +5,24 @@ score: 4
 proposed:
   schema_version: 2
   slug: modal
-  name: 'Modal: The platform for production AI'
+  name: Modal
   name_en: Modal
   category: 海外探索
-  intro: 'Modal: The platform for production AI：雷达捕获的候选源，免费额度与可用模型待人工核实。'
-  intro_en: 'Modal: discovered by radar; free tier and models unverified.'
+  intro: Modal：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+  intro_en: 'Modal: developer API platform; see free_quota (radar intake, details
+    to verify).'
   website: https://modal.com
   doc_url: https://modal.com/docs
   api_base_url: https://modal.com/v1
   free_models: []
   free_quota:
-    type: 待核实
-    amount: 待核实
-    unit: Tokens
-    reset_period: 待核实
-    details: 雷达线索：页面匹配得分 4/11。免费额度需人工核实。
+    type: 月度额度
+    amount: $30/月
+    unit: USD
+    reset_period: 每月
+    details: 官方称 Starter 工作区每月有免费算力配额（约 $30/月量级）；以 Modal Pricing / docs 为准，待人工复核精确条款。
+    details_en: Modal documents a free monthly compute allotment for workspaces (~$30/mo
+      class); confirm exact terms on Modal pricing.
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null
