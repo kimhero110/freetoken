@@ -73,8 +73,9 @@
 与本试点并行但独立：`.github/workflows/verify-unverified.yml` + `scripts/verify_unverified.py`
 只针对公共授权来源做免费额度核验，不注册账号、不提交资料。
 
-- 目标选择：正式条目标记 `unverified`、免费额度 `待核实`、带 `待人工复核`/`雷达新源` 标签，
-  或从未有过 `last_verified` 记录；候选规则见 `needs_verification`。
+- 目标选择（无需人工点名 slug）：`unverified`、免费额度 `待核实`、`last_verified` 缺失，
+  或 `last_verified` 超过 `--stale-days`（默认 45）天；雷达标签仅在上述条件已成立时附加说明，
+  不会把刚核过的平台因残留标签反复入队。规则见 `needs_verification`。
 - 抓取复用 `fetch_sources.fetch_text`；结论分类 `has_free_tier | no_free_tier | unclear`，
   全部结论写入 `verify-summary.json`，不改动 `data/platforms/*.yaml`，
   `last_verified` 仍只由人工审批 `review_candidates.py` 盖章。

@@ -28,7 +28,7 @@ import math
 import os
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import yaml
@@ -64,29 +64,53 @@ SUMMARY_NAME = "verify-summary.json"
 CHANGED_NAME = "changed.json"
 
 
-def selection_reasons(entry: dict) -> list[str]:
-    """Why this platform needs automatic verification, empty when it does not."""
+def _parse_verified_date(value) -> date | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    try:
+        return date.fromisoformat(value.strip()[:10])
+    except ValueError:
+        return None
+
+
+def selection_reasons(entry: dict, *, today: date | None = None, stale_days: int = 45) -> list[str]:
+    """Why this platform needs automatic verification, empty when it does not.
+
+    Radar leftover tags alone do not re-queue a platform that was verified within
+    ``stale_days``; stale / missing stamps do, which automatically covers the
+    previously flagged active platforms without anyone naming their slugs.
+    """
     if not isinstance(entry, dict):
         return []
+    if stale_days < 1:
+        raise ValueError("stale_days must be >= 1")
     reasons = []
     if entry.get("status") == "unverified":
         reasons.append("status:unverified")
     quota = entry.get("free_quota")
     if isinstance(quota, dict) and (quota.get("amount") == PENDING_MARK or quota.get("type") == PENDING_MARK):
         reasons.append("free_quota:待核实")
-    tags = entry.get("tags")
-    if isinstance(tags, list):
-        reasons.extend(f"tag:{tag}" for tag in TARGET_TAGS if tag in tags)
-    if not entry.get("last_verified"):
+    verified_on = _parse_verified_date(entry.get("last_verified"))
+    if verified_on is None:
         reasons.append("last_verified:missing")
+    else:
+        age = (today or date.today()) - verified_on
+        if age.days >= stale_days:
+            reasons.append(f"last_verified:stale:{age.days}d")
+    # Leftover radar tags only matter when the stamp is missing/stale (already
+    # recorded above) or the platform is still unverified / 待核实.
+    tags = entry.get("tags")
+    if isinstance(tags, list) and any(tag in tags for tag in TARGET_TAGS):
+        if reasons:
+            reasons.extend(f"tag:{tag}" for tag in TARGET_TAGS if tag in tags)
     return reasons
 
 
-def needs_verification(entry: dict) -> bool:
-    return bool(selection_reasons(entry))
+def needs_verification(entry: dict, *, today: date | None = None, stale_days: int = 45) -> bool:
+    return bool(selection_reasons(entry, today=today, stale_days=stale_days))
 
 
-def select_verification_targets(platforms_dir) -> list[dict]:
+def select_verification_targets(platforms_dir, *, today: date | None = None, stale_days: int = 45) -> list[dict]:
     """Pick platforms to verify; no slug list comes from a caller."""
     targets = []
     for path in sorted(Path(platforms_dir).glob("*.yaml")):
@@ -94,7 +118,7 @@ def select_verification_targets(platforms_dir) -> list[dict]:
             entry = yaml.safe_load(path.read_text(encoding="utf-8"))
         except yaml.YAMLError:
             continue
-        reasons = selection_reasons(entry)
+        reasons = selection_reasons(entry, today=today, stale_days=stale_days)
         if not reasons:
             continue
         targets.append({
@@ -132,10 +156,17 @@ def classify_verification(source_text: str | None, extracted: dict | None) -> st
 
 
 def merge_conclusions(source_conclusions: list[str]) -> str:
-    """One platform conclusion: any positive beats any negative, else unclear."""
+    """One platform conclusion across sources.
+
+    A positive free-tier finding wins. ``no_free_tier`` only wins when every
+    source agreed; mixed with ``unclear`` stays ``unclear`` so a flaky page
+    cannot stamp away a possible free tier.
+    """
+    if not source_conclusions:
+        return "unclear"
     if "has_free_tier" in source_conclusions:
         return "has_free_tier"
-    if "no_free_tier" in source_conclusions:
+    if source_conclusions and all(item == "no_free_tier" for item in source_conclusions):
         return "no_free_tier"
     return "unclear"
 
@@ -236,8 +267,9 @@ def _source_record(url, fetched, text, candidates_dir, slug, extract_allowed, an
 
 
 def run_sweep(platforms_dir, candidates_dir, input_dir, output_dir, limit, *,
-              fetch: bool, extract_allowed: bool, annotate: bool, mode: str) -> dict:
-    targets = select_verification_targets(platforms_dir)[:limit]
+              fetch: bool, extract_allowed: bool, annotate: bool, mode: str,
+              stale_days: int = 45, today: date | None = None) -> dict:
+    targets = select_verification_targets(platforms_dir, today=today, stale_days=stale_days)[:limit]
     cache_path = Path(input_dir) / SOURCES_CACHE_NAME
     cached = {}
     if not fetch and cache_path.exists():
@@ -306,6 +338,7 @@ def run_sweep(platforms_dir, candidates_dir, input_dir, output_dir, limit, *,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "paid_extract_allowed": extract_allowed,
         "limit": limit,
+        "stale_days": stale_days,
         "selected": len(targets),
         "counts": counts,
         "extract_needed": len(changed_entries),
@@ -342,6 +375,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--skip-extract", action="store_true",
                         help="classify from existing pending candidates only; never queue paid extraction")
     parser.add_argument("--limit", type=int, default=20, help="max platforms this run")
+    parser.add_argument("--stale-days", type=int, default=45,
+                        help="re-queue platforms whose last_verified is at least this many days old")
     parser.add_argument("--input-dir", type=Path, default=DEFAULT_WORK_DIR)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_WORK_DIR)
     parser.add_argument("--platforms-dir", type=Path, default=PLATFORMS_DIR)
@@ -355,8 +390,14 @@ def main(argv=None) -> int:
         print("limit 必须在 1..500 之间", file=sys.stderr)
         return 2
 
+    if not 1 <= args.stale_days <= 3650:
+        print("stale-days 必须在 1..3650 之间", file=sys.stderr)
+        return 2
+
     if args.list_only:
-        targets = select_verification_targets(args.platforms_dir)[:args.limit]
+        targets = select_verification_targets(
+            args.platforms_dir, stale_days=args.stale_days
+        )[:args.limit]
         print(json.dumps(targets, ensure_ascii=False, indent=2))
         return 0
 
@@ -378,6 +419,7 @@ def main(argv=None) -> int:
     summary = run_sweep(
         args.platforms_dir, args.candidates_dir, args.input_dir, args.output_dir,
         args.limit, fetch=fetch, extract_allowed=extract_allowed, annotate=annotate, mode=mode,
+        stale_days=args.stale_days,
     )
     print(json.dumps({
         "mode": summary["mode"],

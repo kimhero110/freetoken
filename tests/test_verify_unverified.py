@@ -1,4 +1,5 @@
 import hashlib
+from datetime import date
 import io
 import json
 import tempfile
@@ -48,32 +49,37 @@ class SelectionTests(unittest.TestCase):
     def test_picks_unverified_pending_tagged_and_never_verified(self):
         self.write_platform("unverified-one", platform_entry(status="unverified"))
         self.write_platform("pending-one", platform_entry(free_quota={"amount": "待核实", "type": "待核实", "unit": "Tokens"}))
-        self.write_platform("tagged-one", platform_entry(tags=["待人工复核", "OpenAI 兼容"]))
+        self.write_platform("tagged-fresh", platform_entry(tags=["待人工复核", "OpenAI 兼容"], last_verified="2026-10-26"))
         self.write_platform("radar-one", platform_entry(tags=["雷达新源"], last_verified=None))
         self.write_platform("never-verified", platform_entry(last_verified=None))
-        targets = select_verification_targets(self.platforms)
+        self.write_platform("stale-one", platform_entry(last_verified="2026-09-02", tags=["限时"]))
+        targets = select_verification_targets(self.platforms, today=date(2026, 10, 26), stale_days=45)
         self.assertEqual(
             [t["slug"] for t in targets],
-            ["never-verified", "pending-one", "radar-one", "tagged-one", "unverified-one"],
+            ["never-verified", "pending-one", "radar-one", "stale-one", "unverified-one"],
         )
         by_slug = {t["slug"]: t for t in targets}
         self.assertIn("status:unverified", by_slug["unverified-one"]["reasons"])
         self.assertIn("free_quota:待核实", by_slug["pending-one"]["reasons"])
-        self.assertIn("tag:待人工复核", by_slug["tagged-one"]["reasons"])
         self.assertIn("tag:雷达新源", by_slug["radar-one"]["reasons"])
         self.assertIn("last_verified:missing", by_slug["never-verified"]["reasons"])
+        self.assertIn("last_verified:stale:54d", by_slug["stale-one"]["reasons"])
         self.assertEqual(by_slug["pending-one"]["source_urls"], ["https://example.com/docs"])
 
     def test_skips_clean_active_verified_platform(self):
         self.write_platform("clean-one", platform_entry())
-        self.assertEqual(select_verification_targets(self.platforms), [])
-        self.assertFalse(needs_verification(platform_entry()))
+        self.write_platform("tagged-fresh", platform_entry(tags=["待人工复核"], last_verified="2026-10-26"))
+        self.assertEqual(select_verification_targets(self.platforms, today=date(2026, 10, 26), stale_days=45), [])
+        self.assertFalse(needs_verification(platform_entry(), today=date(2026, 10, 26), stale_days=45))
 
     def test_needs_verification_any_rule(self):
-        self.assertTrue(needs_verification(platform_entry(status="unverified")))
-        self.assertTrue(needs_verification(platform_entry(tags=["雷达新源"])))
-        self.assertTrue(needs_verification(platform_entry(free_quota={"type": "待核实"})))
-        self.assertTrue(needs_verification(platform_entry(last_verified="")))
+        today = date(2026, 10, 26)
+        self.assertTrue(needs_verification(platform_entry(status="unverified"), today=today))
+        self.assertTrue(needs_verification(platform_entry(tags=["雷达新源"], last_verified=None), today=today))
+        self.assertFalse(needs_verification(platform_entry(tags=["雷达新源"], last_verified="2026-10-26"), today=today, stale_days=45))
+        self.assertTrue(needs_verification(platform_entry(free_quota={"type": "待核实"}), today=today))
+        self.assertTrue(needs_verification(platform_entry(last_verified=""), today=today))
+        self.assertTrue(needs_verification(platform_entry(last_verified="2026-09-02"), today=today, stale_days=45))
 
 
 class ClassifyTests(unittest.TestCase):
@@ -115,6 +121,18 @@ class ClassifyTests(unittest.TestCase):
     def test_zero_amount_is_unclear(self):
         extracted = {"free_quota": {"amount": 0, "unit": None, "type": "每日", "conditions": []}, "intro": "x"}
         self.assertEqual(classify_verification("docs", extracted), "unclear")
+
+
+
+class MergeConclusionTests(unittest.TestCase):
+    def test_has_free_tier_wins(self):
+        from scripts.verify_unverified import merge_conclusions
+        self.assertEqual(merge_conclusions(["unclear", "has_free_tier", "no_free_tier"]), "has_free_tier")
+
+    def test_no_free_tier_requires_unanimous(self):
+        from scripts.verify_unverified import merge_conclusions
+        self.assertEqual(merge_conclusions(["no_free_tier", "no_free_tier"]), "no_free_tier")
+        self.assertEqual(merge_conclusions(["no_free_tier", "unclear"]), "unclear")
 
 
 class CliTests(unittest.TestCase):
