@@ -28,3 +28,8 @@ proposed:
     conditions: []
   intro: Manus AI 官网未明确免费API额度，仅提供价格与API入口，具体配额需访问相关页面或联系官方获取。
 supersedes: update-manus-0006b10f0d04-20261024-7bb2dc39
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T07:46:19.503212+00:00'
+  reviewer: kimhero110
+  annotation_via: grokbot

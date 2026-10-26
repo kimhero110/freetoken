@@ -4,8 +4,12 @@
   "https://groq.com/pricing/": "64542dd77edb69990a8f5a4df5ace59a1aa58cbd1af5e0e51640a06bdfc87c2f",
   "https://docs.siliconflow.cn/cn/userguide/introduction": "abbf0acc74d61a0fb386295487106cf84a4b657d1d23e10971d5ee758c5b634d",
   "https://siliconflow.cn/pricing": "60700a6f0a0f0d215762cd1b6808aeb009e986b59710c38ac6a5a7a46b30508a",
-  "https://events.manus.im/zh-cn/campaign/free-tokens": "d1a7c5358d5dcf9f6f5eea19941a631d21b74157631393d2d924c83674a7dcff",
+  "https://events.manus.im/zh-cn/campaign/free-tokens": "0006b10f0d04dcab84221ab5fb6aa217588ffca0a0619e2b8ee26080f964b4bf",
   "https://featherless.ai": "ee1403a6c50dc2b1bd6f8273e7571993eb3c4203846fc14e08c42c8a1273de65",
   "https://deepinfra.com": "aabe0ed58ef3c499def9fc2bff6d041ded064ed7df9d69e36e024c453b92217f",
-  "https://chutes.ai": "b46602faf5b8304430373d1459476f47cb1daa2aee75a5ce0f970ab6a6016352"
+  "https://chutes.ai": "b46602faf5b8304430373d1459476f47cb1daa2aee75a5ce0f970ab6a6016352",
+  "https://platform.01.ai/docs": "54d59feabbc3c9cb21ae4cb949a0b999983d08bc1fd22b4e3c1a7bd8a05b2a72",
+  "https://platform.minimaxi.com/document/guides": "fd0c08b27742b4ed4098d0ed956b33fd8395b6d3a07965d03f3f292d31117450",
+  "https://modelscope.cn/docs/InferenceAPI": "250dcd2d07a55c6d473f1d5e55639b237c5685d00b6f4355d60d079c6edf5d40",
+  "https://gen.pollinations.ai/llms.txt": "6af69e5140ba2cb26a1dc4e8c759f5cfea4635e308e2488794fed8eaa191893b"
 }
