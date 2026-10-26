@@ -30,3 +30,8 @@ verification_conclusion: no_free_tier
 verification_reasons:
 - candidate:update-modelscope-250dcd2d07a5
 - null_quota_without_free_hints
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T07:46:19.493481+00:00'
+  reviewer: kimhero110
+  annotation_via: grokbot

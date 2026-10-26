@@ -31,3 +31,8 @@ verification_conclusion: no_free_tier
 verification_reasons:
 - candidate:update-pollinations-6af69e5140ba
 - null_quota_without_free_hints
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T07:46:19.498476+00:00'
+  reviewer: kimhero110
+  annotation_via: grokbot
