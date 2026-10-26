@@ -4,8 +4,8 @@ name: DeepSeek (深度求索)
 name_en: DeepSeek AI
 category: 国内主流
 intro: 全球大模型性价比天花板，新用户注册即送 500 万 Tokens（或 10 元代金券），支持 V3 与 R1 满血版！
-intro_en: Global efficiency frontier. 5,000,000 free tokens upon registration for
-  DeepSeek V3 and R1 reasoning models.
+intro_en: Global efficiency frontier. 5,000,000 free tokens upon registration for DeepSeek V3 and R1 reasoning
+  models.
 website: https://platform.deepseek.com/
 doc_url: https://api-docs.deepseek.com/
 api_base_url: https://api.deepseek.com
@@ -21,7 +21,7 @@ free_quota:
   details_en: 5,000,000 free tokens for new accounts.
 verification: 手机/邮箱注册
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 限时
 - 国产直连
@@ -66,4 +66,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://api-docs.deepseek.com/
-  checked_at: '2026-09-03'
+  checked_at: '2026-10-26'

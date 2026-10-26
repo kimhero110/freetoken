@@ -4,8 +4,8 @@ name: 火山引擎 (火山方舟)
 name_en: ByteDance Volcengine Ark
 category: 大厂云服务
 intro: 字节跳动旗下大模型服务平台，推出「千亿协同计划」，每天免费提供 200 万 Tokens（折合 6000 万/月）！
-intro_en: ByteDance cloud platform. 2,000,000 free tokens daily (60M/month) for Doubao
-  and DeepSeek via Ark program.
+intro_en: ByteDance cloud platform. 2,000,000 free tokens daily (60M/month) for Doubao and DeepSeek via
+  Ark program.
 website: https://www.volcengine.com/product/ark
 doc_url: https://www.volcengine.com/activity/ark
 api_base_url: https://ark.cn-beijing.volces.com/api/v3
@@ -22,7 +22,7 @@ free_quota:
   details_en: 2,000,000 free daily tokens for Doubao and DeepSeek models.
 verification: 火山引擎实名
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 每日
 - 大厂基座
@@ -43,22 +43,22 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
-      models:
-      - doubao-pro-32k
-      - doubao-lite-32k
-      - deepseek-r1
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: VOLCENGINE_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
+    models:
+    - doubao-pro-32k
+    - doubao-lite-32k
+    - deepseek-r1
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: VOLCENGINE_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -68,4 +68,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://www.volcengine.com/activity/ark
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'

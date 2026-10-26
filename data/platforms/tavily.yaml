@@ -4,8 +4,7 @@ name: Tavily AI (AI 搜索专用引擎)
 name_en: Tavily AI
 category: 搜索与工具
 intro: 专为 AI Agent 与 RAG 设计的实时搜索引擎，每月免费提供 1000 次高质量结构化搜索调用！
-intro_en: Search engine optimized for AI agents & LLMs. 1,000 free search API calls
-  every month.
+intro_en: Search engine optimized for AI agents & LLMs. 1,000 free search API calls every month.
 website: https://tavily.com/
 doc_url: https://docs.tavily.com/
 api_base_url: https://api.tavily.com
@@ -14,7 +13,7 @@ free_models:
 - tavily-context
 - tavily-qna
 free_quota:
-  type: 每日刷新
+  type: 每月刷新
   amount: 1000 次
   unit: Search API Calls / 月
   reset_period: 每月刷新
@@ -22,7 +21,7 @@ free_quota:
   details_en: 1,000 free monthly search credits with real-time web context.
 verification: GitHub / Google
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 每日
 - 每月
@@ -42,24 +41,24 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: search
-      protocol: rest
-      endpoint_url: https://api.tavily.com/search
-      method: POST
-      request_body:
-        query: What are the latest developments in artificial intelligence?
-        search_depth: basic
-        max_results: 5
-      models: []
-      auth:
-        type: api_key_header
-        header: X-API-Key
-        query_param: null
-        env_var: TAVILY_API_KEY
-      verification:
-        status: documented
-        checked_at: '2026-09-03'
-        evidence_url: https://docs.tavily.com/documentation/api-reference/endpoint/search
+  - id: search
+    protocol: rest
+    endpoint_url: https://api.tavily.com/search
+    method: POST
+    request_body:
+      query: What are the latest developments in artificial intelligence?
+      search_depth: basic
+      max_results: 5
+    models: []
+    auth:
+      type: api_key_header
+      header: X-API-Key
+      query_param: null
+      env_var: TAVILY_API_KEY
+    verification:
+      status: documented
+      checked_at: '2026-09-03'
+      evidence_url: https://docs.tavily.com/documentation/api-reference/endpoint/search
   tools:
     curl: documented
     openai_python: unknown
@@ -69,4 +68,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://docs.tavily.com/
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'

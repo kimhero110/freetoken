@@ -4,8 +4,8 @@ name: Cohere (Command & Rerank)
 name_en: Cohere
 category: 海外主流
 intro: 顶尖企业级大模型与 Rerank 重排序引擎，Trial 试用 Key 永久免费提供基础额度，RAG 开发必备。
-intro_en: Top enterprise NLP provider. Trial Key is permanently free for Command R+
-  and world-class Rerank models.
+intro_en: Top enterprise NLP provider. Trial Key is permanently free for Command R+ and world-class Rerank
+  models.
 website: https://cohere.com/
 doc_url: https://docs.cohere.com/
 api_base_url: https://api.cohere.ai/v1
@@ -22,7 +22,7 @@ free_quota:
   details_en: Free trial key allows 10-20 RPM for evaluation and prototyping.
 verification: 邮箱注册
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 永久
 - 每月
@@ -43,22 +43,22 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://api.cohere.ai/v1/chat/completions
-      models:
-      - command-r-plus
-      - command-r
-      - rerank-v3.5
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: COHERE_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://api.cohere.ai/v1/chat/completions
+    models:
+    - command-r-plus
+    - command-r
+    - rerank-v3.5
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: COHERE_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -68,4 +68,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://docs.cohere.com/
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'

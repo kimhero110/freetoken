@@ -4,8 +4,7 @@ name: 国家超算互联网 (SCNet)
 name_en: China National Supercomputer SCNet
 category: 大厂基座
 intro: 国家级超算互联网官方平台，新用户注册认证发放 1000 万 Tokens 免费算力券，央企级高可靠基础设施！
-intro_en: China's national supercomputing AI grid. 10,000,000 free tokens voucher
-  upon developer registration.
+intro_en: China's national supercomputing AI grid. 10,000,000 free tokens voucher upon developer registration.
 website: https://www.scnet.cn/
 doc_url: https://www.scnet.cn/ui/mall/
 api_base_url: https://api.scnet.cn/v1
@@ -22,7 +21,7 @@ free_quota:
   details_en: 10M free tokens upon verified registration for DeepSeek and Qwen.
 verification: 手机实名认证
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 限时
 - 大厂基座
@@ -43,22 +42,22 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://api.scnet.cn/v1/chat/completions
-      models:
-      - deepseek-r1
-      - deepseek-v3
-      - qwen2.5-72b
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: SCNET_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://api.scnet.cn/v1/chat/completions
+    models:
+    - deepseek-r1
+    - deepseek-v3
+    - qwen2.5-72b
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: SCNET_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -68,4 +67,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://www.scnet.cn/ui/mall/
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'

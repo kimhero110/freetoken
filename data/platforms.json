@@ -24,7 +24,7 @@
     },
     "verification": "邮箱验证",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "海外主流",
@@ -82,7 +82,7 @@
     "evidence": [
       {
         "url": "https://docs.ai21.com/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -104,15 +104,15 @@
     ],
     "free_quota": {
       "type": "限时赠送",
-      "amount": "1000 万",
-      "unit": "Tokens (180天超长有效)",
+      "amount": "100 万",
+      "unit": "Tokens (90天有效)",
       "reset_period": "一次性",
-      "details": "通义千问 Qwen 系列每个主流模型各赠送 100 万 ~ 1000 万 Tokens，半年有效。",
-      "details_en": "1,000,000 free tokens for Qwen-Turbo and Qwen-Plus valid for 180 days."
+      "details": "每个模型均有独立的免费额度（通常为 100 万 Token），有效期为 90 天。",
+      "details_en": "Independent free quota for each model (typically 1,000,000 tokens), valid for 90 days."
     },
     "verification": "阿里云实名",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "大厂基座",
@@ -172,7 +172,7 @@
     "evidence": [
       {
         "url": "https://help.aliyun.com/zh/model-studio/new-free-quota",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -268,7 +268,7 @@
     },
     "verification": "手机实名",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "国产直连",
@@ -328,7 +328,7 @@
     "evidence": [
       {
         "url": "https://platform.baichuan-ai.com/docs/api",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -358,7 +358,7 @@
     },
     "verification": "百度账号",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "大厂基座",
@@ -418,7 +418,7 @@
     "evidence": [
       {
         "url": "https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -447,7 +447,7 @@
     },
     "verification": "邮箱注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "每日",
       "海外主流",
@@ -505,7 +505,7 @@
     "evidence": [
       {
         "url": "https://inference-docs.cerebras.ai/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -536,7 +536,7 @@
     "source_urls": [
       "https://chutes.ai"
     ],
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "status": "active",
     "intro": "去中心化无服务器 AI 算力网络。提供轻量级开源大模型即开即用 API 与免费探索层，无需自建集群。",
     "intro_en": "Decentralized serverless AI compute. Provides instant drop-in open LLM APIs and free exploration tier.",
@@ -592,7 +592,7 @@
     "evidence": [
       {
         "url": "https://chutes.ai",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -680,7 +680,7 @@
     "evidence": [
       {
         "url": "https://developers.cloudflare.com/workers-ai/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ],
     "last_checked": "2026-10-26"
@@ -711,7 +711,7 @@
     },
     "verification": "邮箱注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "每月",
@@ -771,7 +771,7 @@
     "evidence": [
       {
         "url": "https://docs.cohere.com/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -803,7 +803,7 @@
     "source_urls": [
       "https://deepinfra.com"
     ],
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "status": "active",
     "intro": "极速 Serverless AI 模型推理与托管平台。注册即赠送免费体验金，超低延迟支持 Llama 3、DeepSeek-V3 满血调用。",
     "intro_en": "Ultra-fast serverless AI inference platform. Free trial credits for new accounts with full OpenAI SDK compatibility.",
@@ -860,7 +860,7 @@
     "evidence": [
       {
         "url": "https://deepinfra.com",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -889,7 +889,7 @@
     },
     "verification": "手机/邮箱注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "国产直连",
@@ -948,7 +948,7 @@
     "evidence": [
       {
         "url": "https://api-docs.deepseek.com/",
-        "checked_at": "2026-09-03"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -980,7 +980,7 @@
     "source_urls": [
       "https://featherless.ai"
     ],
-    "last_verified": "2026-09-23",
+    "last_verified": "2026-10-26",
     "status": "active",
     "intro": "Featherless 提供无服务器 LLM 托管，一个 API 密钥即可访问 4 万多个开源模型，支持按 token 计费与可预测的订阅定价。",
     "intro_en": "Serverless inference cloud with 1,000+ open-source LLMs. Free trial credits included with drop-in OpenAI protocol compatibility.",
@@ -1037,12 +1037,12 @@
     "evidence": [
       {
         "url": "https://featherless.ai",
-        "checked_at": "2026-09-23",
+        "checked_at": "2026-10-26",
         "source_hash": "28e708ae89557da30e089841cdd9ffb3fb1af8fd1bdbb6e4e9d8541619053e49",
         "captured_at": "2026-09-22T01:39:20.970472+00:00"
       }
     ],
-    "last_checked": "2026-09-23"
+    "last_checked": "2026-10-26"
   },
   {
     "schema_version": 2,
@@ -1050,22 +1050,23 @@
     "name": "Firecrawl - The web data API to search, scrape, an",
     "name_en": "Firecrawl",
     "category": "海外探索",
-    "intro": "Firecrawl - The web data API to search, scrape, an：雷达捕获的候选源，免费额度与可用模型待人工核实。",
+    "intro": "专为 AI 与大模型打造的网页检索与爬取 API，每月免费提供 1,000 Credits 额度，无需信用卡。",
     "intro_en": "Firecrawl: discovered by radar; free tier and models unverified.",
     "website": "https://firecrawl.dev",
     "doc_url": "https://firecrawl.dev/docs",
     "api_base_url": "https://firecrawl.dev/v1",
     "free_models": [],
     "free_quota": {
-      "type": "待核实",
-      "amount": "待核实",
-      "unit": "Tokens",
-      "reset_period": "待核实",
-      "details": "雷达线索：页面匹配得分 6/11。免费额度需人工核实。"
+      "type": "每月刷新",
+      "amount": "1000",
+      "unit": "Credits / 月 (约1000页)",
+      "reset_period": "每月刷新",
+      "details": "每月免费提供 1,000 点额度，可抓取约 1,000 个网页，无需绑定信用卡。",
+      "details_en": "1,000 free credits every month (covers ~1,000 pages), no credit card required."
     },
     "verification": "邮箱/GitHub",
-    "status": "unverified",
-    "last_verified": null,
+    "status": "active",
+    "last_verified": "2026-10-26",
     "tags": [
       "雷达新源",
       "待人工复核"
@@ -1101,7 +1102,7 @@
     "evidence": [
       {
         "url": "https://firecrawl.dev",
-        "checked_at": "2026-09-23"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1130,7 +1131,7 @@
     },
     "verification": "GitHub / Google",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "海外主流",
@@ -1188,7 +1189,7 @@
     "evidence": [
       {
         "url": "https://docs.fireworks.ai/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1198,7 +1199,7 @@
     "name": "GitHub Models (Azure AI)",
     "name_en": "GitHub Models",
     "category": "大厂云服务",
-    "intro": "微软与 GitHub 联合推出的开发者原生大模型试验场，每个 GitHub 账号每天免费提供数百次调用！",
+    "intro": "GitHub Models 已于 2026 年 7 月 30 日正式下线退役，推理 API 与 Playground 均已关闭。",
     "intro_en": "Official GitHub & Azure playground. Free daily rate limits across GPT-4o, Claude 3.5, and DeepSeek R1.",
     "website": "https://github.com/marketplace/models",
     "doc_url": "https://docs.github.com/en/github-models",
@@ -1210,16 +1211,16 @@
       "Phi-3.5-mini-instruct"
     ],
     "free_quota": {
-      "type": "每日刷新",
-      "amount": "150 次 / 天",
-      "unit": "Requests (高阶模型) + 50次/天 (思考模型)",
-      "reset_period": "每日刷新",
-      "details": "只要有 GitHub 个人访问令牌（PAT），即可免费调用 GPT-4o 与 DeepSeek R1。",
-      "details_en": "150 requests/day for standard models and 50 req/day for reasoning models."
+      "type": "已下线",
+      "amount": "0",
+      "unit": "已下线",
+      "reset_period": "无",
+      "details": "GitHub Models 已于 2026 年 7 月 30 日正式下线退役，服务不再可用。",
+      "details_en": "GitHub Models was fully retired on July 30, 2026 and is no longer available."
     },
     "verification": "GitHub 账号",
-    "status": "active",
-    "last_verified": "2026-09-02",
+    "status": "expired",
+    "last_verified": "2026-10-26",
     "tags": [
       "每日",
       "大厂基座",
@@ -1280,7 +1281,7 @@
     "evidence": [
       {
         "url": "https://docs.github.com/en/github-models",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1290,22 +1291,23 @@
     "name": "Gladia | AI Audio Infrastructure for Voice Product",
     "name_en": "Gladia",
     "category": "海外探索",
-    "intro": "Gladia | AI Audio Infrastructure for Voice Product：雷达捕获的候选源，免费额度与可用模型待人工核实。",
+    "intro": "Gladia 语音与音频 AI 基础设施平台，新用户注册即送 50 欧元免费额度（有效期 1 年）。",
     "intro_en": "Gladia: discovered by radar; free tier and models unverified.",
     "website": "https://gladia.io",
     "doc_url": "https://gladia.io/docs",
     "api_base_url": "https://api.gladia.io/v1",
     "free_models": [],
     "free_quota": {
-      "type": "待核实",
-      "amount": "待核实",
-      "unit": "Tokens",
-      "reset_period": "待核实",
-      "details": "雷达线索：页面匹配得分 4/11；https://api.gladia.io/v1/models HTTP 200 返回模型列表。免费额度需人工核实。"
+      "type": "限时赠送",
+      "amount": "50 欧元",
+      "unit": "EUR Credits (1年有效)",
+      "reset_period": "一次性",
+      "details": "新用户注册送 50 欧元免费额度，有效期 1 年，可转录约 312 小时异步音频或 73 小时实时流音频。",
+      "details_en": "New accounts receive €50 in free credits valid for one year (approx. 312 hours async transcription)."
     },
     "verification": "邮箱/GitHub",
-    "status": "unverified",
-    "last_verified": null,
+    "status": "active",
+    "last_verified": "2026-10-26",
     "tags": [
       "雷达新源",
       "待人工复核",
@@ -1342,15 +1344,15 @@
     "evidence": [
       {
         "url": "https://gladia.io",
-        "checked_at": "2026-09-23"
+        "checked_at": "2026-10-26"
       },
       {
         "url": "https://gladia.io/pricing",
-        "checked_at": "2026-09-23"
+        "checked_at": "2026-10-26"
       },
       {
         "url": "https://api.gladia.io/v1/models",
-        "checked_at": "2026-09-23"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1379,7 +1381,7 @@
     },
     "verification": "邮箱注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "海外主流",
@@ -1437,7 +1439,7 @@
     "evidence": [
       {
         "url": "https://docs.gmicloud.ai/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1466,7 +1468,7 @@
     },
     "verification": "Google 账号",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "每日",
       "大厂基座",
@@ -1526,7 +1528,7 @@
     "evidence": [
       {
         "url": "https://ai.google.dev/docs",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1556,7 +1558,7 @@
     },
     "verification": "邮箱注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "每日",
@@ -1616,7 +1618,7 @@
     "evidence": [
       {
         "url": "https://console.groq.com/docs/quickstart",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1646,7 +1648,7 @@
     },
     "verification": "邮箱注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "每日",
       "永久",
@@ -1708,7 +1710,7 @@
     "evidence": [
       {
         "url": "https://huggingface.co/docs/api-inference/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1737,7 +1739,7 @@
     },
     "verification": "邮箱注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "海外主流",
@@ -1795,7 +1797,7 @@
     "evidence": [
       {
         "url": "https://www.hyperbolic.ai/docs/overview/overview",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1825,7 +1827,7 @@
     },
     "verification": "手机号注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "国产直连",
@@ -1885,7 +1887,7 @@
     "evidence": [
       {
         "url": "https://docs.infini-ai.com/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -1915,7 +1917,7 @@
     },
     "verification": "免注册 / 注册送Key",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "永久",
@@ -1987,7 +1989,7 @@
     "evidence": [
       {
         "url": "https://jina.ai/reader/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -2283,7 +2285,7 @@
     },
     "verification": "手机号/邮箱验证",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "海外主流",
@@ -2342,7 +2344,7 @@
     "evidence": [
       {
         "url": "https://docs.mistral.ai/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -2462,7 +2464,7 @@
     },
     "verification": "手机号注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "国产直连",
@@ -2522,7 +2524,7 @@
     "evidence": [
       {
         "url": "https://platform.moonshot.cn/docs/intro",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -2551,7 +2553,7 @@
     },
     "verification": "海外手机/绑定卡",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "海外主流",
@@ -2609,7 +2611,7 @@
     "evidence": [
       {
         "url": "https://docs.nebius.ai/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -2638,7 +2640,7 @@
     },
     "verification": "GitHub / 邮箱",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "海外主流",
@@ -2696,7 +2698,7 @@
     "evidence": [
       {
         "url": "https://novita.ai/docs",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -2725,7 +2727,7 @@
     },
     "verification": "邮箱验证",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "大厂基座",
@@ -2784,7 +2786,7 @@
     "evidence": [
       {
         "url": "https://docs.api.nvidia.com/nim/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -2814,7 +2816,7 @@
     },
     "verification": "Google / GitHub / 邮箱",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "聚合路由",
@@ -2874,7 +2876,7 @@
     "evidence": [
       {
         "url": "https://openrouter.ai/docs",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -2970,22 +2972,23 @@
     "name": "Requesty: AI Gateway & LLM Router for 600+ Models",
     "name_en": "Requesty",
     "category": "海外探索",
-    "intro": "Requesty: AI Gateway & LLM Router for 600+ Models：雷达捕获的候选源，免费额度与可用模型待人工核实。",
+    "intro": "AI 网关与大模型路由平台，每日免费提供 200 次请求额度访问所有免费模型，无需绑定信用卡。",
     "intro_en": "Requesty: discovered by radar; free tier and models unverified.",
     "website": "https://requesty.ai",
     "doc_url": "https://requesty.ai/docs",
     "api_base_url": "https://requesty.ai/v1",
     "free_models": [],
     "free_quota": {
-      "type": "待核实",
-      "amount": "待核实",
-      "unit": "Tokens",
-      "reset_period": "待核实",
-      "details": "雷达线索：页面匹配得分 5/11。免费额度需人工核实。"
+      "type": "每日刷新",
+      "amount": "200",
+      "unit": "Requests / 天 (免费模型)",
+      "reset_period": "每日刷新",
+      "details": "每日免费提供 200 次请求额度，可免费调用平台支持的所有免费模型，无需绑定信用卡。",
+      "details_en": "Start free with 200 requests a day on all free models, no credit card required."
     },
     "verification": "邮箱/GitHub",
-    "status": "unverified",
-    "last_verified": null,
+    "status": "active",
+    "last_verified": "2026-10-26",
     "tags": [
       "雷达新源",
       "待人工复核"
@@ -3021,11 +3024,11 @@
     "evidence": [
       {
         "url": "https://requesty.ai",
-        "checked_at": "2026-09-23"
+        "checked_at": "2026-10-26"
       },
       {
         "url": "https://requesty.ai/pricing",
-        "checked_at": "2026-09-23"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3054,7 +3057,7 @@
     },
     "verification": "邮箱注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "每日",
@@ -3113,7 +3116,7 @@
     "evidence": [
       {
         "url": "https://docs.sambanova.ai/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3143,7 +3146,7 @@
     },
     "verification": "手机实名认证",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "大厂基座",
@@ -3203,7 +3206,7 @@
     "evidence": [
       {
         "url": "https://www.scnet.cn/ui/mall/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3233,7 +3236,7 @@
     },
     "verification": "钱包地址",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "每日",
       "区块链水龙头"
@@ -3287,7 +3290,7 @@
     "evidence": [
       {
         "url": "https://ethereum.org/en/developers/docs/networks/#sepolia",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3317,7 +3320,7 @@
     },
     "verification": "手机号注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "限时",
@@ -3378,7 +3381,7 @@
     "evidence": [
       {
         "url": "https://docs.siliconflow.cn/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3409,7 +3412,7 @@
     },
     "verification": "手机号注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "国产直连",
@@ -3470,7 +3473,7 @@
     "evidence": [
       {
         "url": "https://platform.stepfun.com/docs/zh/welcome",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3491,7 +3494,7 @@
       "tavily-qna"
     ],
     "free_quota": {
-      "type": "每日刷新",
+      "type": "每月刷新",
       "amount": "1000 次",
       "unit": "Search API Calls / 月",
       "reset_period": "每月刷新",
@@ -3500,7 +3503,7 @@
     },
     "verification": "GitHub / Google",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "每日",
       "每月",
@@ -3561,7 +3564,7 @@
     "evidence": [
       {
         "url": "https://docs.tavily.com/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3681,7 +3684,7 @@
     },
     "verification": "邮箱注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "海外主流",
@@ -3740,7 +3743,7 @@
     "evidence": [
       {
         "url": "https://docs.together.ai/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3770,7 +3773,7 @@
     },
     "verification": "手机号注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "每日",
@@ -3831,7 +3834,7 @@
     "evidence": [
       {
         "url": "https://docs.tokenpony.cn/README.md",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3861,7 +3864,7 @@
     },
     "verification": "火山引擎实名",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "每日",
       "大厂基座",
@@ -3921,7 +3924,7 @@
     "evidence": [
       {
         "url": "https://www.volcengine.com/activity/ark",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -3951,7 +3954,7 @@
     },
     "verification": "海外手机号/绑定卡",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "限时",
       "每日",
@@ -4013,7 +4016,7 @@
     "evidence": [
       {
         "url": "https://docs.x.ai/",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -4043,7 +4046,7 @@
     },
     "verification": "讯飞账号认证",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "大厂基座",
@@ -4103,7 +4106,7 @@
     "evidence": [
       {
         "url": "https://www.xfyun.cn/doc/spark/Web.html",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   },
@@ -4199,7 +4202,7 @@
     },
     "verification": "手机号注册",
     "status": "active",
-    "last_verified": "2026-09-02",
+    "last_verified": "2026-10-26",
     "tags": [
       "永久",
       "限时",
@@ -4260,7 +4263,7 @@
     "evidence": [
       {
         "url": "https://bigmodel.cn/dev/api/normal-model/glm-4",
-        "checked_at": "2026-09-02"
+        "checked_at": "2026-10-26"
       }
     ]
   }

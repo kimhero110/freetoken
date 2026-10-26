@@ -4,8 +4,7 @@ name: Jina AI (Reader & Search)
 name_en: Jina AI
 category: 搜索与工具
 intro: 全球领先的大模型搜索与网页 Markdown 提取服务，免费提供 1000 万 Tokens 提取额度！
-intro_en: Developer toolkit for RAG & LLM web reading. 10,000,000 free tokens for
-  r.jina.ai and s.jina.ai.
+intro_en: Developer toolkit for RAG & LLM web reading. 10,000,000 free tokens for r.jina.ai and s.jina.ai.
 website: https://jina.ai/
 doc_url: https://jina.ai/reader/
 api_base_url: https://r.jina.ai/
@@ -22,7 +21,7 @@ free_quota:
   details_en: 10M free tokens upon registration; works keyless with 20 RPM.
 verification: 免注册 / 注册送Key
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 限时
 - 永久
@@ -42,32 +41,32 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: search
-      protocol: rest
-      endpoint_url: null
-      models: []
-      auth:
-        type: none
-        header: null
-        query_param: null
-        env_var: null
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
-    - id: text_extraction
-      protocol: rest
-      endpoint_url: null
-      models: []
-      auth:
-        type: none
-        header: null
-        query_param: null
-        env_var: null
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: search
+    protocol: rest
+    endpoint_url: null
+    models: []
+    auth:
+      type: none
+      header: null
+      query_param: null
+      env_var: null
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
+  - id: text_extraction
+    protocol: rest
+    endpoint_url: null
+    models: []
+    auth:
+      type: none
+      header: null
+      query_param: null
+      env_var: null
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: unknown
     openai_python: unknown
@@ -77,4 +76,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://jina.ai/reader/
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'

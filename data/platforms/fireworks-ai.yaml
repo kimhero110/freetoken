@@ -4,8 +4,8 @@ name: Fireworks AI
 name_en: Fireworks AI
 category: 海外主流
 intro: 全球顶尖高性能开源大模型推理加速云平台，新注册开发者发放 1 美元试用金（约 500 万 Tokens）！
-intro_en: High-performance inference platform. $1 free credit (~5,000,000 tokens)
-  on sign-up with ultra-low latency.
+intro_en: High-performance inference platform. $1 free credit (~5,000,000 tokens) on sign-up with ultra-low
+  latency.
 website: https://fireworks.ai/
 doc_url: https://docs.fireworks.ai/
 api_base_url: https://api.fireworks.ai/inference/v1
@@ -21,7 +21,7 @@ free_quota:
   details_en: $1 trial credit upon registration (~5M tokens).
 verification: GitHub / Google
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 限时
 - 海外主流
@@ -41,21 +41,21 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://api.fireworks.ai/inference/v1/chat/completions
-      models:
-      - accounts/fireworks/models/deepseek-r1
-      - accounts/fireworks/models/llama-v3p3-70b-instruct
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: FIREWORKS_AI_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://api.fireworks.ai/inference/v1/chat/completions
+    models:
+    - accounts/fireworks/models/deepseek-r1
+    - accounts/fireworks/models/llama-v3p3-70b-instruct
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: FIREWORKS_AI_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -65,4 +65,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://docs.fireworks.ai/
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'

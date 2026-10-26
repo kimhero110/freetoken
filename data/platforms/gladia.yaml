@@ -3,21 +3,22 @@ slug: gladia
 name: Gladia | AI Audio Infrastructure for Voice Product
 name_en: Gladia
 category: 海外探索
-intro: Gladia | AI Audio Infrastructure for Voice Product：雷达捕获的候选源，免费额度与可用模型待人工核实。
+intro: Gladia 语音与音频 AI 基础设施平台，新用户注册即送 50 欧元免费额度（有效期 1 年）。
 intro_en: 'Gladia: discovered by radar; free tier and models unverified.'
 website: https://gladia.io
 doc_url: https://gladia.io/docs
 api_base_url: https://api.gladia.io/v1
 free_models: []
 free_quota:
-  type: 待核实
-  amount: 待核实
-  unit: Tokens
-  reset_period: 待核实
-  details: 雷达线索：页面匹配得分 4/11；https://api.gladia.io/v1/models HTTP 200 返回模型列表。免费额度需人工核实。
+  type: 限时赠送
+  amount: 50 欧元
+  unit: EUR Credits (1年有效)
+  reset_period: 一次性
+  details: 新用户注册送 50 欧元免费额度，有效期 1 年，可转录约 312 小时异步音频或 73 小时实时流音频。
+  details_en: New accounts receive €50 in free credits valid for one year (approx. 312 hours async transcription).
 verification: 邮箱/GitHub
-status: unverified
-last_verified: null
+status: active
+last_verified: '2026-10-26'
 tags:
 - 雷达新源
 - 待人工复核
@@ -46,8 +47,8 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://gladia.io
-  checked_at: '2026-09-23'
+  checked_at: '2026-10-26'
 - url: https://gladia.io/pricing
-  checked_at: '2026-09-23'
+  checked_at: '2026-10-26'
 - url: https://api.gladia.io/v1/models
-  checked_at: '2026-09-23'
+  checked_at: '2026-10-26'

@@ -4,8 +4,7 @@ name: Cloudflare Workers AI
 name_en: Cloudflare Workers AI
 category: 大厂云服务
 intro: 全球最大边缘网络官方 AI 推理平台，每天免费提供 10,000 次神经元（Neurons）计算额度（2026-10-26 复核）。
-intro_en: Serverless GPU inference at the edge. 10,000 free Neurons daily (~100K-300K
-  tokens).
+intro_en: Serverless GPU inference at the edge. 10,000 free Neurons daily (~100K-300K tokens).
 website: https://ai.cloudflare.com/
 doc_url: https://developers.cloudflare.com/workers-ai/
 api_base_url: https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/v1
@@ -18,8 +17,7 @@ free_quota:
   unit: Neurons / 天 (约数十万Tokens)
   reset_period: 每日刷新
   details: 每天提供 10,000 神经元计算额度，覆盖数百款前沿开源模型与多模态生图。
-  details_en: 10,000 Neurons per day (~100-300K tokens) free tier across global edge
-    network.
+  details_en: 10,000 Neurons per day (~100-300K tokens) free tier across global edge network.
 verification: 邮箱验证
 status: active
 last_verified: '2026-10-26'
@@ -67,5 +65,5 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://developers.cloudflare.com/workers-ai/
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'
 last_checked: '2026-10-26'
