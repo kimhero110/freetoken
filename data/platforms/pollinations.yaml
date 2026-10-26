@@ -7,7 +7,7 @@ intro: 完全开源、零门槛、免注册、免 API Key 的多模态生图与�
 intro_en: Completely free, open-source, keyless multimodal generation API for images
   and text.
 website: https://pollinations.ai/
-doc_url: https://pollinations.github.io/docs/
+doc_url: https://gen.pollinations.ai/docs
 api_base_url: https://text.pollinations.ai/openai
 free_models:
 - openai
@@ -64,5 +64,5 @@ capabilities:
     openclaw: unknown
     cherry_studio: unknown
 evidence:
-- url: https://pollinations.github.io/docs/
+- url: https://gen.pollinations.ai/llms.txt
   checked_at: '2026-09-02'

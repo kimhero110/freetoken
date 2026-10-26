@@ -6,8 +6,8 @@ category: 大厂云服务
 intro: 腾讯官方大模型开放平台，新注册用户赠送 10 万-100 万 Tokens 免费体验金，多模态与企微生态深度整合。
 intro_en: Tencent's foundation model service. Free credits for new accounts with strong
   multi-turn WeChat reasoning.
-website: https://cloud.tencent.com/product/hunyuan
-doc_url: https://cloud.tencent.com/document/product/1729
+website: https://cloud.tencent.com/product/tclm
+doc_url: https://cloud.tencent.com/product/tclm
 api_base_url: https://api.hunyuan.cloud.tencent.com/v1
 free_models:
 - hunyuan-standard
@@ -33,7 +33,7 @@ gotchas:
 gotchas_en:
 - Switches to post-paid after promotional package expires.
 registration:
-  url: https://cloud.tencent.com/product/hunyuan
+  url: https://cloud.tencent.com/product/tclm
 requirements:
   phone: unknown
   card: unknown
@@ -67,5 +67,5 @@ capabilities:
     openclaw: unknown
     cherry_studio: unknown
 evidence:
-- url: https://cloud.tencent.com/document/product/1729
+- url: https://cloud.tencent.com/product/tclm
   checked_at: '2026-09-02'

@@ -6,8 +6,8 @@ category: 海外主流
 intro: 高性能去中心化 GPU 算力网络，注册即送 10 美元体验金，支持 DeepSeek R1 满血版 671B 极速推理！
 intro_en: Decentralized GPU cloud. $10 free developer credits for DeepSeek R1 671B
   full-parameter inference.
-website: https://hyperbolic.xyz/
-doc_url: https://docs.hyperbolic.xyz/
+website: https://www.hyperbolic.ai/
+doc_url: https://www.hyperbolic.ai/docs/overview/overview
 api_base_url: https://api.hyperbolic.xyz/v1
 free_models:
 - deepseek-ai/DeepSeek-R1
@@ -31,7 +31,7 @@ gotchas:
 gotchas_en:
 - Credits valid for 30 days.
 registration:
-  url: https://hyperbolic.xyz/
+  url: https://www.hyperbolic.ai/
 requirements:
   phone: unknown
   card: unknown
@@ -64,5 +64,5 @@ capabilities:
     openclaw: unknown
     cherry_studio: unknown
 evidence:
-- url: https://docs.hyperbolic.xyz/
+- url: https://www.hyperbolic.ai/docs/overview/overview
   checked_at: '2026-09-02'

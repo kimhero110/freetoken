@@ -7,7 +7,7 @@ intro: 字节跳动旗下大模型服务平台，推出「千亿协同计划」�
 intro_en: ByteDance cloud platform. 2,000,000 free tokens daily (60M/month) for Doubao
   and DeepSeek via Ark program.
 website: https://www.volcengine.com/product/ark
-doc_url: https://www.volcengine.com/docs/82379
+doc_url: https://www.volcengine.com/activity/ark
 api_base_url: https://ark.cn-beijing.volces.com/api/v3
 free_models:
 - doubao-pro-32k
@@ -67,5 +67,5 @@ capabilities:
     openclaw: unknown
     cherry_studio: unknown
 evidence:
-- url: https://www.volcengine.com/docs/82379
+- url: https://www.volcengine.com/activity/ark
   checked_at: '2026-09-02'
