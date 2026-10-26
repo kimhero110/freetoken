@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: baidu-qianfan
+name: 百度千帆大模型平台
+source_url: https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html
+source_hash: f15a8667c0d8541978d1cb8ce4a721209cdff2c1b1343baab83bfd392cff6565
+platform_hash: 3c93262b1452524c37ccce9f1e07b0829a91364298b3fbbb22c7fb2ce584714b
+captured_at: '2026-10-26T05:02:02.206987+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 永久免费
+    unit: ERNIE-Speed/Lite 系列不限量
+    reset_period: 永久
+    details: ERNIE-Speed 与 ERNIE-Lite 模型全面永久免费调用，新认证用户还送 2000 万旗舰模型额度券。
+    details_en: ERNIE Speed and ERNIE Lite are permanently free; new accounts receive
+      20M tokens.
+  intro: 百度智能云大模型服务平台，ERNIE-Speed 与 ERNIE-Lite 两款主力轻量模型全面永久免费！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 百度千帆大模型服务及Agent开发平台，提供模型服务与Agent开发，新用户实名认证可获20元代金券。
