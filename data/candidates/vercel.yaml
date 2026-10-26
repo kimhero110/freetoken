@@ -5,21 +5,24 @@ score: 4
 proposed:
   schema_version: 2
   slug: vercel
-  name: Agentic Infrastructure - Vercel
-  name_en: Vercel
+  name: Vercel AI Gateway
+  name_en: Vercel AI Gateway
   category: 海外探索
-  intro: Agentic Infrastructure - Vercel：雷达捕获的候选源，免费额度与可用模型待人工核实。
-  intro_en: 'Vercel: discovered by radar; free tier and models unverified.'
-  website: https://vercel.com
-  doc_url: https://vercel.com/docs
-  api_base_url: https://vercel.com/v1
+  intro: Vercel AI Gateway：统一多模型网关，免费额度见 free_quota（雷达入库，细节待复核）。
+  intro_en: 'Vercel AI Gateway: multi-model gateway; see free_quota (radar intake).'
+  website: https://vercel.com/ai-gateway
+  doc_url: https://vercel.com/docs/ai-gateway
+  api_base_url: https://ai-gateway.vercel.sh/v1
   free_models: []
   free_quota:
-    type: 待核实
-    amount: 待核实
-    unit: Tokens
-    reset_period: 待核实
-    details: 雷达线索：页面匹配得分 4/11。免费额度需人工核实。
+    type: 月度额度
+    amount: $5 / 30 天
+    unit: USD
+    reset_period: 每月
+    details: 官方 AI Gateway：团队账户约每 30 天 $5 free credits（首次请求后起算）；购买 credits 后通常不再享免费档。以
+      vercel.com/docs/ai-gateway/pricing 为准。
+    details_en: 'Vercel AI Gateway: about $5 free credits every 30 days until you
+      purchase credits.'
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null

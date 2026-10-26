@@ -5,21 +5,24 @@ score: 5
 proposed:
   schema_version: 2
   slug: thesmartoken
-  name: OpenRouter for Chinese AI Models | SmarToken
-  name_en: Thesmartoken
+  name: SmarToken
+  name_en: SmarToken
   category: 海外探索
-  intro: OpenRouter for Chinese AI Models | SmarToken：雷达捕获的候选源，免费额度与可用模型待人工核实。
-  intro_en: 'Thesmartoken: discovered by radar; free tier and models unverified.'
+  intro: SmarToken：面向海外开发者的中国模型 OpenAI 兼容网关，免费额度见 free_quota（雷达入库，细节待复核）。
+  intro_en: 'SmarToken: OpenAI-compatible gateway for Chinese frontier models; see
+    free_quota (radar intake).'
   website: https://thesmartoken.com
   doc_url: https://thesmartoken.com/docs
-  api_base_url: https://thesmartoken.com/api/v1
+  api_base_url: https://thesmartoken.com/v1
   free_models: []
   free_quota:
-    type: 待核实
-    amount: 待核实
-    unit: Tokens
-    reset_period: 待核实
-    details: 雷达线索：页面匹配得分 5/11；https://thesmartoken.com/api/v1/models HTTP 200 返回模型列表。免费额度需人工核实。
+    type: 一次性额度
+    amount: $5 trial credit
+    unit: USD
+    reset_period: 一次性
+    details: 官网：Google 登录后符合条件的新账户可获约 $5 试用 credit，再预付费充值。以 thesmartoken.com 为准。
+    details_en: 'SmarToken: eligible new accounts get about $5 trial credit after
+      Google login.'
   verification: 邮箱/GitHub
   status: unverified
   last_verified: null
