@@ -1,0 +1,56 @@
+schema_version: 2
+slug: getimg
+name: getimg.ai
+name_en: getimg.ai
+category: 海外探索
+intro: getimg.ai：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+intro_en: 'getimg.ai: developer API platform; see free_quota (radar intake, details
+  to verify).'
+website: https://getimg.ai
+doc_url: https://getimg.ai/docs
+api_base_url: https://api.getimg.ai/v1
+free_models: []
+free_quota:
+  type: 待核实
+  amount: 待核实
+  unit: Credits
+  reset_period: 待核实
+  details: 雷达命中的图像 API 平台；公开营销称有免费层，具体 credits/RPM 待人工核实。
+  details_en: Radar-discovered image API; marketing mentions a free layer — exact
+    credits TBD.
+verification: 邮箱/GitHub
+status: unverified
+last_verified: null
+tags:
+- 雷达新源
+- 待人工复核
+- OpenAI 兼容
+gotchas:
+- 由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。
+gotchas_en:
+- Discovered by radar. Manual verification required.
+registration:
+  url: https://getimg.ai
+requirements:
+  phone: unknown
+  card: unknown
+  region: unknown
+  regions: []
+  rpm: null
+  tpm: null
+capabilities:
+  operations: []
+  tools:
+    curl: unknown
+    openai_python: unknown
+    openai_node: unknown
+    cursor: unknown
+    openclaw: unknown
+    cherry_studio: unknown
+evidence:
+- url: https://getimg.ai
+  checked_at: '2026-09-25'
+- url: https://getimg.ai/pricing
+  checked_at: '2026-09-25'
+- url: https://api.getimg.ai/v1/models
+  checked_at: '2026-09-25'
