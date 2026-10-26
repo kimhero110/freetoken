@@ -3,9 +3,9 @@ slug: github-models
 name: GitHub Models (Azure AI)
 name_en: GitHub Models
 category: 大厂云服务
-intro: 微软与 GitHub 联合推出的开发者原生大模型试验场，每个 GitHub 账号每天免费提供数百次调用！
-intro_en: Official GitHub & Azure playground. Free daily rate limits across GPT-4o,
-  Claude 3.5, and DeepSeek R1.
+intro: GitHub Models 已于 2026 年 7 月 30 日正式下线退役，推理 API 与 Playground 均已关闭。
+intro_en: Official GitHub & Azure playground. Free daily rate limits across GPT-4o, Claude 3.5, and DeepSeek
+  R1.
 website: https://github.com/marketplace/models
 doc_url: https://docs.github.com/en/github-models
 api_base_url: https://models.inference.ai.azure.com
@@ -15,15 +15,15 @@ free_models:
 - DeepSeek-R1
 - Phi-3.5-mini-instruct
 free_quota:
-  type: 每日刷新
-  amount: 150 次 / 天
-  unit: Requests (高阶模型) + 50次/天 (思考模型)
-  reset_period: 每日刷新
-  details: 只要有 GitHub 个人访问令牌（PAT），即可免费调用 GPT-4o 与 DeepSeek R1。
-  details_en: 150 requests/day for standard models and 50 req/day for reasoning models.
+  type: 已下线
+  amount: '0'
+  unit: 已下线
+  reset_period: 无
+  details: GitHub Models 已于 2026 年 7 月 30 日正式下线退役，服务不再可用。
+  details_en: GitHub Models was fully retired on July 30, 2026 and is no longer available.
 verification: GitHub 账号
-status: active
-last_verified: '2026-09-02'
+status: expired
+last_verified: '2026-10-26'
 tags:
 - 每日
 - 大厂基座
@@ -44,23 +44,23 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://models.inference.ai.azure.com/chat/completions
-      models:
-      - gpt-4o
-      - gpt-4o-mini
-      - DeepSeek-R1
-      - Phi-3.5-mini-instruct
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: GITHUB_MODELS_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://models.inference.ai.azure.com/chat/completions
+    models:
+    - gpt-4o
+    - gpt-4o-mini
+    - DeepSeek-R1
+    - Phi-3.5-mini-instruct
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: GITHUB_MODELS_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -70,4 +70,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://docs.github.com/en/github-models
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'

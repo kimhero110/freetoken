@@ -4,8 +4,8 @@ name: Hugging Face (Serverless API)
 name_en: Hugging Face Serverless Inference
 category: 海外主流
 intro: 全球最大开源模型社区官方 Serverless 推理 API，300+ 款开源模型完全免费调用，共享算力池每小时提供 300 次调用。
-intro_en: Official Serverless Inference API by Hugging Face. Free access to 300+ open-source
-  models with 300 req/hr tier.
+intro_en: Official Serverless Inference API by Hugging Face. Free access to 300+ open-source models with
+  300 req/hr tier.
 website: https://huggingface.co/docs/api-inference/
 doc_url: https://huggingface.co/docs/api-inference/
 api_base_url: https://api-inference.huggingface.co/v1
@@ -22,7 +22,7 @@ free_quota:
   details_en: 300 requests per hour free tier for hundreds of popular open models.
 verification: 邮箱注册
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 每日
 - 永久
@@ -45,22 +45,22 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://api-inference.huggingface.co/v1/chat/completions
-      models:
-      - deepseek-ai/DeepSeek-R1
-      - Qwen/Qwen2.5-72B-Instruct
-      - meta-llama/Llama-3.3-70B-Instruct
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: HUGGINGFACE_INFERENCE_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://api-inference.huggingface.co/v1/chat/completions
+    models:
+    - deepseek-ai/DeepSeek-R1
+    - Qwen/Qwen2.5-72B-Instruct
+    - meta-llama/Llama-3.3-70B-Instruct
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: HUGGINGFACE_INFERENCE_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -70,4 +70,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://huggingface.co/docs/api-inference/
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'

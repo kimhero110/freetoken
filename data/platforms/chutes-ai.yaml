@@ -20,11 +20,11 @@ register_url: https://chutes.ai
 docs_url: https://chutes.ai/docs
 source_urls:
 - https://chutes.ai
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 status: active
 intro: 去中心化无服务器 AI 算力网络。提供轻量级开源大模型即开即用 API 与免费探索层，无需自建集群。
-intro_en: Decentralized serverless AI compute. Provides instant drop-in open LLM APIs
-  and free exploration tier.
+intro_en: Decentralized serverless AI compute. Provides instant drop-in open LLM APIs and free exploration
+  tier.
 tags:
 - 限时
 - Serverless
@@ -41,21 +41,21 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://chutes.ai/v1/chat/completions
-      models:
-      - deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
-      - meta-llama/Llama-3.3-70B-Instruct
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: CHUTES_AI_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://chutes.ai/v1/chat/completions
+    models:
+    - deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+    - meta-llama/Llama-3.3-70B-Instruct
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: CHUTES_AI_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -65,4 +65,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://chutes.ai
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'

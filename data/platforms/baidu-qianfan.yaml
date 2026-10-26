@@ -4,8 +4,7 @@ name: 百度千帆大模型平台
 name_en: Baidu Qianfan Platform
 category: 大厂云服务
 intro: 百度智能云大模型服务平台，ERNIE-Speed 与 ERNIE-Lite 两款主力轻量模型全面永久免费！
-intro_en: Baidu AI Cloud platform. ERNIE-Speed and ERNIE-Lite models are permanently
-  free for all developers.
+intro_en: Baidu AI Cloud platform. ERNIE-Speed and ERNIE-Lite models are permanently free for all developers.
 website: https://console.bce.baidu.com/qianfan/
 doc_url: https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html
 api_base_url: https://qianfan.baidubce.com/v2
@@ -19,11 +18,10 @@ free_quota:
   unit: ERNIE-Speed/Lite 系列不限量
   reset_period: 永久
   details: ERNIE-Speed 与 ERNIE-Lite 模型全面永久免费调用，新认证用户还送 2000 万旗舰模型额度券。
-  details_en: ERNIE Speed and ERNIE Lite are permanently free; new accounts receive
-    20M tokens.
+  details_en: ERNIE Speed and ERNIE Lite are permanently free; new accounts receive 20M tokens.
 verification: 百度账号
 status: active
-last_verified: '2026-09-02'
+last_verified: '2026-10-26'
 tags:
 - 永久
 - 大厂基座
@@ -44,22 +42,22 @@ requirements:
   tpm: null
 capabilities:
   operations:
-    - id: chat_completions
-      protocol: openai
-      endpoint_url: https://qianfan.baidubce.com/v2/chat/completions
-      models:
-      - ernie-speed-128k
-      - ernie-speed-8k
-      - ernie-lite-8k
-      auth:
-        type: bearer
-        header: Authorization
-        query_param: null
-        env_var: BAIDU_QIANFAN_API_KEY
-      verification:
-        status: claimed
-        checked_at: null
-        evidence_url: null
+  - id: chat_completions
+    protocol: openai
+    endpoint_url: https://qianfan.baidubce.com/v2/chat/completions
+    models:
+    - ernie-speed-128k
+    - ernie-speed-8k
+    - ernie-lite-8k
+    auth:
+      type: bearer
+      header: Authorization
+      query_param: null
+      env_var: BAIDU_QIANFAN_API_KEY
+    verification:
+      status: claimed
+      checked_at: null
+      evidence_url: null
   tools:
     curl: claimed
     openai_python: claimed
@@ -69,4 +67,4 @@ capabilities:
     cherry_studio: unknown
 evidence:
 - url: https://cloud.baidu.com/doc/WENXINWORKSHOP/index.html
-  checked_at: '2026-09-02'
+  checked_at: '2026-10-26'
