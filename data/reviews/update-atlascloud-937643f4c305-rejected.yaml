@@ -25,3 +25,8 @@ proposed:
     type: null
     conditions: []
   intro: Atlas Cloud是AI API聚合平台，统一接入400+模型，支持聊天、图像、视频生成，提供透明按量计费。
+review:
+  decision: rejected
+  reviewed_at: '2026-10-26T07:50:33.154751+00:00'
+  reviewer: kimhero110
+  annotation_via: grokbot
