@@ -1,0 +1,33 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: lingyiwanwu-01
+name: 零一万物 (01.AI 开放平台)
+source_url: https://platform.01.ai/docs
+source_hash: 54d59feabbc3c9cb21ae4cb949a0b999983d08bc1fd22b4e3c1a7bd8a05b2a72
+platform_hash: 1663ed4c2709c8a611a666562d8385696ca6462337f4a95a2189e8636c556826
+captured_at: '2026-10-26T08:49:16.924313+00:00'
+extractor:
+  type: reviewed_rejection_renewal
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 1000 万
+    unit: Tokens (或 20 元代金券)
+    reset_period: 一次性
+    details: 新用户注册发放 20 元代金券，支持千亿参数 Yi-Lightning 极速推理。
+    details_en: 20 RMB promotional voucher upon sign-up.
+  intro: 李开复博士创立的零一万物大模型，注册即送千万 Tokens（或 20 元代金券），支持 Yi-Lightning 超强性能！
+proposed:
+  free_quota:
+    type: 限时赠送
+    amount: 1000 万
+    unit: Tokens (或 20 元代金券)
+    reset_period: 一次性
+    details: 新用户注册发放 20 元代金券，支持千亿参数 Yi-Lightning 极速推理。
+    details_en: 20 RMB promotional voucher upon sign-up.
+  intro: 李开复博士创立的零一万物大模型，注册即送千万 Tokens（或 20 元代金券），支持 Yi-Lightning 超强性能！
+verification_conclusion: renew_keep_current
+verification_reasons:
+- latest_same_hash_review_rejected_null_wipe
+- current_free_quota_preserved

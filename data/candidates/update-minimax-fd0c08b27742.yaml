@@ -1,0 +1,33 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: minimax
+name: MiniMax 开放平台
+source_url: https://platform.minimaxi.com/document/guides
+source_hash: fd0c08b27742b4ed4098d0ed956b33fd8395b6d3a07965d03f3f292d31117450
+platform_hash: e9753080fb7eaef9030c0c84059e104b7b7d9b1cbe3b9a37040927d11d1e9e30
+captured_at: '2026-10-26T08:49:17.852101+00:00'
+extractor:
+  type: reviewed_rejection_renewal
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 1500 万
+    unit: Tokens (或 15 元代金券)
+    reset_period: 一次性
+    details: 新用户实名发放 15 元体验金，支持万亿 MoE 与拟真语音生成。
+    details_en: 15 RMB trial voucher (~15M tokens) on sign-up.
+  intro: 自研万亿 MoE 架构大模型平台，新注册用户赠送 1500 万 Tokens（或 15 元代金券），长文本与拟真语音极佳。
+proposed:
+  free_quota:
+    type: 限时赠送
+    amount: 1500 万
+    unit: Tokens (或 15 元代金券)
+    reset_period: 一次性
+    details: 新用户实名发放 15 元体验金，支持万亿 MoE 与拟真语音生成。
+    details_en: 15 RMB trial voucher (~15M tokens) on sign-up.
+  intro: 自研万亿 MoE 架构大模型平台，新注册用户赠送 1500 万 Tokens（或 15 元代金券），长文本与拟真语音极佳。
+verification_conclusion: renew_keep_current
+verification_reasons:
+- latest_same_hash_review_rejected_null_wipe
+- current_free_quota_preserved

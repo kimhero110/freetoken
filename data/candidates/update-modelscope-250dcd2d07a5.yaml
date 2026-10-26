@@ -1,0 +1,33 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: modelscope
+name: 魔搭社区 (ModelScope)
+source_url: https://modelscope.cn/docs/InferenceAPI
+source_hash: 250dcd2d07a55c6d473f1d5e55639b237c5685d00b6f4355d60d079c6edf5d40
+platform_hash: 1970ac63282f19da6f057b5693f837bbe4cc945decd8cd584906f472d8d62f4f
+captured_at: '2026-10-26T08:49:18.312686+00:00'
+extractor:
+  type: reviewed_rejection_renewal
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 永久免费
+    unit: 共享算力池
+    reset_period: 永久
+    details: 魔搭社区开发者可直接调用平台托管的主流开源模型，零成本体验。
+    details_en: Free Serverless API access across hosted open models.
+  intro: 阿里官方开源模型社区，免费提供数十款主流开源模型 Serverless 推理 API，免配置即刻调用。
+proposed:
+  free_quota:
+    type: 永久免费
+    amount: 永久免费
+    unit: 共享算力池
+    reset_period: 永久
+    details: 魔搭社区开发者可直接调用平台托管的主流开源模型，零成本体验。
+    details_en: Free Serverless API access across hosted open models.
+  intro: 阿里官方开源模型社区，免费提供数十款主流开源模型 Serverless 推理 API，免配置即刻调用。
+verification_conclusion: renew_keep_current
+verification_reasons:
+- latest_same_hash_review_rejected_null_wipe
+- current_free_quota_preserved
