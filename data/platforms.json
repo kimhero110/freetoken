@@ -178,6 +178,72 @@
   },
   {
     "schema_version": 2,
+    "slug": "assemblyai",
+    "name": "AssemblyAI",
+    "name_en": "AssemblyAI",
+    "category": "海外探索",
+    "intro": "AssemblyAI：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。",
+    "intro_en": "AssemblyAI: developer API platform; see free_quota (radar intake, details to verify).",
+    "website": "https://assemblyai.com",
+    "doc_url": "https://assemblyai.com/docs",
+    "api_base_url": "https://assemblyai.com/v1",
+    "free_models": [],
+    "free_quota": {
+      "type": "一次性额度",
+      "amount": "$50",
+      "unit": "USD",
+      "reset_period": "一次性",
+      "details": "官方定价页：注册赠送 $50 免费额度，无需绑卡；用尽后需升级。以 assemblyai.com/pricing 为准。",
+      "details_en": "AssemblyAI pricing: $50 free credits on signup, no card required."
+    },
+    "verification": "邮箱/GitHub",
+    "status": "unverified",
+    "last_verified": null,
+    "tags": [
+      "雷达新源",
+      "待人工复核"
+    ],
+    "gotchas": [
+      "由雷达自动捕获，请人工复核免费层 RPM 限制与模型调用范围。"
+    ],
+    "gotchas_en": [
+      "Discovered by radar. Manual verification required."
+    ],
+    "registration": {
+      "url": "https://assemblyai.com"
+    },
+    "requirements": {
+      "phone": "unknown",
+      "card": "unknown",
+      "region": "unknown",
+      "regions": [],
+      "rpm": null,
+      "tpm": null
+    },
+    "capabilities": {
+      "operations": [],
+      "tools": {
+        "curl": "unknown",
+        "openai_python": "unknown",
+        "openai_node": "unknown",
+        "cursor": "unknown",
+        "openclaw": "unknown",
+        "cherry_studio": "unknown"
+      }
+    },
+    "evidence": [
+      {
+        "url": "https://assemblyai.com",
+        "checked_at": "2026-09-25"
+      },
+      {
+        "url": "https://assemblyai.com/pricing",
+        "checked_at": "2026-09-25"
+      }
+    ]
+  },
+  {
+    "schema_version": 2,
     "slug": "atlascloud",
     "name": "Overview | Atlas Cloud Docs",
     "name_en": "Atlascloud",
