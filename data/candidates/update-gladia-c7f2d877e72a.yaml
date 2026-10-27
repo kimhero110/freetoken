@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: gladia
+name: Gladia | AI Audio Infrastructure for Voice Product
+source_url: https://gladia.io
+source_hash: c7f2d877e72a8f5cbc4a8f327cb8d2c8001bb86df25119196e8d5488b635b4f6
+platform_hash: b4ab52285237519fea5c06edf434edea5c0f4d11a720606639a90411943ae290
+captured_at: '2026-10-27T00:04:33.306708+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 50 欧元
+    unit: EUR Credits (1年有效)
+    reset_period: 一次性
+    details: 新用户注册送 50 欧元免费额度，有效期 1 年，可转录约 312 小时异步音频或 73 小时实时流音频。
+    details_en: New accounts receive €50 in free credits valid for one year (approx.
+      312 hours async transcription).
+  intro: Gladia 语音与音频 AI 基础设施平台，新用户注册即送 50 欧元免费额度（有效期 1 年）。
+proposed:
+  free_quota:
+    amount: 50
+    unit: 欧元
+    type: 永久
+    conditions: []
+  intro: Gladia免费API提供50欧元转录额度，永久有效，支持100+语言实时与异步语音转文字。
