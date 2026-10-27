@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: google-ai-studio
+name: Google AI Studio (Gemini)
+source_url: https://ai.google.dev/docs
+source_hash: 324ead2d2397f8934890a8231c9af0975ab71f75d92f304286597bed45b80f4c
+platform_hash: 7c8d811fce9910cb8f665471fbf7b0d99598fd32dba282233cee3852028ca940
+captured_at: '2026-10-27T02:13:46.263784+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每日刷新
+    amount: 1500 次 / 天
+    unit: Requests (约 1000 万 Tokens/天)
+    reset_period: 每日刷新
+    details: 全网最慷慨大厂官方免费层：每天 1500 次请求，15 RPM，支持 100 万 Token 上下文。
+    details_en: 1,500 requests per day at 15 RPM for Gemini 2.5 Flash.
+  intro: Google 官方开发者大模型服务，Gemini 2.5 Flash 每天免费提供高达 1500 次请求，百万超长上下文！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Gemini API 提供多模态模型与智能体能力，支持文本、图像、视频生成与理解，助力开发者构建 AI 应用。

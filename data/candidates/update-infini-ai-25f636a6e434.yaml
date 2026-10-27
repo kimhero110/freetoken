@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: infini-ai
+name: 无问芯穹 (Infini-AI)
+source_url: https://docs.infini-ai.com/
+source_hash: 25f636a6e434cdede1e1c52013ac40bb444428be18ef1c42b3d6331c781dd76c
+platform_hash: 310cab8199f90aeb715b2630ea16263cae45cca95401619490d3a49fa1368e55
+captured_at: '2026-10-27T02:14:32.102511+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 数十元代金券
+    unit: 约数百万Tokens
+    reset_period: 一次性
+    details: 新注册开发者发放体验代金券，支持国产多芯片异构集群满血大模型推理。
+    details_en: Registration credits for multi-chip heterogeneous inference.
+  intro: 清华系大模型软硬件协同加速平台，注册送数十元体验金，支持 DeepSeek R1/V3 与 Qwen 系列国产算力卡直连。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 无问芯穹提供大模型API、智能体与ComfyUI工作流托管服务，支持快速集成与云端部署。

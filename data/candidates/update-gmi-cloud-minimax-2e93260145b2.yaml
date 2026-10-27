@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: gmi-cloud-minimax
+name: GMI Cloud (MiniMax 专属)
+source_url: https://docs.gmicloud.ai/
+source_hash: 2e93260145b206dbc1ee676eba1be1e243550e813ada01a396117962efeb6421
+platform_hash: 5b6cbcd8d949d5fa6c3c8d094c272459d8c44d69128d7d03ad878d4672b08ef2
+captured_at: '2026-10-27T02:13:37.086056+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 20 亿
+    unit: Tokens (限时巨量补贴)
+    reset_period: 一次性
+    details: 注册发放高达 20 亿 Tokens 免费体验额度，全网额度天花板。
+    details_en: 2 Billion free tokens for MiniMax-Text-01 upon registration.
+  intro: GMI Cloud 联合 MiniMax 推出限时超级算力补贴，注册即送 20 亿免费 Tokens，支持 245K 超长上下文！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: GMI Cloud 提供OpenAI兼容推理API及GPU算力，支持多模型服务。该页面未说明免费额度，请查阅官方定价。

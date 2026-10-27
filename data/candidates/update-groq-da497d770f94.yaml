@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: groq
+name: Groq LPU 极速推理
+source_url: https://console.groq.com/docs/quickstart
+source_hash: da497d770f94697b8aadea44b513cc95e1d5e017cbb629f5238e372c1bd55353
+platform_hash: 5e51f217f7b23c755b5f899015587d5346830f01602fc33c1ff994677e8585ec
+captured_at: '2026-10-27T02:13:53.676288+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 永久免费层
+    unit: 30 RPM / 14,400 RPD
+    reset_period: 每日刷新
+    details: 永久提供 30 RPM 与每日 14,400 次请求免费额度，极速体验极佳。
+    details_en: Permanent free tier with 30 RPM and 14,400 daily requests.
+  intro: 基于自研 LPU 架构的全球极速推理平台，生成速度超 500-800 tokens/秒，永久提供免费层！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Groq API快速入门指南，教您创建API密钥并发送首次聊天请求，支持多语言SDK和主流AI框架集成。
