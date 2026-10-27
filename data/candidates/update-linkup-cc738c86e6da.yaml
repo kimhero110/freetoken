@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: linkup
+name: Linkup
+source_url: https://linkup.so
+source_hash: cc738c86e6dac55c91b6a758dc6d2bb4209cdd425c81f6bb7299ddef119b6ae1
+platform_hash: fa18f8dea684de9c6b8a573911816bf697943b7023b56d4965795c074835a8b6
+captured_at: '2026-10-27T21:28:41.051254+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: 4000 queries
+    unit: Requests
+    reset_period: 一次性
+    details: 官方定价文案：Run 4,000 queries for free。以 linkup.so/pricing 为准。
+    details_en: 'Linkup pricing copy: run 4,000 queries for free.'
+  intro: Linkup：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Linkup提供高性能网页搜索API，支持搜索、抓取与研究，适用于AI应用，以准确性和低延迟著称。

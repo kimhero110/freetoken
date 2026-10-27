@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: huggingface-inference
+name: Hugging Face (Serverless API)
+source_url: https://huggingface.co/docs/api-inference/
+source_hash: 586512ceeba43204b67aad72137c2a56b9bb9abe732787b0b401e670881f17e1
+platform_hash: bdc481519c22a0e0f9871b4bff4457aa3e16d9ec0ed3926612e2a035bf210afc
+captured_at: '2026-10-27T21:27:42.295531+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每日刷新
+    amount: 300 次 / 小时
+    unit: Requests (永久免费)
+    reset_period: 每小时重置
+    details: 免费层提供每小时 300 次请求，覆盖 Hugging Face 托管的数百款前沿开源大模型，完全兼容 OpenAI 格式。
+    details_en: 300 requests per hour free tier for hundreds of popular open models.
+  intro: 全球最大开源模型社区官方 Serverless 推理 API，300+ 款开源模型完全免费调用，共享算力池每小时提供 300 次调用。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Hugging Face Inference Providers 提供多模型统一API，按量付费，PRO与团队企业用户每月获赠免费额度。
