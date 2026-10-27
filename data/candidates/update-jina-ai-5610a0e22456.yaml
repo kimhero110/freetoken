@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: jina-ai
+name: Jina AI (Reader & Search)
+source_url: https://jina.ai/reader/
+source_hash: 5610a0e2245692e3d59aef9f235f8df77e26683047f65c1023d718498b528249
+platform_hash: ac87cfa59a45b730fc59f158b72cd84e64b8b3b65cb2e257ff1af52da5eaab97
+captured_at: '2026-10-27T21:28:02.197187+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 1000 万
+    unit: Tokens (免鉴权可直接用)
+    reset_period: 一次性
+    details: 注册即送 1000 万 Tokens，免 Key 亦可在 URL 前加 r.jina.ai 免费提取网页 Markdown。
+    details_en: 10M free tokens upon registration; works keyless with 20 RPM.
+  intro: 全球领先的大模型搜索与网页 Markdown 提取服务，免费提供 1000 万 Tokens 提取额度！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Jina AI Reader API 可将任意URL转换为Markdown，便于LLM使用；添加API Key可提升速率限制。
