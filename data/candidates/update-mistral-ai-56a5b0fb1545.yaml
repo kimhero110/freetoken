@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: mistral-ai
+name: Mistral AI (La Plateforme)
+source_url: https://docs.mistral.ai/
+source_hash: 56a5b0fb1545f47de26d04faf1ae9b2494746f5f90e1dfa464bcef0f19cf9a31
+platform_hash: 35a639a9426aa9dc22225dbf257e53e61ebe3e40d32c07e1f55c250c17f5cd42
+captured_at: '2026-10-27T23:58:06.729836+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 永久免费层
+    unit: 1 RPS / 500k TPM
+    reset_period: 永久
+    details: 验证手机号后开启永久免费 Experimentation 模式，支持 Codestral 编程模型。
+    details_en: Permanent free tier with 1 RPS and 500k TPM after phone verification.
+  intro: 欧洲顶尖大模型独角兽官方平台，Experimentation 开发者模式永久免费提供基础额度，代码与多语言极强。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Mistral AI 开发者平台提供 Studio 免费模式，可生成 API 密钥并体验模型调用，具体免费额度详见官方文档。
