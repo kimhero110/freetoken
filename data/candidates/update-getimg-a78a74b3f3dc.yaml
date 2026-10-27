@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: getimg
+name: getimg.ai
+source_url: https://getimg.ai/pricing
+source_hash: a78a74b3f3dc9442e328d9b80bc908edcbfcd5cf0dc71b7bc676ae2b251d9a43
+platform_hash: 86ddae48c795fe15965cd18d71c2f34ce817780ff73e8f1f72e08d79ff8add5e
+captured_at: '2026-10-27T00:03:56.587924+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 待核实
+    amount: 待核实
+    unit: Credits
+    reset_period: 待核实
+    details: 雷达命中的图像 API 平台；公开营销称有免费层，具体 credits/RPM 待人工核实。
+    details_en: Radar-discovered image API; marketing mentions a free layer — exact
+      credits TBD.
+  intro: getimg.ai：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: getimg.ai提供AI图像、视频、音频生成与编辑工具，灵活付费方案满足创作者需求。

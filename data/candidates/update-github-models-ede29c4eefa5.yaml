@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: github-models
+name: GitHub Models (Azure AI)
+source_url: https://docs.github.com/en/github-models
+source_hash: ede29c4eefa50cc73c5458590040e75518d33c1458d352725780100f550f1d87
+platform_hash: f8bf6329d564500bf018cf925be8af6bbaf5c7e68fe6f8686e26734615d69f46
+captured_at: '2026-10-27T00:04:04.157416+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 已下线
+    amount: '0'
+    unit: 已下线
+    reset_period: 无
+    details: GitHub Models 已于 2026 年 7 月 30 日正式下线退役，服务不再可用。
+    details_en: GitHub Models was fully retired on July 30, 2026 and is no longer
+      available.
+  intro: GitHub Models 已于 2026 年 7 月 30 日正式下线退役，推理 API 与 Playground 均已关闭。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: GitHub Models已全面退役，不再提供模型目录、推理API及免费额度服务，用户可转向Azure AI Foundry或GitHub Copilot。

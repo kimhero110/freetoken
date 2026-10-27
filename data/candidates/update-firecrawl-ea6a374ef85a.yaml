@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: firecrawl
+name: Firecrawl - The web data API to search, scrape, an
+source_url: https://firecrawl.dev
+source_hash: ea6a374ef85a65056d67ec0f806b324ed35248ea317ebfe008eff6cba575dc59
+platform_hash: 7db45856dcbe9c40a1f143466f13f35253254e8331b7200d5ed6311542079f8f
+captured_at: '2026-10-27T00:03:37.513631+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每月刷新
+    amount: '1000'
+    unit: Credits / 月 (约1000页)
+    reset_period: 每月刷新
+    details: 每月免费提供 1,000 点额度，可抓取约 1,000 个网页，无需绑定信用卡。
+    details_en: 1,000 free credits every month (covers ~1,000 pages), no credit card
+      required.
+  intro: 专为 AI 与大模型打造的网页检索与爬取 API，每月免费提供 1,000 Credits 额度，无需信用卡。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Firecrawl 是面向 AI 智能体的网页数据 API，支持搜索、抓取与交互，提供简洁 Markdown 输出，开源且性能可靠。

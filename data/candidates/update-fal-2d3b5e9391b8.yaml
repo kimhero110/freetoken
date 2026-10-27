@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: fal
+name: fal.ai
+source_url: https://fal.ai/pricing
+source_hash: 2d3b5e9391b8218c6f699445b3c1c1bb1917cb11203242039cebb326786da02a
+platform_hash: dcf5c6f249d8d7e29a7ed744ca4c2efdbd612562267b0b08b9309e17eb44dba1
+captured_at: '2026-10-27T00:03:25.157307+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 日额度
+    amount: 有限免费日生成
+    unit: Requests
+    reset_period: 每日
+    details: 公开索引提到部分模型有每日免费生成次数；fal 主体多为按量计费。免费层范围待人工复核，勿当作无限免费推理。
+    details_en: Public indexes mention limited free daily generations on some fal
+      models; treat the free surface as limited and verify.
+  intro: fal.ai：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: fal 是生成式媒体 API 平台，提供图像、视频、音频模型与 GPU 算力，按量计费，最低 H100 每小时 2.49 美元。
