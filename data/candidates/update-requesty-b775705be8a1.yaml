@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: requesty
+name: 'Requesty: AI Gateway & LLM Router for 600+ Models'
+source_url: https://requesty.ai
+source_hash: b775705be8a108714e455e1acf54869e35d8e22bb03632054223582eedcd955d
+platform_hash: 0070eaf01d46cfe8548e40fa63d35479bf8d2bf8fceb5024418e629485ea83ed
+captured_at: '2026-10-28T21:51:03.923200+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每日刷新
+    amount: '200'
+    unit: Requests / 天 (免费模型)
+    reset_period: 每日刷新
+    details: 每日免费提供 200 次请求额度，可免费调用平台支持的所有免费模型，无需绑定信用卡。
+    details_en: Start free with 200 requests a day on all free models, no credit card
+      required.
+  intro: AI 网关与大模型路由平台，每日免费提供 200 次请求额度访问所有免费模型，无需绑定信用卡。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Requesty 是一个支持 600+ 模型的 AI 网关与大模型路由平台，提供故障转移、预算控制与全链路可观测性，可快速集成。

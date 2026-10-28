@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: speechmatics
+name: Speechmatics
+source_url: https://speechmatics.com
+source_hash: 624c5ccf057ea95dba5ba050b9e693dab9d93a93fdf454c8b09f4300001b0e87
+platform_hash: f88a48ba10957d50f95b7525f3f7b3ba909585be0ac6077009687edf726aa182
+captured_at: '2026-10-28T21:51:33.228140+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: $100
+    unit: USD
+    reset_period: 一次性
+    details: 官方定价：Start free · $100 in credits，无需绑卡。以 speechmatics.com/pricing 为准。
+    details_en: 'Speechmatics pricing: $100 free credits, no card required.'
+  intro: Speechmatics：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: 100
+    unit: 美元
+    type: 限时
+    conditions:
+    - 无需信用卡
+    - 适用于语音转文本API
+  intro: Speechmatics语音转文字API支持55+语言，新用户免费获100美元额度，无需绑卡即可体验。
