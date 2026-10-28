@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: scnet
+name: 国家超算互联网 (SCNet)
+source_url: https://www.scnet.cn/ui/mall/
+source_hash: fcdf574e7021eef9a9f14df09c7780ee24c5da4c73e625af04013a74c8e2ad0d
+platform_hash: 2098ffd3974755604450e8c86bfb15f74abb3733eb48ebe4bd057bcaa1f08f03
+captured_at: '2026-10-28T02:29:06.986472+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 1000 万
+    unit: Tokens (算力补贴券)
+    reset_period: 一次性
+    details: 新用户完成实名认证后发放 1000 万 Tokens 算力代金券，全面支持 DeepSeek 与 Qwen 满血大模型。
+    details_en: 10M free tokens upon verified registration for DeepSeek and Qwen.
+  intro: 国家级超算互联网官方平台，新用户注册认证发放 1000 万 Tokens 免费算力券，央企级高可靠基础设施！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 超算互联网平台集成算力、数据与模型，提供一站式AI及高性能计算服务，助力科研与产业创新。

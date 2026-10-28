@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: serper
+name: Serper
+source_url: https://serper.dev
+source_hash: 39ea33e96e7a31aef94f424463f3f9777abafd00b21d855bcfa6a077e3526d92
+platform_hash: 260f926088c55d1dbcaabda898de79698a64ea8f2ee5b945c8ab94365e8f734c
+captured_at: '2026-10-28T02:29:28.603352+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: 2500 queries
+    unit: Requests
+    reset_period: 一次性
+    details: 公开资料称新用户约 2,500 次免费 Google Search API 查询；以 serper.dev 控制台/定价为准，待复核。
+    details_en: Public listings cite ~2,500 free Serper search queries for new accounts;
+      confirm on serper.dev.
+  intro: Serper：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: 2500
+    unit: queries
+    type: 永久
+    conditions:
+    - 无需信用卡
+  intro: Serper是高速低价Google搜索API，新用户可享2500次免费查询，无需信用卡，覆盖网页、图片、新闻等搜索类型。

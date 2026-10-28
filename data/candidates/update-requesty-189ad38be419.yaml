@@ -1,0 +1,31 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: requesty
+name: 'Requesty: AI Gateway & LLM Router for 600+ Models'
+source_url: https://requesty.ai/pricing
+source_hash: 189ad38be419ec046a0f9ef33b56c8927238966658521cbec965158459ad2ca4
+platform_hash: 0070eaf01d46cfe8548e40fa63d35479bf8d2bf8fceb5024418e629485ea83ed
+captured_at: '2026-10-28T02:28:52.211823+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每日刷新
+    amount: '200'
+    unit: Requests / 天 (免费模型)
+    reset_period: 每日刷新
+    details: 每日免费提供 200 次请求额度，可免费调用平台支持的所有免费模型，无需绑定信用卡。
+    details_en: Start free with 200 requests a day on all free models, no credit card
+      required.
+  intro: AI 网关与大模型路由平台，每日免费提供 200 次请求额度访问所有免费模型，无需绑定信用卡。
+proposed:
+  free_quota:
+    amount: 200
+    unit: 次/天
+    type: 每日
+    conditions:
+    - 无需信用卡
+    - 可访问所有免费模型
+  intro: Requesty 免费套餐每日 200 次请求，可访问所有免费模型，无需信用卡即可体验路由、缓存与可观测性。
