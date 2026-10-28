@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: moonshot-kimi
+name: 月之暗面 (Kimi 开放平台)
+source_url: https://platform.moonshot.cn/docs/intro
+source_hash: a0c91166fb406b91c0773fe63d41ffa2c4263ed510fb761704ec5daefde4b0a0
+platform_hash: 0745c4373e444d0b5d6ed33152a84df5d194af98a1cb0e4a60653503e1005485
+captured_at: '2026-10-27T23:58:49.942740+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 15 元
+    unit: 代金券 (约 125 万 Tokens)
+    reset_period: 一次性
+    details: 新用户注册发放 15 元体验额度，支持 128K 超长上下文分析与结构化抽取。
+    details_en: 15 RMB trial voucher upon registration for Moonshot-v1 series.
+  intro: 国内超长文本开创者 Kimi 官方开放平台，新注册开发者赠送 15 元代金券（约 125 万 Tokens），长文档分析极强。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Kimi API开放平台提供强大的大模型推理能力，支持多模态输入与工具调用，适合开发者快速构建AI应用。

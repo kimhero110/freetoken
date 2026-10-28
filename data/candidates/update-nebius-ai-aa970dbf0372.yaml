@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: nebius-ai
+name: Nebius AI Studio
+source_url: https://docs.nebius.ai/
+source_hash: aa970dbf0372fa0b33a565c86d520ede71b7e971e29ad6f3dd0761ce2d39b7a0
+platform_hash: 4fed64db5c815b901170c1250b5e191f68bee6692d8c57c7d270409528ad9ba0
+captured_at: '2026-10-27T23:58:57.662047+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 5-10 美元
+    unit: USD Credits (约数千万Tokens)
+    reset_period: 一次性
+    details: 新注册开发者发放 5-10 美元算力金，支持欧洲低延迟高并发大模型推理。
+    details_en: $5-$10 trial credits for new developer accounts.
+  intro: 欧洲顶尖 GPU 云基础设施平台，注册即送 5-10 美元体验金，超低延迟部署 DeepSeek R1 与 Llama 3.3！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Nebius AI Cloud 提供高性能 GPU 虚拟机、Kubernetes 与 AI 服务，支持云端部署与大规模推理。
