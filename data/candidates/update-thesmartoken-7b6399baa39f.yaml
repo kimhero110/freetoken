@@ -1,0 +1,32 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: thesmartoken
+name: SmarToken
+source_url: https://thesmartoken.com
+source_hash: 7b6399baa39f58bd36a8bb44bfb176b860d9a866e41b9e5f9b808b82d687fe4d
+platform_hash: 9cc40c4a8345f6b5bd77d7a7d2ae8c423d56c26115ecd0fcf02e9e6c4cca1a97
+captured_at: '2026-10-28T21:52:33.374878+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: $5 trial credit
+    unit: USD
+    reset_period: 一次性
+    details: 官网：Google 登录后符合条件的新账户可获约 $5 试用 credit，再预付费充值。以 thesmartoken.com 为准。
+    details_en: 'SmarToken: eligible new accounts get about $5 trial credit after
+      Google login.'
+  intro: SmarToken：面向海外开发者的中国模型 OpenAI 兼容网关，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: 5
+    unit: 美元
+    type: 限时
+    conditions:
+    - 新用户通过 Google 登录注册
+    - 符合条件的全新账户可获得推广赠金
+  intro: SmarToken 为海外开发者提供统一 OpenAI 兼容 API，接入 DeepSeek、Kimi、Qwen、GLM 等中国前沿模型，新用户注册即送
+    5 美元免费体验额度。

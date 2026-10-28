@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: siliconflow
+name: 硅基流动 (SiliconFlow)
+source_url: https://docs.siliconflow.cn/
+source_hash: 880d20858a9c5be52d150d545d34944a414f5708afa572f81afecb53222fc379
+platform_hash: e206c03c66034db1b4fe6e083133e1ea741287018e067265f4289728f1ed5905
+captured_at: '2026-10-28T21:51:17.256578+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 2000 万 + 永久免费
+    unit: Tokens (7B-9B 模型完全永久免费)
+    reset_period: 永久
+    details: 注册发放 2000 万 Tokens 体验额度，同时 7B/9B 等系列模型完全永久免费调用。
+    details_en: 20,000,000 free tokens for new users, with 7B-9B models permanently
+      free.
+  intro: 国内领先大模型加速推理平台，注册送 2000 万 Tokens（14元），并提供 Qwen/DeepSeek/GLM 多款完全永久免费模型！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: SiliconFlow 提供高速、稳定的大模型 API 服务，覆盖语言、语音、图片、视频等场景，支持 OpenAI 与 Anthropic 协议。

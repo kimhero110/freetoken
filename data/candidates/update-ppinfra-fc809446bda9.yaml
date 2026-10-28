@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: ppinfra
+name: PPIO 派欧云 (ppinfra)
+source_url: https://ppinfra.com
+source_hash: fc809446bda9309b6cf5e39a20c1ba398567a84fb3dc347bed8917352c2a0850
+platform_hash: d91c84d4d3cd452c538462a32c27edf1e2aa766efde278cbd7c06e46b32a3840
+captured_at: '2026-10-28T21:50:55.564312+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: 约 ¥5 注册代金券
+    unit: CNY
+    reset_period: 一次性
+    details: 公开注册页宣传新用户约 ¥5 免费额度（量级约数百万 DeepSeek tokens）；另有个别模型标「免费」。以 ppinfra.com
+      / ppio.com 为准，待复核。
+    details_en: 'PPIO marketing: ~¥5 signup voucher for new users; some models tagged
+      free — verify on ppinfra/ppio.'
+  intro: PPIO 派欧云：国内分布式算力与模型 API，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: PPIO是领先的独立Agentic Cloud服务商，提供大模型API、Agent云服务与GPU云服务，高性价比、超弹性、低延迟。

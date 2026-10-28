@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: stability
+name: Stability AI
+source_url: https://stability.ai
+source_hash: b8e96c5b3673ca5ac6b0546796722b327cfdb73ac1ee660e679f3b05e4420dbb
+platform_hash: 664d33fbdcd5735a90c8c5a685f9e400cfd0d79c1846ec3fb6c19e64a116812a
+captured_at: '2026-10-28T21:51:40.989607+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: 25 credits
+    unit: Credits
+    reset_period: 一次性
+    details: 公开索引称 Stability AI 约 25 免费 API credits；以 stability.ai 官方为准，待复核。
+    details_en: Public indexes list ~25 free Stability AI API credits; confirm on
+      stability.ai.
+  intro: Stability AI：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Stability AI 提供图像、音视频、3D 生成 API，支持企业级媒体创作与自托管部署。

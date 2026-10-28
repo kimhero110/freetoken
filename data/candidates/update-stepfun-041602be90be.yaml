@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: stepfun
+name: 阶跃星辰 (StepFun 开放平台)
+source_url: https://platform.stepfun.com/docs/zh/welcome
+source_hash: 041602be90be8faa87fe5aa1f724bcbcd05b175a63f3089d54f1f9d72852bf79
+platform_hash: 10dc8d97b131aa4a1d60c0bfb8306f806e551b2a5b1bba364f4ab3735b2de66b
+captured_at: '2026-10-28T21:51:48.942354+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 15 元
+    unit: 代金券 (约数百万Tokens)
+    reset_period: 一次性
+    details: 新注册开发者发放 15 元代金券，全面支持 Step 系列长文本与代码生成模型，100% 兼容 OpenAI 格式。
+    details_en: 15 RMB trial voucher upon registration for Step-2/Step-1 models.
+  intro: 国内领先自研千亿大模型开放平台，新用户注册赠送 15 元代金券，支持 Step-2/Step-1 系列模型，中文语义理解强劲且无过度拦截。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: StepFun开放平台提供模型接入、应用开发与运行维护的全面指南与API参考。
