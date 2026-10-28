@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: sepolia-faucet
+name: Sepolia ETH 测试网水龙头
+source_url: https://ethereum.org/en/developers/docs/networks/#sepolia
+source_hash: 7adf59e111844359b848066ea3accaeca5cc8158f2e0397daf9c5150d7948631
+platform_hash: c591503cb5b64e2c8da6a6262d49e189866edd217746789eb40f5b333d5b5827
+captured_at: '2026-10-28T02:29:13.766082+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每日刷新
+    amount: 0.05-0.5
+    unit: Sepolia ETH / 天
+    reset_period: 每日刷新
+    details: 提供 PoW 算力挖矿水龙头与 Google Cloud / Alchemy 每日水龙头领取入口。
+    details_en: 0.05-0.5 Sepolia ETH daily via PoW and infrastructure faucets.
+  intro: 全球主流以太坊测试网水龙头聚合导航，每天免费领取 0.05-0.5 Sepolia ETH 用于 Web3 与智能合约测试。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 以太坊网络介绍页面，涵盖主网与测试网，提供Sepolia和Hoodi等测试网络的免费ETH水龙头信息，适合开发者学习与测试。
