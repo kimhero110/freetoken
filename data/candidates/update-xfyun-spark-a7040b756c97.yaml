@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: xfyun-spark
+name: 讯飞星火认知大模型
+source_url: https://www.xfyun.cn/doc/spark/Web.html
+source_hash: a7040b756c97d12fecaff71a1e829b6141fe8a12bf0986bad1de12938a59b9fa
+platform_hash: 4cdc000e926000b505822e2a3275024cab09570264b17121a1b09a7b4da28213
+captured_at: '2026-10-29T00:17:50.565065+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 永久免费
+    unit: Spark Lite 永久完全免费
+    reset_period: 永久
+    details: Spark Lite 版本对所有开发者永久免费开放，新认证用户还送 200 万高阶模型体验包。
+    details_en: Spark Lite is permanently free; verified users get 2M tokens for Max.
+  intro: 科大讯飞官方大模型开放平台，Spark Lite 模型全面永久免费！支持语音、长文本与多模态交互。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 讯飞星火认知大模型 Websocket 接口可申请免费额度，支持多版本调用，需配置 API 密钥。

@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: zhipu-ai
+name: 智谱 AI (BigModel 开放平台)
+source_url: https://bigmodel.cn/dev/api/normal-model/glm-4
+source_hash: 17b93875f4f1ab3dc33ae8b68810b6d85494646ab348fb063465e38b51293b18
+platform_hash: d7f50a9da581d21b72532a12f9849e6bc64f6d442d76ef5fb08bc94178c4b2c2
+captured_at: '2026-10-29T00:17:58.614706+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 2500 万 + 永久免费
+    unit: Tokens (GLM-4-Flash 永久免费)
+    reset_period: 永久
+    details: GLM-4-Flash 与 GLM-4V-Flash 视觉模型全面永久免费不限量；注册送 2500 万旗舰模型额度。
+    details_en: GLM-4-Flash is permanently free; 25M tokens granted on registration.
+  intro: 清华系大模型领军企业，GLM-4-Flash 主力模型全面永久免费！新注册赠送 2500 万 Tokens（或 25 元代金券）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 智谱AI开放平台提供一站式大模型API服务，支持文本、图像、音视频等多模态模型调用，具备联网搜索与知识库功能。
