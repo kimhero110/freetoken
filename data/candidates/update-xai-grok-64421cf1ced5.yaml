@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: xai-grok
+name: xAI (Grok 开放平台)
+source_url: https://docs.x.ai/
+source_hash: 64421cf1ced5e513e7ae4d4d02853b59d785c8c2569caa1786fae171879a6732
+platform_hash: 99f380c79a92e4b35149707b77864e4784c4b8130b2256e9f1539542e9e8335e
+captured_at: '2026-10-29T00:17:40.943389+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每月循环
+    amount: 25 美元 + 150 美元/月
+    unit: USD Credits (约数亿Tokens)
+    reset_period: 每月刷新
+    details: 注册发放 25 美元 API 额度；开启 Data Sharing 计划后每月发放 150 美元免费额度，支持 2M 超长上下文推理。
+    details_en: $25 on sign-up, plus $150/month continuous credit when enrolled in
+      the Data Sharing plan.
+  intro: 马斯克旗下 xAI 开发者平台，注册即送 25 美元体验金；在控制台开启数据共享计划（Data Sharing）每月发放最高 150 美元/月免费算力！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Grok API 是 SpaceXSI 推出的多模态模型接口，覆盖文本、图像、视频与语音生成，支持函数调用，助力开发者高效构建 AI 应用。

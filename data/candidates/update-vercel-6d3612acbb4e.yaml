@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: vercel
+name: Vercel AI Gateway
+source_url: https://vercel.com
+source_hash: 6d3612acbb4e01e7042fe24608ca4843739bb9e97296d8ffd7f1ecd772d6134b
+platform_hash: 19cff5ffc3d623af671680ff23e0bc3bc210075bf892085a0ec2ec0a007d0c42
+captured_at: '2026-10-29T00:16:44.398116+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 月度额度
+    amount: $5 / 30 天
+    unit: USD
+    reset_period: 每月
+    details: 官方 AI Gateway：团队账户约每 30 天 $5 free credits（首次请求后起算）；购买 credits 后通常不再享免费档。以
+      vercel.com/docs/ai-gateway/pricing 为准。
+    details_en: 'Vercel AI Gateway: about $5 free credits every 30 days until you
+      purchase credits.'
+  intro: Vercel AI Gateway：统一多模型网关，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Vercel提供Agentic基础设施，支持AI应用部署、沙箱环境与模型网关，助力开发者快速构建和扩展应用。

@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: tokenpony
+name: 小马算力 (TokenPony)
+source_url: https://docs.tokenpony.cn/README.md
+source_hash: 6b81179dbc951d85df035c2a81b9a0ff4d5975ce8d659570a4437b103cec57dd
+platform_hash: 2522bc83f1371bed15946af34d6bd952a608746fe31cc272c19e812bd515968a
+captured_at: '2026-10-29T00:16:35.978260+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 200万-500万
+    unit: Tokens (注册赠送 + 每日签到)
+    reset_period: 每日签到赠送
+    details: 注册即送数百万 Tokens 算力，每日签到可持续获得免费额度，支持百万长上下文推理。
+    details_en: 2M-5M tokens upon registration plus daily check-in rewards.
+  intro: 基于 H200 与华为昇腾国产算力集群的极速大模型平台，注册送 200万-500万 Tokens，支持 1024K 超长上下文！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: TokenPony小马算力提供统一API，兼容OpenAI格式，支持数百个AI模型与智能回退，让开发者快速集成。

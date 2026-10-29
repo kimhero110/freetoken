@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: together-ai
+name: Together AI
+source_url: https://docs.together.ai/
+source_hash: 458d448fe7ff45c613a49c926a1ca35d6b71e8e260c61b3fc400e71a7caaafd0
+platform_hash: 6c96769e1584ce73ea1ae587f5cb34378bc4c607c632ac5ba4db7455f7686c9d
+captured_at: '2026-10-29T00:16:29.244989+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 5 美元
+    unit: USD Credits (约 2500 万 Tokens)
+    reset_period: 一次性
+    details: 注册送 5 美元体验金，支持文本推理、微调与生图 API。
+    details_en: $5 trial credits for new accounts (~25M tokens).
+  intro: 全球领先的开源大模型云平台，注册即送 5 美元体验金（约 2500 万 Tokens），支持 100+ 开源前沿模型！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Together AI 文档提供开源模型推理、微调及 GPU 集群等 AI 服务，帮助开发者快速部署。

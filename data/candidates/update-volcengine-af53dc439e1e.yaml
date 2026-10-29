@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: volcengine
+name: 火山引擎 (火山方舟)
+source_url: https://www.volcengine.com/activity/ark
+source_hash: af53dc439e1e2fdcba67235c742b1d225885f8ca10fb5d25674651a6a7242c8e
+platform_hash: a5de31ce358613c084853d75f51c1be8594702e9f16f38972aa07960a0c5e7d7
+captured_at: '2026-10-29T00:17:28.849106+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每日刷新
+    amount: 200 万
+    unit: Tokens / 天 (每月 6000 万)
+    reset_period: 每日刷新
+    details: 「千亿协同计划」每天刷新 200 万 Tokens 免费算力，支持豆包系列与 DeepSeek 满血版。
+    details_en: 2,000,000 free daily tokens for Doubao and DeepSeek models.
+  intro: 字节跳动旗下大模型服务平台，推出「千亿协同计划」，每天免费提供 200 万 Tokens（折合 6000 万/月）！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 火山引擎大模型特惠活动，提供豆包、DeepSeek等模型递减包，低至5折，新老用户均可享优惠。
