@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: scaleway
+name: Scaleway Generative APIs
+source_url: https://scaleway.com
+source_hash: eef5a65a2195cb2d346abd4d951464e108fee4aaebfcb331f01c0efdc654fc21
+platform_hash: 030aabd90db65a82dcd476bab848ee86012e42022732cf248aada61c97fbf98b
+captured_at: '2026-10-31T00:00:17.847148+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: 100万 tokens + 60 分钟转写
+    unit: Tokens
+    reset_period: 一次性
+    details: 官方 Generative APIs FAQ：Serverless 免费层约 1,000,000 tokens 与 60 分钟音频转写，无过期日（限额可能调整）。以
+      scaleway.com docs 为准。
+    details_en: 'Scaleway Generative APIs free tier: ~1M tokens + 60 min transcription
+      (no expiry; limits may change).'
+  intro: Scaleway Generative APIs：欧洲云托管 LLM / 语音 API，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Scaleway 提供欧洲云与AI服务，涵盖GPU实例、模型即服务及生成式API，支持弹性扩展。
