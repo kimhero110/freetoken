@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: hyperbolic
+name: Hyperbolic (去中心化算力)
+source_url: https://www.hyperbolic.ai/docs/overview/overview
+source_hash: f04e756d28e2973816d889af100c59405605536bf2882edd8a8585004c4db5e8
+platform_hash: 8d4570daf86162c43b06d98cf5dbb5ae767e647187f9abe1f316884eebfe854c
+captured_at: '2026-11-03T04:00:54.181944+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 10 美元
+    unit: USD Credits (约数千万Tokens)
+    reset_period: 一次性
+    details: 新注册开发者发放 10 美元算力额度，支持 DeepSeek R1 671B 满血版推理。
+    details_en: $10 trial credit upon registration for DeepSeek R1 and V3.
+  intro: 高性能去中心化 GPU 算力网络，注册即送 10 美元体验金，支持 DeepSeek R1 满血版 671B 极速推理！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Hyperbolic 是面向 AI 训练与推理的 GPU 云平台，提供按需、预留与私有云 GPU 实例，但页面未提及免费 API 额度。
