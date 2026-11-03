@@ -1,0 +1,34 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: aliyun-bailian
+name: 阿里云百炼 (DashScope)
+source_url: https://help.aliyun.com/zh/model-studio/new-free-quota
+source_hash: b0180967499036a6c7da4dffdec0fba00fa6824f07f19bd0aaf12af3d72edc22
+platform_hash: 9904ca708382daf09e9183afd1c6c93197ac572b86234eb95c9440407f3111e5
+captured_at: '2026-11-02T23:59:49.866154+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 100 万
+    unit: Tokens (90天有效)
+    reset_period: 一次性
+    details: 每个模型均有独立的免费额度（通常为 100 万 Token），有效期为 90 天。
+    details_en: Independent free quota for each model (typically 1,000,000 tokens),
+      valid for 90 days.
+  intro: 阿里云官方大模型服务平台，聚合通义千问全系列开源与商业化模型，每个模型均提供独立的百万免费额度包。
+proposed:
+  free_quota:
+    amount: 1000000
+    unit: tokens
+    type: 限时
+    conditions:
+    - 首次开通阿里云百炼后自动发放，仅限华北2（北京）地域模型
+    - 需完成实名认证方可获得
+    - 有效期为90天，自开通或模型发布之日（以较晚者为准）起算
+    - 仅抵扣实时推理产生的费用，Batch调用等不支持
+    - 每个模型免费额度独立，主账号与RAM子账号共享
+  intro: 阿里云百炼新人限时免费额度，每模型至高100万Token，开通即享，仅限北京地域，用完即停更安心。
