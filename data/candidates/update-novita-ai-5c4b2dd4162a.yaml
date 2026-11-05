@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: novita-ai
+name: Novita AI
+source_url: https://novita.ai/docs
+source_hash: 5c4b2dd4162ac4a0d65e48767a4f09651adfa681ff12415d293cb688140d138d
+platform_hash: 76255289e7174ce2b7a554e723a8bf0280ce2164f3ff76a82ad7d380fc764279
+captured_at: '2026-11-05T03:37:27.342358+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: 0.5-2 美元
+    unit: USD Credits (约数百万Tokens)
+    reset_period: 一次性
+    details: 注册送体验余额，完全兼容 OpenAI 协议标准。
+    details_en: $0.5-$2 trial credit on sign-up.
+  intro: 超高性价比 AI 推理平台，新注册开发者发放 0.5-2 美元体验金，支持 DeepSeek R1/V3 与数百款开源模型！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Novita AI 提供模型API、沙箱和GPU服务，支持OpenAI兼容接口，需创建API密钥并确保账户有足够额度。
