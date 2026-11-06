@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: sambanova
+name: SambaNova Cloud
+source_url: https://docs.sambanova.ai/
+source_hash: f3866c361116dc5afb6754ad452294f78bbe55f3f39d29678aae1eb3dfaa0dfc
+platform_hash: 2f1d2d12966095b042dba2043ccc4fe51225b33244aa48da9e907ae22b2f971e
+captured_at: '2026-11-06T01:06:20.488803+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 永久免费层
+    unit: 5-10 RPM
+    reset_period: 每日刷新
+    details: 永久免费提供 DeepSeek R1 满血版极速推理，开箱即用。
+    details_en: Permanent free tier for full DeepSeek R1 with low latency.
+  intro: 基于自研 SN40L 芯片的超低延迟推理云，永久免费提供全尺寸 DeepSeek R1 满血版与 Llama 3.3！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: SambaNova开发者指南提供API文档、模型列表、速率限制及集成教程，帮助开发者快速构建AI应用。
