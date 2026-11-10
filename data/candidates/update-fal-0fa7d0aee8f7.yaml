@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: fal
+name: fal.ai
+source_url: https://fal.ai
+source_hash: 0fa7d0aee8f75ff299f961a112419a28cab7cd9a73ab48f6e9249d7a6f9ba350
+platform_hash: dcf5c6f249d8d7e29a7ed744ca4c2efdbd612562267b0b08b9309e17eb44dba1
+captured_at: '2026-11-10T02:54:42.534557+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 日额度
+    amount: 有限免费日生成
+    unit: Requests
+    reset_period: 每日
+    details: 公开索引提到部分模型有每日免费生成次数；fal 主体多为按量计费。免费层范围待人工复核，勿当作无限免费推理。
+    details_en: Public indexes mention limited free daily generations on some fal
+      models; treat the free surface as limited and verify.
+  intro: fal.ai：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: fal 提供统一 API 接入 1500+ 生成式媒体模型，支持图像、视频、音频与 3D，按用量计费，快速推理。
