@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: tavily
+name: Tavily AI (AI 搜索专用引擎)
+source_url: https://docs.tavily.com/
+source_hash: 9fe4006b7f6cd79dde241bf9878a3793610496937ee5148d28a9c57f7076fe65
+platform_hash: a0db58159549192e32888d0256c0e0e7fb1e5286238c940d45afdfe4261678a6
+captured_at: '2026-11-10T22:30:09.705836+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 每月刷新
+    amount: 1000 次
+    unit: Search API Calls / 月
+    reset_period: 每月刷新
+    details: 每月免费发放 1000 次搜索配额，专为 LangChain、AutoGPT、OpenClaw 等智能体优化。
+    details_en: 1,000 free monthly search credits with real-time web context.
+  intro: 专为 AI Agent 与 RAG 设计的实时搜索引擎，每月免费提供 1000 次高质量结构化搜索调用！
+proposed:
+  free_quota:
+    amount: 1000
+    unit: API credits/月
+    type: 每日
+    conditions:
+    - 无需信用卡
+    - 需注册获取免费 API key
+  intro: Tavily 为 AI 智能体提供实时网页搜索、内容提取、站点爬取与引用研究 API，每月免费 1000 积分。
