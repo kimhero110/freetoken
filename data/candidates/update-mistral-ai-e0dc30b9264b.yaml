@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: mistral-ai
+name: Mistral AI (La Plateforme)
+source_url: https://docs.mistral.ai/
+source_hash: e0dc30b9264b4923904ff63d87ca1875ab0be57ceb5a55206d9f42f29d048bf6
+platform_hash: 35a639a9426aa9dc22225dbf257e53e61ebe3e40d32c07e1f55c250c17f5cd42
+captured_at: '2026-11-11T00:51:05.727528+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 永久免费层
+    unit: 1 RPS / 500k TPM
+    reset_period: 永久
+    details: 验证手机号后开启永久免费 Experimentation 模式，支持 Codestral 编程模型。
+    details_en: Permanent free tier with 1 RPS and 500k TPM after phone verification.
+  intro: 欧洲顶尖大模型独角兽官方平台，Experimentation 开发者模式永久免费提供基础额度，代码与多语言极强。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Mistral AI 官方文档，涵盖 Vibe、Studio、Admin 三大产品，提供模型、API 参考与快速入门指南。
