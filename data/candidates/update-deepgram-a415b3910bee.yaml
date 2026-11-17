@@ -1,0 +1,31 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: deepgram
+name: Deepgram
+source_url: https://deepgram.com/pricing
+source_hash: a415b3910beeb87103beb9d98a79ce619902edf0acbcddc2e95359ddc43d3969
+platform_hash: f4723232c8c2d26402199a1a06782fef9868c058f975f3c76648789bf6c75d6c
+captured_at: '2026-11-17T03:06:08.734994+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: $200
+    unit: USD
+    reset_period: 一次性
+    details: 官方定价：Free 档含 $200 Credit 后按量付费；以 deepgram.com/pricing 为准。
+    details_en: Deepgram Free plan includes $200 credit then pay-as-you-go.
+  intro: Deepgram：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: 200
+    unit: 美元
+    type: 永久
+    conditions:
+    - 无需信用卡
+    - 不设最低消费
+    - 不设到期时间
+  intro: Deepgram提供免费$200额度，适用于语音转写、文本转语音及语音智能API，无需信用卡，按需付费，助您快速构建语音应用。
