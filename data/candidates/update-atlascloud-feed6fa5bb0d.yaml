@@ -1,0 +1,29 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: atlascloud
+name: Overview | Atlas Cloud Docs
+source_url: https://www.atlascloud.ai/docs
+source_hash: feed6fa5bb0d874602fc517becb27fb7eeb32d14865bfe37088bba0171f78762
+platform_hash: 13fcfc1005dfd1271c7dd9b03597d3221b345f83ce4ad5602775d027b757c081
+captured_at: '2026-11-17T23:56:38.675690+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 无免费层
+    amount: 无免费额度
+    unit: null
+    reset_period: null
+    details: 官方页面当前未提供免费额度，按量计费。
+    details_en: No free quota currently offered (pay-as-you-go).
+    conditions: []
+  intro: Atlas Cloud是AI API聚合平台，统一接入400+模型，支持文本、图像、视频生成，提供OpenAI兼容接口。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Atlas Cloud是AI API聚合平台，一个密钥调用400余款模型，覆盖文本、图像、视频生成，价格透明。
