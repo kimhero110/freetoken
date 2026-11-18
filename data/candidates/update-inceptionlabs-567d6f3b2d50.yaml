@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: inceptionlabs
+name: Inception Labs (Mercury)
+source_url: https://inceptionlabs.ai
+source_hash: 567d6f3b2d503d17f0f8c10a3a691279d77e17f75872937ae072c6642603b6a4
+platform_hash: c8b73c2f3ae2d9bcea51ec53d490e39f3d2b3281c6d05f22720f13ec69dd6389
+captured_at: '2026-11-18T23:30:19.176345+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: 1亿 tokens
+    unit: Tokens
+    reset_period: 一次性
+    details: 官方文档 FAQ：新账户共享约 1 亿 free tokens 起步额度；用尽后需绑卡。以 docs.inceptionlabs.ai 为准。
+    details_en: New Inception accounts share ~100M free-token credit to start.
+  intro: Inception Labs：Mercury 扩散 LLM API，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Inception推出Mercury系列扩散LLM，以极低延迟和高吞吐著称，提供多种模型API，但未明确提供免费额度。
