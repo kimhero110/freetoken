@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: nvidia-nim
+name: NVIDIA NIM (Build)
+source_url: https://docs.api.nvidia.com/nim/
+source_hash: e2ec302d5fbdc37166772cbfdd733849aaaf322e66d791175e69bb88fddc4b9c
+platform_hash: 61c7335ce0599395c63fa0a88f3d577ae761201ec1fdb818a395da830e8afad1
+captured_at: '2026-11-19T23:43:56.950886+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 限时赠送
+    amount: '1000'
+    unit: Credits (约 4000 万 Tokens)
+    reset_period: 一次性
+    details: 每个账号提供 1000 API Credits，完全部署在英伟达官方顶级算力集群上。
+    details_en: 1,000 free credits upon account registration for enterprise microservices.
+  intro: 英伟达官方微服务推理平台，注册送 1000 免费 Credits，在英伟达顶级 H100/H200 上极速跑 DeepSeek 与 Llama！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: NVIDIA NIM提供优化的AI推理微服务，支持云端、数据中心及工作站部署，涵盖多种模型用例。
