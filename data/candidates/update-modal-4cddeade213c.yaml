@@ -1,0 +1,31 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: modal
+name: Modal
+source_url: https://modal.com/pricing
+source_hash: 4cddeade213c540a53bb6d6f38f69b64e1a678caa43feca960e929917fd207d0
+platform_hash: 17b5b45a96f08e2aa2ef1a0abd53dce7e317f98a6aaec1496730debdb688eb13
+captured_at: '2026-11-19T02:00:30.448924+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 月度额度
+    amount: $30/月
+    unit: USD
+    reset_period: 每月
+    details: 官方称 Starter 工作区每月有免费算力配额（约 $30/月量级）；以 Modal Pricing / docs 为准，待人工复核精确条款。
+    details_en: Modal documents a free monthly compute allotment for workspaces (~$30/mo
+      class); confirm exact terms on Modal pricing.
+  intro: Modal：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: 30
+    unit: 美元/月
+    type: 限时
+    conditions:
+    - Starter 计划
+    - 每月 $30 免费 credits
+  intro: Modal 提供 Starter 计划，每月赠送 30 美元免费额度，可用于 GPU、CPU 等计算资源，按秒计费，灵活弹性。

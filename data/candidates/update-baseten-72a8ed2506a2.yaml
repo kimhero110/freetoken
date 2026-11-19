@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: baseten
+name: Baseten
+source_url: https://baseten.co
+source_hash: 72a8ed2506a226c715d7521a70e9797e0995d3d8501b50bfaed188054c618d35
+platform_hash: f3678094847773de4fbcdbb7770dd48223a45f9b009b72ad9997aa045b75c266
+captured_at: '2026-11-19T01:59:28.240887+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: $30
+    unit: USD
+    reset_period: 一次性
+    details: 公开资料与定价 FAQ：新 workspace 约 $30 起步 credits，可先试用 Model APIs；无永久免费层。以 baseten.co/pricing
+      为准。
+    details_en: New Baseten workspaces get about $30 starting credits for Model APIs;
+      no perpetual free tier.
+  intro: Baseten：推理与 Model APIs 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Baseten是面向推理、训练与执行的AI平台，提供高性能模型部署与API服务，帮助企业快速扩展AI应用。
