@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: baseten
+name: Baseten
+source_url: https://baseten.co/pricing
+source_hash: 96cd30fa0db902e0a5cb56939eaa85527b193216bc91b3ea2171674244dc80ee
+platform_hash: f3678094847773de4fbcdbb7770dd48223a45f9b009b72ad9997aa045b75c266
+captured_at: '2026-11-24T03:26:47.487283+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: $30
+    unit: USD
+    reset_period: 一次性
+    details: 公开资料与定价 FAQ：新 workspace 约 $30 起步 credits，可先试用 Model APIs；无永久免费层。以 baseten.co/pricing
+      为准。
+    details_en: New Baseten workspaces get about $30 starting credits for Model APIs;
+      no perpetual free tier.
+  intro: Baseten：推理与 Model APIs 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Baseten 提供模型推理、训练与沙箱服务，采用按量付费定价，无免费额度信息。
