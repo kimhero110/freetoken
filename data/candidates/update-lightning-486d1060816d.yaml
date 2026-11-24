@@ -1,0 +1,33 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: lightning
+name: Lightning AI
+source_url: https://lightning.ai/pricing
+source_hash: 486d1060816d16f1d6fb3651d460ef8a9ba031711c0d1962b5fd9481b20dee66
+platform_hash: fcbb525dc77c1e7846ef5be05d9393d92da653c5377e1c8cc5c89eab5e950e20
+captured_at: '2026-11-24T04:58:29.134339+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: 5 credits 起 + 免费 Studio
+    unit: USD
+    reset_period: 一次性
+    details: 官网定价：注册约 5 Lightning credits（1 credit≈$1），绑卡可再得 25；另有免费 CPU Studio 与有限
+      GPU 起步小时。credits 可用于 compute/storage/tokens。以 lightning.ai/pricing 为准。
+    details_en: 'Lightning: ~5 free credits on signup (+25 with card), free CPU Studio;
+      credits cover compute/tokens.'
+  intro: Lightning AI：Studio / 算力与 Model APIs，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: 120000
+    unit: tokens/min
+    type: 永久
+    conditions:
+    - 适用于免费套餐
+    - Model API 请求限制为每分钟 15 次
+    - Model API token 限制为每分钟 120,000 tokens
+  intro: Lightning AI 免费套餐含 Model API 每分钟 12 万 token 额度，另有 50 免费 GPU 小时，适合新手体验。
