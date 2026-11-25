@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: modal
+name: Modal
+source_url: https://modal.com
+source_hash: 24251b39d94de1a3fdbf51d0a6b74c6e242bcfb9c384840b4856cb24fce6e050
+platform_hash: 17b5b45a96f08e2aa2ef1a0abd53dce7e317f98a6aaec1496730debdb688eb13
+captured_at: '2026-11-25T03:43:26.100261+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 月度额度
+    amount: $30/月
+    unit: USD
+    reset_period: 每月
+    details: 官方称 Starter 工作区每月有免费算力配额（约 $30/月量级）；以 Modal Pricing / docs 为准，待人工复核精确条款。
+    details_en: Modal documents a free monthly compute allotment for workspaces (~$30/mo
+      class); confirm exact terms on Modal pricing.
+  intro: Modal：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: Modal 是面向生产级 AI 的云基础设施平台，提供模型推理、训练与沙盒环境，支持高并发 GPU 算力，按需弹性伸缩，帮助企业快速构建和部署 AI
+    应用。
