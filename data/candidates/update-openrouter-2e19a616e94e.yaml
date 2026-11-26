@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: openrouter
+name: OpenRouter (免费模型池)
+source_url: https://openrouter.ai/docs
+source_hash: 2e19a616e94eda262982ed969dc31e738a6d5e9f54ed393835d83ccf3a65eb33
+platform_hash: 48e2b0c52e75db25bf8eb6102f46e51af9b5aa01ffca4272ae79ef5fdfa30c52
+captured_at: '2026-11-26T03:02:47.860330+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 永久免费
+    amount: 永久免费
+    unit: 20 RPM (30+款免费模型)
+    reset_period: 永久
+    details: 永久免费调用带 :free 后缀的几十款前沿模型，支持智能故障降级。
+    details_en: Permanent 20 RPM free tier across all models with ':free' suffix.
+  intro: 全球最大大模型聚合路由网关，收录 30+ 款带有 :free 后缀的开源大模型，永久完全免费调用！
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: OpenRouter聚合数百种AI模型，提供统一API接入，支持模型回退与成本优化，免费模型相关信息详见官方FAQ。
