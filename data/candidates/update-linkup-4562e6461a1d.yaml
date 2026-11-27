@@ -1,0 +1,28 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: linkup
+name: Linkup
+source_url: https://linkup.so/pricing
+source_hash: 4562e6461a1db05e039130025a61af1ff7188b1163fe402f78855b651560b9cd
+platform_hash: fa18f8dea684de9c6b8a573911816bf697943b7023b56d4965795c074835a8b6
+captured_at: '2026-11-27T01:08:03.986731+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 一次性额度
+    amount: 4000 queries
+    unit: Requests
+    reset_period: 一次性
+    details: 官方定价文案：Run 4,000 queries for free。以 linkup.so/pricing 为准。
+    details_en: 'Linkup pricing copy: run 4,000 queries for free.'
+  intro: Linkup：开发者 API 平台，免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: 4000
+    unit: queries
+    type: 永久
+    conditions: []
+  intro: Linkup提供免费API额度，新用户可免费运行4000次查询，按量付费模式灵活透明，适用于AI搜索与企业级应用。
