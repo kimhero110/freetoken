@@ -1,0 +1,30 @@
+candidate_type: platform_update
+status: pending_review
+platform_slug: infron
+name: Infron
+source_url: https://infron.ai/docs
+source_hash: 24eeeb4511a7aae47d1dec32f7ad57bda414ce9c361859dd093f6cd5dfa5ea33
+platform_hash: 5e1af44c8f855d51aec287dd64d94348703699aeda1d664a82f4c767b936b163
+captured_at: '2026-11-28T00:39:03.262459+00:00'
+extractor:
+  provider: witkit
+  model: deepseek-v4-flash
+evidence_excerpt: ''
+current:
+  free_quota:
+    type: 日额度
+    amount: :free 模型约 1000 req/日
+    unit: Requests
+    reset_period: 每日
+    details: 官方 Free Models 文档：带 :free 后缀模型按 $0 计费；标准免费档约需账户余额 ≥$5，合计约 1000 req/日（UTC
+      重置）。以 infron.ai/docs 为准。
+    details_en: Infron :free models are $0; standard free tier ~1000 req/day and may
+      require ≥$5 balance.
+  intro: Infron：多模型推理网关，含 :free 免费模型；免费额度见 free_quota（雷达入库，细节待复核）。
+proposed:
+  free_quota:
+    amount: null
+    unit: null
+    type: null
+    conditions: []
+  intro: 一站式模型 API 平台，提供文本、图像、视频、音频与搜索生成能力，路由网关保障高可用和低成本扩展。
